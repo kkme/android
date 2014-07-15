@@ -12,7 +12,7 @@ import com.link.bianmi.utility.SecurityUtils;
 /**
  * 用户配置
  * 
- * @author sunpf
+ * @author pangfq
  * 
  */
 public class UserConfig {
