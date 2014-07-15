@@ -1,10 +1,9 @@
 package com.link.bianmi.fragment;
 
-import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.manager.SecretManager;
 
 
-public class FriendFragment extends BaseFragment {
+public class FriendFragment extends SecretFragment {
 	
 	@Override
 	protected SecretManager getFeedsManager() {

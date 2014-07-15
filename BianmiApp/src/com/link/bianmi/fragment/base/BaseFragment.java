@@ -1,253 +1,144 @@
 package com.link.bianmi.fragment.base;
 
-import net.tsz.afinal.FinalBitmap;
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.link.bianmi.R;
-import com.link.bianmi.activity.MainActivity;
-import com.link.bianmi.bean.Secret;
-import com.link.bianmi.manager.SecretManager;
-import com.link.bianmi.utility.SystemBarTintUtil;
-import com.link.bianmi.utility.ToastUtil;
-import com.link.bianmi.utility.UiUtil;
-import com.link.bianmi.widget.ListViewScrollObserver;
-import com.link.bianmi.widget.ListViewScrollObserver.OnListViewScrollListener;
-import com.link.bianmi.widget.RListView;
-import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.ObjectAnimator;
+import com.link.bianmi.SysConfig;
+import com.link.bianmi.UserConfig;
+import com.link.bianmi.activity.base.BaseFragmentActivity;
 
-public class BaseFragment extends Fragment {
+/** Fragment基础抽象类 **/
+public abstract class BaseFragment extends Fragment {
+	protected String TAG = "BaseFragment";
 
-	private RListView mListView;
-	private Context mContext;
-	private SecretManager mSecretManager;
-	private FinalBitmap mFinalBitmap;
+	/** 用户配置信息 **/
+	protected UserConfig mUserConf = UserConfig.getInstance();
+	/** 系统配置信息 **/
+	protected SysConfig mSysConf = SysConfig.getInstance();
+	protected BaseFragmentActivity mContext;
+
+	/** 是否成功创建视图 **/
+	protected boolean mSuccessCreate = false;
+
+	/** 是否初次执行OnResume **/
+	private boolean mFirstOnResume = true;
+
+	// ----------------------------------------重载方法----------------------------------------
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		mListView = (RListView) inflater.inflate(R.layout.rlistview, null);
-		initInsetTop(mListView);
-		return mListView;
-	}
+	public final void onAttach(Activity activity) {
+		super.onAttach(activity);
+		mContext = (BaseFragmentActivity) activity;
+		TAG = this.getClass().getName();
 
-	private void initInsetTop(View rootView) {
-		SystemBarTintUtil tintManager = new SystemBarTintUtil(getActivity());
-		SystemBarTintUtil.SystemBarConfig config = tintManager.getConfig();
-		rootView.setPadding(0, config.getPixelInsetTop(true),
-				config.getPixelInsetRight(), config.getPixelInsetBottom());
-		rootView.requestLayout();
+		try {
+			_onAttach(activity);
+		} catch (OutOfMemoryError ex) {
+			Log.e(TAG, "onAttach.OutOfMemoryError");
+		} catch (Exception ex) {
+		}
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		mContext = getActivity();
-		mSecretManager = getFeedsManager();
-		if (mSecretManager == null)
-			return;
-		mFinalBitmap = ((MainActivity) getActivity()).getFinalBitmap();
+	public final View onCreateView(LayoutInflater inflater,
+			ViewGroup container, Bundle savedInstanceState) {
 
-		final CardsAnimationAdapter adapter = new CardsAnimationAdapter(
-				new SecretAdapter());
-		adapter.setAbsListView(mListView);
-		mListView.setAdapter(adapter);
+		View view = null;
+		mSuccessCreate = false;
+		try {
+			view = _onCreateView(inflater, container, savedInstanceState);
+			mSuccessCreate = true;
+		} catch (OutOfMemoryError ex) {
+			mSuccessCreate = false;
+			Log.e(TAG, "onCreate.OutOfMemoryError");
+		} catch (Exception ex) {
+			mSuccessCreate = false;
+		}
 
-		mListView.setOnTopRefreshListener(new RListView.OnTopRefreshListener() {
-			@Override
-			public void onStart() {
-			}
+		if (!mSuccessCreate)
+			mContext.finish();
 
-			@Override
-			public void onEnd() {
-			}
-
-			@Override
-			public void onDoinBackground() {
-				mSecretManager.updateFirstPage();
-			}
-		});
-		mListView
-				.setOnBottomRefreshListener(new RListView.OnBottomRefreshListener() {
-					@Override
-					public void onStart() {
-					}
-
-					@Override
-					public void onEnd() {
-						adapter.setShouldAnimateFromPosition(mListView
-								.getLastVisiblePosition());
-					}
-
-					@Override
-					public void onDoinBackground() {
-						mSecretManager.updateNextPage();
-					}
-				});
-		mListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View convertView,
-					int position, long arg3) {
-				final ImageView imageView = (ImageView) convertView
-						.findViewById(R.id.feed_item_image);
-				if (imageView.getDrawable() == null
-						|| imageView.getDrawable().getIntrinsicWidth() == 0) {
-					ToastUtil.showToast(getActivity(), "Please wait...");
-					return;
-				}
-				((MainActivity) getActivity()).showImageFragment(imageView,
-						true, mSecretManager.getFeedItems().get(position - 1));
-			}
-		});
-		mListView.post(new Runnable() {
-			@Override
-			public void run() {
-				if (mSecretManager.loadDbData()) {
-					mListView.notifyDataSetChanged();
-				} else {
-					mListView.startUpdateImmediate();
-				}
-			}
-		});
-		initScrollListener();
+		mFirstOnResume = true;
+		return view;
 	}
 
-	private void initScrollListener() {
-		final int max_tranY = UiUtil.dip2px(mContext, 48);
-		final View tabview = ((MainActivity) getActivity()).getViewPagerTab();
-		ListViewScrollObserver observer = new ListViewScrollObserver(mListView);
-		observer.setOnScrollUpAndDownListener(new OnListViewScrollListener() {
-
-			@Override
-			public void onScrollUpDownChanged(int delta, int scrollPosition,
-					boolean exact) {
-				if (exact) {
-					float tran_y = tabview.getTranslationY() + delta;
-					if (tran_y >= 0) {
-						tabview.setTranslationY(0);
-					} else if (tran_y < -max_tranY) {
-						tabview.setTranslationY(-max_tranY);
-					} else {
-						tabview.setTranslationY(tran_y);
-					}
-				}
-
-			}
-
-			@Override
-			public void onScrollIdle() {
-			}
-		});
-	}
-
-	public void refresh() {
-		mListView.startUpdateImmediate();
-	}
-
-	protected SecretManager getFeedsManager() {
-		return null;
-	}
-
-	private class SecretAdapter extends BaseAdapter {
-
-		public SecretAdapter() {
-			super();
-		}
-
-		@Override
-		public int getCount() {
-			return mSecretManager.getFeedItems().size();
-		}
-
-		@Override
-		public Secret getItem(int position) {
-			return mSecretManager.getFeedItems().get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return 0;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder = null;
-			if (convertView == null) {
-				holder = new ViewHolder();
-				convertView = LayoutInflater.from(mContext).inflate(
-						R.layout.secret_listview_item, null);
-				holder.title = (TextView) convertView
-						.findViewById(R.id.feed_item_title);
-				holder.info = (TextView) convertView
-						.findViewById(R.id.feed_item_text_info);
-				holder.image = (ImageView) convertView
-						.findViewById(R.id.feed_item_image);
-				convertView.setTag(holder);
-			} else {
-				holder = (ViewHolder) convertView.getTag();
-			}
-			final Secret item = mSecretManager.getFeedItems().get(position);
-			if (item != null) {
-				if (item.getCaption() != null) {
-					holder.title.setText(item.getCaption());
-				} else {
-					holder.title.setText("unknown caption");
-				}
-				mFinalBitmap.display(holder.image, item.getImages_normal());
-				holder.info.setText(String.valueOf(item.getLikeCount()));
-			}
-
-			return convertView;
-		}
-
-		class ViewHolder {
-			public TextView title;
-			public TextView info;
-			public ImageView image;
+	@Override
+	public final void onResume() {
+		super.onResume();
+		try {
+			_onResume();
+		} catch (OutOfMemoryError ex) {
+			Log.e(TAG, "onResume.OutOfMemoryError");
+		} catch (Exception ex) {
+		} finally {
+			mFirstOnResume = false;
 		}
 
 	}
 
-	class CardsAnimationAdapter extends AnimationAdapter {
-		private float mTranslationY = 400;
-
-		private float mRotationX = 15;
-
-		private long mDuration = 400;
-
-		public CardsAnimationAdapter(BaseAdapter baseAdapter) {
-			super(baseAdapter);
-		}
-
-		@Override
-		protected long getAnimationDelayMillis() {
-			return 30;
-		}
-
-		@Override
-		protected long getAnimationDurationMillis() {
-			return mDuration;
-		}
-
-		@Override
-		public Animator[] getAnimators(ViewGroup parent, View view) {
-			return new Animator[] {
-					ObjectAnimator.ofFloat(view, "translationY", mTranslationY,
-							0),
-					ObjectAnimator.ofFloat(view, "rotationX", mRotationX, 0) };
+	@Override
+	public final void onPause() {
+		super.onPause();
+		try {
+			_onPause();
+		} catch (OutOfMemoryError ex) {
+			Log.e(TAG, "onResume.OutOfMemoryError");
+		} catch (Exception ex) {
 		}
 	}
+
+	@Override
+	public final void onDestroyView() {
+
+		if (mSuccessCreate) {
+			try {
+				_onDestroyView();
+			} catch (OutOfMemoryError ex) {
+				Log.e(TAG, "onDestroyView.OutOfMemoryError");
+			} catch (Exception ex) {
+			}
+		}
+
+		super.onDestroyView();
+	}
+
+	/** 是否初次执行onresume **/
+	protected boolean isFirstOnResume() {
+		return mFirstOnResume;
+	}
+
+	public void launch(Class<?> cls, int launchMode, Bundle bundle,
+			int requestCode) {
+		try {
+			Intent intent = new Intent(mContext, cls);
+			if (bundle != null && bundle.size() > 0)
+				intent.putExtras(bundle);
+			intent.setFlags(launchMode);
+			startActivityForResult(intent, requestCode);
+		} catch (Exception ex) {
+		}
+	}
+
+	public void _onPause() {
+	}
+
+	public void _onResume() {
+	}
+
+	public void _onDestroyView() {
+	}
+
+	public void _onAttach(Activity activity) {
+	}
+
+	// ------------------
+	public abstract View _onCreateView(LayoutInflater inflater,
+			ViewGroup container, Bundle savedInstanceState);
 
 }

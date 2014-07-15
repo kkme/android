@@ -19,7 +19,7 @@ import com.link.bianmi.fragment.FriendFragment;
 import com.link.bianmi.fragment.HotFragment;
 import com.link.bianmi.fragment.ImageFragment;
 import com.link.bianmi.fragment.NearbyFragment;
-import com.link.bianmi.fragment.base.BaseFragment;
+import com.link.bianmi.fragment.SecretFragment;
 import com.link.bianmi.utility.ToastUtil;
 import com.link.bianmi.widget.ViewPagerTabBar;
 
@@ -143,8 +143,8 @@ public class MainActivity extends BaseFragmentActivity {
 		}
 
 		@Override
-		public BaseFragment getItem(int position) {
-			return (BaseFragment) fragments.get(position);
+		public SecretFragment getItem(int position) {
+			return (SecretFragment) fragments.get(position);
 		}
 
 		@Override
