@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -36,9 +37,7 @@ import org.apache.http.util.EntityUtils;
  */
 public class HttpUtil {
 	private static Header[] headers = new BasicHeader[1];
-	private static String TAG = "HTTPUTIL";
 	private static int TIMEOUT = 5 * 1000;
-	private static final String BOUNDARY = "---------------------------7db1c523809b2";
 	/**
 	 * Your header of http op
 	 * 
