@@ -10,17 +10,15 @@ public class SecretHelper {
 	public static class DB {
 
 		public static void cleanSecret() {
-			// TODO Auto-generated method stub
 
 		}
 
 		public static Cursor fetch() {
-			// TODO Auto-generated method stub
+
 			return null;
 		}
 
 		public static void addSecret(Secret[] t) {
-			// TODO Auto-generated method stub
 
 		}
 
@@ -32,12 +30,12 @@ public class SecretHelper {
 		private static final int pageSize = 20;
 
 		public static Secret[] getSecrets() {
-			// TODO Auto-generated method stub
+
 			return null;
 		}
 
 		public static Tmodel<Secret[]> getSecretsArray(int page) {
-			// TODO Auto-generated method stub
+
 			return null;
 		}
 
