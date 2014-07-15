@@ -1,0 +1,110 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="Theme.ActionBar" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarItemBackground">@drawable/actionbar_menu_selector</item>
+        <!--
+       <item name="android:homeAsUpIndicator">@drawable/actionbar_up_indicator</item>
+       <item name="android:indeterminateProgressStyle">@style/IhomeBaseThemeHoloProgressBar</item>
+        <item name="android:actionOverflowButtonStyle">@style/IhomeBaseThemeHoloActionButtonOverflow</item>
+        -->
+        <item name="android:windowBackground">@color/mxx_listview_bg</item>
+        <item name="android:windowActionBarOverlay">false</item>
+        <item name="android:actionBarStyle">@style/MxxActionBarStyle</item>
+        <item name="android:actionOverflowButtonStyle">@style/ActionbarOverFlowStyle</item>
+        <item name="android:homeAsUpIndicator">@drawable/mxx_abc_ic_ab_back_holo_dark</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
+        <item name="android:actionBarWidgetTheme">@style/Theme.stylingactionbar.widget</item>
+        <item name="android:windowAnimationStyle">@style/Theme.ActionBarAnimationActivity</item>
+    </style>
+
+    <style name="Theme.ActionBarAnimationActivity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/mxx_activity_open_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/mxx_activity_open_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/mxx_activity_close_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/mxx_activity_close_exit</item>
+    </style>
+
+    <style name="MxxActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/mxx_item_theme_color_alpha</item>
+        <item name="android:titleTextStyle">@style/ActionbarTitleTextStyle</item>
+        <item name="android:icon">@drawable/ic_logo_main</item>
+    </style>
+
+    <style name="Theme.stylingactionbar.widget" parent="@android:style/Theme.Holo">
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView</item>
+    </style>
+
+    <style name="PopupMenu" parent="@android:style/Widget.Holo.ListPopupWindow">
+        <item name="android:popupBackground">@color/mxx_item_theme_color_alpha</item>
+    </style>
+
+    <style name="DropDownListView" parent="@android:style/Widget.Holo.ListView.DropDown">
+        <item name="android:listSelector">@drawable/actionbar_menu_selector</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:divider">@color/mxx_item_actionbar_listview_divider_color</item>
+    </style>
+
+    <style name="ActionbarTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">#ffffffff</item>
+    </style>
+
+    <style name="ActionbarOverFlowStyle" parent="@android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/mxx_holo_ic_action_overflow_white</item>
+    </style>
+
+    <style name="SwipeBackTheme" parent="@style/Theme.ActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="Theme.ActionBarActionBarNotOverlay" parent="@style/Theme.ActionBar">
+        <item name="android:windowActionBarOverlay">false</item>
+    </style>
+
+    <style name="SwipeBackThemeActionBarNotOverlay" parent="@style/SwipeBackTheme">
+        <item name="android:windowActionBarOverlay">false</item>
+    </style>
+
+    <style name="SwipeBackLayout">
+        <item name="edge_size">50dip</item>
+        <item name="shadow_left">@drawable/shadow_left</item>
+        <item name="shadow_right">@drawable/shadow_right</item>
+        <item name="shadow_bottom">@drawable/shadow_bottom</item>
+    </style>
+
+    <style name="mxx_theme_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    <!-- <item name="android:windowAnimationStyle">@style/mxx_dialog_style_animation_from_center_bottom</item> -->
+    <style name="mxx_dialog_style_animation_from_center_bottom" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/center_up_in</item>
+        <item name="android:windowExitAnimation">@anim/center_down_out</item>
+    </style>
+
+    <style name="anim36Style" parent="@android:style/Widget.ProgressBar.Large">
+        <item name="android:indeterminateDrawable">@anim/loading_36_gif</item>
+    </style> 
+</resources>

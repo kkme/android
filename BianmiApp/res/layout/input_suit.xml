@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 论坛输入套件 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/input_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#b7b7b7" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#f5f5f5"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:paddingBottom="@dimen/dp_6"
+            android:paddingTop="@dimen/dp_6" >
+
+            <View
+                android:id="@+id/attach_record_view"
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:background="@drawable/selector_btn_reply_voice" />
+
+            <View
+                android:id="@+id/tips_record_view"
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="@dimen/dp_10"
+                android:layout_alignRight="@id/attach_record_view"
+                android:layout_alignTop="@id/attach_record_view"
+                android:background="@drawable/icon_newmsg" />
+
+            <View
+                android:id="@+id/attach_photo_view"
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_toRightOf="@id/attach_record_view"
+                android:background="@drawable/selector_btn_reply_media" />
+
+            <View
+                android:id="@+id/tips_photo_view"
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="@dimen/dp_10"
+                android:layout_alignRight="@id/attach_photo_view"
+                android:layout_alignTop="@id/attach_photo_view"
+                android:background="@drawable/icon_newmsg" />
+
+            <EditText
+                android:id="@+id/message_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginRight="@dimen/dp_8"
+                android:layout_toLeftOf="@+id/submit_view"
+                android:layout_toRightOf="@id/attach_photo_view"
+                android:background="@drawable/shape_edit_corner"
+                android:gravity="center_vertical"
+                android:hint="\@Lisa"
+                android:maxLines="5"
+                android:minHeight="@dimen/dp_32"
+                android:padding="@dimen/dp_8"
+                android:singleLine="false"
+                android:text=""
+                android:textColor="@color/fc_dft"
+                android:textColorHint="@color/fc_hint"
+                android:textSize="@dimen/sp_15" />
+
+            <Button
+                android:id="@id/submit_view"
+                android:layout_width="@dimen/dp_44"
+                android:layout_height="@dimen/dp_32"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dp_8"
+                android:background="@drawable/selector_forumsuit_submit_bg"
+                android:enabled="false"
+                android:text="发表"
+                android:textColor="@drawable/selector_forumsuit_submit_txt"
+                android:textSize="@dimen/sp_14" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#b7b7b7" />
+
+        <!-- 附件 -->
+
+        <RelativeLayout
+            android:id="@+id/attach_group"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_96"
+            android:background="#d9d9d9" >
+
+            <LinearLayout
+                android:id="@+id/photo_group"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:clipChildren="false"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:id="@+id/photo_operate_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_12" >
+
+                    <View
+                        android:id="@+id/photo_album_view"
+                        android:layout_width="@dimen/dp_57"
+                        android:layout_height="@dimen/dp_57"
+                        android:background="@drawable/selector_btn_reply_album" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/photo_album_view"
+                        android:layout_alignRight="@id/photo_album_view"
+                        android:layout_below="@id/photo_album_view"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:gravity="center"
+                        android:text="照片"
+                        android:textColor="@color/fc_sub"
+                        android:textSize="@dimen/sp_12" />
+
+                    <View
+                        android:id="@+id/photo_camera_view"
+                        android:layout_width="@dimen/dp_57"
+                        android:layout_height="@dimen/dp_57"
+                        android:layout_marginLeft="@dimen/dp_8"
+                        android:layout_toRightOf="@id/photo_album_view"
+                        android:background="@drawable/selector_btn_reply_shot" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/photo_camera_view"
+                        android:layout_alignRight="@id/photo_camera_view"
+                        android:layout_below="@id/photo_camera_view"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:gravity="center"
+                        android:text="相机"
+                        android:textColor="@color/fc_sub"
+                        android:textSize="@dimen/sp_12" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/photo_show_group"
+                    android:layout_width="@dimen/dp_76"
+                    android:layout_height="@dimen/dp_88"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_12"
+                    android:clipChildren="false" >
+
+                    <ImageView
+                        android:id="@+id/photo_image"
+                        android:layout_width="@dimen/dp_64"
+                        android:layout_height="@dimen/dp_64"
+                        android:layout_centerVertical="true"
+                        android:scaleType="centerCrop" />
+
+                    <Button
+                        android:id="@+id/photo_delete_view"
+                        android:layout_width="@dimen/dp_24"
+                        android:layout_height="@dimen/dp_24"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/selector_btn_delete" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/record_group"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <Button
+                    android:id="@+id/record_btn"
+                    android:layout_width="@dimen/dp_200"
+                    android:layout_height="@dimen/dp_36"
+                    android:layout_gravity="center"
+                    android:background="@drawable/selector_btn_normal_72"
+                    android:text="请按住说话" />
+
+                <LinearLayout
+                    android:id="@+id/record_show_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_36"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal" >
+
+                    <com.link.bianmi.widget.AudioButton
+                        android:id="@+id/record_play_btn"
+                        android:layout_width="@dimen/dp_72"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="left|center"
+                        android:text="11&apos;" />
+
+                    <Button
+                        android:id="@+id/record_delete_btn"
+                        android:layout_width="@dimen/dp_72"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/dp_8"
+                        android:background="@drawable/selector_btn_normal_72"
+                        android:text="重录" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/volumn_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/input_group"
+        android:layout_alignParentTop="true" >
+
+        <ImageView
+            android:id="@+id/volumn_bg"
+            android:layout_width="@dimen/dp_96"
+            android:layout_height="@dimen/dp_96"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true" />
+
+        <com.link.bianmi.widget.VolumeView
+            android:id="@+id/volume_view"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_44"
+            android:layout_alignTop="@id/volumn_bg"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_22" />
+
+        <TextView
+            android:id="@+id/volume_recordlen_text"
+            android:layout_width="@dimen/dp_88"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/volume_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
+            android:text="15″"
+            android:textColor="@color/fc_fff"
+            android:textSize="@dimen/sp_12" />
+    </RelativeLayout>
+
+    <!-- 禁止操作 -->
+
+    <View
+        android:id="@+id/dissableClick_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/input_group"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="20dp" />
+
+</RelativeLayout>

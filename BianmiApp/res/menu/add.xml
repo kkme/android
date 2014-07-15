@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_send"
+        android:icon="@drawable/ic_action_send_disabled"
+        android:orderInCategory="99"
+        android:showAsAction="always"
+        android:title="@string/add_actionitem_title_send"/>
+
+</menu>
