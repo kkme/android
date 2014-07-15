@@ -54,9 +54,6 @@ public class ImageFragment extends Fragment {
 	private ImageViewEx mImageViewEx;
 	private TextView mImageTitleTextView;
 	private ObjectAnimator fadeInAnimator, fadeOutAnimator;
-	/**
-	 * ���ڱ�־��Fragment�Ƿ�������ʾ��Ҳ�����Ƿ����ڲ鿴��ͼҳ
-	 */
 	private boolean isClose;
 
 	public void setmCurrentFeedItem(Secret mCurrentFeedItem) {
