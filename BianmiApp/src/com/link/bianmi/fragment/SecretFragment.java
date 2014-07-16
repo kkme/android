@@ -1,5 +1,7 @@
 package com.link.bianmi.fragment;
 
+import java.util.List;
+
 import net.tsz.afinal.FinalBitmap;
 import android.content.Context;
 import android.database.Cursor;
@@ -18,7 +20,6 @@ import com.link.bianmi.activity.MainActivity;
 import com.link.bianmi.asynctask.TaskParams;
 import com.link.bianmi.asynctask.TaskResult;
 import com.link.bianmi.bean.Secret;
-import com.link.bianmi.bean.Tmodel;
 import com.link.bianmi.bean.helper.SecretHelper;
 import com.link.bianmi.fragment.base.TaskFragment;
 import com.link.bianmi.manager.SecretManager;
@@ -147,21 +148,20 @@ public class SecretFragment extends TaskFragment {
 
 		try {
 			if (taskType == TaskType.RefreshAll) {
-				Secret[] secrets = SecretHelper.API
+				List<Secret> secretsList = SecretHelper.API
 						.getSecrets(SecretHelper.SecretType.FRIEND);
-				SecretHelper.DB.cleanSecret();
-				SecretHelper.DB.addSecret(secrets);
-				Cursor cursor = SecretHelper.DB.fetch();
-				return new TaskResult(resultStatu, resultMsg, taskType,
-						secrets, cursor, 1);
-			} else if (taskType == TaskType.LoadNext) {
-				int page = Integer.parseInt(param.getString(TASKPARAMS_PAGE,
-						"1"));
-				Tmodel<Secret[]> tm = SecretHelper.API.getSecretsArray(page);
-				SecretHelper.DB.addSecret(tm.t);
+				SecretHelper.DB.addSecrets(secretsList);
 				Cursor cursor = SecretHelper.DB.fetch();
 				return new TaskResult(resultStatu, resultMsg, taskType, cursor,
-						tm.currentPage, tm.total);
+						secretsList, 1);
+			} else if (taskType == TaskType.LoadNext) {
+//				int page = Integer.parseInt(param.getString(TASKPARAMS_PAGE,
+//						"1"));
+//				Tmodel<Secret[]> tm = SecretHelper.API.getSecretsArray(page);
+//				SecretHelper.DB.addSecret(tm.t);
+//				Cursor cursor = SecretHelper.DB.fetch();
+//				return new TaskResult(resultStatu, resultMsg, taskType, cursor,
+//						tm.currentPage, tm.total);
 			}
 		} catch (Exception ex) {
 			resultStatu = TaskResult.TaskStatus.FAILED;

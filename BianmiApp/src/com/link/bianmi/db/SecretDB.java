@@ -29,9 +29,9 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 			+ FIELD_REPLYCOUNT + " integer , " + FIELD_AUDIOURL + " text , "
 			+ FIELD_IMAGEURL + " text , " + ")";
 
-	private SecretDB mInstance = null;
+	private static SecretDB mInstance = null;
 
-	public SecretDB getInstance() {
+	public static SecretDB getInstance() {
 		if (mInstance == null) {
 			mInstance = new SecretDB();
 		}

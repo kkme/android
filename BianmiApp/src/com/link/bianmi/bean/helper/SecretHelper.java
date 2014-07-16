@@ -1,5 +1,10 @@
 package com.link.bianmi.bean.helper;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.database.Cursor;
@@ -7,6 +12,8 @@ import android.database.Cursor;
 import com.link.bianmi.SysConfig;
 import com.link.bianmi.bean.Secret;
 import com.link.bianmi.bean.Tmodel;
+import com.link.bianmi.db.Database;
+import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.http.HttpClient;
 import com.link.bianmi.http.Response;
 import com.link.bianmi.http.ResponseException;
@@ -24,12 +31,17 @@ public class SecretHelper {
 		}
 
 		public static Cursor fetch() {
-
 			return null;
 		}
 
-		public static void addSecret(Secret[] t) {
+		public static void addSecrets(List<Secret> secretsList) {
+			for (Secret s : secretsList) {
+				addSecret(s);
+			}
+		}
 
+		public static void addSecret(Secret secret) {
+			Database.getInstance().addEntity(SecretDB.getInstance(), secret);
 		}
 
 	}
@@ -39,7 +51,7 @@ public class SecretHelper {
 		/** 单页数量 **/
 		private static final int pageSize = 20;
 
-		public static Secret[] getSecrets(SecretType type) {
+		public static List<Secret> getSecrets(SecretType type) {
 			String url = null;
 			if (type == SecretType.HOT) {
 				url = SysConfig.getInstance().getHotUrl();
@@ -50,14 +62,13 @@ public class SecretHelper {
 			}
 
 			Response res = HttpClient.doGet(url);
-			Secret[] secrets = null;
+			List<Secret> secretsList = null;
 			try {
-				secrets = parseSecrets(res.asJSONObject());
+				secretsList = parseSecrets(res.asJSONObject());
 			} catch (ResponseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return secrets;
+			return secretsList;
 		}
 
 		public static Tmodel<Secret[]> getSecretsArray(int page) {
@@ -67,7 +78,24 @@ public class SecretHelper {
 
 	}
 
-	private static Secret[] parseSecrets(JSONObject jsonObject) {
-		return null;
+	private static List<Secret> parseSecrets(JSONObject jsonObject) {
+		ArrayList<Secret> secretList = new ArrayList<Secret>();
+		try {
+			JSONArray dataJSONArray = jsonObject.getJSONArray("data");
+			for (int i = 0; i < dataJSONArray.length(); i++) {
+				JSONObject secretJSONObject = dataJSONArray.getJSONObject(i);
+				Secret secret = new Secret();
+				secret.setId(secretJSONObject.getString("id"));
+				secret.setContent(secretJSONObject.getString("caption"));
+				secret.setImageUrl(secretJSONObject.getJSONObject("images")
+						.getString("large"));
+				secret.setLikeCount(secretJSONObject.getJSONObject("votes")
+						.getInt("count"));
+				secretList.add(secret);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return secretList;
 	}
 }
