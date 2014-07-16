@@ -130,10 +130,10 @@ public class SecretFragment extends TaskFragment {
 			}
 		});
 
+		initScrollListener();
+
 		loadFromCache();
 		updateCache();
-
-		initScrollListener();
 	}
 
 	// -------------------------实现基类方法------------------
@@ -147,7 +147,8 @@ public class SecretFragment extends TaskFragment {
 
 		try {
 			if (taskType == TaskType.RefreshAll) {
-				Secret[] secrets = SecretHelper.API.getSecrets();
+				Secret[] secrets = SecretHelper.API
+						.getSecrets(SecretHelper.SecretType.FRIEND);
 				SecretHelper.DB.cleanSecret();
 				SecretHelper.DB.addSecret(secrets);
 				Cursor cursor = SecretHelper.DB.fetch();
