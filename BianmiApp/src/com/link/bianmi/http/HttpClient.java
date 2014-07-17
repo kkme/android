@@ -17,7 +17,7 @@ import org.apache.http.protocol.HTTP;
 
 public class HttpClient {
 
-	private final int DEFAULT_SOCKET_TIMEOUT = 10 * 1000;// 连接超时时间
+	private final static int DEFAULT_SOCKET_TIMEOUT = 10 * 1000;// 连接超时时间
 
 	private static DefaultHttpClient mClient;
 
@@ -25,7 +25,7 @@ public class HttpClient {
 		mClient = getHttpClient();
 	}
 
-	private synchronized DefaultHttpClient getHttpClient() {
+	private synchronized static DefaultHttpClient getHttpClient() {
 		if (mClient == null) {
 			final HttpParams httpParams = new BasicHttpParams();
 
@@ -51,6 +51,9 @@ public class HttpClient {
 		HttpResponse httpRes = null;
 		Response res = null;
 		try {
+			if(mClient == null){
+				mClient = getHttpClient();
+			}
 			httpRes = mClient.execute(httpGet);
 			res = new Response(httpRes);
 		} catch (ClientProtocolException e) {

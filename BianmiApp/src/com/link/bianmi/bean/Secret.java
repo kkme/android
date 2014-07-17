@@ -19,13 +19,13 @@ public class Secret implements Serializable {
 	private String images_large;
 	private String link;
 	private String next;
-	private String resourceId;
-	private String where;// 1、朋友：朋友，朋友的朋友 2、热门：地点 3、附近：距离
-	private String content;// 内容
+	private String resourceId = "";
+	private String wherefrom = "";// 1、朋友：朋友，朋友的朋友 2、热门：地点 3、附近：距离
+	private String content = "";// 内容
 	private int likeCount;// 点赞数
 	private int replyCount;// 回复数
-	private String audioUrl;// 音频url
-	private String imageUrl;// 图片url
+	private String audioUrl = "";// 音频url
+	private String imageUrl = "";// 图片url
 
 	public String getResourceId() {
 		return resourceId;
@@ -121,14 +121,6 @@ public class Secret implements Serializable {
 		this.link = link;
 	}
 
-	public String getWhere() {
-		return where;
-	}
-
-	public void setWhere(String where) {
-		this.where = where;
-	}
-
 	public String getContent() {
 		return content;
 	}
@@ -139,6 +131,14 @@ public class Secret implements Serializable {
 
 	public int getLikeCount() {
 		return likeCount;
+	}
+
+	public String getWherefrom() {
+		return wherefrom;
+	}
+
+	public void setWherefrom(String wherefrom) {
+		this.wherefrom = wherefrom;
 	}
 
 	public void setLikeCount(int likeCount) {

@@ -12,22 +12,22 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 
 	private static final String FIELD_RESOURCEID = "resourceid";
 	private static final String FIELD_CONTENT = "content";
-	private static final String FIELD_WHERE = "where";
-	private static final String FIELD_LIKECOUNT = "likecount";
+	private static final String FIELD_WHEREFROM = "wherefrom";
+	public static final String FIELD_LIKECOUNT = "likecount";
 	private static final String FIELD_REPLYCOUNT = "replycount";
 	private static final String FIELD_AUDIOURL = "audiourl";
 	private static final String FIELD_IMAGEURL = "imageurl";
 
-	private final static String[] TABLE_COLUMNS = { _ID, FIELD_CONTENT,
-			FIELD_WHERE, FIELD_LIKECOUNT, FIELD_REPLYCOUNT, FIELD_AUDIOURL,
+	public final static String[] TABLE_COLUMNS = { _ID, FIELD_RESOURCEID, FIELD_CONTENT,
+			FIELD_WHEREFROM, FIELD_LIKECOUNT, FIELD_REPLYCOUNT, FIELD_AUDIOURL,
 			FIELD_IMAGEURL };
 
-	public static final String CREATE_TABLE_SQL = "create table " + TABLE_NAME + " ("
-			+ _ID + " text primary key on conflict replace, "
+	public static final String CREATE_TABLE_SQL = "create table " + TABLE_NAME
+			+ " (" + _ID + " text primary key on conflict replace, "
 			+ FIELD_RESOURCEID + " text ," + FIELD_CONTENT + " text ,"
-			+ FIELD_WHERE + " text, " + FIELD_LIKECOUNT + " integer , "
+			+ FIELD_WHEREFROM + " text, " + FIELD_LIKECOUNT + " integer , "
 			+ FIELD_REPLYCOUNT + " integer , " + FIELD_AUDIOURL + " text , "
-			+ FIELD_IMAGEURL + " text , " + ")";
+			+ FIELD_IMAGEURL + " text " + ")";
 
 	private static SecretDB mInstance = null;
 
@@ -47,9 +47,9 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 		if (c == null || c.getCount() <= 0)
 			return null;
 		Secret s = new Secret();
-		s.setId(c.getString(c.getColumnIndex(FIELD_RESOURCEID)));
+		s.setResourceId(c.getString(c.getColumnIndex(FIELD_RESOURCEID)));
 		s.setContent(c.getString(c.getColumnIndex(FIELD_CONTENT)));
-		s.setWhere(c.getString(c.getColumnIndex(FIELD_WHERE)));
+		s.setWherefrom(c.getString(c.getColumnIndex(FIELD_WHEREFROM)));
 		s.setLikeCount(c.getInt(c.getColumnIndex(FIELD_LIKECOUNT)));
 		s.setReplyCount(c.getInt(c.getColumnIndex(FIELD_REPLYCOUNT)));
 		return s;
@@ -60,7 +60,7 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 		ContentValues cv = new ContentValues();
 		cv.put(FIELD_RESOURCEID, s.getResourceId());
 		cv.put(FIELD_CONTENT, s.getContent());
-		cv.put(FIELD_WHERE, s.getWhere());
+		cv.put(FIELD_WHEREFROM, s.getWherefrom());
 		cv.put(FIELD_LIKECOUNT, s.getLikeCount());
 		cv.put(FIELD_REPLYCOUNT, s.getReplyCount());
 		return cv;

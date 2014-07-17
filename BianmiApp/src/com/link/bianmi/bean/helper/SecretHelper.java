@@ -3,6 +3,8 @@ package com.link.bianmi.bean.helper;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +33,9 @@ public class SecretHelper {
 		}
 
 		public static Cursor fetch() {
-			return null;
+			SQLiteDatabase db = Database.getInstance().getDb(false);
+            String orderBy=SecretDB.FIELD_LIKECOUNT + " DESC ";
+            return db.query(SecretDB.TABLE_NAME, SecretDB.TABLE_COLUMNS, null, null, null, null, orderBy);
 		}
 
 		public static void addSecrets(List<Secret> secretsList) {

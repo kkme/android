@@ -13,10 +13,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.MainActivity;
+import com.link.bianmi.adapter.SecretAdapter;
 import com.link.bianmi.asynctask.TaskParams;
 import com.link.bianmi.asynctask.TaskResult;
 import com.link.bianmi.bean.Secret;
@@ -39,6 +39,7 @@ public class SecretFragment extends TaskFragment {
 	private Context mContext;
 	private SecretManager mSecretManager;
 	private FinalBitmap mFinalBitmap;
+	private SecretAdapter mAdapter;
 	/**
 	 * 任务类型*
 	 */
@@ -67,9 +68,9 @@ public class SecretFragment extends TaskFragment {
 		if (mSecretManager == null)
 			return;
 		mFinalBitmap = ((MainActivity) getActivity()).getFinalBitmap();
-
+		mAdapter = new SecretAdapter(mContext, null);
 		final CardsAnimationAdapter adapter = new CardsAnimationAdapter(
-				new SecretAdapter());
+				mAdapter);
 		adapter.setAbsListView(mListView);
 		mListView.setAdapter(adapter);
 
@@ -120,16 +121,16 @@ public class SecretFragment extends TaskFragment {
 						true, mSecretManager.getFeedItems().get(position - 1));
 			}
 		});
-		mListView.post(new Runnable() {
-			@Override
-			public void run() {
-				if (mSecretManager.loadDbData()) {
-					mListView.notifyDataSetChanged();
-				} else {
-					mListView.startUpdateImmediate();
-				}
-			}
-		});
+		// mListView.post(new Runnable() {
+		// @Override
+		// public void run() {
+		// if (mSecretManager.loadDbData()) {
+		// mListView.notifyDataSetChanged();
+		// } else {
+		// mListView.startUpdateImmediate();
+		// }
+		// }
+		// });
 
 		initScrollListener();
 
@@ -155,13 +156,14 @@ public class SecretFragment extends TaskFragment {
 				return new TaskResult(resultStatu, resultMsg, taskType, cursor,
 						secretsList, 1);
 			} else if (taskType == TaskType.LoadNext) {
-//				int page = Integer.parseInt(param.getString(TASKPARAMS_PAGE,
-//						"1"));
-//				Tmodel<Secret[]> tm = SecretHelper.API.getSecretsArray(page);
-//				SecretHelper.DB.addSecret(tm.t);
-//				Cursor cursor = SecretHelper.DB.fetch();
-//				return new TaskResult(resultStatu, resultMsg, taskType, cursor,
-//						tm.currentPage, tm.total);
+				// int page = Integer.parseInt(param.getString(TASKPARAMS_PAGE,
+				// "1"));
+				// Tmodel<Secret[]> tm = SecretHelper.API.getSecretsArray(page);
+				// SecretHelper.DB.addSecret(tm.t);
+				// Cursor cursor = SecretHelper.DB.fetch();
+				// return new TaskResult(resultStatu, resultMsg, taskType,
+				// cursor,
+				// tm.currentPage, tm.total);
 			}
 		} catch (Exception ex) {
 			resultStatu = TaskResult.TaskStatus.FAILED;
@@ -174,6 +176,11 @@ public class SecretFragment extends TaskFragment {
 	 */
 	@Override
 	protected void onTaskDoneUI(TaskResult result) {
+
+		Cursor cursor = (Cursor) result.getValues()[1];
+		mAdapter.changeCursor(cursor);
+		mAdapter.notifyDataSetChanged();
+
 	}
 
 	// -------------------------自定义方法--------------------
@@ -239,65 +246,65 @@ public class SecretFragment extends TaskFragment {
 		return null;
 	}
 
-	private class SecretAdapter extends BaseAdapter {
-
-		public SecretAdapter() {
-			super();
-		}
-
-		@Override
-		public int getCount() {
-			return mSecretManager.getFeedItems().size();
-		}
-
-		@Override
-		public Secret getItem(int position) {
-			return mSecretManager.getFeedItems().get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return 0;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder = null;
-			if (convertView == null) {
-				holder = new ViewHolder();
-				convertView = LayoutInflater.from(mContext).inflate(
-						R.layout.secret_listview_item, null);
-				holder.title = (TextView) convertView
-						.findViewById(R.id.feed_item_title);
-				holder.info = (TextView) convertView
-						.findViewById(R.id.feed_item_text_info);
-				holder.image = (ImageView) convertView
-						.findViewById(R.id.feed_item_image);
-				convertView.setTag(holder);
-			} else {
-				holder = (ViewHolder) convertView.getTag();
-			}
-			final Secret item = mSecretManager.getFeedItems().get(position);
-			if (item != null) {
-				if (item.getCaption() != null) {
-					holder.title.setText(item.getCaption());
-				} else {
-					holder.title.setText("unknown caption");
-				}
-				mFinalBitmap.display(holder.image, item.getImages_normal());
-				holder.info.setText(String.valueOf(item.getLikeCount()));
-			}
-
-			return convertView;
-		}
-
-		class ViewHolder {
-			public TextView title;
-			public TextView info;
-			public ImageView image;
-		}
-
-	}
+	// private class SecretAdapter extends BaseAdapter {
+	//
+	// public SecretAdapter() {
+	// super();
+	// }
+	//
+	// @Override
+	// public int getCount() {
+	// return mSecretManager.getFeedItems().size();
+	// }
+	//
+	// @Override
+	// public Secret getItem(int position) {
+	// return mSecretManager.getFeedItems().get(position);
+	// }
+	//
+	// @Override
+	// public long getItemId(int position) {
+	// return 0;
+	// }
+	//
+	// @Override
+	// public View getView(int position, View convertView, ViewGroup parent) {
+	// ViewHolder holder = null;
+	// if (convertView == null) {
+	// holder = new ViewHolder();
+	// convertView = LayoutInflater.from(mContext).inflate(
+	// R.layout.secret_listview_item, null);
+	// holder.title = (TextView) convertView
+	// .findViewById(R.id.feed_item_title);
+	// holder.info = (TextView) convertView
+	// .findViewById(R.id.feed_item_text_info);
+	// holder.image = (ImageView) convertView
+	// .findViewById(R.id.feed_item_image);
+	// convertView.setTag(holder);
+	// } else {
+	// holder = (ViewHolder) convertView.getTag();
+	// }
+	// final Secret item = mSecretManager.getFeedItems().get(position);
+	// if (item != null) {
+	// if (item.getCaption() != null) {
+	// holder.title.setText(item.getCaption());
+	// } else {
+	// holder.title.setText("unknown caption");
+	// }
+	// mFinalBitmap.display(holder.image, item.getImages_normal());
+	// holder.info.setText(String.valueOf(item.getLikeCount()));
+	// }
+	//
+	// return convertView;
+	// }
+	//
+	// class ViewHolder {
+	// public TextView title;
+	// public TextView info;
+	// public ImageView image;
+	// }
+	//
+	// }
 
 	class CardsAnimationAdapter extends AnimationAdapter {
 		private float mTranslationY = 400;
