@@ -18,16 +18,16 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 	private static final String FIELD_AUDIOURL = "audiourl";
 	private static final String FIELD_IMAGEURL = "imageurl";
 
-	public final static String[] TABLE_COLUMNS = { _ID, FIELD_RESOURCEID, FIELD_CONTENT,
-			FIELD_WHEREFROM, FIELD_LIKECOUNT, FIELD_REPLYCOUNT, FIELD_AUDIOURL,
-			FIELD_IMAGEURL };
+	public final static String[] TABLE_COLUMNS = { _ID, FIELD_RESOURCEID,
+			FIELD_CONTENT, FIELD_WHEREFROM, FIELD_LIKECOUNT, FIELD_REPLYCOUNT,
+			FIELD_AUDIOURL, FIELD_IMAGEURL };
 
 	public static final String CREATE_TABLE_SQL = "create table " + TABLE_NAME
 			+ " (" + _ID + " text primary key on conflict replace, "
 			+ FIELD_RESOURCEID + " text ," + FIELD_CONTENT + " text ,"
 			+ FIELD_WHEREFROM + " text, " + FIELD_LIKECOUNT + " integer , "
 			+ FIELD_REPLYCOUNT + " integer , " + FIELD_AUDIOURL + " text , "
-			+ FIELD_IMAGEURL + " text " + ")";
+			+ FIELD_IMAGEURL + " text )";
 
 	private static SecretDB mInstance = null;
 
@@ -52,6 +52,7 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 		s.setWherefrom(c.getString(c.getColumnIndex(FIELD_WHEREFROM)));
 		s.setLikeCount(c.getInt(c.getColumnIndex(FIELD_LIKECOUNT)));
 		s.setReplyCount(c.getInt(c.getColumnIndex(FIELD_REPLYCOUNT)));
+		s.setImageUrl(c.getString(c.getColumnIndex(FIELD_IMAGEURL)));
 		return s;
 	}
 
@@ -63,6 +64,7 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 		cv.put(FIELD_WHEREFROM, s.getWherefrom());
 		cv.put(FIELD_LIKECOUNT, s.getLikeCount());
 		cv.put(FIELD_REPLYCOUNT, s.getReplyCount());
+		cv.put(FIELD_IMAGEURL, s.getImageUrl());
 		return cv;
 	}
 

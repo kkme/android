@@ -1,14 +1,13 @@
 package com.link.bianmi.db;
 
-import net.sqlcipher.database.SQLiteDatabase;
-import net.sqlcipher.database.SQLiteDatabase.CursorFactory;
-import net.sqlcipher.database.SQLiteOpenHelper;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
 
 import com.link.bianmi.SysConfig;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends android.database.sqlite.SQLiteOpenHelper {
 
 	private static final String TAG = "DatabaseHelper";
 	private static final String DATABASE_NAME = SysConfig.getInstance()

@@ -36,28 +36,6 @@ public class UserConfig {
 		return mPref;
 	}
 
-	/** 获取用户加密的databaseKey **/
-	private String mDataBaseKey = "";
-	private final String SecuDataBaseKey = "sllzoeng";
-
-	public String getSecuDataBaseKey() {
-
-		if (!SysConfig.getInstance().isDebug()
-				&& TextUtils.isEmpty(mDataBaseKey)) {
-			try {
-				String key = mPref.getString("engzo.user.sh", "");
-				if (TextUtils.isEmpty(key)) {
-					key = SecurityUtils.getMD5Str(UUID.randomUUID().toString());
-					setSecuDataBaseKey(key);
-				}
-				mDataBaseKey = SecurityUtils.encryptDES(key, SecuDataBaseKey);
-
-			} catch (Exception e) {
-			}
-		}
-
-		return mDataBaseKey;
-	}
 
 	private void setSecuDataBaseKey(String key) {
 		SharedPreferences.Editor editor = mPref.edit();

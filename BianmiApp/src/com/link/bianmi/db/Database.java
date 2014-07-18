@@ -2,16 +2,15 @@ package com.link.bianmi.db;
 
 import java.lang.reflect.Array;
 
-import net.sqlcipher.database.SQLiteDatabase;
-import net.sqlcipher.database.SQLiteOpenHelper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 
 import com.link.bianmi.MyApplication;
 import com.link.bianmi.SysConfig;
-import com.link.bianmi.UserConfig;
 
 public class Database {
 
@@ -19,11 +18,9 @@ public class Database {
 	private static Database mInstance = null;
 	private SQLiteOpenHelper mDBHelper = null;
 
-	private String mDBkey = UserConfig.getInstance().getSecuDataBaseKey();
 	private boolean mDebaug = SysConfig.getInstance().isDebug();
 
 	private Database(Context context) {
-		SQLiteDatabase.loadLibs(context);
 		mDBHelper = new DatabaseHelper(context);
 
 	}
@@ -37,12 +34,12 @@ public class Database {
 
 	public SQLiteDatabase getDb(boolean writeable) {
 
-		if (TextUtils.isEmpty(mDBkey) && !mDebaug)
+		if (!mDebaug)
 			return null;
 		if (writeable) {
-			return mDBHelper.getWritableDatabase(mDBkey);
+			return mDBHelper.getWritableDatabase();
 		} else {
-			return mDBHelper.getReadableDatabase(mDBkey);
+			return mDBHelper.getReadableDatabase();
 		}
 	}
 

@@ -1,6 +1,10 @@
 package com.link.bianmi;
 
+import java.io.File;
 import java.util.Properties;
+
+import android.os.Environment;
+import android.text.TextUtils;
 
 /**
  * 
@@ -35,6 +39,39 @@ public class SysConfig {
 		mProperties.setProperty("bianmi.base.url.release",
 				"http://infinigag-us.aws.af.cm");// base url
 		mProperties.setProperty("bianmi.dbname.release", "bianmi_v1");
+
+	}
+	
+	public String getRootPath(){
+		String bianmiPath = getSDPath();
+		if (TextUtils.isEmpty(bianmiPath)) {
+			bianmiPath = MyApplication.getInstance().getFilesDir().getPath()
+					+ File.separator + "BianMi";
+		} else {
+			bianmiPath += File.separator + "BianMi";
+		}
+		
+		return bianmiPath;
+	}
+	
+	public String getSecretPath(){
+		String secretPath = getRootPath() + File.separator + "secret";
+		File dir=new File(secretPath);
+		if (!dir.exists()) {
+			dir.mkdirs(); 
+		}	
+		
+		return secretPath;
+	}
+
+	public String getSDPath() {
+		String path = "";
+		boolean sdCardExist = Environment.getExternalStorageState().equals(
+				android.os.Environment.MEDIA_MOUNTED);
+		if (sdCardExist) {
+			path = Environment.getExternalStorageDirectory().toString();// 获取跟目录
+		}
+		return path;
 	}
 
 	/** 是否为Debug模式 **/

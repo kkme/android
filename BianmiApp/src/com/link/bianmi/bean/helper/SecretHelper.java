@@ -3,13 +3,12 @@ package com.link.bianmi.bean.helper;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sqlcipher.database.SQLiteDatabase;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.link.bianmi.SysConfig;
 import com.link.bianmi.bean.Secret;
@@ -92,7 +91,7 @@ public class SecretHelper {
 				secret.setId(secretJSONObject.getString("id"));
 				secret.setContent(secretJSONObject.getString("caption"));
 				secret.setImageUrl(secretJSONObject.getJSONObject("images")
-						.getString("large"));
+						.getString("small"));
 				secret.setLikeCount(secretJSONObject.getJSONObject("votes")
 						.getInt("count"));
 				secretList.add(secret);

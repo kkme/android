@@ -21,7 +21,7 @@ public class HttpClient {
 
 	private static DefaultHttpClient mClient;
 
-	private HttpClient() {
+	public HttpClient() {
 		mClient = getHttpClient();
 	}
 
