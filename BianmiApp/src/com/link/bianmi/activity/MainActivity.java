@@ -2,7 +2,6 @@ package com.link.bianmi.activity;
 
 import java.util.ArrayList;
 
-import net.tsz.afinal.FinalBitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -61,44 +60,6 @@ public class MainActivity extends BaseFragmentActivity {
 			}
 		});
 
-	}
-
-	private FinalBitmap mFinalBitmap;
-
-	public FinalBitmap getFinalBitmap() {
-		if (mFinalBitmap == null) {
-			mFinalBitmap = FinalBitmap.create(this);
-			mFinalBitmap.configBitmapMaxWidth(720);
-			mFinalBitmap.configBitmapMaxHeight(720);
-			mFinalBitmap.configLoadingImage(null);
-			mFinalBitmap.configLoadfailImage(null);
-			mFinalBitmap.configDiskCacheSize(1024 * 1024 * 50);
-		}
-		return mFinalBitmap;
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		if (mFinalBitmap != null) {
-			mFinalBitmap.onPause();
-		}
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (mFinalBitmap != null) {
-			mFinalBitmap.onResume();
-		}
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		if (mFinalBitmap != null) {
-			mFinalBitmap.onDestroy();
-		}
 	}
 
 	public void showImageFragment(ImageView smallImageView, boolean show,

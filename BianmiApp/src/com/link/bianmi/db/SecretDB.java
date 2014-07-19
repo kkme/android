@@ -17,17 +17,24 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 	private static final String FIELD_REPLYCOUNT = "replycount";
 	private static final String FIELD_AUDIOURL = "audiourl";
 	private static final String FIELD_IMAGEURL = "imageurl";
+	public static final String FIELD_CREATEDAT = "createdat";
+	private static final String FIELD_REPLIEDAT = "repliedat";
 
 	public final static String[] TABLE_COLUMNS = { _ID, FIELD_RESOURCEID,
 			FIELD_CONTENT, FIELD_WHEREFROM, FIELD_LIKECOUNT, FIELD_REPLYCOUNT,
-			FIELD_AUDIOURL, FIELD_IMAGEURL };
+			FIELD_AUDIOURL, FIELD_IMAGEURL, FIELD_CREATEDAT, FIELD_REPLIEDAT };
 
 	public static final String CREATE_TABLE_SQL = "create table " + TABLE_NAME
 			+ " (" + _ID + " text primary key on conflict replace, "
-			+ FIELD_RESOURCEID + " text ," + FIELD_CONTENT + " text ,"
-			+ FIELD_WHEREFROM + " text, " + FIELD_LIKECOUNT + " integer , "
-			+ FIELD_REPLYCOUNT + " integer , " + FIELD_AUDIOURL + " text , "
-			+ FIELD_IMAGEURL + " text )";
+			+ FIELD_RESOURCEID + " text ,"
+			+ FIELD_CONTENT + " text ,"
+			+ FIELD_WHEREFROM + " text, "
+			+ FIELD_LIKECOUNT + " integer , "
+			+ FIELD_REPLYCOUNT + " integer , "
+			+ FIELD_AUDIOURL + " text , "
+			+ FIELD_IMAGEURL + " text, "	
+			+ FIELD_CREATEDAT + " integer , "
+			+ FIELD_REPLIEDAT + " integer )";
 
 	private static SecretDB mInstance = null;
 
@@ -53,6 +60,8 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 		s.setLikeCount(c.getInt(c.getColumnIndex(FIELD_LIKECOUNT)));
 		s.setReplyCount(c.getInt(c.getColumnIndex(FIELD_REPLYCOUNT)));
 		s.setImageUrl(c.getString(c.getColumnIndex(FIELD_IMAGEURL)));
+		s.setCreatedAt(c.getLong(c.getColumnIndex(FIELD_CREATEDAT)));
+		s.setRepliedAt(c.getLong(c.getColumnIndex(FIELD_REPLIEDAT)));
 		return s;
 	}
 
@@ -65,6 +74,8 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 		cv.put(FIELD_LIKECOUNT, s.getLikeCount());
 		cv.put(FIELD_REPLYCOUNT, s.getReplyCount());
 		cv.put(FIELD_IMAGEURL, s.getImageUrl());
+		cv.put(FIELD_CREATEDAT, s.getCreatedAt());
+		cv.put(FIELD_REPLIEDAT, s.getRepliedAt());
 		return cv;
 	}
 

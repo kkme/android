@@ -2,7 +2,6 @@ package com.link.bianmi.fragment;
 
 import java.util.List;
 
-import net.tsz.afinal.FinalBitmap;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ import com.link.bianmi.bean.Secret;
 import com.link.bianmi.bean.helper.SecretHelper;
 import com.link.bianmi.bean.helper.SecretHelper.SecretType;
 import com.link.bianmi.fragment.base.TaskFragment;
-import com.link.bianmi.manager.SecretManager;
 import com.link.bianmi.utility.SystemBarTintUtil;
 import com.link.bianmi.utility.ToastUtil;
 import com.link.bianmi.utility.UiUtil;
@@ -38,8 +36,6 @@ public class SecretFragment extends TaskFragment {
 
 	private RListView mListView;
 	private Context mContext;
-	private SecretManager mSecretManager;
-	private FinalBitmap mFinalBitmap;
 	private SecretAdapter mAdapter;
 	/**
 	 * 任务类型*
@@ -68,10 +64,6 @@ public class SecretFragment extends TaskFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		mContext = getActivity();
-		mSecretManager = getFeedsManager();
-		if (mSecretManager == null)
-			return;
-		mFinalBitmap = ((MainActivity) getActivity()).getFinalBitmap();
 		mAdapter = new SecretAdapter(mContext, null);
 		final CardsAnimationAdapter adapter = new CardsAnimationAdapter(
 				mAdapter);
@@ -89,7 +81,6 @@ public class SecretFragment extends TaskFragment {
 
 			@Override
 			public void onDoinBackground() {
-				mSecretManager.updateFirstPage();
 			}
 		});
 		mListView
@@ -106,7 +97,6 @@ public class SecretFragment extends TaskFragment {
 
 					@Override
 					public void onDoinBackground() {
-						mSecretManager.updateNextPage();
 					}
 				});
 		mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -121,26 +111,14 @@ public class SecretFragment extends TaskFragment {
 					ToastUtil.showToast(getActivity(), "Please wait...");
 					return;
 				}
-				((MainActivity) getActivity()).showImageFragment(imageView,
-						true, mSecretManager.getFeedItems().get(position - 1));
 			}
 		});
-		// mListView.post(new Runnable() {
-		// @Override
-		// public void run() {
-		// if (mSecretManager.loadDbData()) {
-		// mListView.notifyDataSetChanged();
-		// } else {
-		// mListView.startUpdateImmediate();
-		// }
-		// }
-		// });
 
 		initScrollListener();
 
 		mSecretType = getSecretType();
 
-		loadFromCache();
+		loadCache();
 		updateCache();
 	}
 
@@ -194,7 +172,11 @@ public class SecretFragment extends TaskFragment {
 	/**
 	 * 从缓存中加载数据初始化界面
 	 */
-	private void loadFromCache() {
+	private void loadCache() {
+
+		Cursor cursor = SecretHelper.DB.fetch();
+		mAdapter.changeCursor(cursor);
+		mAdapter.notifyDataSetChanged();
 
 	}
 
@@ -248,10 +230,6 @@ public class SecretFragment extends TaskFragment {
 
 	public void refresh() {
 		mListView.startUpdateImmediate();
-	}
-
-	protected SecretManager getFeedsManager() {
-		return null;
 	}
 
 	class CardsAnimationAdapter extends AnimationAdapter {

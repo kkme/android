@@ -33,7 +33,7 @@ public class SecretHelper {
 
 		public static Cursor fetch() {
 			SQLiteDatabase db = Database.getInstance().getDb(false);
-            String orderBy=SecretDB.FIELD_LIKECOUNT + " DESC ";
+            String orderBy=SecretDB.FIELD_CREATEDAT + " DESC ";//按创建时间的倒叙排
             return db.query(SecretDB.TABLE_NAME, SecretDB.TABLE_COLUMNS, null, null, null, null, orderBy);
 		}
 
