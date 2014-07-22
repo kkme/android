@@ -6,6 +6,7 @@ import android.view.MenuItem;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
+import com.link.bianmi.widget.AudioButton;
 
 public class AddActivity extends BaseFragmentActivity {
 
@@ -17,6 +18,8 @@ public class AddActivity extends BaseFragmentActivity {
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.activity_add);
+
+		AudioButton audioBtn = (AudioButton) findViewById(R.id.audio_btn);
 	}
 
 	@Override

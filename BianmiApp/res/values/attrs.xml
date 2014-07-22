@@ -12,8 +12,8 @@
   ~ distributed under the License is distributed on an "AS IS" BASIS,
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
+  ~ limitations under the License.
+-->
 
 <resources>
 
@@ -42,9 +42,7 @@
 
         <!-- Text to show to tell the user has scrolled enough to refresh -->
         <attr name="ptrReleaseText" format="reference|string" />
-
     </declare-styleable>
-    
     <declare-styleable name="PagerSlidingTabStrip">
         <attr name="indicatorColor" format="color" />
         <attr name="underlineColor" format="color" />
@@ -57,6 +55,26 @@
         <attr name="tabBackground" format="reference" />
         <attr name="shouldExpand" format="boolean" />
         <attr name="textAllCaps" format="boolean" />
+    </declare-styleable>
+
+    <!-- Record 录音控件 -->
+    <declare-styleable name="Record">
+        <attr name="r_small" format="boolean" />
+        <!-- 是否小图片模式 -->
+        <attr name="r_shownormalbg" format="boolean" />
+        <!-- 是否显示录音背景 -->
+    </declare-styleable>
+
+    <!-- Record 录音控件 -->
+    <declare-styleable name="Play">
+        <attr name="p_shownormalbg" format="boolean" />
+        <!-- 是否显示放音背景 -->
+    </declare-styleable>
+
+    <!-- AudioButton 论坛音频播放按钮 -->
+    <declare-styleable name="AudioButton">
+        <attr name="ab_scalable" format="boolean" />
+        <!-- 是否根据播放时间伸缩 -->
     </declare-styleable>
 
 </resources>

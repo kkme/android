@@ -4,8 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <com.link.bianmi.widget.AudioButton
+        android:id="@+id/audio_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <!-- 输入套件 -->
-    <com.link.bianmi.widget.InputSuit
+
+    <com.link.bianmi.widget.InputSuit
         android:id="@+id/input_suit"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
