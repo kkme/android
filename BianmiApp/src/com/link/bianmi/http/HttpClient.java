@@ -64,8 +64,9 @@ public class HttpClient {
 		return res;
 	}
 
-	public static HttpResponse doPost() {
-		HttpResponse response = null;
-		return response;
+	public static Response doPost() {
+		HttpResponse httpRes = null;
+		Response res = new Response(httpRes);
+		return res;
 	}
 }
