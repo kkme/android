@@ -19,8 +19,8 @@ import com.link.bianmi.adapter.SecretAdapter;
 import com.link.bianmi.asynctask.TaskParams;
 import com.link.bianmi.asynctask.TaskResult;
 import com.link.bianmi.bean.Secret;
-import com.link.bianmi.bean.helper.SecretHelper;
-import com.link.bianmi.bean.helper.SecretHelper.SecretType;
+import com.link.bianmi.bean.manager.SecretManager;
+import com.link.bianmi.bean.manager.SecretManager.SecretType;
 import com.link.bianmi.fragment.base.TaskFragment;
 import com.link.bianmi.utility.SystemBarTintUtil;
 import com.link.bianmi.utility.ToastUtil;
@@ -50,7 +50,7 @@ public class SecretFragment extends TaskFragment {
 		LoadNext
 	}
 
-	private SecretHelper.SecretType mSecretType;
+	private SecretManager.SecretType mSecretType;
 
 	@Override
 	public View _onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -134,10 +134,10 @@ public class SecretFragment extends TaskFragment {
 
 		try {
 			if (taskType == TaskType.RefreshAll) {
-				List<Secret> secretsList = SecretHelper.API
+				List<Secret> secretsList = SecretManager.API
 						.getSecrets(secretType);
-				SecretHelper.DB.addSecrets(secretsList);
-				Cursor cursor = SecretHelper.DB.fetch();
+				SecretManager.DB.addSecrets(secretsList);
+				Cursor cursor = SecretManager.DB.fetch();
 				return new TaskResult(resultStatu, resultMsg, taskType, cursor,
 						secretsList, 1);
 			} else if (taskType == TaskType.LoadNext) {
@@ -174,7 +174,7 @@ public class SecretFragment extends TaskFragment {
 	 */
 	private void loadCache() {
 
-		Cursor cursor = SecretHelper.DB.fetch();
+		Cursor cursor = SecretManager.DB.fetch();
 		mAdapter.changeCursor(cursor);
 		mAdapter.notifyDataSetChanged();
 
@@ -262,7 +262,7 @@ public class SecretFragment extends TaskFragment {
 		}
 	}
 
-	protected SecretHelper.SecretType getSecretType() {
+	protected SecretManager.SecretType getSecretType() {
 		return null;
 	}
 }

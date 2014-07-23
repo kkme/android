@@ -1,4 +1,4 @@
-package com.link.bianmi.bean.helper;
+package com.link.bianmi.bean.manager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import com.link.bianmi.http.HttpClient;
 import com.link.bianmi.http.Response;
 import com.link.bianmi.http.ResponseException;
 
-public class SecretHelper {
+public class SecretManager {
 
 	public static enum SecretType {
 		HOT, FRIEND, NEARBY
