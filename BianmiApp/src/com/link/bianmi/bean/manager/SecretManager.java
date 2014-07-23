@@ -88,7 +88,7 @@ public class SecretManager {
 			for (int i = 0; i < dataJSONArray.length(); i++) {
 				JSONObject secretJSONObject = dataJSONArray.getJSONObject(i);
 				Secret secret = new Secret();
-				secret.setId(secretJSONObject.getString("id"));
+				secret.setResourceId(secretJSONObject.getString("id"));
 				secret.setContent(secretJSONObject.getString("caption"));
 				secret.setImageUrl(secretJSONObject.getJSONObject("images")
 						.getString("small"));

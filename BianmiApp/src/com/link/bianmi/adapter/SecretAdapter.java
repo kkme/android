@@ -14,6 +14,7 @@ import com.link.bianmi.bean.Secret;
 import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.imageloader.ImageLoader;
 import com.link.bianmi.utility.ViewHolder;
+import com.link.bianmi.widget.AudioButton;
 
 public class SecretAdapter extends CursorAdapter {
 
@@ -26,7 +27,6 @@ public class SecretAdapter extends CursorAdapter {
 
 	@Override
 	public View newView(Context arg0, Cursor arg1, ViewGroup arg2) {
-
 		return LayoutInflater.from(mContext).inflate(
 				R.layout.secret_listview_item, null);
 	}
@@ -44,5 +44,8 @@ public class SecretAdapter extends CursorAdapter {
 		ImageView pictureImage = ViewHolder.get(view, R.id.feed_item_image);
 		new ImageLoader().displayImage(pictureImage, secret.getImageUrl(),
 				R.drawable.ic_launcher, false);
+		
+		AudioButton audioBtn = ViewHolder.get(view, R.id.audio_button);
+		audioBtn.setAudioFile("http://bianmi.qiniudn.com/test.mp3?download&e=1406126966&token=6uoNKRkDEm7rUXoMoEMXffVW8nuKCfW1RRXATji4:0M9YKYtYQL8AwM9RfhfO4YmAsbo", 120);
 	}
 }
