@@ -1,5 +1,6 @@
 package com.link.bianmi.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,7 +16,7 @@ public class WelcomeActivity extends BaseFragmentActivity {
 
 		setContentView(R.layout.activity_welcome);
 
-		// 注册
+		// 点击注册
 		findViewById(R.id.signup_button).setOnClickListener(
 				new OnClickListener() {
 
@@ -25,15 +26,23 @@ public class WelcomeActivity extends BaseFragmentActivity {
 					}
 				});
 
-		// 登录
+		// 点击登录
 		findViewById(R.id.signin_button).setOnClickListener(
 				new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
-						launchActivity(SignInActivity.class);
+						launchActivityForResult(SignInActivity.class, 8888);
 					}
 				});
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		// 登录成功
+		if (resultCode == 8888) {
+			finishActivity();
+		}
+	}
 }

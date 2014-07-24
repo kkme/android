@@ -9,4 +9,17 @@ public class BaseFragmentActivity extends FragmentActivity {
 		startActivity(new Intent(this, cls));
 	}
 
+	protected void launchActivityForResult(Class<?> cls, int resultCode) {
+		startActivityForResult(new Intent(this, cls), resultCode);
+	}
+
+	protected void finishActivity() {
+		this.finish();
+	}
+
+	protected void finishActivityWithResult(int resultCode) {
+		this.setResult(resultCode);
+		this.finish();
+	}
+
 }

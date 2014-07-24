@@ -50,6 +50,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.link.bianmi.activity.WelcomeActivity" />
         <activity android:name="com.link.bianmi.activity.SignUpActivity" />
         <activity android:name="com.link.bianmi.activity.SignInActivity" />
         <activity android:name="com.link.bianmi.activity.AddActivity" />

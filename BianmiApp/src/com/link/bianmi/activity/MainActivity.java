@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.link.bianmi.R;
+import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.bean.Secret;
 import com.link.bianmi.fragment.FriendFragment;
@@ -30,6 +31,12 @@ public class MainActivity extends BaseFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if(UserConfig.getInstance().getSessionId() == null){
+			launchActivity(WelcomeActivity.class);
+			finishActivity();
+			return;
+		}
+		
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowHomeEnabled(true);
 		setContentView(R.layout.activity_main);

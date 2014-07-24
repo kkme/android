@@ -9,15 +9,22 @@ public class UserManager {
 	public static class API {
 
 		/** 注册 **/
-		public static void signUp(User user, OnSaveListener listener) {
+		public static void signUp(User user, OnSaveListener<User> listener) {
 			String username = user.getUsername();
 			String password = user.getPassword();
 			Response response = HttpClient.doPost();
 		}
 
 		/** 登录 **/
-		public static void signIn(User user, OnSaveListener listener) {
-
+		public static void signIn(String username, String password, OnSaveListener<User> listener) {
+			if("18503062935".equals(username) && "321123".equals(password)){
+				User user = new User();
+				user.setUsername("18503062935");
+				user.setSessionId("woeiru1234asdiwoer3xckcvzlfjskd");
+				listener.onSuccess(user);
+			}else {
+				listener.onFailure();
+			}
 		}
 
 		/** 登出 **/
@@ -31,9 +38,9 @@ public class UserManager {
 
 	}
 
-	interface OnSaveListener {
+	public interface OnSaveListener<T> {
 
-		void onSuccess();
+		void onSuccess(T t);
 
 		void onFailure();
 	}
