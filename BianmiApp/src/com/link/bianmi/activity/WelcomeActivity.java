@@ -7,7 +7,12 @@ import android.view.View.OnClickListener;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
-
+/**
+ * 
+ * @Description 首次进入的欢迎界面
+ * @author pangfq
+ * @date 2014年7月24日 下午4:23:55
+ */
 public class WelcomeActivity extends BaseFragmentActivity {
 
 	@Override

@@ -9,10 +9,9 @@ public class UserManager {
 	public static class API {
 
 		/** 注册 **/
-		public static void signUp(User user, OnSaveListener<User> listener) {
-			String username = user.getUsername();
-			String password = user.getPassword();
+		public static void signUp(String username, String password, OnSaveListener<User> listener) {
 			Response response = HttpClient.doPost();
+			listener.onSuccess(null);
 		}
 
 		/** 登录 **/

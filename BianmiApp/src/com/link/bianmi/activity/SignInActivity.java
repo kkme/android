@@ -14,7 +14,12 @@ import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.bean.User;
 import com.link.bianmi.bean.manager.UserManager;
 import com.link.bianmi.bean.manager.UserManager.OnSaveListener;
-
+/**
+ * 
+ * @Description 登录
+ * @author pangfq
+ * @date 2014年7月24日 下午4:22:55
+ */
 public class SignInActivity extends BaseFragmentActivity {
 
 	@Override
@@ -23,10 +28,22 @@ public class SignInActivity extends BaseFragmentActivity {
 
 		setContentView(R.layout.activity_signin);
 
+		// 取得刚注册的username(如果有的话)
+		String username = null;
+		Bundle bundle = getIntent().getExtras();
+		if(bundle != null){
+			username = bundle.getString("username");
+		}
+		
 		final EditText usernameEdit = (EditText) findViewById(R.id.username_edittext);
 		final EditText passwordEdit = (EditText) findViewById(R.id.password_edittext);
 		Button signInButton = (Button) findViewById(R.id.signin_button);
 
+		if(username != null && !TextUtils.isEmpty(username)){
+			usernameEdit.setText(username);
+			passwordEdit.setText("");
+		}
+		
 		// 点击登录
 		signInButton.setOnClickListener(new OnClickListener() {
 
@@ -36,7 +53,7 @@ public class SignInActivity extends BaseFragmentActivity {
 				String password = passwordEdit.getText().toString();
 
 				// 校验登录数据合法性
-				if (checkSignData(username, password)) {
+				if (checkSignInData(username, password)) {
 					// 数据合法，则进行联网登录
 					UserManager.API.signIn(username, password, new OnSaveListener<User>() {
 						
@@ -62,7 +79,7 @@ public class SignInActivity extends BaseFragmentActivity {
 	}
 
 	/** 校验数据合法性 **/
-	private boolean checkSignData(String username, String password) {
+	private boolean checkSignInData(String username, String password) {
 		boolean ok = true;
 		if(TextUtils.isEmpty(username)){
 			Toast.makeText(getApplicationContext(), "username为空！", Toast.LENGTH_SHORT).show();
