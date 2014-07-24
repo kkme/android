@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,13 +26,13 @@ import com.link.bianmi.widget.ViewPagerTabBar;
 
 public class MainActivity extends BaseFragmentActivity {
 	private ViewPager mViewPager;
-	public static ViewPagerTabBar mViewPagerTab;
+	private ViewPagerTabBar mViewPagerTab;
 	private ImageFragment mImageFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if(UserConfig.getInstance().getSessionId() == null){
+		if(UserConfig.getInstance().getSessionId() == null || TextUtils.isEmpty(UserConfig.getInstance().getSessionId())){
 			launchActivity(WelcomeActivity.class);
 			finishActivity();
 			return;
@@ -151,6 +152,11 @@ public class MainActivity extends BaseFragmentActivity {
 			return true;
 		} else if (item.getItemId() == R.id.action_add) {
 			launchActivity(AddActivity.class);
+			return true;
+		} else if (item.getItemId() == R.id.action_exit) {
+			UserConfig.getInstance().setSessionId("");
+			launchActivity(WelcomeActivity.class);
+			finishActivity();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
