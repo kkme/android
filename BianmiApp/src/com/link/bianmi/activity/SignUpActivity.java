@@ -2,6 +2,8 @@ package com.link.bianmi.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,6 +26,12 @@ public class SignUpActivity extends BaseFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		getActionBar().setTitle(
+				getResources().getString(R.string.signup));
+		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		setContentView(R.layout.activity_signup);
 		
 		final EditText usernameEdit = (EditText) findViewById(R.id.username_edittext);
@@ -42,11 +50,13 @@ public class SignUpActivity extends BaseFragmentActivity {
 
 				// 校验注册数据合法性
 				if (checkSignUpData(username, password, passwordConfirm)) {
+					mLoadingMenuItem.setVisible(true);
 					// 数据合法，则跳转登录
 					UserManager.API.signUp(username, password, new OnSaveListener<User>() {
 						
 						@Override
 						public void onSuccess(User user) {
+							mLoadingMenuItem.setVisible(false);
 							Bundle bundle = new Bundle();
 							bundle.putString("username", username);
 							launchActivity(SignInActivity.class, bundle);
@@ -55,6 +65,7 @@ public class SignUpActivity extends BaseFragmentActivity {
 						
 						@Override
 						public void onFailure() {
+							mLoadingMenuItem.setVisible(false);
 							Toast.makeText(getApplicationContext(), "SignUp Error!", Toast.LENGTH_SHORT).show();
 						}
 					});
@@ -64,6 +75,23 @@ public class SignUpActivity extends BaseFragmentActivity {
 
 	}
 	
+	private MenuItem mLoadingMenuItem;
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.loading, menu);
+		mLoadingMenuItem = menu.findItem(R.id.action_loading);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 	/** 校验数据合法性 **/
 	private boolean checkSignUpData(String username, String password, String passwordConfirm) {
 		boolean ok = true;

@@ -28,5 +28,5 @@ public class BaseFragmentActivity extends FragmentActivity {
 		this.setResult(resultCode);
 		this.finish();
 	}
-
+	
 }

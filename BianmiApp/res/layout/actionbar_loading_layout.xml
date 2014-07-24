@@ -1,0 +1,11 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_48"
+    android:layout_height="@dimen/dp_48" >
+
+    <ProgressBar
+        style="@android:style/Widget.ProgressBar.Large.Inverse"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>

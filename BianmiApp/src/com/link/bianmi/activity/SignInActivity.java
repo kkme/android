@@ -2,6 +2,8 @@ package com.link.bianmi.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,6 +28,11 @@ public class SignInActivity extends BaseFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		getActionBar().setTitle(
+				getResources().getString(R.string.signin));
+		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		setContentView(R.layout.activity_signin);
 
 		// 取得刚注册的username(如果有的话)
@@ -54,11 +61,13 @@ public class SignInActivity extends BaseFragmentActivity {
 
 				// 校验登录数据合法性
 				if (checkSignInData(username, password)) {
+					mLoadingMenuItem.setVisible(true);
 					// 数据合法，则进行联网登录
 					UserManager.API.signIn(username, password, new OnSaveListener<User>() {
 						
 						@Override
 						public void onSuccess(User user) {
+							mLoadingMenuItem.setVisible(false);
 							// 保存sessionId
 							UserConfig.getInstance().setSessionId(user.getSessionId());
 							// 进入主界面
@@ -69,6 +78,7 @@ public class SignInActivity extends BaseFragmentActivity {
 						
 						@Override
 						public void onFailure() {
+							mLoadingMenuItem.setVisible(false);
 							Toast.makeText(getApplicationContext(), "SignIn Error!", Toast.LENGTH_SHORT).show();
 						}
 					});
@@ -76,6 +86,23 @@ public class SignInActivity extends BaseFragmentActivity {
 			}
 		});
 
+	}
+	
+	private MenuItem mLoadingMenuItem;
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.loading, menu);
+		mLoadingMenuItem = menu.findItem(R.id.action_loading);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	/** 校验数据合法性 **/
