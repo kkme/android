@@ -25,7 +25,7 @@ import com.link.bianmi.widget.ViewPagerTabBar;
 
 public class MainActivity extends BaseFragmentActivity {
 	private ViewPager mViewPager;
-	private ViewPagerTabBar mViewPagerTab;
+	public static ViewPagerTabBar mViewPagerTab;
 	private ImageFragment mImageFragment;
 
 	@Override

@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.MainActivity;
@@ -73,10 +74,16 @@ public class SecretFragment extends TaskFragment {
 		mListView.setOnTopRefreshListener(new RListView.OnTopRefreshListener() {
 			@Override
 			public void onStart() {
+				Toast.makeText(getActivity(), "onStart", Toast.LENGTH_SHORT)
+						.show();
+				MainActivity.mViewPagerTab.animate().translationY(-UiUtil.dip2px(mContext, 48));
+				mListView.animate().translationY(-UiUtil.dip2px(mContext, 48));
 			}
 
 			@Override
 			public void onEnd() {
+				MainActivity.mViewPagerTab.animate().translationY(0);
+				mListView.animate().translationY(0);
 			}
 
 			@Override
