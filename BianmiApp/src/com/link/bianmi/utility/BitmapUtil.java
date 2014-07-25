@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 public class BitmapUtil {
 
@@ -140,51 +141,51 @@ public class BitmapUtil {
 		return bitmap;
 	}
 
-//	public static Bitmap setAlpha(Bitmap sourceImg, int number) {
-//
-//		int[] argb = new int[sourceImg.getWidth() * sourceImg.getHeight()];
-//
-//		sourceImg.getPixels(argb, 0, sourceImg.getWidth(), 0, 0,
-//				sourceImg.getWidth(), sourceImg.getHeight());
-//
-//		// ���ͼƬ��ARGBֵ
-//
-//		number = number * 255 / 100;
-//
-//		for (int i = 0; i < argb.length; i++) {
-//			argb = (number << 24) | (argb & 0x00FFFFFF);
-//			// �޸����2λ��ֵ
-//		}
-//
-//		sourceImg = Bitmap.createBitmap(argb, sourceImg.getWidth(),
-//				sourceImg.getHeight(), Config.ARGB_8888);
-//
-//		return sourceImg;
-//
-//	}
-	
-	public static class SaveBitampTask extends AsyncTask<Bitmap, Void, Boolean>{
-		
+	// public static Bitmap setAlpha(Bitmap sourceImg, int number) {
+	//
+	// int[] argb = new int[sourceImg.getWidth() * sourceImg.getHeight()];
+	//
+	// sourceImg.getPixels(argb, 0, sourceImg.getWidth(), 0, 0,
+	// sourceImg.getWidth(), sourceImg.getHeight());
+	//
+	// // ���ͼƬ��ARGBֵ
+	//
+	// number = number * 255 / 100;
+	//
+	// for (int i = 0; i < argb.length; i++) {
+	// argb = (number << 24) | (argb & 0x00FFFFFF);
+	// // �޸����2λ��ֵ
+	// }
+	//
+	// sourceImg = Bitmap.createBitmap(argb, sourceImg.getWidth(),
+	// sourceImg.getHeight(), Config.ARGB_8888);
+	//
+	// return sourceImg;
+	//
+	// }
+
+	public static class SaveBitampTask extends AsyncTask<Bitmap, Void, Boolean> {
+
 		private String path;
-		private Dialog dialog ;
-		
+		private Dialog dialog;
+
 		public SaveBitampTask(String path, Dialog dialog) {
 			super();
 			this.path = path;
 			this.dialog = dialog;
 			dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-				
+
 				@Override
 				public void onCancel(DialogInterface dialog) {
 					// TODO Auto-generated method stub
-					//SaveBitampTask.this.cancel(true);
+					// SaveBitampTask.this.cancel(true);
 				}
 			});
 		}
 
 		@Override
 		protected void onPreExecute() {
-		// TODO Auto-generated method stub
+			// TODO Auto-generated method stub
 			super.onPreExecute();
 			dialog.show();
 		}
@@ -194,16 +195,18 @@ public class BitmapUtil {
 			// TODO Auto-generated method stub
 			return saveBitmapFile(params[0], path);
 		}
-		
+
 		@Override
 		protected void onPostExecute(Boolean result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			dialog.dismiss();
-			if(result){
-				ToastUtil.showToast(dialog.getContext(), "Save success.");
-			}else{
-				ToastUtil.showToast(dialog.getContext(), "Save failed.");
+			if (result) {
+				Toast.makeText(dialog.getContext(), "Save success.",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(dialog.getContext(), "Save failed.",
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 	}

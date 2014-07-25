@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.MainActivity;
@@ -25,7 +26,6 @@ import com.link.bianmi.utility.BitmapUtil;
 import com.link.bianmi.utility.FileUtil;
 import com.link.bianmi.utility.SystemBarTintUtil;
 import com.link.bianmi.utility.TextUtil;
-import com.link.bianmi.utility.ToastUtil;
 import com.link.bianmi.widget.ProgressWheel;
 import com.link.bianmi.widget.ScaleImageView;
 import com.link.bianmi.widget.ScaleImageView.ImageViewListener;
@@ -231,8 +231,9 @@ public class ImageFragment extends Fragment {
 			String path = FileUtil.getImagePath() + "/"
 					+ mCurrentFeedItem.getId() + ".jpg";
 			if (new File(path).exists()) {
-				ToastUtil.showToast(getActivity(),
-						"This image has already been saved.");
+				Toast.makeText(getActivity(),
+						"This image has already been saved.",
+						Toast.LENGTH_SHORT).show();
 			} else {
 			}
 			return true;

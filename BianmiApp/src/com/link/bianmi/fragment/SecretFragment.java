@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.MainActivity;
@@ -23,7 +24,6 @@ import com.link.bianmi.bean.manager.SecretManager;
 import com.link.bianmi.bean.manager.SecretManager.SecretType;
 import com.link.bianmi.fragment.base.TaskFragment;
 import com.link.bianmi.utility.SystemBarTintUtil;
-import com.link.bianmi.utility.ToastUtil;
 import com.link.bianmi.utility.UiUtil;
 import com.link.bianmi.widget.ListViewScrollObserver;
 import com.link.bianmi.widget.ListViewScrollObserver.OnListViewScrollListener;
@@ -112,7 +112,7 @@ public class SecretFragment extends TaskFragment {
 						.findViewById(R.id.feed_item_image);
 				if (imageView.getDrawable() == null
 						|| imageView.getDrawable().getIntrinsicWidth() == 0) {
-					ToastUtil.showToast(getActivity(), "Please wait...");
+					Toast.makeText(getActivity(), "Please wait...", Toast.LENGTH_SHORT).show();
 					return;
 				}
 			}

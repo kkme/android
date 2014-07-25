@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
@@ -21,7 +22,6 @@ import com.link.bianmi.fragment.HotFragment;
 import com.link.bianmi.fragment.ImageFragment;
 import com.link.bianmi.fragment.NearbyFragment;
 import com.link.bianmi.fragment.SecretFragment;
-import com.link.bianmi.utility.ToastUtil;
 import com.link.bianmi.widget.ViewPagerTabBar;
 
 public class MainActivity extends BaseFragmentActivity {
@@ -176,8 +176,8 @@ public class MainActivity extends BaseFragmentActivity {
 				super.onBackPressed();
 			} else {
 				mLastBackPressedTime = cur_time;
-				ToastUtil.showToast(MainActivity.this, getResources()
-						.getString(R.string.str_back_twice_exit));
+				Toast.makeText(MainActivity.this, getResources()
+						.getString(R.string.str_back_twice_exit), Toast.LENGTH_SHORT).show();
 			}
 
 		}
