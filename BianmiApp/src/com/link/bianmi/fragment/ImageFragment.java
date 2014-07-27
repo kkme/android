@@ -206,7 +206,7 @@ public class ImageFragment extends Fragment {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.image_fragment, menu);
+		inflater.inflate(R.menu.image, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 

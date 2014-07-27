@@ -215,7 +215,7 @@ public class RListView extends RefreshableListView {
 	}
 
 	private void addPullDownRefreshFeature(final Context context) {
-		setTopContentView(R.layout.mxx_refresh_listview_header);
+		setTopContentView(R.layout.rlistview_header);
 //		mListHeaderView.setBackgroundColor(getResources().getColor(R.color.mxx_item_theme_color_alpha));
 		final TextView infoTextView = (TextView) mListHeaderView
 				.findViewById(R.id.mxx_refresh_listview_header_textview);
@@ -261,7 +261,7 @@ public class RListView extends RefreshableListView {
 	}
 
 	private void addPullUpRefreshFeature(final Context context) {
-		this.setBottomContentView(R.layout.mxx_refresh_listview_footer);
+		this.setBottomContentView(R.layout.rlistview_footer);
 //		mListBottomView.setBackgroundColor(getResources().getColor(R.color.mxx_item_theme_color_alpha));
 		final TextView infoTextView = (TextView) mListBottomView
 				.findViewById(R.id.mxx_refresh_listview_header_textview);
