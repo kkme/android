@@ -39,11 +39,11 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.ActionBar" >
+        android:theme="@style/Theme.ActionBar.Base" >
         <activity
             android:name="com.link.bianmi.activity.MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.ActionBar.NoTitle" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,10 +53,18 @@
         <activity
             android:name="com.link.bianmi.activity.WelcomeActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar" />
-        <activity android:name="com.link.bianmi.activity.SignUpActivity" />
-        <activity android:name="com.link.bianmi.activity.SignInActivity" />
-        <activity android:name="com.link.bianmi.activity.AddActivity" />
-        <activity android:name="com.link.bianmi.activity.AboutActivity" />
+        <activity
+            android:name="com.link.bianmi.activity.SignUpActivity"
+            android:theme="@style/Theme.ActionBar.NoLogo" />
+        <activity
+            android:name="com.link.bianmi.activity.SignInActivity"
+            android:theme="@style/Theme.ActionBar.NoLogo" />
+        <activity
+            android:name="com.link.bianmi.activity.AddActivity"
+            android:theme="@style/Theme.ActionBar.NoLogo" />
+        <activity
+            android:name="com.link.bianmi.activity.AboutActivity"
+            android:theme="@style/Theme.ActionBar.NoLogo" />
     </application>
 
 </manifest>

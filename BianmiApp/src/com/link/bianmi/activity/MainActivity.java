@@ -37,7 +37,6 @@ public class MainActivity extends BaseFragmentActivity {
 			finishActivity();
 			return;
 		}
-		
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowHomeEnabled(true);
 		setContentView(R.layout.activity_main);

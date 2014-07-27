@@ -46,6 +46,6 @@ public class SecretAdapter extends CursorAdapter {
 				R.drawable.ic_launcher, false);
 		
 		AudioButton audioBtn = ViewHolder.get(view, R.id.audio_button);
-		audioBtn.setAudioFile("http://bianmi.qiniudn.com/test.mp3?download&e=1406252206&token=6uoNKRkDEm7rUXoMoEMXffVW8nuKCfW1RRXATji4:zg9kbk1-K05lppzeWI48wrshu50", 120);
+		audioBtn.setAudioFile("http://bianmi.qiniudn.com/test.mp3?download&e=1406511979&token=6uoNKRkDEm7rUXoMoEMXffVW8nuKCfW1RRXATji4:OkmLt5kw2bNSPwxyhDfkqNksGio", 120);
 	}
 }
