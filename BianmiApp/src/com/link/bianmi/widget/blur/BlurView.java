@@ -1,6 +1,6 @@
 package com.link.bianmi.widget.blur;
 
-import com.link.bianmi.utility.UiUtil;
+import com.link.bianmi.utility.Tools;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -49,7 +49,7 @@ public class BlurView extends View{
         mMatrixScaleInv = new Matrix();
         mCanvas = new Canvas();
         mRectVisibleGlobal = new Rect();
-        radius = UiUtil.dip2px(getContext(), radius);
+        radius = Tools.dip2px(getContext(), radius);
         radius = Math.round(radius * BITMAP_SCALE_FACTOR);
 	}
 	public Bitmap drawOffscreenBitmap(View mView) {

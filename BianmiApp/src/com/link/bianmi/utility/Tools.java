@@ -210,4 +210,17 @@ public class Tools {
 		return result;
 	}
 
+	/**
+	 * dip-->px sualizerView.setLayoutParams(new ViewGroup.LayoutParams(
+	 * ViewGroup.LayoutParams.FILL_PARENT, (int) (VISUALIZER_HEIGHT_DIP *
+	 * getResources() .getDisplayMetrics().density)));
+	 * 
+	 * @param context
+	 * @param dip
+	 * @return
+	 */
+	public static int dip2px(Context context, float dip) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (dip * scale + 0.5f);
+	}
 }

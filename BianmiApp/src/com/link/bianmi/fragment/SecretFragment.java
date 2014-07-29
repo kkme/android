@@ -24,7 +24,7 @@ import com.link.bianmi.bean.manager.SecretManager;
 import com.link.bianmi.bean.manager.SecretManager.SecretType;
 import com.link.bianmi.fragment.base.TaskFragment;
 import com.link.bianmi.utility.SystemBarTintUtil;
-import com.link.bianmi.utility.UiUtil;
+import com.link.bianmi.utility.Tools;
 import com.link.bianmi.widget.ListViewScrollObserver;
 import com.link.bianmi.widget.ListViewScrollObserver.OnListViewScrollListener;
 import com.link.bianmi.widget.RListView;
@@ -73,8 +73,8 @@ public class SecretFragment extends TaskFragment {
 		mListView.setOnTopRefreshListener(new RListView.OnTopRefreshListener() {
 			@Override
 			public void onStart() {
-				((MainActivity)getActivity()).getViewPagerTab().animate().translationY(-UiUtil.dip2px(mContext, 48));
-				mListView.animate().translationY(-UiUtil.dip2px(mContext, 48));
+				((MainActivity)getActivity()).getViewPagerTab().animate().translationY(-Tools.dip2px(mContext, 48));
+				mListView.animate().translationY(-Tools.dip2px(mContext, 48));
 			}
 
 			@Override
@@ -205,7 +205,7 @@ public class SecretFragment extends TaskFragment {
 	}
 
 	private void initScrollListener() {
-		final int max_tranY = UiUtil.dip2px(mContext, 48);
+		final int max_tranY = Tools.dip2px(mContext, 48);
 		final View tabview = ((MainActivity) getActivity()).getViewPagerTab();
 		ListViewScrollObserver observer = new ListViewScrollObserver(mListView);
 		observer.setOnScrollUpAndDownListener(new OnListViewScrollListener() {

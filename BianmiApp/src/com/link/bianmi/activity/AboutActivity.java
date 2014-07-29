@@ -15,7 +15,7 @@ import android.widget.ScrollView;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
-import com.link.bianmi.utility.UiUtil;
+import com.link.bianmi.utility.Tools;
 import com.link.bianmi.widget.NotifyingScrollView;
 import com.link.bianmi.widget.ViewPagerTabBar;
 
@@ -48,7 +48,7 @@ public class AboutActivity extends BaseFragmentActivity {
 		mTabStrip.setViewPager(mViewPager);
 		// initInsetTop();
 
-		final int max_tranY = UiUtil.dip2px(this, 48);
+		final int max_tranY = Tools.dip2px(this, 48);
 
 		NotifyingScrollView.OnScrollChangedListener onScrollChangedListener = new NotifyingScrollView.OnScrollChangedListener() {
 
