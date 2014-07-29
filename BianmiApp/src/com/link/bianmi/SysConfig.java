@@ -73,6 +73,16 @@ public class SysConfig {
 		}
 		return path;
 	}
+	
+	public String getPathTemp(){
+		String tempPath = getRootPath() + File.separator + "temp";
+		File dir=new File(tempPath);
+		if (!dir.exists()) {
+			dir.mkdirs(); 
+		}	
+		
+		return tempPath;
+	}
 
 	/** 是否为Debug模式 **/
 	public boolean isDebug() {

@@ -43,6 +43,22 @@
     <!-- 注册 -->
     <string name="signup">注册</string>
     
+    <!-- 拍照 -->
+    <string name="photo_sd_error">保存图像失败！</string>
+    <string name="photo_avatar_title">设置头像</string>
+    <string name="photo_cover_title">设置封面</string>
+    <string name="photo_pick">选择图片</string>
+    <string name="photo_from_camera">拍照</string>
+    <string name="photo_from_album">从相册选择</string>
+    
+    <!-- inputsuit -->
+    <string name="inputsuit_submit">发表</string>
+    <string name="inputsuit_photo_album">照片</string>
+    <string name="inputsuit_photo_camera">相机</string>
+    <string name="inputsuit_record">请按住说话</string>
+    <string name="inputsuit_record_pressed">松开结束</string>
+    <string name="inputsuit_record_empty">录音时间太短</string>
+    <string name="inputsuit_record_delete">重录</string>
     
     <!-- Common -->
     <string name="loading">加载中...</string>

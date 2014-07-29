@@ -38,4 +38,15 @@ public class UserConfig {
 		return mPref.getString("bianmi.user.sessionid", null);
 	}
 
+	/** 获取虚拟deviceid **/
+	public String getVirtualDeviceId() {
+		return mPref.getString("engzo.prefer.virtualdeviceid", "");
+	}
+
+	/** 设置虚拟deviceid **/
+	public void setVirtualDeviceId(String deviceId) {
+		SharedPreferences.Editor editor = mPref.edit();
+		editor.putString("engzo.prefer.virtualdeviceid", deviceId);
+		editor.commit();
+	}
 }

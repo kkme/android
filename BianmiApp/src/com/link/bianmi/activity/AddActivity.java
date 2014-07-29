@@ -6,6 +6,7 @@ import android.view.MenuItem;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
+import com.link.bianmi.widget.InputSuit;
 
 public class AddActivity extends BaseFragmentActivity {
 
@@ -17,6 +18,9 @@ public class AddActivity extends BaseFragmentActivity {
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.activity_add);
+
+		InputSuit mInputSuit = (InputSuit) findViewById(R.id.input_suit);
+		mInputSuit.init(this, null, mInputListener);
 
 	}
 
@@ -35,5 +39,17 @@ public class AddActivity extends BaseFragmentActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	private InputSuit.Listener mInputListener = new InputSuit.Listener() {
+		@Override
+		public void onSubmit(String photoPath, String recordPath,
+				int recordLen, String message, String userName, String UserId) {
+		}
+
+		@Override
+		public void onUploadAttach(boolean result, String photoUrl,
+				String recordUrl) {
+		};
+	};
 
 }
