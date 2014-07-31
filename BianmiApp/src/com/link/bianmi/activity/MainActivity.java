@@ -176,7 +176,7 @@ public class MainActivity extends BaseFragmentActivity {
 			} else {
 				mLastBackPressedTime = cur_time;
 				Toast.makeText(MainActivity.this, getResources()
-						.getString(R.string.str_back_twice_exit), Toast.LENGTH_SHORT).show();
+						.getString(R.string.press_back_again_to_exit), Toast.LENGTH_SHORT).show();
 			}
 
 		}

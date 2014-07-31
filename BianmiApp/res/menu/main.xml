@@ -24,7 +24,7 @@
                 android:id="@+id/action_about"
                 android:orderInCategory="100"
                 android:showAsAction="ifRoom|withText"
-                android:title="@string/menu_action_about"/>
+                android:title="@string/main_actionitem_title_more"/>
             <item
                 android:id="@+id/action_exit"
                 android:orderInCategory="100"

@@ -27,7 +27,7 @@
             android:padding="8dp"
             android:lineSpacingExtra="2dp"
             android:autoLink="email"
-            android:text="@string/str_about_author" />
+            android:text="@string/add_action_title" />
         <View 
             android:layout_width="match_parent"
             android:layout_height="16dp"/>

@@ -6,7 +6,7 @@
         android:orderInCategory="25"
         android:showAsAction="always"
         android:visible="false"
-        android:title="@string/menu_action_translate_title"/>
+        android:title="@string/app_name"/>
 
     <item
         android:id="@+id/fragment_image_action_copy"
@@ -14,44 +14,44 @@
         android:orderInCategory="26"
         android:showAsAction="always"
         android:visible="false"
-        android:title="@string/menu_action_copy_title"/>
+        android:title="@string/app_name"/>
     <item
         android:id="@+id/fragment_image_action_save"
         android:icon="@drawable/mxx_holo_ic_save_white"
         android:orderInCategory="27"
         android:showAsAction="always"
         android:visible="false"
-        android:title="@string/menu_action_save"/>
+        android:title="@string/app_name"/>
     <item
         android:id="@+id/fragment_image_action_weblink"
         android:icon="@drawable/mxx_holo_ic_web"
         android:orderInCategory="28"
         android:showAsAction="always"
-        android:title="@string/menu_action_weblink"
+        android:title="@string/app_name"
         android:visible="false"/>
     <item
         android:id="@+id/fragment_image_action_share"
         android:icon="@drawable/mxx_holo_ic_share_white"
         android:orderInCategory="29"
         android:showAsAction="always"
-        android:title="@string/menu_action_share"
+        android:title="@string/app_name"
         android:visible="false">
         <menu>
             <item
                 android:id="@+id/fragment_image_action_share_all"
                 android:orderInCategory="100"
                 android:showAsAction="ifRoom|withText"
-                android:title="@string/menu_action_share_all"/>
+                android:title="@string/app_name"/>
             <item
                 android:id="@+id/fragment_image_action_share_image"
                 android:orderInCategory="100"
                 android:showAsAction="ifRoom|withText"
-                android:title="@string/menu_action_share_image"/>
+                android:title="@string/app_name"/>
             <item
                 android:id="@+id/fragment_image_action_share_text"
                 android:orderInCategory="100"
                 android:showAsAction="ifRoom|withText"
-                android:title="@string/menu_action_share_text"/>
+                android:title="@string/app_name"/>
         </menu>
     </item>
 

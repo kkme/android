@@ -231,7 +231,7 @@ public class RListView extends RefreshableListView {
 					infoTextView.setText("");
 					objectAnimator.start();
 				} else {
-					infoTextView.setText(getResources().getString(R.string.mxx_view_string_nonetwork));//"����������"
+					infoTextView.setText(getResources().getString(R.string.no_network));//"����������"
 					progressWheel.setVisibility(View.GONE);
 				}
 
@@ -274,7 +274,7 @@ public class RListView extends RefreshableListView {
 			@Override
 			public void onViewUpdating(View v) {
 				if (!bottomHasMore) {
-					infoTextView.setText(getResources().getString(R.string.mxx_view_string_nomore));
+					infoTextView.setText(getResources().getString(R.string.no_more_to_load));
 					progressWheel.setVisibility(View.GONE);
 					return;
 				}
@@ -282,7 +282,7 @@ public class RListView extends RefreshableListView {
 					infoTextView.setText("");
 					objectAnimator.start();
 				} else {
-					infoTextView.setText(getResources().getString(R.string.mxx_view_string_nonetwork));
+					infoTextView.setText(getResources().getString(R.string.no_network));
 					progressWheel.setVisibility(View.GONE);
 				}
 			}
