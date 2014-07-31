@@ -124,6 +124,10 @@ public abstract class BaseFragment extends Fragment {
 		} catch (Exception ex) {
 		}
 	}
+	
+	protected void launchActivity(Class<?> cls) {
+		startActivity(new Intent(getActivity(), cls));
+	}
 
 	public void _onPause() {
 	}

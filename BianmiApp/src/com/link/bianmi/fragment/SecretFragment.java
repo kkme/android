@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.link.bianmi.R;
+import com.link.bianmi.activity.DetailsActivity;
 import com.link.bianmi.activity.MainActivity;
 import com.link.bianmi.adapter.SecretAdapter;
 import com.link.bianmi.asynctask.TaskParams;
@@ -115,6 +116,8 @@ public class SecretFragment extends TaskFragment {
 					Toast.makeText(getActivity(), "Please wait...", Toast.LENGTH_SHORT).show();
 					return;
 				}
+				
+				launchActivity(DetailsActivity.class);
 			}
 		});
 

@@ -38,6 +38,11 @@
     <string name="pull_to_refresh_release_label">Release to refresh…</string>
     <string name="pull_to_refresh_refreshing_label">Loading…</string>
     
+    <!-- 秘密详情 -->
+    <string name="details_action_title">秘密详情</string>
+	<string name="details_actionitem_title_like">点赞</string>
+	<string name="details_actionitem_title_share">分享</string>
+	    
     <!-- 登录 -->
     <string name="signin">登录</string>
     <!-- 注册 -->
