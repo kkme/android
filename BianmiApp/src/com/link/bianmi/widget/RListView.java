@@ -9,10 +9,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
-import com.link.bianmi.rlistview.ListBottomView;
-import com.link.bianmi.rlistview.ListHeaderView;
-import com.link.bianmi.rlistview.RefreshableListView;
 import com.link.bianmi.utility.NetworkUtil;
+import com.link.bianmi.widget.rlistview.ListBottomView;
+import com.link.bianmi.widget.rlistview.ListHeaderView;
+import com.link.bianmi.widget.rlistview.RefreshableListView;
+import com.link.bianmi.widget.rlistview.RefreshableListView.OnBottomViewChangedListener;
+import com.link.bianmi.widget.rlistview.RefreshableListView.OnHeaderViewChangedListener;
+import com.link.bianmi.widget.rlistview.RefreshableListView.OnPullUpUpdateTask;
+import com.link.bianmi.widget.rlistview.RefreshableListView.OnUpdateTask;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 public class RListView extends RefreshableListView {
