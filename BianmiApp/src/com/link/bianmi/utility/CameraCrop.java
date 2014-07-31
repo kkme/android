@@ -182,6 +182,7 @@ public class CameraCrop {
 	
 	
 	/**获取uri**/
+	@TargetApi(Build.VERSION_CODES.KITKAT)
 	public Uri getUri(Intent data){
 		Uri uri=null;
 		if(!TextUtils.isEmpty(protraitPath)){
@@ -233,6 +234,10 @@ public class CameraCrop {
 	
 	public String getCorpFile(){
 		return protraitPath;
+	}
+	
+	public void setCorpFile(String tempPath){
+		this.protraitPath = tempPath;
 	}
 	
 }

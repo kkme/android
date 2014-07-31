@@ -1,5 +1,6 @@
 package com.link.bianmi.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +11,8 @@ import com.link.bianmi.widget.InputSuit;
 
 public class AddActivity extends BaseFragmentActivity {
 
+	private InputSuit mInputSuit;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -19,7 +22,7 @@ public class AddActivity extends BaseFragmentActivity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.activity_add);
 
-		InputSuit mInputSuit = (InputSuit) findViewById(R.id.input_suit);
+		mInputSuit = (InputSuit) findViewById(R.id.input_suit);
 		mInputSuit.init(this, null, mInputListener);
 
 	}
@@ -38,6 +41,12 @@ public class AddActivity extends BaseFragmentActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		mInputSuit.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private InputSuit.Listener mInputListener = new InputSuit.Listener() {

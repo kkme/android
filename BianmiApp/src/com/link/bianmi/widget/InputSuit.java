@@ -55,7 +55,7 @@ public class InputSuit extends LinearLayout {
 	/** 图片URL **/
 	private String mPhotoUrl = "";
 
-	/** 录音地址 **/
+	/** 录音地址 **/ 
 	private String mRecordPath = "";
 	/** 音频URL **/
 	private String mRecordUrl = "";
@@ -711,8 +711,9 @@ public class InputSuit extends LinearLayout {
 			return;
 		try {
 			switch (requestCode) {
-			case CameraCrop.REQUEST_CAMERA:
 			case CameraCrop.REQUEST_CALENDAR:
+				mCamera.setCorpFile("");
+			case CameraCrop.REQUEST_CAMERA:
 				try {
 					Uri uri = mCamera.getUri(data);
 
