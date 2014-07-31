@@ -9,20 +9,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
+import com.link.bianmi.rlistview.ListBottomView;
+import com.link.bianmi.rlistview.ListHeaderView;
+import com.link.bianmi.rlistview.RefreshableListView;
 import com.link.bianmi.utility.NetworkUtil;
-import com.mixiaoxiao.android.view.pulltorefresh.ListBottomView;
-import com.mixiaoxiao.android.view.pulltorefresh.ListHeaderView;
-import com.mixiaoxiao.android.view.pulltorefresh.RefreshableListView;
 import com.nineoldandroids.animation.ObjectAnimator;
 
-/**
- * ��������ˢ�� �������ظ����listview�Ľ��� 
- * ����������������̨�������֮����Զ�����adapter.notifydatasetChanged�ķ���
- * setEnableInterceptTouchEvent ��ʾ��ַ�����view�ĺ��򻬶�����
- * setBottomHasMore �ײ��Ƿ���ڸ���
- * @author wangbin
- * 
- */
 public class RListView extends RefreshableListView {
 
 	private final int animation_duration = 600;// תȦʱ��
