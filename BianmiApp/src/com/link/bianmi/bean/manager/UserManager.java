@@ -9,16 +9,16 @@ public class UserManager {
 	public static class API {
 
 		/** 注册 **/
-		public static void signUp(String username, String password, OnSaveListener<User> listener) {
+		public static void signUp(String phonenum, String password, OnSaveListener<User> listener) {
 			Response response = HttpClient.doPost();
 			listener.onSuccess(null);
 		}
 
 		/** 登录 **/
-		public static void signIn(String username, String password, OnSaveListener<User> listener) {
-			if("18503062935".equals(username) && "321123".equals(password)){
+		public static void signIn(String phonenum, String password, OnSaveListener<User> listener) {
+			if("18503062935".equals(phonenum) && "321123".equals(password)){
 				User user = new User();
-				user.setUsername("18503062935");
+				user.setPhonenum("18503062935");
 				user.setSessionId("woeiru1234asdiwoer3xckcvzlfjskd");
 				listener.onSuccess(user);
 			}else {
