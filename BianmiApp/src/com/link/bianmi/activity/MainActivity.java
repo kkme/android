@@ -32,7 +32,14 @@ public class MainActivity extends BaseFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if(UserConfig.getInstance().getSessionId() == null || TextUtils.isEmpty(UserConfig.getInstance().getSessionId())){
+		Bundle bundle = getIntent().getExtras();
+		boolean isGuest = false;
+		// 是否是游客登录
+		if (bundle != null && bundle.getBoolean("is_guest")) {
+			isGuest = true;
+		}
+		if (UserConfig.getInstance().getSessionId() == null
+				|| TextUtils.isEmpty(UserConfig.getInstance().getSessionId()) && !isGuest) {
 			launchActivity(WelcomeActivity.class);
 			finishActivity();
 			return;
@@ -42,20 +49,36 @@ public class MainActivity extends BaseFragmentActivity {
 		setContentView(R.layout.activity_main);
 
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
-		mViewPager.setOffscreenPageLimit(3);
 		mViewPagerTab = (ViewPagerTabBar) findViewById(R.id.viewpagertab);
 		ArrayList<Fragment> fragments = new ArrayList<Fragment>();
-		fragments.add(new HotFragment());
-		fragments.add(new FriendFragment());
-		fragments.add(new NearbyFragment());
+		String fragmentTitles[];
+
+		if (isGuest) {
+			mViewPager.setOffscreenPageLimit(2);
+			fragments.add(new HotFragment());
+			fragments.add(new NearbyFragment());
+			fragmentTitles = new String[] {
+					this.getResources().getString(
+							R.string.main_viewpagertab_title_hot),
+					this.getResources().getString(
+							R.string.main_viewpagertab_title_nearby) };
+		} else {
+			mViewPager.setOffscreenPageLimit(3);
+			fragments.add(new HotFragment());
+			fragments.add(new FriendFragment());
+			fragments.add(new NearbyFragment());
+			fragmentTitles = new String[] {
+					this.getResources().getString(
+							R.string.main_viewpagertab_title_hot),
+					this.getResources().getString(
+							R.string.main_viewpagertab_title_friend),
+					this.getResources().getString(
+							R.string.main_viewpagertab_title_nearby) };
+		}
+
 		mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),
-				fragments, new String[] {
-						this.getResources().getString(
-								R.string.main_viewpagertab_title_hot),
-						this.getResources().getString(
-								R.string.main_viewpagertab_title_friend),
-						this.getResources().getString(
-								R.string.main_viewpagertab_title_nearby) }));
+				fragments, fragmentTitles));
+
 		mViewPagerTab.setViewPager(mViewPager);
 		mImageFragment = (ImageFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.main_image_fragment);
@@ -175,8 +198,11 @@ public class MainActivity extends BaseFragmentActivity {
 				super.onBackPressed();
 			} else {
 				mLastBackPressedTime = cur_time;
-				Toast.makeText(MainActivity.this, getResources()
-						.getString(R.string.press_back_again_to_exit), Toast.LENGTH_SHORT).show();
+				Toast.makeText(
+						MainActivity.this,
+						getResources().getString(
+								R.string.press_back_again_to_exit),
+						Toast.LENGTH_SHORT).show();
 			}
 
 		}
