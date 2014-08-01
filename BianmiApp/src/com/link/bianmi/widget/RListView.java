@@ -1,6 +1,5 @@
 package com.link.bianmi.widget;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
@@ -13,40 +12,38 @@ import com.link.bianmi.utility.NetworkUtil;
 import com.link.bianmi.widget.rlistview.ListBottomView;
 import com.link.bianmi.widget.rlistview.ListHeaderView;
 import com.link.bianmi.widget.rlistview.RefreshableListView;
-import com.link.bianmi.widget.rlistview.RefreshableListView.OnBottomViewChangedListener;
-import com.link.bianmi.widget.rlistview.RefreshableListView.OnHeaderViewChangedListener;
-import com.link.bianmi.widget.rlistview.RefreshableListView.OnPullUpUpdateTask;
-import com.link.bianmi.widget.rlistview.RefreshableListView.OnUpdateTask;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 public class RListView extends RefreshableListView {
 
-	private final int animation_duration = 600;// תȦʱ��
+	private final int animation_duration = 600;
 	private boolean internetEnabled = true;
 	private boolean bottomHasMore = true;
-	/**
-	 * Position of the last motion event. ���ڷַ������¼�
-	 */
 	private float mLastMotionX;
 	private float mLastMotionY;
-	private boolean mIsBeingDragged = false;// �Ƿ����ں��򻬶�item
-	private boolean mEnableInterceptTouchEvent = false;// �Ƿ�Ѻ��򻬶��¼������ӿؼ�
+	private boolean mIsBeingDragged = false;
+	private boolean mEnableInterceptTouchEvent = false;
 	private OnTopRefreshListener onTopRefreshListener;
 	private OnBottomRefreshListener onBottomRefreshListener;
-	
-	public interface OnTopRefreshListener{
+
+	public interface OnTopRefreshListener {
 		public void onStart();
+
 		public void onDoinBackground();
-		public void onEnd();
-	}
-	public interface OnBottomRefreshListener{
-		public void onStart();
-		public void onDoinBackground();
+
 		public void onEnd();
 	}
 
-	
-	public void setOnTopRefreshListener(OnTopRefreshListener onTopRefreshListener) {
+	public interface OnBottomRefreshListener {
+		public void onStart();
+
+		public void onDoinBackground();
+
+		public void onEnd();
+	}
+
+	public void setOnTopRefreshListener(
+			OnTopRefreshListener onTopRefreshListener) {
 		this.onTopRefreshListener = onTopRefreshListener;
 	}
 
@@ -55,41 +52,40 @@ public class RListView extends RefreshableListView {
 		this.onBottomRefreshListener = onBottomRefreshListener;
 	}
 
-	@SuppressLint("NewApi")
 	public RListView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		if (android.os.Build.VERSION.SDK_INT >= 9) {
-			setOverScrollMode(View.OVER_SCROLL_NEVER);
-		}
+		setOverScrollMode(View.OVER_SCROLL_NEVER);
 		this.setFadingEdgeLength(0);
-		// this.setSelector(R.drawable.list_item_selector_transparent);
-		// this.setClipToPadding(false);
-		// this.setFitsSystemWindows(true);
 		addPullDownRefreshFeature(context);
 		addPullUpRefreshFeature(context);
 		initRefreshListener();
 	}
-	
-	private void initRefreshListener(){
+
+	private void initRefreshListener() {
 		setOnUpdateTask(new OnUpdateTask() {
 			boolean isNetworkAvailable = false;
+
 			public void onUpdateStart() {
 				isNetworkAvailable = NetworkUtil
 						.isNetworkAvailable(getContext());
 				setInternetEnabled(isNetworkAvailable);
-				if(isNetworkAvailable){
-					if(onTopRefreshListener!=null) onTopRefreshListener.onStart();
+				if (isNetworkAvailable) {
+					if (onTopRefreshListener != null)
+						onTopRefreshListener.onStart();
 				}
 			}
 
 			public void updateBackground() {
 				if (isNetworkAvailable) {
-					if(onTopRefreshListener!=null) onTopRefreshListener.onDoinBackground();
+					if (onTopRefreshListener != null)
+						onTopRefreshListener.onDoinBackground();
 				}
 			}
+
 			public void updateUI() {
 				if (isNetworkAvailable) {
-					if(onTopRefreshListener!=null) onTopRefreshListener.onEnd();
+					if (onTopRefreshListener != null)
+						onTopRefreshListener.onEnd();
 				}
 			}
 		});
@@ -97,37 +93,38 @@ public class RListView extends RefreshableListView {
 			boolean isNetworkAvailable = false;
 
 			public void onUpdateStart() {
-				if(!bottomHasMore) return;
+				if (!bottomHasMore)
+					return;
 				isNetworkAvailable = NetworkUtil
 						.isNetworkAvailable(getContext());
 				setInternetEnabled(isNetworkAvailable);
-				if(isNetworkAvailable){
-					if(onBottomRefreshListener!=null) onBottomRefreshListener.onStart();
+				if (isNetworkAvailable) {
+					if (onBottomRefreshListener != null)
+						onBottomRefreshListener.onStart();
 				}
 			}
 
 			public void updateBackground() {
-				if(!bottomHasMore) return;
+				if (!bottomHasMore)
+					return;
 				if (isNetworkAvailable) {
-					if(onBottomRefreshListener!=null) onBottomRefreshListener.onDoinBackground();
+					if (onBottomRefreshListener != null)
+						onBottomRefreshListener.onDoinBackground();
 				}
 			}
 
 			public void updateUI() {
-				if(!bottomHasMore) return;
+				if (!bottomHasMore)
+					return;
 				if (isNetworkAvailable) {
-					if(onBottomRefreshListener!=null) onBottomRefreshListener.onEnd();
+					if (onBottomRefreshListener != null)
+						onBottomRefreshListener.onEnd();
 				}
 			}
 
 		});
 	}
 
-	/**
-	 * �Ƿ�Ѻ��򻬶��¼������ӿؼ�
-	 * 
-	 * @param enaled
-	 */
 	public void setEnableInterceptTouchEvent(boolean enaled) {
 		this.mEnableInterceptTouchEvent = enaled;
 	}
@@ -136,11 +133,6 @@ public class RListView extends RefreshableListView {
 		return bottomHasMore;
 	}
 
-	/**
-	 * �Ƿ��и���
-	 * 
-	 * @param hasMore
-	 */
 	public void setBottomHasMore(boolean hasMore) {
 		bottomHasMore = hasMore;
 	}
@@ -159,25 +151,23 @@ public class RListView extends RefreshableListView {
 			if (mIsBeingDragged) {
 				return false;
 			}
-			final float x = ev.getX();// MotionEventCompat.getX(ev,
-										// pointerIndex);
+			final float x = ev.getX();
 			final float xDiff = Math.abs(x - mLastMotionX);
-			final float y = ev.getY();// MotionEventCompat.getY(ev,
-										// pointerIndex);
+			final float y = ev.getY();
 			final float yDiff = Math.abs(y - mLastMotionY);
 			if (xDiff > yDiff) {
 				mIsBeingDragged = true;
 				return false;
 			}
 			break;
-		} /* end of case */
+		}
 
 		case MotionEvent.ACTION_DOWN: {
 			mLastMotionX = ev.getX();
 			mLastMotionY = ev.getY();
 			mIsBeingDragged = false;
 			break;
-		} /* end of case */
+		}
 		case MotionEvent.ACTION_CANCEL: {
 			mLastMotionX = ev.getX();
 			mLastMotionY = ev.getY();
@@ -185,19 +175,13 @@ public class RListView extends RefreshableListView {
 			break;
 		}
 		case MotionEventCompat.ACTION_POINTER_UP:
-			// onSecondaryPointerUp(ev);
 			mIsBeingDragged = false;
 			break;
-		} /* end of switch */
+		}
 
 		return super.onInterceptTouchEvent(ev);
 	}
 
-	/**
-	 * �Ƿ����������ӡ� ����������������Ӧ����������
-	 * 
-	 * @param enabled
-	 */
 	public void setInternetEnabled(boolean enabled) {
 		this.internetEnabled = enabled;
 	}
@@ -212,13 +196,12 @@ public class RListView extends RefreshableListView {
 
 	private void addPullDownRefreshFeature(final Context context) {
 		setTopContentView(R.layout.rlistview_header);
-//		mListHeaderView.setBackgroundColor(getResources().getColor(R.color.mxx_item_theme_color_alpha));
 		final TextView infoTextView = (TextView) mListHeaderView
-				.findViewById(R.id.mxx_refresh_listview_header_textview);
+				.findViewById(R.id.refresh_listview_header_textview);
 		final ProgressWheel progressWheel = (ProgressWheel) mListHeaderView
-				.findViewById(R.id.mxx_refresh_listview_header_progresswheel);
+				.findViewById(R.id.refresh_listview_header_progresswheel);
 		final ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(
-				progressWheel, "rotationY", 0f, 360f);// 3DX���ϣ����������ߣ�0�ȵ�180����ת
+				progressWheel, "rotationY", 0f, 360f);
 		objectAnimator.setDuration(animation_duration);
 		objectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
 
@@ -235,7 +218,8 @@ public class RListView extends RefreshableListView {
 					infoTextView.setText("");
 					objectAnimator.start();
 				} else {
-					infoTextView.setText(getResources().getString(R.string.no_network));//"����������"
+					infoTextView.setText(getResources().getString(
+							R.string.no_network));
 					progressWheel.setVisibility(View.GONE);
 				}
 
@@ -258,14 +242,13 @@ public class RListView extends RefreshableListView {
 
 	private void addPullUpRefreshFeature(final Context context) {
 		this.setBottomContentView(R.layout.rlistview_footer);
-//		mListBottomView.setBackgroundColor(getResources().getColor(R.color.mxx_item_theme_color_alpha));
 		final TextView infoTextView = (TextView) mListBottomView
-				.findViewById(R.id.mxx_refresh_listview_header_textview);
+				.findViewById(R.id.refresh_listview_header_textview);
 
 		final ProgressWheel progressWheel = (ProgressWheel) mListBottomView
-				.findViewById(R.id.mxx_refresh_listview_header_progresswheel);
+				.findViewById(R.id.refresh_listview_header_progresswheel);
 		final ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(
-				progressWheel, "rotationY", 0f, 360f);// 3DX���ϣ����������ߣ�0�ȵ�180����ת
+				progressWheel, "rotationY", 0f, 360f);
 		objectAnimator.setDuration(animation_duration);
 		objectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
 		setOnBottomViewChangedListener(new OnBottomViewChangedListener() {
@@ -278,7 +261,8 @@ public class RListView extends RefreshableListView {
 			@Override
 			public void onViewUpdating(View v) {
 				if (!bottomHasMore) {
-					infoTextView.setText(getResources().getString(R.string.no_more_to_load));
+					infoTextView.setText(getResources().getString(
+							R.string.no_more_to_load));
 					progressWheel.setVisibility(View.GONE);
 					return;
 				}
@@ -286,7 +270,8 @@ public class RListView extends RefreshableListView {
 					infoTextView.setText("");
 					objectAnimator.start();
 				} else {
-					infoTextView.setText(getResources().getString(R.string.no_network));
+					infoTextView.setText(getResources().getString(
+							R.string.no_network));
 					progressWheel.setVisibility(View.GONE);
 				}
 			}
@@ -300,7 +285,6 @@ public class RListView extends RefreshableListView {
 
 			@Override
 			public void onViewHeightChanged(float heightPercent) {
-				// TODO Auto-generated method stub
 				progressWheel.setProgress((int) (360.0f * heightPercent));
 			}
 

@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">变秘</string>
-    <string name="loading">加载中#8230</string>
+    <string name="loading">加载中...</string>
     <string name="press_back_again_to_exit">再按一次退出</string>
     <string name="no_network">木有网络</string>
     <string name="no_more_to_load">木有啦</string>

@@ -231,7 +231,7 @@ public class ListHeaderView extends ViewGroup {
 		this.mHeight = height;
 		float percent = 1.0F;
 		if (height < updateHeight) {
-			percent = height / updateHeight;
+			percent = height / (updateHeight * 1f);
 		}
 		if (this.mOnHeaderViewChangedListener != null) {
 			this.mOnHeaderViewChangedListener.onViewHeightChanged(percent);
