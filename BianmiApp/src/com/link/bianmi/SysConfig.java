@@ -135,5 +135,9 @@ public class SysConfig {
 					+ "/trending/";
 		}
 	}
+	
+	public static class Constant{
+		public static final String INTENT_BUNDLE_KEY_ISGUEST = "is_guest";
+	}
 
 }

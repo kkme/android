@@ -15,6 +15,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 
 import com.link.bianmi.R;
+import com.link.bianmi.SysConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 
 /**
@@ -62,7 +63,7 @@ public class WelcomeActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				Bundle bundle = new Bundle();
-				bundle.putBoolean("is_guest", true);
+				bundle.putBoolean(SysConfig.Constant.INTENT_BUNDLE_KEY_ISGUEST, true);
 				launchActivity(MainActivity.class, bundle);
 				finishActivity();
 			}

@@ -1,6 +1,7 @@
 package com.link.bianmi.activity;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.link.bianmi.R;
+import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.bean.Secret;
@@ -34,12 +36,14 @@ public class MainActivity extends BaseFragmentActivity {
 		super.onCreate(savedInstanceState);
 		Bundle bundle = getIntent().getExtras();
 		boolean isGuest = false;
-		// 是否是游客登录
-		if (bundle != null && bundle.getBoolean("is_guest")) {
+		// 游客登录
+		if (bundle != null && bundle.getBoolean(SysConfig.Constant.INTENT_BUNDLE_KEY_ISGUEST)) {
 			isGuest = true;
+			UserConfig.getInstance().setSessionId(UUID.randomUUID().toString());
 		}
+		// 没有登录
 		if (UserConfig.getInstance().getSessionId() == null
-				|| TextUtils.isEmpty(UserConfig.getInstance().getSessionId()) && !isGuest) {
+				|| TextUtils.isEmpty(UserConfig.getInstance().getSessionId())) {
 			launchActivity(WelcomeActivity.class);
 			finishActivity();
 			return;
