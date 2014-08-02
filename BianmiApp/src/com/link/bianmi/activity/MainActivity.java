@@ -1,7 +1,6 @@
 package com.link.bianmi.activity;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.link.bianmi.R;
-import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.bean.Secret;
@@ -34,13 +32,6 @@ public class MainActivity extends BaseFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Bundle bundle = getIntent().getExtras();
-		boolean isGuest = false;
-		// 游客登录
-		if (bundle != null && bundle.getBoolean(SysConfig.Constant.INTENT_BUNDLE_KEY_ISGUEST)) {
-			isGuest = true;
-			UserConfig.getInstance().setSessionId(UUID.randomUUID().toString());
-		}
 		// 没有登录
 		if (UserConfig.getInstance().getSessionId() == null
 				|| TextUtils.isEmpty(UserConfig.getInstance().getSessionId())) {
@@ -57,7 +48,7 @@ public class MainActivity extends BaseFragmentActivity {
 		ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 		String fragmentTitles[];
 
-		if (isGuest) {
+		if (UserConfig.getInstance().getIsGuest()) {
 			mViewPager.setOffscreenPageLimit(2);
 			fragments.add(new HotFragment());
 			fragments.add(new NearbyFragment());
@@ -181,6 +172,7 @@ public class MainActivity extends BaseFragmentActivity {
 			return true;
 		} else if (item.getItemId() == R.id.action_exit) {
 			UserConfig.getInstance().setSessionId("");
+			UserConfig.getInstance().setIsGuest(false);
 			launchActivity(WelcomeActivity.class);
 			finishActivity();
 			return true;

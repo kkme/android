@@ -1,5 +1,7 @@
 package com.link.bianmi.activity;
 
+import java.util.UUID;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.widget.ImageView;
 
 import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
+import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 
 /**
@@ -62,9 +65,9 @@ public class WelcomeActivity extends BaseFragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				Bundle bundle = new Bundle();
-				bundle.putBoolean(SysConfig.Constant.INTENT_BUNDLE_KEY_ISGUEST, true);
-				launchActivity(MainActivity.class, bundle);
+				UserConfig.getInstance().setIsGuest(true);
+				UserConfig.getInstance().setSessionId(UUID.randomUUID().toString());
+				launchActivity(MainActivity.class);
 				finishActivity();
 			}
 		});

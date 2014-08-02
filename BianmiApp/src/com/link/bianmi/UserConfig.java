@@ -40,13 +40,25 @@ public class UserConfig {
 
 	/** 获取虚拟deviceid **/
 	public String getVirtualDeviceId() {
-		return mPref.getString("engzo.prefer.virtualdeviceid", "");
+		return mPref.getString("bianmi.prefer.virtualdeviceid", "");
 	}
 
 	/** 设置虚拟deviceid **/
 	public void setVirtualDeviceId(String deviceId) {
 		SharedPreferences.Editor editor = mPref.edit();
-		editor.putString("engzo.prefer.virtualdeviceid", deviceId);
+		editor.putString("bianmi.prefer.virtualdeviceid", deviceId);
 		editor.commit();
+	}
+	
+	/**设置游客登录**/
+	public void setIsGuest(boolean isGuest){
+		SharedPreferences.Editor editor = mPref.edit();
+		editor.putBoolean("bianmi.user.isguest", isGuest);
+		editor.commit();
+	}
+	
+	/**获取是否是游客登录**/
+	public boolean getIsGuest(){
+		return mPref.getBoolean("bianmi.user.isguest", false);
 	}
 }
