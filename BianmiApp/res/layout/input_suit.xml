@@ -99,7 +99,7 @@
         <RelativeLayout
             android:id="@+id/attach_group"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_96"
+            android:layout_height="150dp"
             android:background="#d9d9d9" >
 
             <LinearLayout
@@ -108,7 +108,8 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:clipChildren="false"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:visibility="gone" >
 
                 <RelativeLayout
                     android:id="@+id/photo_operate_group"
@@ -184,17 +185,14 @@
             <LinearLayout
                 android:id="@+id/record_group"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:clipChildren="false"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:visibility="gone" >
+                android:orientation="horizontal" >
 
                 <Button
                     android:id="@+id/record_btn"
                     android:layout_width="@dimen/dp_200"
                     android:layout_height="@dimen/dp_36"
-                    android:layout_gravity="center"
                     android:background="@drawable/selector_btn_normal_72"
                     android:text="请按住说话" />
 
@@ -202,14 +200,12 @@
                     android:id="@+id/record_show_group"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp_36"
-                    android:layout_gravity="center"
                     android:orientation="horizontal" >
 
                     <com.link.bianmi.widget.AudioButton
                         android:id="@+id/record_play_btn"
                         android:layout_width="@dimen/dp_72"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
                         android:gravity="left|center"
                         android:text="11&apos;" />
 
@@ -217,10 +213,94 @@
                         android:id="@+id/record_delete_btn"
                         android:layout_width="@dimen/dp_72"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp_8"
                         android:background="@drawable/selector_btn_normal_72"
                         android:text="重录" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/change_voice_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/record_group"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="音速" />
+
+                    <SeekBar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="音调" />
+
+                    <SeekBar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_48"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_8"
+                    android:weightSum="4" >
+
+                    <Button
+                        android:layout_width="@dimen/dp_72"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_btn_normal_72"
+                        android:text="汤姆猫" />
+
+                    <Button
+                        android:layout_width="@dimen/dp_72"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_btn_normal_72"
+                        android:text="女声" />
+
+                    <Button
+                        android:layout_width="@dimen/dp_72"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_btn_normal_72"
+                        android:text="老人" />
+
+                    <Button
+                        android:layout_width="@dimen/dp_72"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_btn_normal_72"
+                        android:text="萝莉" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>

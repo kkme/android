@@ -103,6 +103,8 @@ public class InputSuit extends LinearLayout {
 	private Button mRecordBtn;
 	/** 声音显示组 **/
 	private View mRecordShowGroup;
+	/** 变声组 **/
+	private View mChangeVoiceGroup;
 	/** 播放声音 **/
 	private AudioButton mRecordPlayBtn;
 	/** 删除录音 **/
@@ -153,6 +155,7 @@ public class InputSuit extends LinearLayout {
 		mRecordBtn = (Button) findViewById(R.id.record_btn);
 		mRecordBtn.setOnTouchListener(recordTouchListener);
 		mRecordShowGroup = findViewById(R.id.record_show_group);
+		mChangeVoiceGroup = findViewById(R.id.change_voice_group);
 		mRecordPlayBtn = (AudioButton) findViewById(R.id.record_play_btn);
 		mRecordDeleteBtn = (Button) findViewById(R.id.record_delete_btn);
 		mRecordDeleteBtn.setOnClickListener(recordDeleteListener);
@@ -407,6 +410,7 @@ public class InputSuit extends LinearLayout {
 					mRecordPlayBtn.setAudioFile(filePath, mRecordLen);
 					mRecordBtn.setVisibility(View.GONE);
 					mRecordShowGroup.setVisibility(View.VISIBLE);
+					mChangeVoiceGroup.setVisibility(View.VISIBLE);
 					mTipRecord.setVisibility(View.VISIBLE);
 					mVolumnGroup.setVisibility(View.GONE);
 					cTime.cancel();
@@ -501,6 +505,7 @@ public class InputSuit extends LinearLayout {
 			mRecordLen = 0;
 			mRecordBtn.setVisibility(View.VISIBLE);
 			mRecordShowGroup.setVisibility(View.GONE);
+			mChangeVoiceGroup.setVisibility(View.GONE);
 			mTipRecord.setVisibility(View.GONE);
 		}
 	};
@@ -675,6 +680,7 @@ public class InputSuit extends LinearLayout {
 		mTipPhoto.setVisibility(View.GONE);
 		mAttachView.setVisibility(View.GONE);
 		mRecordShowGroup.setVisibility(View.GONE);
+		mChangeVoiceGroup.setVisibility(View.GONE);
 		mPhotoShowGroup.setVisibility(View.GONE);
 		mVolumnGroup.setVisibility(View.GONE);
 
