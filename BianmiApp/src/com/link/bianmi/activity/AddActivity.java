@@ -1,12 +1,15 @@
 package com.link.bianmi.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,6 +36,16 @@ public class AddActivity extends BaseFragmentActivity {
 
 		mContentEdit = (EditText) findViewById(R.id.content_edittext);
 		mContentEdit.addTextChangedListener(mTextWatcher);
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				// 弹出软键盘
+				InputMethodManager inputManager = (InputMethodManager) mContentEdit
+						.getContext().getSystemService(
+								Context.INPUT_METHOD_SERVICE);
+				inputManager.showSoftInput(mContentEdit, 0);
+			}
+		}, 500);
 	}
 
 	private MenuItem mSendItem;
