@@ -7,21 +7,62 @@ import android.view.MenuItem;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
+import com.link.bianmi.adapter.SecretDetailsAdapter;
+import com.link.bianmi.bean.Secret;
 import com.link.bianmi.widget.InputSuit;
+import com.link.bianmi.widget.RListView;
 
 public class DetailsActivity extends BaseFragmentActivity {
 
 	private InputSuit mInputSuit;
+	private RListView mListView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// ActionBar
 		getActionBar().setTitle(
 				getResources().getString(R.string.details_action_title));
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+
 		setContentView(R.layout.activity_details);
 		
+		Secret secret = (Secret)getIntent().getSerializableExtra("secret");
+		
+		// 正文内容、评论列表
+		mListView = (RListView) findViewById(R.id.rlistview);
+		SecretDetailsAdapter adapter = new SecretDetailsAdapter(this, secret);
+		mListView.setAdapter(adapter);
+		mListView.setOnTopRefreshListener(new RListView.OnTopRefreshListener() {
+			@Override
+			public void onStart() {
+			}
+
+			@Override
+			public void onEnd() {
+			}
+
+			@Override
+			public void onDoinBackground() {
+			}
+		});
+		mListView
+				.setOnBottomRefreshListener(new RListView.OnBottomRefreshListener() {
+					@Override
+					public void onStart() {
+					}
+
+					@Override
+					public void onEnd() {
+					}
+
+					@Override
+					public void onDoinBackground() {
+					}
+				});
+
+		// 输入套件
 		mInputSuit = (InputSuit) findViewById(R.id.input_suit);
 		mInputSuit.init(this, null, mInputListener);
 

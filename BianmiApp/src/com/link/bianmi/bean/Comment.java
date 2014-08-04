@@ -2,21 +2,23 @@ package com.link.bianmi.bean;
 
 import java.io.Serializable;
 
-public class Secret implements Serializable {
+/**
+ * 一条评论
+ * 
+ * @author pangfq
+ * @date 2014年8月4日 下午5:13:11
+ */
+public class Comment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private String id;
 	private String resourceId = "";
-	private String wherefrom = "";// 1、朋友：朋友，朋友的朋友 2、热门：地点 3、附近：距离
 	private String content = "";// 内容
 	private int likeCount;// 点赞数
-	private int replyCount;// 回复数
-	private String audioUrl = "";// 语音url
-	private int audioLength;// 语音长度
-	private String imageUrl = "";// 图片url
-	private long createdAt = 0;// 创建时间
-	private long repliedAt = 0;// 回复时间
+	private boolean isLiked = false;// 是否已赞
+	private String audioUrl = "";// 音频url
+	private int audioLength = 0;// 语音长度
 
 	public int getAudioLength() {
 		return audioLength;
@@ -26,20 +28,23 @@ public class Secret implements Serializable {
 		this.audioLength = audioLength;
 	}
 
+	private String imageUrl = "";// 图片url
+	private long createdAt = 0;// 创建时间
+
+	public boolean isLiked() {
+		return isLiked;
+	}
+
+	public void setLiked(boolean isLiked) {
+		this.isLiked = isLiked;
+	}
+
 	public long getCreatedAt() {
 		return createdAt;
 	}
 
 	public void setCreatedAt(long createdAt) {
 		this.createdAt = createdAt;
-	}
-
-	public long getRepliedAt() {
-		return repliedAt;
-	}
-
-	public void setRepliedAt(long repliedAt) {
-		this.repliedAt = repliedAt;
 	}
 
 	public String getResourceId() {
@@ -78,24 +83,8 @@ public class Secret implements Serializable {
 		return likeCount;
 	}
 
-	public String getWherefrom() {
-		return wherefrom;
-	}
-
-	public void setWherefrom(String wherefrom) {
-		this.wherefrom = wherefrom;
-	}
-
 	public void setLikeCount(int likeCount) {
 		this.likeCount = likeCount;
-	}
-
-	public int getReplyCount() {
-		return replyCount;
-	}
-
-	public void setReplyCount(int replyCount) {
-		this.replyCount = replyCount;
 	}
 
 	public String getAudioUrl() {

@@ -5,7 +5,6 @@ import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 

@@ -128,6 +128,13 @@ public abstract class BaseFragment extends Fragment {
 	protected void launchActivity(Class<?> cls) {
 		startActivity(new Intent(getActivity(), cls));
 	}
+	
+	protected void launchActivity(Class<?> cls, Bundle bundle) {
+		Intent intent = new Intent(mContext, cls);
+		if (bundle != null && bundle.size() > 0)
+			intent.putExtras(bundle);
+		startActivity(intent);
+	}
 
 	public void _onPause() {
 	}

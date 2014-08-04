@@ -116,8 +116,11 @@ public class SecretFragment extends TaskFragment {
 					Toast.makeText(getActivity(), "Please wait...", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				
-				launchActivity(DetailsActivity.class);
+				Bundle bundle = new Bundle();
+				Secret secret = new Secret();
+				secret.setContent("test");
+				bundle.putSerializable("secret", new Secret());
+				launchActivity(DetailsActivity.class, bundle);
 			}
 		});
 
