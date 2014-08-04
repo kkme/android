@@ -21,15 +21,18 @@ public class DetailsActivity extends BaseFragmentActivity {
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.activity_details);
-
+		
 		mInputSuit = (InputSuit) findViewById(R.id.input_suit);
 		mInputSuit.init(this, null, mInputListener);
 
 	}
 
+	private MenuItem mLoadingItem;
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.details, menu);
+		mLoadingItem = menu.getItem(1);
 		return true;
 	}
 
@@ -38,10 +41,8 @@ public class DetailsActivity extends BaseFragmentActivity {
 		if (item.getItemId() == android.R.id.home) {
 			finish();
 			return true;
-		}else if(item.getItemId() == R.id.action_like){
+		} else if (item.getItemId() == R.id.action_like) {
 			item.setIcon(R.drawable.ic_action_liked);
-		}else if(item.getItemId() == R.id.action_share){
-			
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -56,6 +57,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 		@Override
 		public void onSubmit(String photoPath, String recordPath,
 				int recordLen, String message, String userName, String UserId) {
+			mLoadingItem.setVisible(true);
 		}
 
 		@Override

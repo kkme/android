@@ -8,10 +8,12 @@
         android:showAsAction="always"
         android:title="@string/details_actionitem_title_like"/>
     <item
-        android:id="@+id/action_share"
-        android:icon="@drawable/ic_action_send_disabled"
-        android:orderInCategory="99"
+        android:id="@+id/action_loading"
+        android:actionLayout="@layout/actionbar_loading_layout"
+        android:icon="@android:color/transparent"
+        android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="@string/details_actionitem_title_share"/>
+        android:title="@string/loading"
+        android:visible="false"/>
 
 </menu>

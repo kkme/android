@@ -1,8 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/about_layout_root"
+    xmlns:myattr="http://schemas.android.com/apk/res/com.link.bianmi"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
+
+    <EditText
+        android:id="@+id/content_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:hint="匿名发表秘密" />
 
     <!-- 输入套件 -->
 
@@ -10,6 +17,7 @@
         android:id="@+id/input_suit"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        myattr:is_attach="true" />
 
 </RelativeLayout>

@@ -58,9 +58,13 @@
         <activity
             android:name="com.link.bianmi.activity.SignInActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />
+        <!-- 发表秘密 -->
         <activity
             android:name="com.link.bianmi.activity.AddActivity"
-            android:theme="@style/Theme.ActionBar.NoLogo" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.ActionBar.NoLogo"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="com.link.bianmi.activity.DetailsActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />

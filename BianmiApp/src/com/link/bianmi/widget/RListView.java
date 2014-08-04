@@ -5,6 +5,8 @@ import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
@@ -272,6 +274,10 @@ public class RListView extends RefreshableListView {
 				} else {
 					infoTextView.setText(getResources().getString(
 							R.string.no_network));
+					
+					TranslateAnimation transAnim = new TranslateAnimation(0, 0, 48, 0);
+					transAnim.setDuration(400);
+					progressWheel.startAnimation(transAnim);
 					progressWheel.setVisibility(View.GONE);
 				}
 			}
