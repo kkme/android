@@ -1,5 +1,7 @@
 package com.link.bianmi.activity;
 
+import java.util.ArrayList;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +10,7 @@ import android.view.MenuItem;
 import com.link.bianmi.R;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.adapter.SecretDetailsAdapter;
+import com.link.bianmi.bean.Comment;
 import com.link.bianmi.bean.Secret;
 import com.link.bianmi.widget.InputSuit;
 import com.link.bianmi.widget.RListView;
@@ -33,6 +36,17 @@ public class DetailsActivity extends BaseFragmentActivity {
 		// 正文内容、评论列表
 		mListView = (RListView) findViewById(R.id.rlistview);
 		SecretDetailsAdapter adapter = new SecretDetailsAdapter(this, secret);
+		ArrayList<Comment> commentsList = new ArrayList<Comment>(); 
+		for(int i = 0; i < 20; i++){
+			Comment comment = new Comment();
+			comment.setAudioLength(60);
+			comment.setAudioUrl("http://");
+			comment.setAvatarImageUrl("http://www.3gmfw.cn/qqtouxiang/UploadPic/2012-9/20129921285294.jpg");
+			comment.setContent("testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest");
+			comment.setLikeCount(300);
+			commentsList.add(comment);
+		}
+		adapter.setCommentsList(commentsList);
 		mListView.setAdapter(adapter);
 		mListView.setOnTopRefreshListener(new RListView.OnTopRefreshListener() {
 			@Override

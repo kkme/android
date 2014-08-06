@@ -14,11 +14,21 @@ public class Comment implements Serializable {
 
 	private String id;
 	private String resourceId = "";
+	private String avatarImageUrl = "";// 头像图片url
 	private String content = "";// 内容
 	private int likeCount;// 点赞数
 	private boolean isLiked = false;// 是否已赞
 	private String audioUrl = "";// 音频url
 	private int audioLength = 0;// 语音长度
+	private long createdAt = 0;// 创建时间
+
+	public String getAvatarImageUrl() {
+		return avatarImageUrl;
+	}
+
+	public void setAvatarImageUrl(String avatarImageUrl) {
+		this.avatarImageUrl = avatarImageUrl;
+	}
 
 	public int getAudioLength() {
 		return audioLength;
@@ -27,9 +37,6 @@ public class Comment implements Serializable {
 	public void setAudioLength(int audioLength) {
 		this.audioLength = audioLength;
 	}
-
-	private String imageUrl = "";// 图片url
-	private long createdAt = 0;// 创建时间
 
 	public boolean isLiked() {
 		return isLiked;
@@ -53,14 +60,6 @@ public class Comment implements Serializable {
 
 	public void setResourceId(String resourceId) {
 		this.resourceId = resourceId;
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
 	}
 
 	public String getId() {

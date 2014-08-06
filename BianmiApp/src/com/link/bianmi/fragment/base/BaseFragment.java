@@ -1,5 +1,7 @@
 package com.link.bianmi.fragment.base;
 
+import java.io.Serializable;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -124,15 +126,23 @@ public abstract class BaseFragment extends Fragment {
 		} catch (Exception ex) {
 		}
 	}
-	
+
 	protected void launchActivity(Class<?> cls) {
 		startActivity(new Intent(getActivity(), cls));
 	}
-	
+
 	protected void launchActivity(Class<?> cls, Bundle bundle) {
 		Intent intent = new Intent(mContext, cls);
 		if (bundle != null && bundle.size() > 0)
 			intent.putExtras(bundle);
+		startActivity(intent);
+	}
+
+	protected void launchActivity(Class<?> cls, String key, Serializable value) {
+		Intent intent = new Intent(mContext, cls);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(key, value);
+		intent.putExtras(bundle);
 		startActivity(intent);
 	}
 

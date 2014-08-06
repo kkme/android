@@ -96,8 +96,8 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		// 头像
 		ImageView avatarImage = ViewHolder.get(convertView,
 				R.id.avatar_imageview);
-		new ImageLoader().displayImage(avatarImage, comment.getImageUrl(),
-				R.drawable.ic_launcher, false);
+		new ImageLoader().displayImage(avatarImage, comment.getAvatarImageUrl(),
+				R.drawable.ic_comment_avatar, false);
 		// 内容
 		TextView contentText = ViewHolder.get(convertView,
 				R.id.content_textview);

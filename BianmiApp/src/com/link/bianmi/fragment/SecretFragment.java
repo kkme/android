@@ -23,6 +23,7 @@ import com.link.bianmi.asynctask.TaskResult;
 import com.link.bianmi.bean.Secret;
 import com.link.bianmi.bean.manager.SecretManager;
 import com.link.bianmi.bean.manager.SecretManager.SecretType;
+import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.fragment.base.TaskFragment;
 import com.link.bianmi.utility.SystemBarTintUtil;
 import com.link.bianmi.utility.Tools;
@@ -74,13 +75,15 @@ public class SecretFragment extends TaskFragment {
 		mListView.setOnTopRefreshListener(new RListView.OnTopRefreshListener() {
 			@Override
 			public void onStart() {
-				((MainActivity)getActivity()).getViewPagerTab().animate().translationY(-Tools.dip2px(mContext, 48));
+				((MainActivity) getActivity()).getViewPagerTab().animate()
+						.translationY(-Tools.dip2px(mContext, 48));
 				mListView.animate().translationY(-Tools.dip2px(mContext, 48));
 			}
 
 			@Override
 			public void onEnd() {
-				((MainActivity)getActivity()).getViewPagerTab().animate().translationY(0);
+				((MainActivity) getActivity()).getViewPagerTab().animate()
+						.translationY(0);
 				mListView.animate().translationY(0);
 			}
 
@@ -113,14 +116,17 @@ public class SecretFragment extends TaskFragment {
 						.findViewById(R.id.feed_item_image);
 				if (imageView.getDrawable() == null
 						|| imageView.getDrawable().getIntrinsicWidth() == 0) {
-					Toast.makeText(getActivity(), "Please wait...", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "Please wait...",
+							Toast.LENGTH_SHORT).show();
 					return;
 				}
-				Bundle bundle = new Bundle();
-				Secret secret = new Secret();
-				secret.setContent("test");
-				bundle.putSerializable("secret", new Secret());
-				launchActivity(DetailsActivity.class, bundle);
+				Object item = arg0.getItemAtPosition(position);
+				if (item instanceof Cursor) {
+					Secret secret = SecretDB.getInstance().buildEntity((Cursor) item);
+					if (secret != null) {
+						launchActivity(DetailsActivity.class, "secret", secret);
+					}
+				}
 			}
 		});
 
