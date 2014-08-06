@@ -11,9 +11,9 @@
         android:cacheColorHint="@android:color/transparent"
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
-        android:dividerHeight="8dp"
         android:fitsSystemWindows="true"
-        android:listSelector="@android:color/transparent" />
+        android:listSelector="@android:color/transparent"
+        android:layout_marginBottom="48dp" />
     <!-- 输入套件 -->
 
     <com.link.bianmi.widget.InputSuit
