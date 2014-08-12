@@ -2,6 +2,7 @@ package com.link.bianmi.activity;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -87,6 +88,68 @@ public class MainActivity extends BaseFragmentActivity {
 
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		// 退出登录
+		if (resultCode == 6666) {
+			finishActivity();
+		}
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (mImageFragment != null) {
+			menu.findItem(R.id.action_add)
+					.setVisible(!mImageFragment.canBack());
+			menu.findItem(R.id.action_more).setVisible(
+					!mImageFragment.canBack());
+		}
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.action_add) {
+			launchActivity(AddActivity.class);
+		} else if (item.getItemId() == R.id.action_more_addfriend) {
+		} else if (item.getItemId() == R.id.action_more_recommend) {
+		} else if (item.getItemId() == R.id.action_more_settings) {
+			launchActivityForResult(SettingsActivity.class, 6666);
+		}
+		return true;
+	}
+
+	long mLastBackPressedTime = 0;
+
+	@Override
+	public void onBackPressed() {
+		if (mImageFragment.canBack()) {
+			mImageFragment.goBack();
+
+		} else {
+			long cur_time = System.currentTimeMillis();
+
+			if ((cur_time - mLastBackPressedTime) < 1000) {
+				super.onBackPressed();
+			} else {
+				mLastBackPressedTime = cur_time;
+				Toast.makeText(
+						MainActivity.this,
+						getResources().getString(
+								R.string.press_back_again_to_exit),
+						Toast.LENGTH_SHORT).show();
+			}
+
+		}
+	}
+
 	public void showImageFragment(ImageView smallImageView, boolean show,
 			Secret item) {
 		// showActionbarWithTabs(!show);
@@ -143,65 +206,6 @@ public class MainActivity extends BaseFragmentActivity {
 			return titles[position];
 		}
 
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (mImageFragment != null) {
-			menu.findItem(R.id.action_add)
-					.setVisible(!mImageFragment.canBack());
-			menu.findItem(R.id.action_more).setVisible(
-					!mImageFragment.canBack());
-		}
-		return super.onPrepareOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.action_about) {
-			launchActivity(AboutActivity.class);
-			return true;
-		} else if (item.getItemId() == R.id.action_add) {
-			launchActivity(AddActivity.class);
-			return true;
-		} else if (item.getItemId() == R.id.action_exit) {
-			UserConfig.getInstance().setSessionId("");
-			UserConfig.getInstance().setIsGuest(false);
-			launchActivity(WelcomeActivity.class);
-			finishActivity();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	long mLastBackPressedTime = 0;
-
-	@Override
-	public void onBackPressed() {
-		if (mImageFragment.canBack()) {
-			mImageFragment.goBack();
-
-		} else {
-			long cur_time = System.currentTimeMillis();
-
-			if ((cur_time - mLastBackPressedTime) < 1000) {
-				super.onBackPressed();
-			} else {
-				mLastBackPressedTime = cur_time;
-				Toast.makeText(
-						MainActivity.this,
-						getResources().getString(
-								R.string.press_back_again_to_exit),
-						Toast.LENGTH_SHORT).show();
-			}
-
-		}
 	}
 
 }

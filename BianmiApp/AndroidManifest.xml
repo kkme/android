@@ -69,6 +69,9 @@
             android:name="com.link.bianmi.activity.DetailsActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />
         <activity
+            android:name="com.link.bianmi.activity.SettingsActivity"
+            android:theme="@style/Theme.ActionBar.NoLogo" />
+        <activity
             android:name="com.link.bianmi.activity.AboutActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />
     </application>

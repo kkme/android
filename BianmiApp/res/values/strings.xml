@@ -14,8 +14,9 @@
     <string name="main_actionitem_title_add">发秘密</string>
     <string name="main_actionitem_title_notice">瞧提醒</string>
     <string name="main_actionitem_title_more">看更多</string>
-    <string name="main_actionitem_title_exit">退出</string>
-    <string name="main_actionitem_title_about">关于</string>
+    <string name="main_actionitem_title_more_addfriend">添加朋友</string>
+    <string name="main_actionitem_title_more_recommend">推荐</string>
+    <string name="main_actionitem_title_more_settings">设置</string>
     <!-- 发表秘密 -->
     <string name="add_action_title">发表秘密</string>
     <string name="add_edit_hint">匿名发表秘密</string>

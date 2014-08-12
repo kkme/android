@@ -8,10 +8,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
