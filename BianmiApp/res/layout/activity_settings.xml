@@ -16,6 +16,7 @@
             android:text="设置密码" />
 
         <com.link.bianmi.widget.SwitchButton
+            android:id="@+id/settings_item_password_switchbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

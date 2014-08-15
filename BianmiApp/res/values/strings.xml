@@ -40,6 +40,8 @@
     <string name="photo_from_camera">拍照</string>
     <string name="photo_from_album">从相册选择</string>
 
+    <!-- 设置 -->
+    <string name="settings_forgot_password">忘记密码？</string>
     <!-- inputsuit -->
     <string name="inputsuit_submit">发表</string>
     <string name="inputsuit_photo_album">照片</string>
