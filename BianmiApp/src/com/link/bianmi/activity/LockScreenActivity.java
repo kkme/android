@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+import com.link.bianmi.BianmiApplication;
 import com.link.bianmi.R;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.widget.GestureLockView;
@@ -36,8 +37,9 @@ public class LockScreenActivity extends BaseFragmentActivity {
 						// 清除锁屏密码
 						// .....
 						// 重新登录
+						BianmiApplication.getInstance().signOut();
 						launchActivity(WelcomeActivity.class);
-						finish();
+						ActivitysManager.removeAllActivity();
 					}
 				});
 	}

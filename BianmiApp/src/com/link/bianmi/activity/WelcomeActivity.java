@@ -2,7 +2,6 @@ package com.link.bianmi.activity;
 
 import java.util.UUID;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -54,7 +53,7 @@ public class WelcomeActivity extends BaseFragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				launchActivityForResult(SignInActivity.class, 8888);
+				launchActivity(SignInActivity.class);
 			}
 		});
 
@@ -77,15 +76,6 @@ public class WelcomeActivity extends BaseFragmentActivity {
 		viewPager.setOffscreenPageLimit(3);
 		viewPager.setPageMargin(30);
 		viewPager.setOnPageChangeListener(mPageChangeListener);
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		// 登录成功
-		if (resultCode == 8888) {
-			finishActivity();
-		}
 	}
 
 	private PagerAdapter mPageAdapter = new PagerAdapter() {

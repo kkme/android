@@ -45,7 +45,7 @@ public class SysConfig {
 	public String getRootPath(){
 		String bianmiPath = getSDPath();
 		if (TextUtils.isEmpty(bianmiPath)) {
-			bianmiPath = MyApplication.getInstance().getFilesDir().getPath()
+			bianmiPath = BianmiApplication.getInstance().getFilesDir().getPath()
 					+ File.separator + "BianMi";
 		} else {
 			bianmiPath += File.separator + "BianMi";

@@ -1,10 +1,24 @@
 package com.link.bianmi.activity.base;
 
+import com.link.bianmi.activity.ActivitysManager;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 public class BaseFragmentActivity extends FragmentActivity {
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		ActivitysManager.onResume(this);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		ActivitysManager.onDestory(this);
+	}
 
 	protected void launchActivity(Class<?> cls) {
 		startActivity(new Intent(this, cls));
@@ -28,5 +42,5 @@ public class BaseFragmentActivity extends FragmentActivity {
 		this.setResult(resultCode);
 		this.finish();
 	}
-	
+
 }

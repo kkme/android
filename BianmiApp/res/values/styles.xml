@@ -5,6 +5,7 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme"></style>
 
+    <!-- Theme：带ActionBar的基础主题 -->
     <style name="Theme.ActionBar.Base" parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarItemBackground">@drawable/actionbar_menu_selector</item>
         <item name="android:windowBackground">@color/mxx_listview_bg</item>
@@ -17,12 +18,17 @@
         <item name="android:windowAnimationStyle">@style/Theme.Anim.Activity</item>
     </style>
 
+    <!-- Theme:显示Logo，不显示标题的ActionBar -->
     <style name="Theme.ActionBar.NoTitle" parent="@style/Theme.ActionBar.Base">
         <item name="android:actionBarStyle">@style/Theme.ActionBarStyle.NoTitle</item>
     </style>
-
+    <!-- Theme:显示标题，不显示logo的ActionBar -->
     <style name="Theme.ActionBar.NoLogo" parent="@style/Theme.ActionBar.Base">
         <item name="android:actionBarStyle">@style/Theme.ActionBarStyle.NoLogo</item>
+    </style>
+    <!-- Theme:全屏显示 -->
+    <style name="Theme.Fullscreen" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <item name="android:windowAnimationStyle">@style/Theme.Anim.Activity</item>
     </style>
 
     <style name="Theme.Anim.Activity" parent="@android:style/Animation.Activity">

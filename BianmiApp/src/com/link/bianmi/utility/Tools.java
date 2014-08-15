@@ -23,7 +23,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.link.bianmi.MyApplication;
+import com.link.bianmi.BianmiApplication;
 
 public class Tools {
 	public final static String SDCARD_MNT = "/mnt/sdcard";
@@ -192,7 +192,7 @@ public class Tools {
 		try {
 			InputStream myInput;
 			OutputStream myOutput = new FileOutputStream(strOutFileName);
-			myInput = MyApplication.getInstance().getAssets().open(filename);
+			myInput = BianmiApplication.getInstance().getAssets().open(filename);
 			byte[] buffer = new byte[1024];
 			int length = myInput.read(buffer);
 			while (length > 0) {

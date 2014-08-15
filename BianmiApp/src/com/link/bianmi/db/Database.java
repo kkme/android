@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 
-import com.link.bianmi.MyApplication;
+import com.link.bianmi.BianmiApplication;
 import com.link.bianmi.SysConfig;
 
 public class Database {
@@ -27,7 +27,7 @@ public class Database {
 
 	public static Database getInstance() {
 		if (null == mInstance) {
-			mInstance = new Database(MyApplication.getInstance());
+			mInstance = new Database(BianmiApplication.getInstance());
 		}
 		return mInstance;
 	}

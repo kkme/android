@@ -7,8 +7,8 @@ import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
+import com.link.bianmi.BianmiApplication;
 import com.link.bianmi.R;
-import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.widget.SwitchButton;
 
@@ -37,8 +37,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 				new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						UserConfig.getInstance().setSessionId("");
-						UserConfig.getInstance().setIsGuest(false);
+						BianmiApplication.getInstance().signOut();
 						launchActivity(WelcomeActivity.class);
 						finishActivityWithResult(6666);
 					}

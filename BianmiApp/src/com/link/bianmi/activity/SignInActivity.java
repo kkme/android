@@ -76,8 +76,7 @@ public class SignInActivity extends BaseFragmentActivity {
 											user.getSessionId());
 									// 进入主界面
 									launchActivity(MainActivity.class);
-									// 关闭Activity
-									finishActivityWithResult(8888);
+									ActivitysManager.removeAllActivity();
 								}
 
 								@Override

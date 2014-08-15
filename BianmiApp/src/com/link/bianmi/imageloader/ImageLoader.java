@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
-import com.link.bianmi.MyApplication;
+import com.link.bianmi.BianmiApplication;
 import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
 import com.link.bianmi.utility.ImageHelper;
@@ -39,11 +39,11 @@ public class ImageLoader{
 	private static ImageLoader getInstance(){
 		if(mInstance==null){
 			mInstance=new ImageLoader();
-			mInstance.mDefaultImage=ImageManager.drawableToBitmap(MyApplication.getInstance().getResources().getDrawable(DEFAULT_IMAGE_RESID));
+			mInstance.mDefaultImage=ImageManager.drawableToBitmap(BianmiApplication.getInstance().getResources().getDrawable(DEFAULT_IMAGE_RESID));
 			
 			
-			mInstance.mLoader=new SimpleImageLoader(MyApplication.getInstance(),"",mInstance.mDefaultImage);
-			mInstance.mLoader_temp=new SimpleImageLoader(MyApplication.getInstance(),
+			mInstance.mLoader=new SimpleImageLoader(BianmiApplication.getInstance(),"",mInstance.mDefaultImage);
+			mInstance.mLoader_temp=new SimpleImageLoader(BianmiApplication.getInstance(),
 					SysConfig.getInstance().getSecretPath(), mInstance.mDefaultImage);
 		}
 		return mInstance;
@@ -181,7 +181,7 @@ public class ImageLoader{
     	
     	int viewWidth = imageView.getWidth();
         if(viewWidth>0){
-            Bitmap bitmap =BitmapFactory.decodeResource(MyApplication.getInstance().getResources(), resId);
+            Bitmap bitmap =BitmapFactory.decodeResource(BianmiApplication.getInstance().getResources(), resId);
             if(bitmap!=null){
             	getInstance().displayCenterImage(imageView, bitmap, viewWidth);
             	if(!bitmap.isRecycled())
@@ -195,7 +195,7 @@ public class ImageLoader{
 	                imageView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 
 	                int viewWidth = imageView.getWidth();
-	                Bitmap bitmap =BitmapFactory.decodeResource(MyApplication.getInstance().getResources(), resId);
+	                Bitmap bitmap =BitmapFactory.decodeResource(BianmiApplication.getInstance().getResources(), resId);
 	                if(bitmap!=null){
 	                	getInstance().displayCenterImage(imageView, bitmap, viewWidth);
 	                	if(!bitmap.isRecycled())
