@@ -1,5 +1,8 @@
 <resources>
 
+    <!-- 开关按钮 -->
+    <dimen name="switch_button_width">50dp</dimen>
+    <dimen name="switch_button_height">30dp</dimen>
     <dimen name="dp_b1">-1dp</dimen>
     <dimen name="dp_b2">-2dp</dimen>
     <dimen name="dp_b3">-3dp</dimen>
