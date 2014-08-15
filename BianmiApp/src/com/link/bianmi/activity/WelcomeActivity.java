@@ -30,12 +30,24 @@ public class WelcomeActivity extends BaseFragmentActivity {
 	private View mSignUpBtn;
 	private View mSignInBtn;
 	private View mGuestBtn;
+	private View mTipBtn;
+
+	private ViewPager mViewPager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_welcome);
+
+		// 提示：滑动有惊喜
+		mTipBtn = findViewById(R.id.tip_button);
+		mTipBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				mViewPager.setCurrentItem(1);
+			}
+		});
 
 		// 点击注册
 		mSignUpBtn = findViewById(R.id.signup_button);
@@ -64,18 +76,19 @@ public class WelcomeActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				UserConfig.getInstance().setIsGuest(true);
-				UserConfig.getInstance().setSessionId(UUID.randomUUID().toString());
+				UserConfig.getInstance().setSessionId(
+						UUID.randomUUID().toString());
 				launchActivity(MainActivity.class);
 				finishActivity();
 			}
 		});
 
 		// ViewPager
-		ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-		viewPager.setAdapter(mPageAdapter);
-		viewPager.setOffscreenPageLimit(3);
-		viewPager.setPageMargin(30);
-		viewPager.setOnPageChangeListener(mPageChangeListener);
+		mViewPager = (ViewPager) findViewById(R.id.view_pager);
+		mViewPager.setAdapter(mPageAdapter);
+		mViewPager.setOffscreenPageLimit(3);
+		mViewPager.setPageMargin(30);
+		mViewPager.setOnPageChangeListener(mPageChangeListener);
 	}
 
 	private PagerAdapter mPageAdapter = new PagerAdapter() {
@@ -106,13 +119,37 @@ public class WelcomeActivity extends BaseFragmentActivity {
 	};
 
 	private OnPageChangeListener mPageChangeListener = new OnPageChangeListener() {
+		private int mLastPage = 0;
 
 		@Override
 		public void onPageSelected(int arg0) {
 			if (arg0 == 0) {
-				mSignUpBtn.setVisibility(View.VISIBLE);
-				mSignInBtn.setVisibility(View.VISIBLE);
-				mGuestBtn.setVisibility(View.GONE);
+				mSignUpBtn.clearAnimation();
+				mSignInBtn.clearAnimation();
+				mTipBtn.clearAnimation();
+				AlphaAnimation alphaAnim = new AlphaAnimation(1, 0);
+				alphaAnim.setDuration(200);
+				alphaAnim.setAnimationListener(new AnimationListener() {
+					@Override
+					public void onAnimationStart(Animation animation) {
+					}
+
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						AlphaAnimation alphaAnim = new AlphaAnimation(0, 1);
+						alphaAnim.setDuration(400);
+						mTipBtn.setVisibility(View.VISIBLE);
+						mTipBtn.startAnimation(alphaAnim);
+					}
+				});
+				mSignInBtn.setVisibility(View.GONE);
+				mSignInBtn.startAnimation(alphaAnim);
+				mSignUpBtn.setVisibility(View.GONE);
+				mSignUpBtn.startAnimation(alphaAnim);
 			} else if (arg0 == 1) {
 				if (mSignUpBtn.getVisibility() == View.VISIBLE)
 					return;
@@ -120,6 +157,7 @@ public class WelcomeActivity extends BaseFragmentActivity {
 				mSignUpBtn.clearAnimation();
 				mSignInBtn.clearAnimation();
 				mGuestBtn.clearAnimation();
+				mTipBtn.clearAnimation();
 				AlphaAnimation alphaAnim = new AlphaAnimation(1, 0);
 				alphaAnim.setDuration(200);
 				alphaAnim.setAnimationListener(new AnimationListener() {
@@ -141,8 +179,13 @@ public class WelcomeActivity extends BaseFragmentActivity {
 						mSignInBtn.startAnimation(alphaAnim);
 					}
 				});
-				mGuestBtn.setVisibility(View.GONE);
-				mGuestBtn.startAnimation(alphaAnim);
+				if (mLastPage == 0) {
+					mTipBtn.setVisibility(View.GONE);
+					mTipBtn.startAnimation(alphaAnim);
+				} else if (mLastPage == 2) {
+					mGuestBtn.setVisibility(View.GONE);
+					mGuestBtn.startAnimation(alphaAnim);
+				}
 
 			} else if (arg0 == 2) {
 				// 游客按钮消失，注册登录按钮出现
@@ -172,8 +215,9 @@ public class WelcomeActivity extends BaseFragmentActivity {
 				mSignInBtn.setVisibility(View.GONE);
 				mSignUpBtn.startAnimation(alphaAnim);
 				mSignInBtn.startAnimation(alphaAnim);
-
 			}
+
+			mLastPage = arg0;
 		}
 
 		@Override
