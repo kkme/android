@@ -15,6 +15,23 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class GestureLockView extends View {
+
+	public static final int SETPASS_RESULT_RECORDED = 1;// 图案已记录，请再次绘制确认
+	public static final int SETPASS_RESULT_DIFFERENT = 2;// 与刚才绘制的图案不同
+	public static final int SETPASS_RESULT_OK = 3;// 密码设置成功
+
+	public static final int CHECKPASS_PASSWORD_OK = 11;// 密码匹配成功
+	public static final int CHECKPASS_PASSWORD_ERROR = 22;// 密码匹配失败
+
+	public enum LockType {
+
+		CheckPass, // 验证密码
+		SetPass // 设置密码
+
+	}
+
+	private LockType mLockType;
+
 	private Paint paintNormal;
 	private Paint paintOnTouch;
 	private Paint paintInnerCycle;
@@ -27,15 +44,15 @@ public class GestureLockView extends View {
 	private String key;
 	private int eventX, eventY;
 	private boolean canContinue = true;
-	private boolean result;
 	private Timer timer;
-	
-	private int OUT_CYCLE_NORMAL    = Color.rgb(108, 119, 138);        // ������Բ��ɫ
-	private int OUT_CYCLE_ONTOUCH   = Color.rgb(025, 066, 103);        // ѡ����Բ��ɫ
-	private int INNER_CYCLE_ONTOUCH = Color.rgb(002, 210, 255);        // ѡ����Բ��ɫ
-	private int LINE_COLOR          = Color.argb(127, 002, 210, 255);  // ��������ɫ
-	private int ERROR_COLOR         = Color.argb(127, 255, 000, 000);  // ���Ӵ�����Ŀ��ʾ��ɫ
-	
+	private boolean result;
+
+	private int OUT_CYCLE_NORMAL = Color.rgb(108, 119, 138); // ������Բ��ɫ
+	private int OUT_CYCLE_ONTOUCH = Color.rgb(025, 066, 103); // ѡ����Բ��ɫ
+	private int INNER_CYCLE_ONTOUCH = Color.rgb(002, 210, 255); // ѡ����Բ��ɫ
+	private int LINE_COLOR = Color.argb(127, 002, 210, 255); // ��������ɫ
+	private int ERROR_COLOR = Color.argb(127, 255, 000, 000); // ���Ӵ�����Ŀ��ʾ��ɫ
+
 	public void setOnGestureFinishListener(
 			OnGestureFinishListener onGestureFinishListener) {
 		this.onGestureFinishListener = onGestureFinishListener;
@@ -45,8 +62,15 @@ public class GestureLockView extends View {
 		this.key = key;
 	}
 
+	public String getKey() {
+		return this.key;
+	}
+
 	public interface OnGestureFinishListener {
-		public void OnGestureFinish(boolean success);
+		public void onGestureFinish(int resultCode);
+
+		public void onGestureStart();
+
 	}
 
 	public GestureLockView(Context context, AttributeSet attrs, int defStyle) {
@@ -70,7 +94,8 @@ public class GestureLockView extends View {
 	}
 
 	@Override
-	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+	protected void onLayout(boolean changed, int left, int top, int right,
+			int bottom) {
 		super.onLayout(changed, left, top, right, bottom);
 		int perSize = 0;
 		if (cycles == null && (perSize = getWidth() / 6) > 0) {
@@ -93,21 +118,21 @@ public class GestureLockView extends View {
 		paintNormal.setAntiAlias(true);
 		paintNormal.setStrokeWidth(3);
 		paintNormal.setStyle(Paint.Style.STROKE);
-		
+
 		paintOnTouch = new Paint();
 		paintOnTouch.setAntiAlias(true);
 		paintOnTouch.setStrokeWidth(3);
 		paintOnTouch.setStyle(Paint.Style.STROKE);
-		
+
 		paintInnerCycle = new Paint();
 		paintInnerCycle.setAntiAlias(true);
 		paintInnerCycle.setStyle(Paint.Style.FILL);
-		
+
 		paintLines = new Paint();
 		paintLines.setAntiAlias(true);
 		paintLines.setStyle(Paint.Style.STROKE);
 		paintLines.setStrokeWidth(6);
-		
+
 		paintKeyError = new Paint();
 		paintKeyError.setAntiAlias(true);
 		paintKeyError.setStyle(Paint.Style.STROKE);
@@ -132,27 +157,30 @@ public class GestureLockView extends View {
 				paintLines.setColor(LINE_COLOR);
 			}
 			if (cycles[i].isOnTouch()) {
-				canvas.drawCircle(cycles[i].getOx(), cycles[i].getOy(), cycles[i].getR(), paintOnTouch);
+				canvas.drawCircle(cycles[i].getOx(), cycles[i].getOy(),
+						cycles[i].getR(), paintOnTouch);
 				// drawInnerBlueCycle
 				drawInnerBlueCycle(cycles[i], canvas);
 			} else {
-				canvas.drawCircle(cycles[i].getOx(), cycles[i].getOy(), cycles[i].getR(), paintNormal);
+				canvas.drawCircle(cycles[i].getOx(), cycles[i].getOy(),
+						cycles[i].getR(), paintNormal);
 			}
 		}
 		// drawLine
 		drawLine(canvas);
 	}
-	
-	
+
 	private void drawLine(Canvas canvas) {
 		linePath.reset();
 		if (linedCycles.size() > 0) {
 			for (int i = 0; i < linedCycles.size(); i++) {
 				int index = linedCycles.get(i);
 				if (i == 0) {
-					linePath.moveTo(cycles[index].getOx(), cycles[index].getOy());
+					linePath.moveTo(cycles[index].getOx(),
+							cycles[index].getOy());
 				} else {
-					linePath.lineTo(cycles[index].getOx(), cycles[index].getOy());
+					linePath.lineTo(cycles[index].getOx(),
+							cycles[index].getOy());
 				}
 			}
 			linePath.lineTo(eventX, eventY);
@@ -161,7 +189,8 @@ public class GestureLockView extends View {
 	}
 
 	private void drawInnerBlueCycle(MyCycle myCycle, Canvas canvas) {
-		canvas.drawCircle(myCycle.getOx(), myCycle.getOy(), myCycle.getR() / 3, paintInnerCycle);
+		canvas.drawCircle(myCycle.getOx(), myCycle.getOy(), myCycle.getR() / 3,
+				paintInnerCycle);
 	}
 
 	@Override
@@ -169,6 +198,10 @@ public class GestureLockView extends View {
 		if (canContinue) {
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
+				if (onGestureFinishListener != null) {
+					onGestureFinishListener.onGestureStart();
+				}
+				break;
 			case MotionEvent.ACTION_MOVE: {
 				eventX = (int) event.getX();
 				eventY = (int) event.getY();
@@ -190,10 +223,42 @@ public class GestureLockView extends View {
 				for (int i = 0; i < linedCycles.size(); i++) {
 					sb.append(linedCycles.get(i));
 				}
-				result = key.equals(sb.toString());
-				if (onGestureFinishListener != null) {
-					onGestureFinishListener.OnGestureFinish(result);
+
+				int witch = 0;
+				switch (mLockType) {
+				case SetPass: {
+
+					if (mInit) {
+						result = true;
+						key = sb.toString();
+						mInit = false;
+						witch = SETPASS_RESULT_RECORDED;
+					} else {
+						result = key.equals(sb.toString());
+						if (!result) {
+							witch = SETPASS_RESULT_DIFFERENT;
+						} else {
+							witch = SETPASS_RESULT_OK;
+						}
+					}
+					break;
 				}
+				case CheckPass: {
+
+					result = key.equals(sb.toString());
+					if (result) {
+						witch = CHECKPASS_PASSWORD_OK;
+					} else {
+						witch = CHECKPASS_PASSWORD_ERROR;
+					}
+					break;
+				}
+				}
+
+				if (onGestureFinishListener != null) {
+					onGestureFinishListener.onGestureFinish(witch);
+				}
+
 				timer = new Timer();
 				timer.schedule(new TimerTask() {
 					@Override
@@ -216,45 +281,69 @@ public class GestureLockView extends View {
 		}
 		return true;
 	}
-	
+
+	private boolean mInit = false;
+
+	public void clean() {
+		mInit = true;
+		mLockType = LockType.SetPass;
+		key = "";
+	}
+
+	public void setLockType(LockType lockType) {
+		mLockType = lockType;
+	}
+
 	class MyCycle {
-		private int ox;          // Բ�ĺ�����
-		private int oy;          // Բ��������
-		private float r;         // �뾶����
-		private Integer num;     // ������ֵ
+		private int ox; // Բ�ĺ�����
+		private int oy; // Բ��������
+		private float r; // �뾶����
+		private Integer num; // ������ֵ
 		private boolean onTouch; // false=δѡ��
+
 		public int getOx() {
 			return ox;
 		}
+
 		public void setOx(int ox) {
 			this.ox = ox;
 		}
+
 		public int getOy() {
 			return oy;
 		}
+
 		public void setOy(int oy) {
 			this.oy = oy;
 		}
+
 		public float getR() {
 			return r;
 		}
+
 		public void setR(float r) {
 			this.r = r;
 		}
+
 		public Integer getNum() {
 			return num;
 		}
+
 		public void setNum(Integer num) {
 			this.num = num;
 		}
+
 		public boolean isOnTouch() {
 			return onTouch;
 		}
+
 		public void setOnTouch(boolean onTouch) {
 			this.onTouch = onTouch;
 		}
+
 		public boolean isPointIn(int x, int y) {
-			double distance = Math.sqrt((x - ox) * (x - ox) + (y - oy) * (y - oy));
+			double distance = Math.sqrt((x - ox) * (x - ox) + (y - oy)
+					* (y - oy));
 			return distance < r;
 		}
 	}

@@ -1,10 +1,10 @@
 package com.link.bianmi.activity.base;
 
-import com.link.bianmi.activity.ActivitysManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+
+import com.link.bianmi.activity.ActivitysManager;
 
 public class BaseFragmentActivity extends FragmentActivity {
 

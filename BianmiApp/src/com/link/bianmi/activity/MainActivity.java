@@ -2,7 +2,6 @@ package com.link.bianmi.activity;
 
 import java.util.ArrayList;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -37,6 +36,11 @@ public class MainActivity extends BaseFragmentActivity {
 		if (UserConfig.getInstance().getSessionId() == null
 				|| TextUtils.isEmpty(UserConfig.getInstance().getSessionId())) {
 			launchActivity(WelcomeActivity.class);
+		}
+		// 有没有设置锁定密码
+		if (!UserConfig.getInstance().getLockPassKey().isEmpty()
+				&& !UserConfig.getInstance().getLockPassSuccess()) {
+			launchActivity(LockScreenActivity.class);
 			finishActivity();
 			return;
 		}
@@ -89,12 +93,9 @@ public class MainActivity extends BaseFragmentActivity {
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		// 退出登录
-		if (resultCode == 6666) {
-			finishActivity();
-		}
+	public void onDestroy() {
+		super.onDestroy();
+		UserConfig.getInstance().setLockPassSuccess(false);
 	}
 
 	@Override
@@ -150,6 +151,7 @@ public class MainActivity extends BaseFragmentActivity {
 		}
 	}
 
+	// ----------------------------------自定义方法
 	public void showImageFragment(ImageView smallImageView, boolean show,
 			Secret item) {
 		// showActionbarWithTabs(!show);

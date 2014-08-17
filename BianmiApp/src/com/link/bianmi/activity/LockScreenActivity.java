@@ -7,8 +7,10 @@ import android.widget.Toast;
 
 import com.link.bianmi.BianmiApplication;
 import com.link.bianmi.R;
+import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.widget.GestureLockView;
+import com.link.bianmi.widget.GestureLockView.LockType;
 import com.link.bianmi.widget.GestureLockView.OnGestureFinishListener;
 
 public class LockScreenActivity extends BaseFragmentActivity {
@@ -20,12 +22,26 @@ public class LockScreenActivity extends BaseFragmentActivity {
 
 		// 九宫格锁屏
 		GestureLockView gv = (GestureLockView) findViewById(R.id.gesturelockview);
-		gv.setKey("0124678");
+		gv.setKey(UserConfig.getInstance().getLockPassKey());
+		gv.setLockType(LockType.CheckPass);
 		gv.setOnGestureFinishListener(new OnGestureFinishListener() {
 			@Override
-			public void OnGestureFinish(boolean success) {
-				Toast.makeText(LockScreenActivity.this,
-						String.valueOf(success), Toast.LENGTH_SHORT).show();
+			public void onGestureFinish(int resultCode) {
+				if (GestureLockView.CHECKPASS_PASSWORD_ERROR == resultCode) {
+					Toast.makeText(LockScreenActivity.this, "error",
+							Toast.LENGTH_SHORT).show();
+				} else if (GestureLockView.CHECKPASS_PASSWORD_OK == resultCode) {
+					Toast.makeText(LockScreenActivity.this, "ok",
+							Toast.LENGTH_SHORT).show();
+					finishActivity();
+					UserConfig.getInstance().setLockPassSuccess(true);
+					launchActivity(MainActivity.class);
+				}
+			}
+
+			@Override
+			public void onGestureStart() {
+
 			}
 		});
 
@@ -35,13 +51,19 @@ public class LockScreenActivity extends BaseFragmentActivity {
 					@Override
 					public void onClick(View v) {
 						// 清除锁屏密码
-						// .....
+						UserConfig.getInstance().setLockPassKey("");
 						// 重新登录
 						BianmiApplication.getInstance().signOut();
 						launchActivity(WelcomeActivity.class);
 						ActivitysManager.removeAllActivity();
 					}
 				});
+	}
+
+	@Override
+	public void onBackPressed() {
+		finishActivity();
+		ActivitysManager.removeAllActivity();
 	}
 
 }

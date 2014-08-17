@@ -49,16 +49,41 @@ public class UserConfig {
 		editor.putString("bianmi.prefer.virtualdeviceid", deviceId);
 		editor.commit();
 	}
-	
-	/**设置游客登录**/
-	public void setIsGuest(boolean isGuest){
+
+	/** 设置游客登录 **/
+	public void setIsGuest(boolean isGuest) {
 		SharedPreferences.Editor editor = mPref.edit();
 		editor.putBoolean("bianmi.user.isguest", isGuest);
 		editor.commit();
 	}
-	
-	/**获取是否是游客登录**/
-	public boolean getIsGuest(){
+
+	/** 获取是否是游客登录 **/
+	public boolean getIsGuest() {
 		return mPref.getBoolean("bianmi.user.isguest", false);
 	}
+
+	/** 保存锁定密码 **/
+	public void setLockPassKey(String key) {
+		SharedPreferences.Editor editor = mPref.edit();
+		editor.putString("bianmi.user.lockpass.key", key);
+		editor.commit();
+	}
+
+	/** 获取锁定密码 **/
+	public String getLockPassKey() {
+		return mPref.getString("bianmi.user.lockpass.key", "");
+	}
+	
+	/** 保存密码输入成功 **/
+	public void setLockPassSuccess(boolean success) {
+		SharedPreferences.Editor editor = mPref.edit();
+		editor.putBoolean("bianmi.user.lockpass.key.success", success);
+		editor.commit();
+	}
+
+	/** 获取密码是否输入成功 **/
+	public boolean getLockPassSuccess() {
+		return mPref.getBoolean("bianmi.user.lockpass.key.success", false);
+	}
+
 }

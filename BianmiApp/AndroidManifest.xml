@@ -75,6 +75,9 @@
             android:name="com.link.bianmi.activity.AboutActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />
         <activity
+            android:name="com.link.bianmi.activity.SettingLockPassActivity"
+            android:theme="@style/Theme.ActionBar.NoLogo" />
+        <activity
             android:name="com.link.bianmi.activity.LockScreenActivity"
             android:theme="@style/Theme.Fullscreen" />
     </application>
