@@ -109,9 +109,17 @@ public class MainActivity extends BaseFragmentActivity {
 		return super.onPrepareOptionsMenu(menu);
 	}
 
+
+	private MenuItem mMoreItem;
+	private MenuItem mLoadingItem;
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
+		mMoreItem = menu.findItem(R.id.action_more);
+		mLoadingItem = menu.findItem(R.id.action_loading);
+		mMoreItem.setVisible(false);
+		mLoadingItem.setVisible(true);
 		return true;
 	}
 
@@ -210,4 +218,9 @@ public class MainActivity extends BaseFragmentActivity {
 
 	}
 
+	public void finishLoaded(){
+		mMoreItem.setVisible(true);
+		mLoadingItem.setVisible(false);
+	}
+	
 }

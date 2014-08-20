@@ -181,7 +181,7 @@ public class SecretFragment extends TaskFragment {
 		Cursor cursor = (Cursor) result.getValues()[1];
 		mAdapter.changeCursor(cursor);
 		mAdapter.notifyDataSetChanged();
-
+		((MainActivity)getActivity()).finishLoaded();
 	}
 
 	// -------------------------自定义方法--------------------

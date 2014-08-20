@@ -10,32 +10,40 @@
     <item
         android:id="@+id/action_notice"
         android:icon="@drawable/ic_action_notice"
-        android:orderInCategory="99"
+        android:orderInCategory="100"
         android:showAsAction="always"
         android:title="@string/main_actionitem_title_notice"/>
     <item
         android:id="@+id/action_more"
         android:icon="@drawable/ic_action_more"
-        android:orderInCategory="100"
+        android:orderInCategory="101"
         android:showAsAction="always"
         android:title="@string/main_actionitem_title_more">
         <menu>
             <item
                 android:id="@+id/action_more_addfriend"
-                android:orderInCategory="100"
+                android:orderInCategory="101"
                 android:showAsAction="ifRoom|withText"
                 android:title="@string/main_actionitem_title_more_addfriend"/>
             <item
                 android:id="@+id/action_more_recommend"
-                android:orderInCategory="100"
+                android:orderInCategory="101"
                 android:showAsAction="ifRoom|withText"
                 android:title="@string/main_actionitem_title_more_recommend"/>
             <item
                 android:id="@+id/action_more_settings"
-                android:orderInCategory="100"
+                android:orderInCategory="101"
                 android:showAsAction="ifRoom|withText"
                 android:title="@string/main_actionitem_title_more_settings"/>
         </menu>
     </item>
+    <item
+        android:id="@+id/action_loading"
+        android:actionLayout="@layout/actionbar_loading_layout"
+        android:icon="@android:color/transparent"
+        android:orderInCategory="102"
+        android:showAsAction="always"
+        android:title="@string/loading"
+        android:visible="false"/>
 
 </menu>
