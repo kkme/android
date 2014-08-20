@@ -1,11 +1,16 @@
 package com.link.bianmi.http;
 
 import java.io.IOException;
+import java.util.List;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -51,7 +56,7 @@ public class HttpClient {
 		HttpResponse httpRes = null;
 		Response res = null;
 		try {
-			if(mClient == null){
+			if (mClient == null) {
 				mClient = getHttpClient();
 			}
 			httpRes = mClient.execute(httpGet);
@@ -64,9 +69,24 @@ public class HttpClient {
 		return res;
 	}
 
-	public static Response doPost() {
+	public static Response doPost(List<NameValuePair> params, String url) {
+		HttpPost httpPost = new HttpPost(url);
 		HttpResponse httpRes = null;
-		Response res = new Response(httpRes);
+		Response res = null;
+		HttpEntity httpEntity = null;
+		try {
+			if (mClient == null) {
+				mClient = getHttpClient();
+			}
+			httpEntity = new UrlEncodedFormEntity(params, HTTP.UTF_8);
+			httpPost.setEntity(httpEntity);
+			httpRes = mClient.execute(httpPost);
+			res = new Response(httpRes);
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return res;
 	}
 }

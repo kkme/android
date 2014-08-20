@@ -196,7 +196,7 @@ public class RListView extends RefreshableListView {
 	}
 
 	private void addPullDownRefreshFeature(final Context context) {
-		setTopContentView(R.layout.rlistview_header);
+		super.setTopContentView(R.layout.rlistview_header);
 		final TextView infoTextView = (TextView) mListHeaderView
 				.findViewById(R.id.refresh_listview_header_textview);
 		final ProgressWheel progressWheel = (ProgressWheel) mListHeaderView
@@ -206,7 +206,7 @@ public class RListView extends RefreshableListView {
 		objectAnimator.setDuration(animation_duration);
 		objectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
 
-		setOnHeaderViewChangedListener(new OnHeaderViewChangedListener() {
+		super.setOnHeaderViewChangedListener(new OnHeaderViewChangedListener() {
 
 			@Override
 			public void onViewChanged(View v, boolean canUpdate) {
@@ -242,7 +242,7 @@ public class RListView extends RefreshableListView {
 	}
 
 	private void addPullUpRefreshFeature(final Context context) {
-		this.setBottomContentView(R.layout.rlistview_footer);
+		super.setBottomContentView(R.layout.rlistview_footer);
 		final TextView infoTextView = (TextView) mListBottomView
 				.findViewById(R.id.refresh_listview_header_textview);
 
@@ -252,7 +252,7 @@ public class RListView extends RefreshableListView {
 				progressWheel, "rotationY", 0f, 360f);
 		objectAnimator.setDuration(animation_duration);
 		objectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
-		setOnBottomViewChangedListener(new OnBottomViewChangedListener() {
+		super.setOnBottomViewChangedListener(new OnBottomViewChangedListener() {
 
 			@Override
 			public void onViewChanged(View v, boolean canUpdate) {

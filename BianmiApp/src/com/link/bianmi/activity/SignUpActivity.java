@@ -55,10 +55,10 @@ public class SignUpActivity extends BaseFragmentActivity {
 					mLoadingMenuItem.setVisible(true);
 					// 数据合法，则跳转登录
 					UserManager.API.signUp(phonenum, password,
-							new OnSaveListener<User>() {
+							new OnSaveListener<Boolean>() {
 
 								@Override
-								public void onSuccess(User user) {
+								public void onSuccess(Boolean success) {
 									mLoadingMenuItem.setVisible(false);
 									Bundle bundle = new Bundle();
 									bundle.putString("phonenum", phonenum);

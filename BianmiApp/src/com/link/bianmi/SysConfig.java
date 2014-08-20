@@ -31,36 +31,42 @@ public class SysConfig {
 		mProperties.setProperty("bianmi.debug", String.valueOf(true));// 是否为debug模式
 
 		// ---------------debug
-		mProperties.setProperty("bianmi.base.url.debug",
-				"http://infinigag-us.aws.af.cm");// base url
+		mProperties.setProperty("bianmi.url.base.debug",
+				"http://infinigag-us.aws.af.cm");
 		mProperties.setProperty("bianmi.dbname.debug", "bianmi_d");
+		mProperties.setProperty("bianmi.url.signup.debug", "/signup");
+		mProperties.setProperty("bianmi.url.signin.debug", "/signin");
+		mProperties.setProperty("bianmi.url.signout.debug", "/signout");
 
 		// ---------------release
-		mProperties.setProperty("bianmi.base.url.release",
-				"http://infinigag-us.aws.af.cm");// base url
 		mProperties.setProperty("bianmi.dbname.release", "bianmi_v1");
+		mProperties.setProperty("bianmi.url.base.release", "http://infinigag-us.aws.af.cm"); // Base URL
+		mProperties.setProperty("bianmi.url.signup.release", "/signup"); // 注册
+		mProperties.setProperty("bianmi.url.signin.release", "/signin"); // 登录
+		mProperties.setProperty("bianmi.url.signout.release", "/signout"); // 登出
 
 	}
-	
-	public String getRootPath(){
+
+	public String getRootPath() {
 		String bianmiPath = getSDPath();
 		if (TextUtils.isEmpty(bianmiPath)) {
-			bianmiPath = BianmiApplication.getInstance().getFilesDir().getPath()
+			bianmiPath = BianmiApplication.getInstance().getFilesDir()
+					.getPath()
 					+ File.separator + "BianMi";
 		} else {
 			bianmiPath += File.separator + "BianMi";
 		}
-		
+
 		return bianmiPath;
 	}
-	
-	public String getSecretPath(){
+
+	public String getSecretPath() {
 		String secretPath = getRootPath() + File.separator + "secret";
-		File dir=new File(secretPath);
+		File dir = new File(secretPath);
 		if (!dir.exists()) {
-			dir.mkdirs(); 
-		}	
-		
+			dir.mkdirs();
+		}
+
 		return secretPath;
 	}
 
@@ -73,14 +79,14 @@ public class SysConfig {
 		}
 		return path;
 	}
-	
-	public String getPathTemp(){
+
+	public String getPathTemp() {
 		String tempPath = getRootPath() + File.separator + "temp";
-		File dir=new File(tempPath);
+		File dir = new File(tempPath);
 		if (!dir.exists()) {
-			dir.mkdirs(); 
-		}	
-		
+			dir.mkdirs();
+		}
+
 		return tempPath;
 	}
 
@@ -100,27 +106,27 @@ public class SysConfig {
 	/** 获取BaseUrl **/
 	public String getBaseUrl() {
 		if (isDebug()) {
-			return mProperties.getProperty("bianmi.base.url.debug");
+			return mProperties.getProperty("bianmi.url.base.debug");
 		} else {
-			return mProperties.getProperty("bianmi.base.url.release");
+			return mProperties.getProperty("bianmi.url.base.release");
 		}
 	}
 
 	/** 获取Url:热门 **/
 	public String getHotUrl() {
 		if (isDebug()) {
-			return mProperties.getProperty("bianmi.base.url.debug") + "/hot/";
+			return mProperties.getProperty("bianmi.url.base.debug") + "/hot/";
 		} else {
-			return mProperties.getProperty("bianmi.base.url.release") + "/hot/";
+			return mProperties.getProperty("bianmi.url.base.release") + "/hot/";
 		}
 	}
 
 	/** 获取Url:朋友 **/
 	public String getFriendUrl() {
 		if (isDebug()) {
-			return mProperties.getProperty("bianmi.base.url.debug") + "/fresh/";
+			return mProperties.getProperty("bianmi.url.base.debug") + "/fresh/";
 		} else {
-			return mProperties.getProperty("bianmi.base.url.release")
+			return mProperties.getProperty("bianmi.url.base.release")
 					+ "/fresh/";
 		}
 	}
@@ -128,15 +134,42 @@ public class SysConfig {
 	/** 获取Url:附近 **/
 	public String getNearbyUrl() {
 		if (isDebug()) {
-			return mProperties.getProperty("bianmi.base.url.debug")
+			return mProperties.getProperty("bianmi.url.base.debug")
 					+ "/trending/";
 		} else {
-			return mProperties.getProperty("bianmi.base.url.release")
+			return mProperties.getProperty("bianmi.url.base.release")
 					+ "/trending/";
 		}
 	}
-	
-	public static class Constant{
+
+	/** 获取注册URL **/
+	public String getSignUpUrl() {
+		if (isDebug()) {
+			return mProperties.getProperty("bianmi.url.signup.debug");
+		} else {
+			return mProperties.getProperty("bianmi.url.signup.release");
+		}
+	}
+
+	/** 获取登录URL **/
+	public String getSignInUrl() {
+		if (isDebug()) {
+			return mProperties.getProperty("bianmi.url.signin.debug");
+		} else {
+			return mProperties.getProperty("bianmi.url.signin.release");
+		}
+	}
+
+	/** 获取登出URL **/
+	public String getSignOutUrl() {
+		if (isDebug()) {
+			return mProperties.getProperty("bianmi.url.signout.debug");
+		} else {
+			return mProperties.getProperty("bianmi.url.signout.release");
+		}
+	}
+
+	public static class Constant {
 		public static final String INTENT_BUNDLE_KEY_ISGUEST = "is_guest";
 	}
 

@@ -145,10 +145,10 @@ public class ListHeaderView extends ViewGroup {
 		private long mStart;
 		private float mDurationReciprocal;
 		private boolean isClose;
-		private static final int COUNT_DOWN_INTERVAL = 15;
+		private static final long COUNT_DOWN_INTERVAL = 15L;
 
 		public CloseTimer(long millisInFuture, boolean isClose) {
-			super(15L, millisInFuture);
+			super(COUNT_DOWN_INTERVAL, millisInFuture);
 			this.isClose = isClose;
 			this.mDurationReciprocal = (1.0F / (float) millisInFuture);
 		}

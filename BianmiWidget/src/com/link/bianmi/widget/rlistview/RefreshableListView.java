@@ -2,7 +2,6 @@ package com.link.bianmi.widget.rlistview;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -313,7 +312,6 @@ public class RefreshableListView extends ListView {
 			}
 			break;
 		case 1:
-
 		case 3:
 			this.mActivePointerId = -1;
 			if (this.mState == 2) {
