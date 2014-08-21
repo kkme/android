@@ -5,6 +5,7 @@ import java.util.List;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,16 +28,18 @@ import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.fragment.base.TaskFragment;
 import com.link.bianmi.utility.SystemBarTintUtil;
 import com.link.bianmi.utility.Tools;
+import com.link.bianmi.widget.ClewListView;
+import com.link.bianmi.widget.ClewListView.ActivateListener;
+import com.link.bianmi.widget.ClewListView.TouchDirectionState;
 import com.link.bianmi.widget.ListViewScrollObserver;
 import com.link.bianmi.widget.ListViewScrollObserver.OnListViewScrollListener;
-import com.link.bianmi.widget.RListView;
 import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 public class SecretFragment extends TaskFragment {
 
-	private RListView mListView;
+	private ClewListView mListView;
 	private Context mContext;
 	private SecretAdapter mAdapter;
 	/**
@@ -57,7 +60,7 @@ public class SecretFragment extends TaskFragment {
 	@Override
 	public View _onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mListView = (RListView) inflater.inflate(R.layout.rlistview, null);
+		mListView = (ClewListView) inflater.inflate(R.layout.rlistview, null);
 		initInsetTop(mListView);
 		return mListView;
 	}
@@ -71,42 +74,72 @@ public class SecretFragment extends TaskFragment {
 				mAdapter);
 		adapter.setAbsListView(mListView);
 		mListView.setAdapter(adapter);
+		mListView.setActivateListener(new ActivateListener() {
 
-		mListView.setOnTopRefreshListener(new RListView.OnTopRefreshListener() {
 			@Override
-			public void onStart() {
-				((MainActivity) getActivity()).getViewPagerTab().animate()
-						.translationY(-Tools.dip2px(mContext, 48));
-				mListView.animate().translationY(-Tools.dip2px(mContext, 48));
+			public void onTouchDirection(TouchDirectionState state) {
+
 			}
 
 			@Override
-			public void onEnd() {
+			public void onMovedIndex(int index) {
+
+			}
+
+			@Override
+			public void onHeadTouchActivate(boolean activate) {
+
+			}
+
+			@Override
+			public void onHeadActivate() {
+				((MainActivity) getActivity()).getViewPagerTab().animate()
+						.translationY(-Tools.dip2px(mContext, 48));
+				mListView.animate().translationY(-Tools.dip2px(mContext, 48));
+
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						mListView.stopHeadActiving();
+					}
+				}, 2000);
+
+			}
+
+			@Override
+			public void onFootTouchActivate(boolean activate) {
+
+			}
+
+			@Override
+			public void onFootActivate() {
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						mListView.stopFootActiving();
+					}
+				}, 2000);
+
+			}
+
+			@Override
+			public void onHeadStop() {
+
 				((MainActivity) getActivity()).getViewPagerTab().animate()
 						.translationY(0);
 				mListView.animate().translationY(0);
 			}
 
 			@Override
-			public void onDoinBackground() {
+			public void onFootStop() {
+
+				adapter.setShouldAnimateFromPosition(mListView
+						.getLastVisiblePosition());
 			}
 		});
-		mListView
-				.setOnBottomRefreshListener(new RListView.OnBottomRefreshListener() {
-					@Override
-					public void onStart() {
-					}
 
-					@Override
-					public void onEnd() {
-						adapter.setShouldAnimateFromPosition(mListView
-								.getLastVisiblePosition());
-					}
-
-					@Override
-					public void onDoinBackground() {
-					}
-				});
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -122,7 +155,8 @@ public class SecretFragment extends TaskFragment {
 				}
 				Object item = arg0.getItemAtPosition(position);
 				if (item instanceof Cursor) {
-					Secret secret = SecretDB.getInstance().buildEntity((Cursor) item);
+					Secret secret = SecretDB.getInstance().buildEntity(
+							(Cursor) item);
 					if (secret != null) {
 						launchActivity(DetailsActivity.class, "secret", secret);
 					}
@@ -181,7 +215,7 @@ public class SecretFragment extends TaskFragment {
 		Cursor cursor = (Cursor) result.getValues()[1];
 		mAdapter.changeCursor(cursor);
 		mAdapter.notifyDataSetChanged();
-		((MainActivity)getActivity()).finishLoaded();
+		((MainActivity) getActivity()).finishLoaded();
 	}
 
 	// -------------------------自定义方法--------------------
@@ -244,9 +278,9 @@ public class SecretFragment extends TaskFragment {
 		});
 	}
 
-	public void refresh() {
-		mListView.startUpdateImmediate();
-	}
+	// public void refresh() {
+	// mListView.startUpdateImmediate();
+	// }
 
 	class CardsAnimationAdapter extends AnimationAdapter {
 		private float mTranslationY = 400;

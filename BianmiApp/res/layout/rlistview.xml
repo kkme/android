@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.link.bianmi.widget.RListView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.link.bianmi.widget.ClewListView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/refreshable_listview"
    android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,4 +11,4 @@
     android:fitsSystemWindows="true" 
     android:listSelector="@android:color/transparent" >
 
-</com.link.bianmi.widget.RListView>
+</com.link.bianmi.widget.ClewListView>
