@@ -43,7 +43,6 @@
         android:icon="@android:color/transparent"
         android:orderInCategory="102"
         android:showAsAction="always"
-        android:title="@string/loading"
-        android:visible="false"/>
+        android:title="@string/loading"/>
 
 </menu>

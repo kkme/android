@@ -98,21 +98,20 @@ public class MainActivity extends BaseFragmentActivity {
 		UserConfig.getInstance().setLockPassSuccess(false);
 	}
 
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (mImageFragment != null) {
-			menu.findItem(R.id.action_add)
-					.setVisible(!mImageFragment.canBack());
-			menu.findItem(R.id.action_more).setVisible(
-					!mImageFragment.canBack());
-		}
-		return super.onPrepareOptionsMenu(menu);
-	}
-
+	// @Override
+	// public boolean onPrepareOptionsMenu(Menu menu) {
+	// if (mImageFragment != null) {
+	// menu.findItem(R.id.action_add)
+	// .setVisible(!mImageFragment.canBack());
+	// menu.findItem(R.id.action_more).setVisible(
+	// !mImageFragment.canBack());
+	// }
+	// return super.onPrepareOptionsMenu(menu);
+	// }
 
 	private MenuItem mMoreItem;
 	private MenuItem mLoadingItem;
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -139,6 +138,13 @@ public class MainActivity extends BaseFragmentActivity {
 
 	@Override
 	public void onBackPressed() {
+		// 如果正在加载，则取消加载
+		if (mLoadingItem.isVisible()) {
+			mLoadingItem.setVisible(false);
+			mMoreItem.setVisible(true);
+			return;
+		}
+
 		if (mImageFragment.canBack()) {
 			mImageFragment.goBack();
 
@@ -218,9 +224,9 @@ public class MainActivity extends BaseFragmentActivity {
 
 	}
 
-	public void finishLoaded(){
+	public void finishLoaded() {
 		mMoreItem.setVisible(true);
 		mLoadingItem.setVisible(false);
 	}
-	
+
 }
