@@ -13,12 +13,12 @@ import com.link.bianmi.adapter.SecretDetailsAdapter;
 import com.link.bianmi.bean.Comment;
 import com.link.bianmi.bean.Secret;
 import com.link.bianmi.widget.InputSuit;
-import com.link.bianmi.widget.ClewListView;
+import com.link.bianmi.widget.RListView;
 
 public class DetailsActivity extends BaseFragmentActivity {
 
 	private InputSuit mInputSuit;
-	private ClewListView mListView;
+	private RListView mListView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 		Secret secret = (Secret)getIntent().getSerializableExtra("secret");
 		
 		// 正文内容、评论列表
-		mListView = (ClewListView) findViewById(R.id.rlistview);
+		mListView = (RListView) findViewById(R.id.rlistview);
 		SecretDetailsAdapter adapter = new SecretDetailsAdapter(this, secret);
 		ArrayList<Comment> commentsList = new ArrayList<Comment>(); 
 		for(int i = 0; i < 20; i++){
@@ -48,34 +48,6 @@ public class DetailsActivity extends BaseFragmentActivity {
 		}
 		adapter.setCommentsList(commentsList);
 		mListView.setAdapter(adapter);
-//		mListView.setOnTopRefreshListener(new ClewListView.OnTopRefreshListener() {
-//			@Override
-//			public void onStart() {
-//			}
-//
-//			@Override
-//			public void onEnd() {
-//			}
-//
-//			@Override
-//			public void onDoinBackground() {
-//			}
-//		});
-//		mListView
-//				.setOnBottomRefreshListener(new ClewListView.OnBottomRefreshListener() {
-//					@Override
-//					public void onStart() {
-//					}
-//
-//					@Override
-//					public void onEnd() {
-//					}
-//
-//					@Override
-//					public void onDoinBackground() {
-//					}
-//				});
-
 		// 输入套件
 		mInputSuit = (InputSuit) findViewById(R.id.input_suit);
 		mInputSuit.init(this, null, mInputListener);

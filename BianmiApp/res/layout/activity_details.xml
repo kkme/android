@@ -4,7 +4,7 @@
 
     <!-- 正文内容、评论列表 -->
 
-    <com.link.bianmi.widget.ClewListView
+    <com.link.bianmi.widget.RListView
         android:id="@+id/rlistview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

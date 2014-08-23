@@ -28,18 +28,16 @@ import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.fragment.base.TaskFragment;
 import com.link.bianmi.utility.SystemBarTintUtil;
 import com.link.bianmi.utility.Tools;
-import com.link.bianmi.widget.ClewListView;
-import com.link.bianmi.widget.ClewListView.ActivateListener;
-import com.link.bianmi.widget.ClewListView.TouchDirectionState;
-import com.link.bianmi.widget.ListViewScrollObserver;
-import com.link.bianmi.widget.ListViewScrollObserver.OnListViewScrollListener;
+import com.link.bianmi.widget.RListView;
+import com.link.bianmi.widget.RListView.ActivateListener;
+import com.link.bianmi.widget.RListView.TouchDirectionState;
 import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 public class SecretFragment extends TaskFragment {
 
-	private ClewListView mListView;
+	private RListView mListView;
 	private Context mContext;
 	private SecretAdapter mAdapter;
 	/**
@@ -60,7 +58,7 @@ public class SecretFragment extends TaskFragment {
 	@Override
 	public View _onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mListView = (ClewListView) inflater.inflate(R.layout.rlistview, null);
+		mListView = (RListView) inflater.inflate(R.layout.rlistview, null);
 		initInsetTop(mListView);
 		return mListView;
 	}
@@ -74,6 +72,9 @@ public class SecretFragment extends TaskFragment {
 				mAdapter);
 		adapter.setAbsListView(mListView);
 		mListView.setAdapter(adapter);
+		final int max_tranY = Tools.dip2px(mContext, 48);
+		final View tabview = ((MainActivity) getActivity()).getViewPagerTab();
+
 		mListView.setActivateListener(new ActivateListener() {
 
 			@Override
@@ -138,6 +139,23 @@ public class SecretFragment extends TaskFragment {
 				adapter.setShouldAnimateFromPosition(mListView
 						.getLastVisiblePosition());
 			}
+
+			@Override
+			public void onScrollUpDownChanged(int delta, int scrollPosition,
+					boolean exact) {
+				
+				if (exact) {
+					float tran_y = tabview.getTranslationY() + delta;
+					if (tran_y >= 0) {
+						tabview.setTranslationY(0);
+					} else if (tran_y < -max_tranY) {
+						tabview.setTranslationY(-max_tranY);
+					} else {
+						tabview.setTranslationY(tran_y);
+					}
+				}
+				
+			}
 		});
 
 		mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -163,8 +181,6 @@ public class SecretFragment extends TaskFragment {
 				}
 			}
 		});
-
-		initScrollListener();
 
 		mSecretType = getSecretType();
 
@@ -249,38 +265,6 @@ public class SecretFragment extends TaskFragment {
 				config.getPixelInsetRight(), config.getPixelInsetBottom());
 		rootView.requestLayout();
 	}
-
-	private void initScrollListener() {
-		final int max_tranY = Tools.dip2px(mContext, 48);
-		final View tabview = ((MainActivity) getActivity()).getViewPagerTab();
-		ListViewScrollObserver observer = new ListViewScrollObserver(mListView);
-		observer.setOnScrollUpAndDownListener(new OnListViewScrollListener() {
-
-			@Override
-			public void onScrollUpDownChanged(int delta, int scrollPosition,
-					boolean exact) {
-				if (exact) {
-					float tran_y = tabview.getTranslationY() + delta;
-					if (tran_y >= 0) {
-						tabview.setTranslationY(0);
-					} else if (tran_y < -max_tranY) {
-						tabview.setTranslationY(-max_tranY);
-					} else {
-						tabview.setTranslationY(tran_y);
-					}
-				}
-
-			}
-
-			@Override
-			public void onScrollIdle() {
-			}
-		});
-	}
-
-	// public void refresh() {
-	// mListView.startUpdateImmediate();
-	// }
 
 	class CardsAnimationAdapter extends AnimationAdapter {
 		private float mTranslationY = 400;
