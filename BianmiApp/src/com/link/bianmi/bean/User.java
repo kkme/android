@@ -8,7 +8,6 @@ public class User implements Serializable {
 
 	public String phonenum;// 手机号
 	public String password;// 密码
-	public String sessionId;
 	public String userId;// 用户ID
 
 }

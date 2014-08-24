@@ -76,7 +76,7 @@ public class WelcomeActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				UserConfig.getInstance().setIsGuest(true);
-				UserConfig.getInstance().setSessionId(
+				UserConfig.getInstance().setUserId(
 						UUID.randomUUID().toString());
 				launchActivity(MainActivity.class);
 				finishActivity();

@@ -26,16 +26,16 @@ public class UserConfig {
 		mPref = PreferenceManager.getDefaultSharedPreferences(context);
 	}
 
-	/** 设置sessionId **/
-	public void setSessionId(String sessionId) {
+	/** 设置userId **/
+	public void setUserId(String userId) {
 		SharedPreferences.Editor editor = mPref.edit();
-		editor.putString("bianmi.user.sessionid", sessionId);
+		editor.putString("bianmi.user.userid", userId);
 		editor.commit();
 	}
 
-	/** 获取sessionId **/
+	/** 获取userId **/
 	public String getSessionId() {
-		return mPref.getString("bianmi.user.sessionid", null);
+		return mPref.getString("bianmi.user.userid", null);
 	}
 
 	/** 获取虚拟deviceid **/
@@ -73,7 +73,7 @@ public class UserConfig {
 	public String getLockPassKey() {
 		return mPref.getString("bianmi.user.lockpass.key", "");
 	}
-	
+
 	/** 保存密码输入成功 **/
 	public void setLockPassSuccess(boolean success) {
 		SharedPreferences.Editor editor = mPref.edit();

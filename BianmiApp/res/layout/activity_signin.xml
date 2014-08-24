@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="phonenum"
-            android:text="18503062935" />
+            android:text="1341823456" />
 
         <EditText
             android:id="@+id/password_edittext"
@@ -23,7 +23,7 @@
             android:layout_weight="1"
             android:hint="password"
             android:inputType="textPassword"
-            android:text="321123" />
+            android:text="123455" />
 
         <Button
             android:id="@+id/signin_button"

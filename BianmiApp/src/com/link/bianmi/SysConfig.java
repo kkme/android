@@ -32,10 +32,10 @@ public class SysConfig {
 
 		// ---------------debug
 		mProperties.setProperty("bianmi.url.base.debug",
-				"http://infinigag-us.aws.af.cm");
+				"http://121.40.88.136/bianmi/index.php/Index");
 		mProperties.setProperty("bianmi.dbname.debug", "bianmi_d");
-		mProperties.setProperty("bianmi.url.signup.debug", "/signup");
-		mProperties.setProperty("bianmi.url.signin.debug", "/signin");
+		mProperties.setProperty("bianmi.url.signup.debug", "http://121.40.88.136/bianmi/index.php/Index/Login/reg");
+		mProperties.setProperty("bianmi.url.signin.debug", "http://121.40.88.136/bianmi/index.php/Index/Login/index");
 		mProperties.setProperty("bianmi.url.signout.debug", "/signout");
 
 		// ---------------release

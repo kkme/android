@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
@@ -32,14 +31,12 @@ public class RListView extends ListView implements OnScrollListener {
 	/** 上下文 **/
 	private Context mContext;
 	/** 进度条最大进度 **/
-	private static final int MAX_PROGRESS = 100;
+	private static final int MAX_PROGRESS = 360;
 	/** 手势下拉距离比 **/
 	private final static int RATIO = 2;
 
 	/** 页眉 **/
 	private View mHeadView;
-	/** 页眉 进度条 **/
-	private ProgressBar mHeadPgs;
 	/** 页脚 提示 **/
 	private TextView mHeadTips;
 	/** 进度条有效距离(页眉离开顶部-View高度) **/
@@ -53,17 +50,13 @@ public class RListView extends ListView implements OnScrollListener {
 	/** 页眉进度条增长速率 **/
 	private static float HEADRATE = 1.5f;
 
-	/** head 进度条 **/
-	private ProgressBar mHeadActivingPgs;
-	/** foot 进度条 **/
-	private ProgressBar mFootActivingPgs;
+	private ProgressWheel mHeadProgressWheel;
 
 	/** 页脚视图 **/
 	private View mFootView;
 	/** 页脚内容视图 **/
 	private View mFootInfoView;
-	/** 页脚 进度条 **/
-	private ProgressBar mFootPgs;
+	private ProgressWheel mFootProgressWheel;
 	/** 页脚 提示 **/
 	private TextView mFootTips;
 
@@ -93,7 +86,7 @@ public class RListView extends ListView implements OnScrollListener {
 	private int mFootMaxOverscrollDistance;
 
 	/** 最大允许拖动距离 dp **/
-	private final static int MaxOverscrollDistance = 150;
+	private final static int MaxOverscrollDistance = 300;
 
 	/** 滑动方向 **/
 	private TouchDirectionState mTouchDirection = TouchDirectionState.None;
@@ -203,11 +196,10 @@ public class RListView extends ListView implements OnScrollListener {
 	private int lastTop;
 	private int scrollPosition;
 	private int lastHeight;
-	
+
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
-		
 
 		View firstChild = view.getChildAt(0);
 		if (firstChild == null) {
@@ -229,13 +221,12 @@ public class RListView extends ListView implements OnScrollListener {
 		boolean exact = skipped == 0;
 		scrollPosition += -delta;
 		if (mActivateListener != null) {
-			mActivateListener.onScrollUpDownChanged(-delta, scrollPosition, exact);
+			mActivateListener.onScrollUpDownChanged(-delta, scrollPosition,
+					exact);
 		}
 		lastFirstVisibleItem = firstVisibleItem;
 		lastTop = top;
 		lastHeight = firstChild.getHeight();
-	
-		
 
 		if (totalItemCount <= 0)
 			mFirstItemIndex = 0;
@@ -264,14 +255,11 @@ public class RListView extends ListView implements OnScrollListener {
 		// 初始化HeadView
 		mHeadView = LayoutInflater.from(mContext).inflate(
 				R.layout.rlistview_head, null);
-		mHeadActivingPgs = (ProgressBar) mHeadView
-				.findViewById(R.id.activing_progress);
-		mHeadActivingPgs.setVisibility(View.GONE);
+		mHeadProgressWheel = (ProgressWheel) mHeadView
+				.findViewById(R.id.refresh_listview_header_progresswheel);
 		mHeadView.setBackgroundResource(R.color.clewhead_bg);
-		mHeadPgs = (ProgressBar) mHeadView.findViewById(R.id.head_progress);
 		mHeadTips = (TextView) mHeadView.findViewById(R.id.head_tipsTextView);
-		mHeadPgs.setMax(MAX_PROGRESS);
-		mHeadPgs.setProgress(0);
+		mHeadProgressWheel.setProgress(0);
 		measureView(mHeadView); // 测量尺寸
 		mViewHeight = mHeadView.getMeasuredHeight();
 		addHeaderView(mHeadView, null, false);// 加入View
@@ -280,15 +268,12 @@ public class RListView extends ListView implements OnScrollListener {
 		// 初始化FootView
 		mFootView = LayoutInflater.from(mContext).inflate(
 				R.layout.rlistview_head, null);
-		mFootActivingPgs = (ProgressBar) mFootView
-				.findViewById(R.id.activing_progress);
-		mFootActivingPgs.setVisibility(View.GONE);
 		mFootInfoView = mFootView.findViewById(R.id.info_view);
 
-		mFootPgs = (ProgressBar) mFootView.findViewById(R.id.head_progress);
+		mFootProgressWheel = (ProgressWheel) mFootView
+				.findViewById(R.id.refresh_listview_header_progresswheel);
 		mFootTips = (TextView) mFootView.findViewById(R.id.head_tipsTextView);
-		mFootPgs.setMax(MAX_PROGRESS);
-		mFootPgs.setProgress(0);
+		mFootProgressWheel.setProgress(0);
 		measureView(mFootView);
 		addFooterView(mFootView, null, false);
 		setOnScrollListener(this);// ListView滚动监听
@@ -387,24 +372,24 @@ public class RListView extends ListView implements OnScrollListener {
 					int progress = 0;
 					if (intervalTop > 0) {
 						progress = (int) (HEADRATE * intervalTop);
-						progress = Math.min(progress, 100);
+						progress = Math.min(progress, MAX_PROGRESS);
 					}
 
 					// 检测是否改变触发状态
-					if (progress >= 100 && !mHeadTouchActivate) {
+					if (progress >= MAX_PROGRESS && !mHeadTouchActivate) {
 						mHeadTouchActivate = true;
 						if (mActivateListener != null)
 							mActivateListener.onHeadTouchActivate(true);
-					} else if (progress < 100 && mHeadTouchActivate) {
+					} else if (progress < MAX_PROGRESS && mHeadTouchActivate) {
 						mHeadTouchActivate = false;
 						if (mActivateListener != null)
 							mActivateListener.onHeadTouchActivate(false);
 					}
 
-					mHeadPgs.setProgress(progress);
+					mHeadProgressWheel.setProgress(progress);
 					this.setSelection(0);
 				} else {
-					mHeadPgs.setProgress(0);
+					mHeadProgressWheel.setProgress(0);
 					mHeadView.setPadding(0, -mViewHeight, 0, 0);
 				}
 			}
@@ -436,21 +421,21 @@ public class RListView extends ListView implements OnScrollListener {
 					int progress = 0;
 					if (abs_offsetFoot > 0) {
 						progress = (int) (FOOTRATE * abs_offsetFoot);
-						progress = Math.min(progress, 100);
+						progress = Math.min(progress, MAX_PROGRESS);
 					}
 
 					// 检测是否改变触发状态
-					if (progress >= 100 && !mFootTouchActivate) {
+					if (progress >= MAX_PROGRESS && !mFootTouchActivate) {
 						mFootTouchActivate = true;
 						if (mActivateListener != null)
 							mActivateListener.onFootTouchActivate(true);
-					} else if (progress < 100 && mFootTouchActivate) {
+					} else if (progress < MAX_PROGRESS && mFootTouchActivate) {
 						mFootTouchActivate = false;
 						if (mActivateListener != null)
 							mActivateListener.onFootTouchActivate(false);
 					}
 
-					mFootPgs.setProgress(progress);
+					mFootProgressWheel.setProgress(progress);
 					if (this.getAdapter() != null
 							&& this.getAdapter().getCount() > 0)
 						this.setSelection(this.getAdapter().getCount() - 1);
@@ -468,12 +453,13 @@ public class RListView extends ListView implements OnScrollListener {
 	public void doActionUp(MotionEvent event) {
 		if (!mIsActivingHead && mHeadView.getPaddingTop() != -mViewHeight) { // Head没有恢复到位
 			bounceHead();
+			startHeadAnim(mContext);
 		} else if (mFootInfoView.getPaddingTop() != 0) { // Foot 没有恢复到位
 			bounceFoot();
+			startFootAnim(mContext);
 		}
 
 		internetEnabled = NetworkUtil.isNetworkAvailable(getContext());
-		addPullDownRefreshFeature(mContext);
 	}
 
 	/** 反弹参数 **/
@@ -504,10 +490,8 @@ public class RListView extends ListView implements OnScrollListener {
 	/** 反弹Header **/
 	private void bounceHead() {
 
-		if (mHeadPgs.getProgress() >= MAX_PROGRESS) {
+		if (mHeadProgressWheel.progress >= MAX_PROGRESS) {
 			mIsActivingHead = true;
-			mHeadActivingPgs.setVisibility(View.VISIBLE);
-			mHeadPgs.setVisibility(View.GONE);
 		} else {
 			mIsActivingHead = false;
 		}
@@ -525,7 +509,7 @@ public class RListView extends ListView implements OnScrollListener {
 		final float f_pgsFinalSetp = f_position / f_div; // 进度条为0时的setp(当position=0时进度条为:
 															// f_position-
 															// curStep*f_div=0）
-		final int f_pgsLast = mHeadPgs.getProgress(); // 进度条当前位置
+		final int f_pgsLast = mHeadProgressWheel.progress; // 进度条当前位置
 
 		mHeadAnimator = ValueAnimator.ofInt(0, f_step).setDuration(f_step);
 		mHeadAnimator.addUpdateListener(new AnimatorUpdateListener() {
@@ -543,10 +527,15 @@ public class RListView extends ListView implements OnScrollListener {
 					buttom = top;
 				}
 				// 进度条定位
-				if (!mIsActivingHead && mHeadPgs.getProgress() > 0) {
+				if (!mIsActivingHead && mHeadProgressWheel.progress > 0) {
 					int prg = (int) (Math.max(0, f_pgsFinalSetp - curStep)
 							* f_pgsLast / f_pgsFinalSetp);
-					mHeadPgs.setProgress(prg);
+					mHeadProgressWheel.setProgress(prg);
+				}
+				if (!mIsActivingHead && mHeadProgressWheel.progress > 0) {
+					int prg = (int) (Math.max(0, f_pgsFinalSetp - curStep)
+							* f_pgsLast / f_pgsFinalSetp);
+					mHeadProgressWheel.setProgress(prg);
 				}
 				mHeadView.setPadding(0, top, 0, buttom);
 			}
@@ -567,7 +556,6 @@ public class RListView extends ListView implements OnScrollListener {
 				mIsHeadAnimator = false;
 				mIsHeadRecord = false;
 				mHeadTouchActivate = false;
-				mHeadPgs.setProgress(0);
 				if (mIsActivingHead) {
 					mHeadView.setPadding(0, 0, 0, 0);
 				} else {
@@ -589,10 +577,8 @@ public class RListView extends ListView implements OnScrollListener {
 	/** 反弹Footer **/
 	private void bounceFoot() {
 
-		if (mFootPgs.getProgress() >= MAX_PROGRESS) {
+		if (mFootProgressWheel.progress >= MAX_PROGRESS) {
 			mIsActivingFoot = true;
-			mFootActivingPgs.setVisibility(View.VISIBLE);
-			mFootPgs.setVisibility(View.GONE);
 		} else {
 			mIsActivingFoot = false;
 		}
@@ -603,7 +589,7 @@ public class RListView extends ListView implements OnScrollListener {
 
 		final float f_div = (float) f_position / f_step;// 回弹空间间隔
 
-		final int f_pgsLast = mFootPgs.getProgress(); // 进度条当前位置
+		final int f_pgsLast = mFootProgressWheel.progress;// 进度条当前位置
 
 		mFootAnimator = ValueAnimator.ofInt(0, f_step).setDuration(f_step);
 		mFootAnimator.addUpdateListener(new AnimatorUpdateListener() {
@@ -616,10 +602,17 @@ public class RListView extends ListView implements OnScrollListener {
 				int buttom = top;
 
 				// 进度条定位
-				if (!mIsActivingFoot && mFootPgs.getProgress() > 0) {
+				if (!mIsActivingFoot && mFootProgressWheel.progress > 0) {
 					int prg = Math.max(0, f_step - curStep) * f_pgsLast
 							/ f_step;
-					mFootPgs.setProgress(prg);
+					mFootProgressWheel.setProgress(prg);
+				}
+
+				// 进度条定位
+				if (!mIsActivingFoot && mFootProgressWheel.progress > 0) {
+					int prg = Math.max(0, f_step - curStep) * f_pgsLast
+							/ f_step;
+					mFootProgressWheel.setProgress(prg);
 				}
 				// 设置位置
 				mFootInfoView.setPadding(0, top, 0, buttom);
@@ -641,7 +634,6 @@ public class RListView extends ListView implements OnScrollListener {
 				mIsFootAnimator = false;
 				mIsFootRecord = false;
 				mFootTouchActivate = false;
-				mFootPgs.setProgress(0);
 				mFootInfoView.setPadding(0, 0, 0, 0);
 				if (mIsActivingFoot && mActivateListener != null)
 					mActivateListener.onFootActivate();
@@ -663,12 +655,11 @@ public class RListView extends ListView implements OnScrollListener {
 	/** 触发Head activing状态 **/
 	public void startHeadActiving(int duration) {
 		mIsActivingHead = true;
-		mHeadActivingPgs.setVisibility(View.VISIBLE);
-		mHeadPgs.setVisibility(View.GONE);
+		mHeadProgressWheel.setVisibility(View.GONE);
 		mIsHeadAnimator = false;
 		mIsHeadRecord = false;
 		mHeadTouchActivate = false;
-		mHeadPgs.setProgress(0);
+		mHeadProgressWheel.setProgress(0);
 		if (duration <= 0) {
 			mHeadView.setPadding(0, 0, 0, 0);
 			if (mIsActivingHead && mActivateListener != null)
@@ -711,12 +702,9 @@ public class RListView extends ListView implements OnScrollListener {
 	/** 触发Foot activing状态 **/
 	public void startFootActiving() {
 		mIsActivingFoot = true;
-		mFootActivingPgs.setVisibility(View.VISIBLE);
-		mFootPgs.setVisibility(View.GONE);
 		mIsFootAnimator = false;
 		mIsFootRecord = false;
 		mFootTouchActivate = false;
-		mFootPgs.setProgress(0);
 		mFootInfoView.setPadding(0, 0, 0, 0);
 		if (mIsActivingFoot && mActivateListener != null)
 			mActivateListener.onFootActivate();
@@ -731,10 +719,9 @@ public class RListView extends ListView implements OnScrollListener {
 			mFootAnimator = null;
 		}
 		mIsActivingFoot = false;
-		mFootPgs.setProgress(0);
+		mFootProgressWheel.setProgress(0);
 		mFootInfoView.setPadding(0, 0, 0, 0);
-		mFootActivingPgs.setVisibility(View.GONE);
-		mFootPgs.setVisibility(View.VISIBLE);
+		mFootProgressWheel.setVisibility(View.VISIBLE);
 
 		mActivateListener.onFootStop();
 	}
@@ -778,8 +765,7 @@ public class RListView extends ListView implements OnScrollListener {
 
 				@Override
 				public void onAnimationEnd(Animator animation) {
-					mHeadActivingPgs.setVisibility(View.GONE);
-					mHeadPgs.setVisibility(View.VISIBLE);
+					mHeadProgressWheel.setVisibility(View.VISIBLE);
 					mHeadView.setPadding(0, -mViewHeight, 0, 0);
 
 				}
@@ -902,18 +888,23 @@ public class RListView extends ListView implements OnScrollListener {
 		public void onHeadStop();
 
 		public void onFootStop();
-		
-		public void onScrollUpDownChanged(int delta, int scrollPosition, boolean exact);
+
+		public void onScrollUpDownChanged(int delta, int scrollPosition,
+				boolean exact);
 
 	}
 
-	private void addPullDownRefreshFeature(final Context context) {
-		final TextView infoTextView = (TextView) mHeadView
-				.findViewById(R.id.refresh_listview_header_textview);
-		final ProgressWheel progressWheel = (ProgressWheel) mHeadView
-				.findViewById(R.id.refresh_listview_header_progresswheel);
+	private void startFootAnim(final Context context) {
 		final ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(
-				progressWheel, "rotationY", 0f, 360f);
+				mFootProgressWheel, "rotationY", 0f, 360f);
+		objectAnimator.setDuration(1000);
+		objectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
+		objectAnimator.start();
+	}
+
+	private void startHeadAnim(final Context context) {
+		final ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(
+				mHeadProgressWheel, "rotationY", 0f, 360f);
 		objectAnimator.setDuration(1000);
 		objectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
 		objectAnimator.start();

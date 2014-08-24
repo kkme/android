@@ -72,8 +72,8 @@ public class SignInActivity extends BaseFragmentActivity {
 								public void onSuccess(User user) {
 									mLoadingMenuItem.setVisible(false);
 									// 保存sessionId
-									UserConfig.getInstance().setSessionId(
-											user.sessionId);
+									UserConfig.getInstance().setUserId(
+											user.userId);
 									// 进入主界面
 									launchActivity(MainActivity.class);
 									ActivitysManager.removeAllActivity();

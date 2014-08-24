@@ -20,7 +20,7 @@ public class BianmiApplication extends Application {
 	 * 退出登录
 	 */
 	public void signOut() {
-		UserConfig.getInstance().setSessionId("");
+		UserConfig.getInstance().setUserId("");
 		UserConfig.getInstance().setIsGuest(false);
 	}
 
