@@ -13,9 +13,9 @@ import android.widget.Toast;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
+import com.link.bianmi.asynctask.listener.OnSelectTaskListener;
 import com.link.bianmi.bean.User;
 import com.link.bianmi.bean.manager.UserManager;
-import com.link.bianmi.bean.manager.UserManager.OnSaveListener;
 import com.link.bianmi.utility.DataCheckUtil;
 
 /**
@@ -66,7 +66,15 @@ public class SignInActivity extends BaseFragmentActivity {
 					mLoadingMenuItem.setVisible(true);
 					// 数据合法，则进行联网登录
 					UserManager.API.signIn(phonenum, password,
-							new OnSaveListener<User>() {
+							new OnSelectTaskListener<User>() {
+
+								@Override
+								public void onFailure(int code, String msg) {
+									mLoadingMenuItem.setVisible(false);
+									Toast.makeText(getApplicationContext(),
+											"SignIn Error!", Toast.LENGTH_SHORT)
+											.show();
+								}
 
 								@Override
 								public void onSuccess(User user) {
@@ -77,14 +85,6 @@ public class SignInActivity extends BaseFragmentActivity {
 									// 进入主界面
 									launchActivity(MainActivity.class);
 									ActivitysManager.removeAllActivity();
-								}
-
-								@Override
-								public void onFailure() {
-									mLoadingMenuItem.setVisible(false);
-									Toast.makeText(getApplicationContext(),
-											"SignIn Error!", Toast.LENGTH_SHORT)
-											.show();
 								}
 							});
 				}

@@ -11,9 +11,8 @@ import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
-import com.link.bianmi.bean.User;
+import com.link.bianmi.asynctask.listener.OnInsertTaskListener;
 import com.link.bianmi.bean.manager.UserManager;
-import com.link.bianmi.bean.manager.UserManager.OnSaveListener;
 import com.link.bianmi.utility.DataCheckUtil;
 
 /**
@@ -54,11 +53,11 @@ public class SignUpActivity extends BaseFragmentActivity {
 						phonenum, password, passwordConfirm)) {
 					mLoadingMenuItem.setVisible(true);
 					// 数据合法，则跳转登录
-					UserManager.API.signUp(phonenum, password,
-							new OnSaveListener<Boolean>() {
+					UserManager.API.signUp(phonenum, passwordConfirm,
+							new OnInsertTaskListener() {
 
 								@Override
-								public void onSuccess(Boolean success) {
+								public void onSuccess() {
 									mLoadingMenuItem.setVisible(false);
 									Bundle bundle = new Bundle();
 									bundle.putString("phonenum", phonenum);
@@ -67,7 +66,7 @@ public class SignUpActivity extends BaseFragmentActivity {
 								}
 
 								@Override
-								public void onFailure() {
+								public void onFailure(int code, String msg) {
 									mLoadingMenuItem.setVisible(false);
 									Toast.makeText(getApplicationContext(),
 											"SignUp Error!", Toast.LENGTH_SHORT)

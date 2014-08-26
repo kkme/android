@@ -9,6 +9,10 @@ import org.json.JSONObject;
 import android.os.AsyncTask;
 
 import com.link.bianmi.SysConfig;
+import com.link.bianmi.asynctask.TaskParams;
+import com.link.bianmi.asynctask.listener.ITaskListener;
+import com.link.bianmi.asynctask.listener.OnInsertTaskListener;
+import com.link.bianmi.asynctask.listener.OnSelectTaskListener;
 import com.link.bianmi.bean.User;
 import com.link.bianmi.bean.manager.UserManager.API.TaskType;
 import com.link.bianmi.http.HttpClient;
@@ -27,38 +31,40 @@ public class UserManager {
 
 		/** 注册 **/
 		public static void signUp(String phonenum, String password,
-				OnSaveListener<Boolean> listener) {
-			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+				OnInsertTaskListener listener) {
+			ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
 			NameValuePair phonenumParam = new BasicNameValuePair("phonenum",
 					phonenum);
 			NameValuePair passwordParam = new BasicNameValuePair("password",
 					password);
-			params.add(phonenumParam);
-			params.add(passwordParam);
-			Response response = HttpClient.doPost(params, SysConfig
+			requestParams.add(phonenumParam);
+			requestParams.add(passwordParam);
+			Response response = HttpClient.doPost(requestParams, SysConfig
 					.getInstance().getSignUpUrl());
-			boolean success = false;
 			if (true)
-				success = true;
-			listener.onSuccess(success);
+				listener.onFailure(404, "注册失败!");
+			listener.onSuccess();
 		}
-
-		static ArrayList<NameValuePair> params = null;
 
 		/** 登录 **/
 		@SuppressWarnings("unchecked")
 		public static void signIn(String phonenum, String password,
-				OnSaveListener<User> listener) {
-			params = new ArrayList<NameValuePair>();
+				OnSelectTaskListener<User> listener) {
+			TaskParams taskParams = new TaskParams();
+			ArrayList<NameValuePair> requestParams = null;
+			requestParams = new ArrayList<NameValuePair>();
 			NameValuePair phonenumParam = new BasicNameValuePair("phone",
 					phonenum);
 			NameValuePair passwordParam = new BasicNameValuePair("psd",
 					password);
-			params.add(phonenumParam);
-			params.add(passwordParam);
-			UserAsyncTask userTask = new UserAsyncTask(TaskType.TYPE_SIGNIN);
-			userTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
-			// Response response = HttpClient.doPost(params, SysConfig
+			requestParams.add(phonenumParam);
+			requestParams.add(passwordParam);
+			taskParams.put("request", requestParams);
+			UserAsyncTask userTask = new UserAsyncTask(TaskType.TYPE_SIGNIN,
+					listener);
+			userTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+					taskParams);
+			// Response response = HttpClient.doPost(requestParams, SysConfig
 			// .getInstance().getSignInUrl());
 			// if("18503062935".equals(phonenum) && "321123".equals(password)){
 			// User user = new User();
@@ -71,12 +77,13 @@ public class UserManager {
 		}
 
 		/** 登出 **/
-		public static void singOut(User user, OnSaveListener<Boolean> listener) {
-			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		public static void singOut(User user,
+				OnSelectTaskListener<Boolean> listener) {
+			ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
 			NameValuePair phonenumParam = new BasicNameValuePair("userid",
 					user.userId);
-			params.add(phonenumParam);
-			// Response response = HttpClient.doPost(params, SysConfig
+			requestParams.add(phonenumParam);
+			// Response response = HttpClient.doPost(requestParams, SysConfig
 			// .getInstance().getSignOutUrl());
 			// boolean success = false;
 			// if (true)
@@ -90,20 +97,14 @@ public class UserManager {
 
 	}
 
-	public interface OnSaveListener<T> {
-
-		void onSuccess(T t);
-
-		void onFailure();
-	}
-
-	static class UserAsyncTask extends
-			AsyncTask<ArrayList<NameValuePair>, Void, Void> {
+	static class UserAsyncTask extends AsyncTask<TaskParams, Void, Void> {
 
 		TaskType taskType;
+		ITaskListener listener;
 
-		public UserAsyncTask(TaskType taskType) {
+		public UserAsyncTask(TaskType taskType, ITaskListener listener) {
 			this.taskType = taskType;
+			this.listener = listener;
 		}
 
 		@Override
@@ -112,12 +113,14 @@ public class UserManager {
 		}
 
 		@Override
-		protected Void doInBackground(ArrayList<NameValuePair>... arg0) {
+		protected Void doInBackground(TaskParams... params) {
 			// 注册
 			if (taskType == TaskType.TYPE_SIGNUP) {
 				// 登录
 			} else if (taskType == TaskType.TYPE_SIGNIN) {
-				Response response = HttpClient.doPost(arg0[0], SysConfig
+				ArrayList<NameValuePair> requestParam = (ArrayList<NameValuePair>) params[0]
+						.get("request");
+				Response response = HttpClient.doPost(requestParam, SysConfig
 						.getInstance().getSignInUrl());
 				try {
 					JSONObject json = response.asJSONObject();
