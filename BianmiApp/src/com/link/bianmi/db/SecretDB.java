@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
-import com.link.bianmi.bean.Secret;
+import com.link.bianmi.entity.Secret;
 
 public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 

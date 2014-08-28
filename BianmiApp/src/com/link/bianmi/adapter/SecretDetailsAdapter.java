@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
-import com.link.bianmi.bean.Comment;
-import com.link.bianmi.bean.Secret;
+import com.link.bianmi.entity.Comment;
+import com.link.bianmi.entity.Secret;
 import com.link.bianmi.imageloader.ImageLoader;
 import com.link.bianmi.utility.ViewHolder;
 import com.link.bianmi.widget.AudioButton;

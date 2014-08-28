@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.link.bianmi.R;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.asynctask.listener.OnInsertTaskListener;
-import com.link.bianmi.bean.manager.UserManager;
+import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.utility.DataCheckUtil;
 
 /**

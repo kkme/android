@@ -14,8 +14,8 @@ import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.asynctask.listener.OnSelectTaskListener;
-import com.link.bianmi.bean.User;
-import com.link.bianmi.bean.manager.UserManager;
+import com.link.bianmi.entity.User;
+import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.utility.DataCheckUtil;
 
 /**
@@ -71,15 +71,17 @@ public class SignInActivity extends BaseFragmentActivity {
 								@Override
 								public void onFailure(int code, String msg) {
 									mLoadingMenuItem.setVisible(false);
-									Toast.makeText(getApplicationContext(),
-											"SignIn Error!", Toast.LENGTH_SHORT)
-											.show();
+									Toast.makeText(
+											getApplicationContext(),
+											"SignIn Error!" + "code:" + code
+													+ ",msg:" + msg,
+											Toast.LENGTH_SHORT).show();
 								}
 
 								@Override
 								public void onSuccess(User user) {
 									mLoadingMenuItem.setVisible(false);
-									// 保存sessionId
+									// 保存userId
 									UserConfig.getInstance().setUserId(
 											user.userId);
 									// 进入主界面

@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
-import com.link.bianmi.bean.Secret;
+import com.link.bianmi.entity.Secret;
 import com.link.bianmi.fragment.FriendFragment;
 import com.link.bianmi.fragment.HotFragment;
 import com.link.bianmi.fragment.ImageFragment;
@@ -33,8 +33,8 @@ public class MainActivity extends BaseFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// 没有登录
-		if (UserConfig.getInstance().getSessionId() == null
-				|| TextUtils.isEmpty(UserConfig.getInstance().getSessionId())) {
+		if (UserConfig.getInstance().getUserId() == null
+				|| TextUtils.isEmpty(UserConfig.getInstance().getUserId())) {
 			launchActivity(WelcomeActivity.class);
 		}
 		// 有没有设置锁定密码

@@ -36,7 +36,7 @@ public class SysConfig {
 		mProperties.setProperty("bianmi.dbname.debug", "bianmi_d");
 		mProperties.setProperty("bianmi.url.signup.debug", "http://121.40.88.136/bianmi/index.php/Index/Login/reg");
 		mProperties.setProperty("bianmi.url.signin.debug", "http://121.40.88.136/bianmi/index.php/Index/Login/index");
-		mProperties.setProperty("bianmi.url.signout.debug", "/signout");
+		mProperties.setProperty("bianmi.url.signout.debug", "http://121.40.88.136/bianmi/index.php/Index/Login/signout");
 
 		// ---------------release
 		mProperties.setProperty("bianmi.dbname.release", "bianmi_v1");

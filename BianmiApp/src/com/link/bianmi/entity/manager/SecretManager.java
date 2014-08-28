@@ -1,4 +1,4 @@
-package com.link.bianmi.bean.manager;
+package com.link.bianmi.entity.manager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.link.bianmi.SysConfig;
-import com.link.bianmi.bean.Secret;
-import com.link.bianmi.bean.Tmodel;
 import com.link.bianmi.db.Database;
 import com.link.bianmi.db.SecretDB;
+import com.link.bianmi.entity.Secret;
+import com.link.bianmi.entity.Tmodel;
 import com.link.bianmi.http.HttpClient;
 import com.link.bianmi.http.Response;
 import com.link.bianmi.http.ResponseException;

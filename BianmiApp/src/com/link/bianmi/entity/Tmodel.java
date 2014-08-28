@@ -1,4 +1,4 @@
-package com.link.bianmi.bean;
+package com.link.bianmi.entity;
 
 import org.json.JSONObject;
 

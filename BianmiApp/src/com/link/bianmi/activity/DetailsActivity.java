@@ -10,8 +10,8 @@ import android.view.MenuItem;
 import com.link.bianmi.R;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.adapter.SecretDetailsAdapter;
-import com.link.bianmi.bean.Comment;
-import com.link.bianmi.bean.Secret;
+import com.link.bianmi.entity.Comment;
+import com.link.bianmi.entity.Secret;
 import com.link.bianmi.widget.InputSuit;
 import com.link.bianmi.widget.RListView;
 

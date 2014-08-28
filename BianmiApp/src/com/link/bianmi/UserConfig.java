@@ -34,7 +34,7 @@ public class UserConfig {
 	}
 
 	/** 获取userId **/
-	public String getSessionId() {
+	public String getUserId() {
 		return mPref.getString("bianmi.user.userid", null);
 	}
 

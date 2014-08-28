@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.MainActivity;
-import com.link.bianmi.bean.Secret;
+import com.link.bianmi.entity.Secret;
 import com.link.bianmi.utility.BitmapUtil;
 import com.link.bianmi.utility.FileUtil;
 import com.link.bianmi.utility.SystemBarTintUtil;

@@ -8,11 +8,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Toast;
 
 import com.link.bianmi.BianmiApplication;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
+import com.link.bianmi.asynctask.listener.OnUpdateTaskListener;
+import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.widget.SwitchButton;
 
 public class SettingsActivity extends BaseFragmentActivity {
@@ -55,9 +58,23 @@ public class SettingsActivity extends BaseFragmentActivity {
 				new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						BianmiApplication.getInstance().signOut();
-						launchActivity(WelcomeActivity.class);
-						ActivitysManager.removeAllActivity();
+						UserManager.API.signOut(new OnUpdateTaskListener() {
+							@Override
+							public void onSuccess() {
+								BianmiApplication.getInstance().signOut();
+								launchActivity(WelcomeActivity.class);
+								ActivitysManager.removeAllActivity();
+							}
+
+							@Override
+							public void onFailure(int code, String msg) {
+								Toast.makeText(
+										SettingsActivity.this,
+										"SignOut Error!" + "code:" + code
+												+ ",msg:" + msg,
+										Toast.LENGTH_SHORT).show();
+							}
+						});
 					}
 				});
 	}
