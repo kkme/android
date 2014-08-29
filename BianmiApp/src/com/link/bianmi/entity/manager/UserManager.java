@@ -21,33 +21,32 @@ import com.link.bianmi.entity.Result;
 import com.link.bianmi.entity.User;
 import com.link.bianmi.entity.builder.ResultBuilder;
 import com.link.bianmi.entity.builder.UserBuilder;
-import com.link.bianmi.entity.manager.UserManager.API.TaskType;
 import com.link.bianmi.http.HttpClient;
 import com.link.bianmi.http.Response;
 import com.link.bianmi.http.ResponseException;
 
 public class UserManager {
 
+	enum TaskType {
+		TYPE_SIGNUP, // 注册
+		TYPE_SIGNIN, // 登录
+		TYPE_SIGNOUT, // 登出
+	}
+
 	public static class API {
 
-		enum TaskType {
-			TYPE_SIGNUP, // 注册
-			TYPE_SIGNIN, // 登录
-			TYPE_SIGNOUT, // 登出
-		}
-
 		/** 登录 **/
-		public static void signIn(String phonenum, String password,
+		public static void signIn(String phonenum, String passmd5,
 				OnSelectTaskListener<User> listener) {
 			TaskParams taskParams = new TaskParams();
 			ArrayList<NameValuePair> requestParams = null;
 			requestParams = new ArrayList<NameValuePair>();
-			NameValuePair phonenumParam = new BasicNameValuePair("phone",
+			NameValuePair phonenumParam = new BasicNameValuePair("phonenum",
 					phonenum);
-			NameValuePair passwordParam = new BasicNameValuePair("psd",
-					password);
+			NameValuePair passmd5Param = new BasicNameValuePair("passmd5",
+					passmd5);
 			requestParams.add(phonenumParam);
-			requestParams.add(passwordParam);
+			requestParams.add(passmd5Param);
 			taskParams.put("request", requestParams);
 			UserAsyncTask userTask = new UserAsyncTask(TaskType.TYPE_SIGNIN,
 					listener);
@@ -73,16 +72,16 @@ public class UserManager {
 		}
 
 		/** 注册 **/
-		public static void signUp(String phonenum, String password,
+		public static void signUp(String phonenum, String passmd5,
 				OnInsertTaskListener listener) {
 			TaskParams taskParams = new TaskParams();
 			ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
 			NameValuePair phonenumParam = new BasicNameValuePair("phonenum",
 					phonenum);
-			NameValuePair passwordParam = new BasicNameValuePair("password",
-					password);
+			NameValuePair passmd5Param = new BasicNameValuePair("passmd5",
+					passmd5);
 			requestParams.add(phonenumParam);
-			requestParams.add(passwordParam);
+			requestParams.add(passmd5Param);
 			taskParams.put("request", requestParams);
 			UserAsyncTask userTask = new UserAsyncTask(TaskType.TYPE_SIGNUP,
 					listener);

@@ -36,6 +36,7 @@ public class MainActivity extends BaseFragmentActivity {
 		if (UserConfig.getInstance().getUserId() == null
 				|| TextUtils.isEmpty(UserConfig.getInstance().getUserId())) {
 			launchActivity(WelcomeActivity.class);
+			finishActivity();
 		}
 		// 有没有设置锁定密码
 		if (!UserConfig.getInstance().getLockPassKey().isEmpty()

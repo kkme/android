@@ -96,8 +96,9 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		// 头像
 		ImageView avatarImage = ViewHolder.get(convertView,
 				R.id.avatar_imageview);
-		new ImageLoader().displayImage(avatarImage, comment.getAvatarImageUrl(),
-				R.drawable.ic_comment_avatar, false);
+		new ImageLoader().displayImage(avatarImage,
+				comment.getAvatarImageUrl(), R.drawable.ic_comment_avatar,
+				false);
 		// 内容
 		TextView contentText = ViewHolder.get(convertView,
 				R.id.content_textview);
@@ -122,27 +123,27 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		// 内容
 		TextView contentText = ViewHolder.get(convertView,
 				R.id.content_textview);
-		contentText.setText(secret.getContent());
+		contentText.setText(secret.content);
 		// 语音
 		AudioButton audioButton = ViewHolder
 				.get(convertView, R.id.audio_button);
-		audioButton.setAudioFile(secret.getAudioUrl(), secret.getAudioLength());
+		audioButton.setAudioFile(secret.audioUrl, secret.audioLength);
 		// 点赞数
 		TextView likedText = ViewHolder.get(convertView, R.id.liked_textview);
-		likedText.setText(String.valueOf(secret.getLikeCount()));
+		likedText.setText(String.valueOf(secret.likes));
 		// 评论数
 		TextView commentText = ViewHolder.get(convertView,
 				R.id.wherefrom_textview);
-		commentText.setText(String.valueOf(secret.getReplyCount()));
+		commentText.setText(String.valueOf(secret.comments));
 		// 图片
 		ImageView pictureImage = ViewHolder.get(convertView,
 				R.id.picture_imageview);
-		new ImageLoader().displayImage(pictureImage, secret.getImageUrl(),
+		new ImageLoader().displayImage(pictureImage, secret.imageUrl,
 				R.drawable.ic_launcher, false);
 		// 来自哪里
 		TextView whereText = ViewHolder.get(convertView,
 				R.id.wherefrom_textview);
-		whereText.setText(secret.getWherefrom());
+		whereText.setText(secret.from);
 	}
 
 	private int getCommentsCount() {

@@ -33,8 +33,9 @@ public class SecretManager {
 
 		public static Cursor fetch() {
 			SQLiteDatabase db = Database.getInstance().getDb(false);
-            String orderBy=SecretDB.FIELD_CREATEDAT + " DESC ";//按创建时间的倒叙排
-            return db.query(SecretDB.TABLE_NAME, SecretDB.TABLE_COLUMNS, null, null, null, null, orderBy);
+			String orderBy = SecretDB.FIELD_CREATEDAT + " DESC ";// 按创建时间的倒叙排
+			return db.query(SecretDB.TABLE_NAME, SecretDB.TABLE_COLUMNS, null,
+					null, null, null, orderBy);
 		}
 
 		public static void addSecrets(List<Secret> secretsList) {
@@ -88,12 +89,12 @@ public class SecretManager {
 			for (int i = 0; i < dataJSONArray.length(); i++) {
 				JSONObject secretJSONObject = dataJSONArray.getJSONObject(i);
 				Secret secret = new Secret();
-				secret.setResourceId(secretJSONObject.getString("id"));
-				secret.setContent(secretJSONObject.getString("caption"));
-				secret.setImageUrl(secretJSONObject.getJSONObject("images")
-						.getString("small"));
-				secret.setLikeCount(secretJSONObject.getJSONObject("votes")
-						.getInt("count"));
+				secret.resourceId = secretJSONObject.getString("id");
+				secret.content = secretJSONObject.getString("caption");
+				secret.imageUrl = secretJSONObject.getJSONObject("images")
+						.getString("small");
+				secret.likes = secretJSONObject.getJSONObject("votes").getInt(
+						"count");
 				secretList.add(secret);
 			}
 		} catch (JSONException e) {

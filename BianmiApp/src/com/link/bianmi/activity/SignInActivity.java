@@ -17,6 +17,7 @@ import com.link.bianmi.asynctask.listener.OnSelectTaskListener;
 import com.link.bianmi.entity.User;
 import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.utility.DataCheckUtil;
+import com.link.bianmi.utility.SecurityUtils;
 
 /**
  * 登录
@@ -65,7 +66,8 @@ public class SignInActivity extends BaseFragmentActivity {
 						phonenum, password)) {
 					mLoadingMenuItem.setVisible(true);
 					// 数据合法，则进行联网登录
-					UserManager.API.signIn(phonenum, password,
+					UserManager.API.signIn(phonenum,
+							SecurityUtils.getMD5Str(password),
 							new OnSelectTaskListener<User>() {
 
 								@Override

@@ -38,11 +38,11 @@ public class SecretAdapter extends CursorAdapter {
 		Secret secret = SecretDB.getInstance().buildEntity(cursor);
 
 		TextView contentText = ViewHolder.get(view, R.id.feed_item_title);
-		contentText.setText(secret.getContent());
+		contentText.setText(secret.content);
 		TextView likeCountText = ViewHolder.get(view, R.id.feed_item_text_info);
-		likeCountText.setText(String.valueOf(secret.getLikeCount()));
+		likeCountText.setText(String.valueOf(secret.likes));
 		ImageView pictureImage = ViewHolder.get(view, R.id.feed_item_image);
-		new ImageLoader().displayImage(pictureImage, secret.getImageUrl(),
+		new ImageLoader().displayImage(pictureImage, secret.imageUrl,
 				R.drawable.ic_launcher, false);
 		
 		AudioButton audioBtn = ViewHolder.get(view, R.id.audio_button);

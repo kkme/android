@@ -229,7 +229,7 @@ public class ImageFragment extends Fragment {
 			Bitmap bitmap = BitmapUtil.drawableToBitmap(mScaleImageView
 					.getDrawable());
 			String path = FileUtil.getImagePath() + "/"
-					+ mCurrentFeedItem.getId() + ".jpg";
+					+ mCurrentFeedItem.resourceId + ".jpg";
 			if (new File(path).exists()) {
 				Toast.makeText(getActivity(),
 						"This image has already been saved.",

@@ -31,8 +31,7 @@ public class SysConfig {
 		mProperties.setProperty("bianmi.debug", String.valueOf(true));// 是否为debug模式
 
 		// ---------------debug
-		mProperties.setProperty("bianmi.url.base.debug",
-				"http://121.40.88.136/bianmi/index.php/Index");
+		mProperties.setProperty("bianmi.url.base.debug", "http://infinigag-us.aws.af.cm");
 		mProperties.setProperty("bianmi.dbname.debug", "bianmi_d");
 		mProperties.setProperty("bianmi.url.signup.debug", "http://121.40.88.136/bianmi/index.php/Index/Login/reg");
 		mProperties.setProperty("bianmi.url.signin.debug", "http://121.40.88.136/bianmi/index.php/Index/Login/index");

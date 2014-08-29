@@ -14,6 +14,7 @@ import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.asynctask.listener.OnInsertTaskListener;
 import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.utility.DataCheckUtil;
+import com.link.bianmi.utility.SecurityUtils;
 
 /**
  * 注册
@@ -53,7 +54,8 @@ public class SignUpActivity extends BaseFragmentActivity {
 						phonenum, password, passwordConfirm)) {
 					mLoadingMenuItem.setVisible(true);
 					// 数据合法，则跳转登录
-					UserManager.API.signUp(phonenum, passwordConfirm,
+					UserManager.API.signUp(phonenum,
+							SecurityUtils.getMD5Str(passwordConfirm),
 							new OnInsertTaskListener() {
 
 								@Override
