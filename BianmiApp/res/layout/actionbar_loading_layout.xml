@@ -1,5 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/dp_48"
+    android:layout_width="@dimen/dp_56"
     android:layout_height="@dimen/dp_48" >
 
     <ProgressBar

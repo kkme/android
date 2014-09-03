@@ -144,8 +144,7 @@ public class MainActivity extends BaseFragmentActivity {
 	public void onBackPressed() {
 		// 如果正在加载，则取消加载
 		if (mLoadingItem.isVisible()) {
-			mLoadingItem.setVisible(false);
-			mMoreItem.setVisible(true);
+			finishLoaded(true);
 			return;
 		}
 
@@ -228,7 +227,12 @@ public class MainActivity extends BaseFragmentActivity {
 
 	}
 
-	public void finishLoaded() {
+	public void finishLoaded(boolean isStopAtOnce) {
+		if(isStopAtOnce){
+			mLoadingItem.setVisible(false);
+			mMoreItem.setVisible(true);
+			return;
+		}
 		AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
 		anim.setDuration(1500);
 		anim.setFillAfter(true);
@@ -237,16 +241,18 @@ public class MainActivity extends BaseFragmentActivity {
 			@Override
 			public void onAnimationStart(Animation animation) {
 			}
+
 			@Override
 			public void onAnimationRepeat(Animation animation) {
 			}
+
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				mLoadingItem.setVisible(false);
 				mMoreItem.setVisible(true);
 			}
 		});
-		mLoadingItem.getActionView().startAnimation(anim);
+		mLoadingItem.getActionView().setAnimation(anim);
 	}
 
 }
