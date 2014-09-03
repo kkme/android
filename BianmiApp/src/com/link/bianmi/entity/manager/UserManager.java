@@ -1,6 +1,7 @@
 package com.link.bianmi.entity.manager;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -50,7 +51,7 @@ public class UserManager {
 			taskParams.put("request", requestParams);
 			UserAsyncTask userTask = new UserAsyncTask(TaskType.TYPE_SIGNIN,
 					listener);
-			userTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
 		}
 
@@ -66,7 +67,7 @@ public class UserManager {
 			taskParams.put("request", requestParams);
 			UserAsyncTask userTask = new UserAsyncTask(TaskType.TYPE_SIGNOUT,
 					listener);
-			userTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
 
 		}
@@ -85,7 +86,7 @@ public class UserManager {
 			taskParams.put("request", requestParams);
 			UserAsyncTask userTask = new UserAsyncTask(TaskType.TYPE_SIGNUP,
 					listener);
-			userTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
 		}
 	}
