@@ -10,6 +10,9 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -226,8 +229,24 @@ public class MainActivity extends BaseFragmentActivity {
 	}
 
 	public void finishLoaded() {
-		mMoreItem.setVisible(true);
-		mLoadingItem.setVisible(false);
+		AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
+		anim.setDuration(1500);
+		anim.setFillAfter(true);
+		anim.setAnimationListener(new AnimationListener() {
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				mLoadingItem.setVisible(false);
+				mMoreItem.setVisible(true);
+			}
+		});
+		mLoadingItem.getActionView().startAnimation(anim);
 	}
 
 }
