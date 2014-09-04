@@ -228,7 +228,8 @@ public class MainActivity extends BaseFragmentActivity {
 	}
 
 	public void finishLoaded(boolean isStopAtOnce) {
-		if(isStopAtOnce){
+		if (isStopAtOnce) {
+			mLoadingItem.getActionView().clearAnimation();
 			mLoadingItem.setVisible(false);
 			mMoreItem.setVisible(true);
 			return;
@@ -253,6 +254,7 @@ public class MainActivity extends BaseFragmentActivity {
 			}
 		});
 		mLoadingItem.getActionView().setAnimation(anim);
+
 	}
 
 }
