@@ -48,7 +48,7 @@ public class RListView extends ListView implements OnScrollListener {
 	private boolean mIsHeadRecord = false;
 
 	/** 页眉进度条增长速率 **/
-	private static float HEADRATE = 1.5f;
+	private static float HEADRATE = 2f;
 
 	private ProgressWheel mHeadProgressWheel;
 
@@ -66,7 +66,7 @@ public class RListView extends ListView implements OnScrollListener {
 	private boolean mIsFootRecord = false;
 
 	/** 页角进度条增长速率 **/
-	private static float FOOTRATE = 1.5f;
+	private static float FOOTRATE = 2f;
 	/** Head动画 **/
 	private ValueAnimator mHeadAnimator;
 	/** Foot动画 **/
@@ -86,7 +86,7 @@ public class RListView extends ListView implements OnScrollListener {
 	private int mFootMaxOverscrollDistance;
 
 	/** 最大允许拖动距离 dp **/
-	private final static int MaxOverscrollDistance = 300;
+	private final static int MaxOverscrollDistance = 360;
 
 	/** 滑动方向 **/
 	private TouchDirectionState mTouchDirection = TouchDirectionState.None;
@@ -258,7 +258,6 @@ public class RListView extends ListView implements OnScrollListener {
 		mHeadProgressWheel = (ProgressWheel) mHeadView
 				.findViewById(R.id.refresh_listview_header_progresswheel);
 		mHeadView.setBackgroundResource(R.color.clewhead_bg);
-		mHeadTips = (TextView) mHeadView.findViewById(R.id.head_tipsTextView);
 		mHeadProgressWheel.setProgress(0);
 		measureView(mHeadView); // 测量尺寸
 		mViewHeight = mHeadView.getMeasuredHeight();
@@ -272,7 +271,6 @@ public class RListView extends ListView implements OnScrollListener {
 
 		mFootProgressWheel = (ProgressWheel) mFootView
 				.findViewById(R.id.refresh_listview_header_progresswheel);
-		mFootTips = (TextView) mFootView.findViewById(R.id.head_tipsTextView);
 		mFootProgressWheel.setProgress(0);
 		measureView(mFootView);
 		addFooterView(mFootView, null, false);

@@ -3,81 +3,33 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ProgressWheel="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/info_view"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
+    android:gravity="center"
     android:orientation="vertical" >
 
-    <!-- 填充 -->
+    <com.link.bianmi.widget.ProgressWheel
+        android:id="@+id/refresh_listview_header_progresswheel"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        ProgressWheel:barColor="@color/mxx_item_theme_color_alpha"
+        ProgressWheel:barLength="60dp"
+        ProgressWheel:barWidth="4dp"
+        ProgressWheel:contourColor="#66000000"
+        ProgressWheel:rimColor="#00ffffff"
+        ProgressWheel:rimWidth="4dp"
+        ProgressWheel:spinSpeed="3dp"
+        ProgressWheel:textColor="#222222"
+        ProgressWheel:textSize="14sp" />
 
-    <View
-        android:id="@+id/padding_view"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent" />
-
-    <RelativeLayout
-        android:id="@+id/info_view"
+    <TextView
+        android:id="@+id/refresh_listview_header_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/clewhead_bg" >
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:background="@android:color/transparent" >
-
-            <ProgressBar
-                android:id="@+id/head_progress"
-                android:layout_width="6dp"
-                android:layout_height="24dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="30dp"
-                android:indeterminate="false"
-                android:indeterminateOnly="false"
-                android:progress="10"
-                android:progressDrawable="@drawable/shape_clewlist_up" />
-
-            <ProgressBar
-                android:id="@+id/activing_progress"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="25dp" />
-
-            <TextView
-                android:id="@+id/head_tipsTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="55dp"
-                android:text="pull"
-                android:textColor="@color/fc_dft"
-                android:textSize="14dp" />
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/refresh_listview_header_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="#ff6f6f6f"
-            android:textSize="14sp" />
-
-        <com.link.bianmi.widget.ProgressWheel
-            android:id="@+id/refresh_listview_header_progresswheel"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_centerInParent="true"
-            ProgressWheel:barColor="@color/mxx_item_theme_color_alpha"
-            ProgressWheel:barLength="60dp"
-            ProgressWheel:barWidth="4dp"
-            ProgressWheel:contourColor="#66000000"
-            ProgressWheel:rimColor="#00ffffff"
-            ProgressWheel:rimWidth="4dp"
-            ProgressWheel:spinSpeed="3dp"
-            ProgressWheel:textColor="#222222"
-            ProgressWheel:textSize="14sp" />
-    </RelativeLayout>
+        android:textColor="#ff6f6f6f"
+        android:textSize="14sp"
+        android:visibility="gone" />
 
 </LinearLayout>
