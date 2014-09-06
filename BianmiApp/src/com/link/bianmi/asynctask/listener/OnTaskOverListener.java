@@ -1,6 +1,6 @@
 package com.link.bianmi.asynctask.listener;
 
-public abstract class OnSelectTaskListener<T> implements ITaskListener {
+public abstract class OnTaskOverListener<T> implements ITaskOverListener {
 
 	public void onSuccess() {
 	}

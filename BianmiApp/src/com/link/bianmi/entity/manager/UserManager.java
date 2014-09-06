@@ -10,16 +10,15 @@ import android.os.AsyncTask;
 
 import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
+import com.link.bianmi.asynctask.BaseAsyncTask;
 import com.link.bianmi.asynctask.TaskParams;
 import com.link.bianmi.asynctask.TaskResult;
 import com.link.bianmi.asynctask.TaskResult.TaskStatus;
-import com.link.bianmi.asynctask.listener.ITaskListener;
-import com.link.bianmi.asynctask.listener.OnInsertTaskListener;
-import com.link.bianmi.asynctask.listener.OnSelectTaskListener;
-import com.link.bianmi.asynctask.listener.OnUpdateTaskListener;
-import com.link.bianmi.entity.Result;
+import com.link.bianmi.asynctask.listener.ITaskOverListener;
+import com.link.bianmi.asynctask.listener.OnTaskOverListener;
+import com.link.bianmi.entity.ResultStatus;
 import com.link.bianmi.entity.User;
-import com.link.bianmi.entity.builder.ResultBuilder;
+import com.link.bianmi.entity.builder.StatusBuilder;
 import com.link.bianmi.entity.builder.UserBuilder;
 import com.link.bianmi.http.HttpClient;
 import com.link.bianmi.http.Response;
@@ -37,7 +36,7 @@ public class UserManager {
 
 		/** 登录 **/
 		public static void signIn(String phonenum, String passmd5,
-				OnSelectTaskListener<User> listener) {
+				OnTaskOverListener<User> listener) {
 			TaskParams taskParams = new TaskParams();
 			ArrayList<NameValuePair> requestParams = null;
 			requestParams = new ArrayList<NameValuePair>();
@@ -48,14 +47,13 @@ public class UserManager {
 			requestParams.add(phonenumParam);
 			requestParams.add(passmd5Param);
 			taskParams.put("request", requestParams);
-			UserAsyncTask userTask = new UserAsyncTask(TaskType.TYPE_SIGNIN,
-					listener);
+			UserTask userTask = new UserTask(TaskType.TYPE_SIGNIN, listener);
 			userTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
 					taskParams);
 		}
 
 		/** 登出 **/
-		public static void signOut(OnUpdateTaskListener listener) {
+		public static void signOut(OnTaskOverListener<?> listener) {
 
 			TaskParams taskParams = new TaskParams();
 			ArrayList<NameValuePair> requestParams = null;
@@ -64,8 +62,7 @@ public class UserManager {
 					UserConfig.getInstance().getUserId());
 			requestParams.add(useridParam);
 			taskParams.put("request", requestParams);
-			UserAsyncTask userTask = new UserAsyncTask(TaskType.TYPE_SIGNOUT,
-					listener);
+			UserTask userTask = new UserTask(TaskType.TYPE_SIGNOUT, listener);
 			userTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
 					taskParams);
 
@@ -73,7 +70,7 @@ public class UserManager {
 
 		/** 注册 **/
 		public static void signUp(String phonenum, String passmd5,
-				OnInsertTaskListener listener) {
+				OnTaskOverListener<?> listener) {
 			TaskParams taskParams = new TaskParams();
 			ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
 			NameValuePair phonenumParam = new BasicNameValuePair("phonenum",
@@ -83,8 +80,7 @@ public class UserManager {
 			requestParams.add(phonenumParam);
 			requestParams.add(passmd5Param);
 			taskParams.put("request", requestParams);
-			UserAsyncTask userTask = new UserAsyncTask(TaskType.TYPE_SIGNUP,
-					listener);
+			UserTask userTask = new UserTask(TaskType.TYPE_SIGNUP, listener);
 			userTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
 					taskParams);
 		}
@@ -94,13 +90,12 @@ public class UserManager {
 
 	}
 
-	static class UserAsyncTask extends
-			AsyncTask<TaskParams, Void, TaskResult<?>> {
+	static class UserTask extends BaseAsyncTask {
 
 		TaskType taskType;
-		ITaskListener listener;
+		ITaskOverListener listener;
 
-		public UserAsyncTask(TaskType taskType, ITaskListener listener) {
+		public UserTask(TaskType taskType, ITaskOverListener listener) {
 			this.taskType = taskType;
 			this.listener = listener;
 		}
@@ -113,8 +108,8 @@ public class UserManager {
 		@SuppressWarnings("unchecked")
 		@Override
 		protected TaskResult<?> doInBackground(TaskParams... params) {
-			Result result = new Result();
-			TaskResult<?> taskResult = new TaskResult<Result>(
+			ResultStatus result = new ResultStatus();
+			TaskResult<?> taskResult = new TaskResult<ResultStatus>(
 					TaskStatus.FAILED, result);
 			// 登录
 			if (taskType == TaskType.TYPE_SIGNIN) {
@@ -125,15 +120,16 @@ public class UserManager {
 				try {
 					// 解析Result
 					JSONObject jsonObj = response.asJSONObject();
-					result = ResultBuilder.getInstance().buildEntity(jsonObj);
+					result = StatusBuilder.getInstance().buildEntity(jsonObj);
 					// 返回数据成功
-					if (result != null && result.code == Result.RESULT_CODE_OK) {
+					if (result != null
+							&& result.code == ResultStatus.RESULT_STATUS_CODE_OK) {
 						User user = UserBuilder.getInstance().buildEntity(
 								jsonObj);
 						taskResult = new TaskResult<User>(TaskStatus.OK, user);
 					} else {
-						taskResult = new TaskResult<Result>(TaskStatus.FAILED,
-								result);
+						taskResult = new TaskResult<ResultStatus>(
+								TaskStatus.FAILED, result);
 					}
 
 				} catch (ResponseException e) {
@@ -149,13 +145,14 @@ public class UserManager {
 				try {
 					// 解析Result
 					JSONObject jsonObj = response.asJSONObject();
-					result = ResultBuilder.getInstance().buildEntity(jsonObj);
+					result = StatusBuilder.getInstance().buildEntity(jsonObj);
 					// 返回数据成功
-					if (result != null && result.code == Result.RESULT_CODE_OK) {
-						taskResult = new TaskResult<Result>(TaskStatus.OK);
+					if (result != null
+							&& result.code == ResultStatus.RESULT_STATUS_CODE_OK) {
+						taskResult = new TaskResult<ResultStatus>(TaskStatus.OK);
 					} else {
-						taskResult = new TaskResult<Result>(TaskStatus.FAILED,
-								result);
+						taskResult = new TaskResult<ResultStatus>(
+								TaskStatus.FAILED, result);
 					}
 
 				} catch (ResponseException e) {
@@ -171,13 +168,16 @@ public class UserManager {
 				try {
 					// 解析Result
 					JSONObject jsonObj = response.asJSONObject();
-					result = ResultBuilder.getInstance().buildEntity(jsonObj);
+					result = StatusBuilder.getInstance().buildEntity(jsonObj);
 					// 返回数据成功
-					if (result != null && result.code == Result.RESULT_CODE_OK) {
-						taskResult = new TaskResult<Result>(TaskStatus.OK);
+					if (result != null
+							&& result.code == ResultStatus.RESULT_STATUS_CODE_OK) {
+						User user = UserBuilder.getInstance().buildEntity(
+								jsonObj);
+						taskResult = new TaskResult<User>(TaskStatus.OK, user);
 					} else {
-						taskResult = new TaskResult<Result>(TaskStatus.FAILED,
-								result);
+						taskResult = new TaskResult<ResultStatus>(
+								TaskStatus.FAILED, result);
 					}
 				} catch (ResponseException e) {
 					e.printStackTrace();
@@ -195,29 +195,29 @@ public class UserManager {
 			// 登录
 			if (taskType == TaskType.TYPE_SIGNIN) {
 				if (taskResult.getStatus() == TaskStatus.OK) {
-					((OnSelectTaskListener<User>) listener)
+					((OnTaskOverListener<User>) listener)
 							.onSuccess((User) taskResult.getEntity());
 				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
-					Result result = (Result) taskResult.getEntity();
-					((OnSelectTaskListener<User>) listener).onFailure(
+					ResultStatus result = (ResultStatus) taskResult.getEntity();
+					((OnTaskOverListener<User>) listener).onFailure(
 							result.code, result.msg);
 				}
 				// 登出
 			} else if (taskType == TaskType.TYPE_SIGNOUT) {
 				if (taskResult.getStatus() == TaskStatus.OK) {
-					((OnUpdateTaskListener) listener).onSuccess();
+					listener.onSuccess();
 				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
-					Result result = (Result) taskResult.getEntity();
-					((OnUpdateTaskListener) listener).onFailure(result.code,
+					ResultStatus result = (ResultStatus) taskResult.getEntity();
+					 listener.onFailure(result.code,
 							result.msg);
 				}
 				// 注册
 			} else if (taskType == TaskType.TYPE_SIGNUP) {
 				if (taskResult.getStatus() == TaskStatus.OK) {
-					((OnInsertTaskListener) listener).onSuccess();
+					((OnTaskOverListener<User>)listener).onSuccess((User) taskResult.getEntity());
 				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
-					Result result = (Result) taskResult.getEntity();
-					((OnInsertTaskListener) listener).onFailure(result.code,
+					ResultStatus result = (ResultStatus) taskResult.getEntity();
+					listener.onFailure(result.code,
 							result.msg);
 				}
 			}

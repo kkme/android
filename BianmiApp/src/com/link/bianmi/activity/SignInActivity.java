@@ -1,7 +1,6 @@
 package com.link.bianmi.activity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
-import com.link.bianmi.asynctask.listener.OnSelectTaskListener;
+import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.User;
 import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.utility.DataCheckUtil;
@@ -37,21 +36,9 @@ public class SignInActivity extends BaseFragmentActivity {
 
 		setContentView(R.layout.activity_signin);
 
-		// 取得刚注册的phonenum(如果有的话)
-		String phonenum = null;
-		Bundle bundle = getIntent().getExtras();
-		if (bundle != null) {
-			phonenum = bundle.getString("phonenum");
-		}
-
 		final EditText phonenumEdit = (EditText) findViewById(R.id.phonenum_edittext);
 		final EditText passwordEdit = (EditText) findViewById(R.id.password_edittext);
 		Button signInButton = (Button) findViewById(R.id.signin_button);
-
-		if (phonenum != null && !TextUtils.isEmpty(phonenum)) {
-			phonenumEdit.setText(phonenum);
-			passwordEdit.setText("");
-		}
 
 		// 点击登录
 		signInButton.setOnClickListener(new OnClickListener() {
@@ -68,7 +55,7 @@ public class SignInActivity extends BaseFragmentActivity {
 					// 数据合法，则进行联网登录
 					UserManager.API.signIn(phonenum,
 							SecurityUtils.getMD5Str(password),
-							new OnSelectTaskListener<User>() {
+							new OnTaskOverListener<User>() {
 
 								@Override
 								public void onFailure(int code, String msg) {
@@ -84,12 +71,12 @@ public class SignInActivity extends BaseFragmentActivity {
 								public void onSuccess(User user) {
 									mLoadingMenuItem.setVisible(false);
 									// 保存userId
-									UserConfig.getInstance().setUserId(
-											user.userId);
+									UserConfig.getInstance().setUserId(user.id);
 									// 进入主界面
 									launchActivity(MainActivity.class);
 									ActivitysManager.removeAllActivity();
 								}
+
 							});
 				}
 			}

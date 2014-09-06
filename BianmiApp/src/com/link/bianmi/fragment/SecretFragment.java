@@ -2,7 +2,6 @@ package com.link.bianmi.fragment;
 
 import java.util.List;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,8 +36,7 @@ import com.nineoldandroids.animation.ObjectAnimator;
 
 public class SecretFragment extends TaskFragment {
 
-	private RListView mListView;
-	private Context mContext;
+	private RListView mRListView;
 	private SecretAdapter mAdapter;
 	/**
 	 * 任务类型*
@@ -58,24 +56,20 @@ public class SecretFragment extends TaskFragment {
 	@Override
 	public View _onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mListView = (RListView) inflater.inflate(R.layout.rlistview, null);
-		initInsetTop(mListView);
-		return mListView;
-	}
+		View view = inflater.inflate(R.layout.fragment_secrets, null);
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		mContext = getActivity();
-		mAdapter = new SecretAdapter(mContext, null);
+		mRListView = (RListView) view.findViewById(R.id.rlistview);
+		initInsetTop(mRListView);
+
+		mAdapter = new SecretAdapter(getActivity(), null);
 		final CardsAnimationAdapter adapter = new CardsAnimationAdapter(
 				mAdapter);
-		adapter.setAbsListView(mListView);
-		mListView.setAdapter(adapter);
-		final int max_tranY = Tools.dip2px(mContext, 48);
+		adapter.setAbsListView(mRListView);
+		mRListView.setAdapter(adapter);
+		final int max_tranY = Tools.dip2px(getActivity(), 48);
 		final View tabview = ((MainActivity) getActivity()).getViewPagerTab();
 
-		mListView.setActivateListener(new ActivateListener() {
+		mRListView.setActivateListener(new ActivateListener() {
 
 			@Override
 			public void onTouchDirection(TouchDirectionState state) {
@@ -95,14 +89,15 @@ public class SecretFragment extends TaskFragment {
 			@Override
 			public void onHeadActivate() {
 				((MainActivity) getActivity()).getViewPagerTab().animate()
-						.translationY(-Tools.dip2px(mContext, 48));
-				mListView.animate().translationY(-Tools.dip2px(mContext, 48));
+						.translationY(-Tools.dip2px(getActivity(), 48));
+				mRListView.animate().translationY(
+						-Tools.dip2px(getActivity(), 48));
 
 				new Handler().postDelayed(new Runnable() {
 
 					@Override
 					public void run() {
-						mListView.stopHeadActiving();
+						mRListView.stopHeadActiving();
 					}
 				}, 2000);
 
@@ -119,7 +114,7 @@ public class SecretFragment extends TaskFragment {
 
 					@Override
 					public void run() {
-						mListView.stopFootActiving();
+						mRListView.stopFootActiving();
 					}
 				}, 2000);
 
@@ -130,20 +125,20 @@ public class SecretFragment extends TaskFragment {
 
 				((MainActivity) getActivity()).getViewPagerTab().animate()
 						.translationY(0);
-				mListView.animate().translationY(0);
+				mRListView.animate().translationY(0);
 			}
 
 			@Override
 			public void onFootStop() {
 
-				adapter.setShouldAnimateFromPosition(mListView
+				adapter.setShouldAnimateFromPosition(mRListView
 						.getLastVisiblePosition());
 			}
 
 			@Override
 			public void onScrollUpDownChanged(int delta, int scrollPosition,
 					boolean exact) {
-				
+
 				if (exact) {
 					float tran_y = tabview.getTranslationY() + delta;
 					if (tran_y >= 0) {
@@ -154,11 +149,11 @@ public class SecretFragment extends TaskFragment {
 						tabview.setTranslationY(tran_y);
 					}
 				}
-				
+
 			}
 		});
 
-		mListView.setOnItemClickListener(new OnItemClickListener() {
+		mRListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View convertView,
@@ -186,10 +181,12 @@ public class SecretFragment extends TaskFragment {
 
 		loadCache();
 		updateCache();
+
+		return view;
 	}
 
 	// -------------------------实现基类方法------------------
-	@Override
+	// @Override
 	protected TaskResult onTaskBackground(TaskParams... params) {
 		TaskParams param = params[0];
 		TaskType taskType = (TaskType) param.get(TASKPARAMS_TYPE);
@@ -258,12 +255,12 @@ public class SecretFragment extends TaskFragment {
 
 	}
 
-	private void initInsetTop(View rootView) {
+	private void initInsetTop(View headView) {
 		SystemBarTintUtil tintManager = new SystemBarTintUtil(getActivity());
 		SystemBarTintUtil.SystemBarConfig config = tintManager.getConfig();
-		rootView.setPadding(0, config.getPixelInsetTop(true),
+		headView.setPadding(0, config.getPixelInsetTop(true),
 				config.getPixelInsetRight(), config.getPixelInsetBottom());
-		rootView.requestLayout();
+		headView.requestLayout();
 	}
 
 	class CardsAnimationAdapter extends AnimationAdapter {

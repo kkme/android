@@ -10,8 +10,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.link.bianmi.R;
+import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
-import com.link.bianmi.asynctask.listener.OnInsertTaskListener;
+import com.link.bianmi.asynctask.listener.OnTaskOverListener;
+import com.link.bianmi.entity.User;
 import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.utility.DataCheckUtil;
 import com.link.bianmi.utility.SecurityUtils;
@@ -56,16 +58,7 @@ public class SignUpActivity extends BaseFragmentActivity {
 					// 数据合法，则跳转登录
 					UserManager.API.signUp(phonenum,
 							SecurityUtils.getMD5Str(passwordConfirm),
-							new OnInsertTaskListener() {
-
-								@Override
-								public void onSuccess() {
-									mLoadingMenuItem.setVisible(false);
-									Bundle bundle = new Bundle();
-									bundle.putString("phonenum", phonenum);
-									launchActivity(SignInActivity.class, bundle);
-									finishActivity();
-								}
+							new OnTaskOverListener<User>() {
 
 								@Override
 								public void onFailure(int code, String msg) {
@@ -73,6 +66,16 @@ public class SignUpActivity extends BaseFragmentActivity {
 									Toast.makeText(getApplicationContext(),
 											"SignUp Error!", Toast.LENGTH_SHORT)
 											.show();
+								}
+
+								@Override
+								public void onSuccess(User user) {
+									mLoadingMenuItem.setVisible(false);
+									// 保存userId
+									UserConfig.getInstance().setUserId(user.id);
+									// 进入主界面
+									launchActivity(MainActivity.class);
+									ActivitysManager.removeAllActivity();
 								}
 							});
 				}

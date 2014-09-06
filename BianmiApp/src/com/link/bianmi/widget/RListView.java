@@ -256,9 +256,9 @@ public class RListView extends ListView implements OnScrollListener {
 		mHeadView = LayoutInflater.from(mContext).inflate(
 				R.layout.rlistview_head, null);
 		mHeadProgressWheel = (ProgressWheel) mHeadView
-				.findViewById(R.id.refresh_listview_header_progresswheel);
+				.findViewById(R.id.head_progresswheel);
 		mHeadView.setBackgroundResource(R.color.clewhead_bg);
-		mHeadTips = (TextView) mHeadView.findViewById(R.id.head_tipsTextView);
+		mHeadTips = (TextView) mHeadView.findViewById(R.id.head_tips_textview);
 		mHeadProgressWheel.setProgress(0);
 		measureView(mHeadView); // 测量尺寸
 		mViewHeight = mHeadView.getMeasuredHeight();
@@ -267,12 +267,12 @@ public class RListView extends ListView implements OnScrollListener {
 
 		// 初始化FootView
 		mFootView = LayoutInflater.from(mContext).inflate(
-				R.layout.rlistview_head, null);
+				R.layout.rlistview_foot, null);
 		mFootInfoView = mFootView.findViewById(R.id.info_view);
 
 		mFootProgressWheel = (ProgressWheel) mFootView
-				.findViewById(R.id.refresh_listview_header_progresswheel);
-		mFootTips = (TextView) mFootView.findViewById(R.id.head_tipsTextView);
+				.findViewById(R.id.foot_progresswheel);
+		mFootTips = (TextView) mFootView.findViewById(R.id.foot_tips_textview);
 		mFootProgressWheel.setProgress(0);
 		measureView(mFootView);
 		addFooterView(mFootView, null, false);
@@ -459,7 +459,7 @@ public class RListView extends ListView implements OnScrollListener {
 			startFootAnim(mContext);
 		}
 
-		internetEnabled = NetworkUtil.isNetworkAvailable(getContext());
+		NetworkUtil.isNetworkAvailable(getContext());
 	}
 
 	/** 反弹参数 **/
@@ -908,41 +908,6 @@ public class RListView extends ListView implements OnScrollListener {
 		objectAnimator.setDuration(1000);
 		objectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
 		objectAnimator.start();
-		// super.setOnHeaderViewChangedListener(new
-		// OnHeaderViewChangedListener() {
-		//
-		// @Override
-		// public void onViewChanged(View v, boolean canUpdate) {
-		// objectAnimator.end();
-		// }
-		//
-		// @Override
-		// public void onViewUpdating(View v) {
-		// if (internetEnabled) {
-		// infoTextView.setText("");
-		// objectAnimator.start();
-		// } else {
-		// infoTextView.setText(getResources().getString(
-		// R.string.no_network));
-		// progressWheel.setVisibility(View.GONE);
-		// }
-		//
-		// }
-		//
-		// @Override
-		// public void onViewUpdateFinish(View v) {
-		// infoTextView.setText("");
-		// objectAnimator.end();
-		// progressWheel.setVisibility(View.VISIBLE);
-		// }
-		//
-		// @Override
-		// public void onViewHeightChanged(float heightPercent) {
-		// progressWheel.setProgress((int) (360.0f * heightPercent));
-		// }
-		//
-		// });
 	}
 
-	private boolean internetEnabled = true;
 }

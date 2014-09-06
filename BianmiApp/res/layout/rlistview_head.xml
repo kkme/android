@@ -1,57 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- ListView的头部 -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ProgressWheel="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
+    android:id="@+id/info_view"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
-    android:orientation="vertical" >
+    android:background="@color/clewhead_bg"
+    android:gravity="center_horizontal" >
 
-    <RelativeLayout
-        android:id="@+id/info_view"
+    <com.link.bianmi.widget.ProgressWheel
+        android:id="@+id/head_progresswheel"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        ProgressWheel:barColor="@color/mxx_item_theme_color_alpha"
+        ProgressWheel:barLength="60dp"
+        ProgressWheel:barWidth="4dp"
+        ProgressWheel:contourColor="#66000000"
+        ProgressWheel:rimColor="#00ffffff"
+        ProgressWheel:rimWidth="4dp"
+        ProgressWheel:spinSpeed="3dp"
+        ProgressWheel:textColor="#222222"
+        ProgressWheel:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/head_tips_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/clewhead_bg" >
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:background="@android:color/transparent" >
-
-            <TextView
-                android:id="@+id/head_tipsTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="55dp"
-                android:text="pull"
-                android:textColor="@color/fc_dft"
-                android:textSize="14dp" />
-        </RelativeLayout>
-
-        <com.link.bianmi.widget.ProgressWheel
-            android:id="@+id/refresh_listview_header_progresswheel"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_centerInParent="true"
-            ProgressWheel:barColor="@color/mxx_item_theme_color_alpha"
-            ProgressWheel:barLength="60dp"
-            ProgressWheel:barWidth="4dp"
-            ProgressWheel:contourColor="#66000000"
-            ProgressWheel:rimColor="#00ffffff"
-            ProgressWheel:rimWidth="4dp"
-            ProgressWheel:spinSpeed="3dp"
-            ProgressWheel:textColor="#222222"
-            ProgressWheel:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/refresh_listview_header_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="#ff6f6f6f"
-            android:textSize="14sp" />
-    </RelativeLayout>
+        android:textColor="#ff6f6f6f"
+        android:textSize="14sp" />
 
 </LinearLayout>
