@@ -15,6 +15,7 @@ import com.link.bianmi.asynctask.TaskResult;
 import com.link.bianmi.asynctask.TaskResult.TaskStatus;
 import com.link.bianmi.asynctask.listener.ITaskOverListener;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
+import com.link.bianmi.entity.Result;
 import com.link.bianmi.entity.ResultStatus;
 import com.link.bianmi.entity.User;
 import com.link.bianmi.entity.builder.StatusBuilder;
@@ -25,27 +26,82 @@ import com.link.bianmi.http.ResponseException;
 
 public class UserManager {
 
-	enum TaskType {
+	private enum TaskType {
 		TYPE_SIGNUP, // 注册
 		TYPE_SIGNIN, // 登录
 		TYPE_SIGNOUT, // 登出
 	}
 
-	public static class API {
+	private static class API {
+
+		public static Result<User> signInOrUp(String phone, String pwdmd5,
+				String url) {
+			Result<User> result = new Result<User>();
+			ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
+			NameValuePair phoneParam = new BasicNameValuePair("phone", phone);
+			NameValuePair pwdmd5Param = new BasicNameValuePair("pwdmd5", pwdmd5);
+			requestParams.add(phoneParam);
+			requestParams.add(pwdmd5Param);
+
+			Response response = HttpClient.doPost(requestParams, url);
+			try {
+				// 解析Result
+				JSONObject jsonObj = response.asJSONObject();
+				result.status = StatusBuilder.getInstance()
+						.buildEntity(jsonObj);
+				// 返回数据成功
+				if (result.status != null
+						&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
+					// 解析User
+					result.t = UserBuilder.getInstance().buildEntity(jsonObj);
+				}
+			} catch (ResponseException e) {
+				e.printStackTrace();
+			}
+
+			return result;
+		}
+
+		// 登录
+		public static Result<User> signIn(String phone, String pwdmd5) {
+			return signInOrUp(phone, pwdmd5, SysConfig.getInstance()
+					.getSignInUrl());
+		}
+
+		// 注册
+		public static Result<User> signUp(String phone, String pwdmd5) {
+			return signInOrUp(phone, pwdmd5, SysConfig.getInstance()
+					.getSignUpUrl());
+		}
+
+		// 登出
+		public static ResultStatus signOut() {
+			ResultStatus status = new ResultStatus();
+
+			Response response = HttpClient.doGet(String.format("%s?userid=%s",
+					SysConfig.getInstance().getSignOutUrl(), 
+					UserConfig.getInstance().getUserId()));
+			try {
+				// 解析Status
+				JSONObject jsonObj = response.asJSONObject();
+				status = StatusBuilder.getInstance().buildEntity(jsonObj);
+			} catch (ResponseException e) {
+				e.printStackTrace();
+			}
+
+			return status;
+		}
+
+	}
+
+	public static class Task {
 
 		/** 登录 **/
-		public static void signIn(String phonenum, String passmd5,
+		public static void signIn(String phone, String pwdmd5,
 				OnTaskOverListener<User> listener) {
 			TaskParams taskParams = new TaskParams();
-			ArrayList<NameValuePair> requestParams = null;
-			requestParams = new ArrayList<NameValuePair>();
-			NameValuePair phonenumParam = new BasicNameValuePair("phonenum",
-					phonenum);
-			NameValuePair passmd5Param = new BasicNameValuePair("passmd5",
-					passmd5);
-			requestParams.add(phonenumParam);
-			requestParams.add(passmd5Param);
-			taskParams.put("request", requestParams);
+			taskParams.put("phone", phone);
+			taskParams.put("pwdmd5", pwdmd5);
 			UserTask userTask = new UserTask(TaskType.TYPE_SIGNIN, listener);
 			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
@@ -54,31 +110,17 @@ public class UserManager {
 		/** 登出 **/
 		public static void signOut(OnTaskOverListener<?> listener) {
 
-			TaskParams taskParams = new TaskParams();
-			ArrayList<NameValuePair> requestParams = null;
-			requestParams = new ArrayList<NameValuePair>();
-			NameValuePair useridParam = new BasicNameValuePair("userid",
-					UserConfig.getInstance().getUserId());
-			requestParams.add(useridParam);
-			taskParams.put("request", requestParams);
 			UserTask userTask = new UserTask(TaskType.TYPE_SIGNOUT, listener);
-			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
-					taskParams);
+			userTask.executeOnExecutor(Executors.newCachedThreadPool());
 
 		}
 
 		/** 注册 **/
-		public static void signUp(String phonenum, String passmd5,
+		public static void signUp(String phone, String pwdmd5,
 				OnTaskOverListener<?> listener) {
 			TaskParams taskParams = new TaskParams();
-			ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
-			NameValuePair phonenumParam = new BasicNameValuePair("phonenum",
-					phonenum);
-			NameValuePair passmd5Param = new BasicNameValuePair("passmd5",
-					passmd5);
-			requestParams.add(phonenumParam);
-			requestParams.add(passmd5Param);
-			taskParams.put("request", requestParams);
+			taskParams.put("phone", phone);
+			taskParams.put("pwdmd5", pwdmd5);
 			UserTask userTask = new UserTask(TaskType.TYPE_SIGNUP, listener);
 			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
@@ -104,82 +146,49 @@ public class UserManager {
 			super.onPreExecute();
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		protected TaskResult<?> doInBackground(TaskParams... params) {
-			ResultStatus result = new ResultStatus();
+			ResultStatus resultStatus = new ResultStatus();
 			TaskResult<?> taskResult = new TaskResult<ResultStatus>(
-					TaskStatus.FAILED, result);
+					TaskStatus.FAILED, resultStatus);
 			// 登录
 			if (taskType == TaskType.TYPE_SIGNIN) {
-				ArrayList<NameValuePair> requestParam = (ArrayList<NameValuePair>) params[0]
-						.get("request");
-				Response response = HttpClient.doPost(requestParam, SysConfig
-						.getInstance().getSignInUrl());
-				try {
-					// 解析Result
-					JSONObject jsonObj = response.asJSONObject();
-					result = StatusBuilder.getInstance().buildEntity(jsonObj);
-					// 返回数据成功
-					if (result != null
-							&& result.code == ResultStatus.RESULT_STATUS_CODE_OK) {
-						User user = UserBuilder.getInstance().buildEntity(
-								jsonObj);
-						taskResult = new TaskResult<User>(TaskStatus.OK, user);
-					} else {
-						taskResult = new TaskResult<ResultStatus>(
-								TaskStatus.FAILED, result);
-					}
-
-				} catch (ResponseException e) {
-					e.printStackTrace();
+				String phone = params[0].getString("phone");
+				String pwdmd5 = params[0].getString("pwdmd5");
+				Result<User> result = API.signIn(phone, pwdmd5);
+				if (result.status != null
+						&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
+					taskResult = new TaskResult<User>(TaskStatus.OK, result.t);
+				} else {
+					taskResult = new TaskResult<ResultStatus>(
+							TaskStatus.FAILED, result.status);
 				}
+
 				// 登出
 			} else if (taskType == TaskType.TYPE_SIGNOUT) {
 
-				ArrayList<NameValuePair> requestParam = (ArrayList<NameValuePair>) params[0]
-						.get("request");
-				Response response = HttpClient.doPost(requestParam, SysConfig
-						.getInstance().getSignOutUrl());
-				try {
-					// 解析Result
-					JSONObject jsonObj = response.asJSONObject();
-					result = StatusBuilder.getInstance().buildEntity(jsonObj);
-					// 返回数据成功
-					if (result != null
-							&& result.code == ResultStatus.RESULT_STATUS_CODE_OK) {
-						taskResult = new TaskResult<ResultStatus>(TaskStatus.OK);
-					} else {
-						taskResult = new TaskResult<ResultStatus>(
-								TaskStatus.FAILED, result);
-					}
-
-				} catch (ResponseException e) {
-					e.printStackTrace();
+				ResultStatus status = API.signOut();
+				// 返回数据成功
+				if (status != null
+						&& status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
+					taskResult = new TaskResult<ResultStatus>(TaskStatus.OK);
+				} else {
+					taskResult = new TaskResult<ResultStatus>(
+							TaskStatus.FAILED, status);
 				}
 
 				// 注册
 			} else if (taskType == TaskType.TYPE_SIGNUP) {
-				ArrayList<NameValuePair> requestParam = (ArrayList<NameValuePair>) params[0]
-						.get("request");
-				Response response = HttpClient.doPost(requestParam, SysConfig
-						.getInstance().getSignUpUrl());
-				try {
-					// 解析Result
-					JSONObject jsonObj = response.asJSONObject();
-					result = StatusBuilder.getInstance().buildEntity(jsonObj);
-					// 返回数据成功
-					if (result != null
-							&& result.code == ResultStatus.RESULT_STATUS_CODE_OK) {
-						User user = UserBuilder.getInstance().buildEntity(
-								jsonObj);
-						taskResult = new TaskResult<User>(TaskStatus.OK, user);
-					} else {
-						taskResult = new TaskResult<ResultStatus>(
-								TaskStatus.FAILED, result);
-					}
-				} catch (ResponseException e) {
-					e.printStackTrace();
+				String phone = params[0].getString("phone");
+				String pwdmd5 = params[0].getString("pwdmd5");
+				Result<User> result = API.signUp(phone, pwdmd5);
+				// 返回数据成功
+				if (result.status != null
+						&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
+					taskResult = new TaskResult<User>(TaskStatus.OK, result.t);
+				} else {
+					taskResult = new TaskResult<ResultStatus>(
+							TaskStatus.FAILED, result.status);
 				}
 			}
 
@@ -207,17 +216,16 @@ public class UserManager {
 					listener.onSuccess();
 				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
 					ResultStatus result = (ResultStatus) taskResult.getEntity();
-					 listener.onFailure(result.code,
-							result.msg);
+					listener.onFailure(result.code, result.msg);
 				}
 				// 注册
 			} else if (taskType == TaskType.TYPE_SIGNUP) {
 				if (taskResult.getStatus() == TaskStatus.OK) {
-					((OnTaskOverListener<User>)listener).onSuccess((User) taskResult.getEntity());
+					((OnTaskOverListener<User>) listener)
+							.onSuccess((User) taskResult.getEntity());
 				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
 					ResultStatus result = (ResultStatus) taskResult.getEntity();
-					listener.onFailure(result.code,
-							result.msg);
+					listener.onFailure(result.code, result.msg);
 				}
 			}
 		}

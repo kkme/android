@@ -58,7 +58,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 				new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						UserManager.API
+						UserManager.Task
 								.signOut(new OnTaskOverListener<Object>() {
 									@Override
 									public void onFailure(int code, String msg) {

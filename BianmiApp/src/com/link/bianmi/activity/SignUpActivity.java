@@ -56,7 +56,7 @@ public class SignUpActivity extends BaseFragmentActivity {
 						phonenum, password, passwordConfirm)) {
 					mLoadingMenuItem.setVisible(true);
 					// 数据合法，则跳转登录
-					UserManager.API.signUp(phonenum,
+					UserManager.Task.signUp(phonenum,
 							SecurityUtils.getMD5Str(passwordConfirm),
 							new OnTaskOverListener<User>() {
 

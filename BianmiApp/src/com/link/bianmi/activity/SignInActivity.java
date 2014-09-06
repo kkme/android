@@ -53,7 +53,7 @@ public class SignInActivity extends BaseFragmentActivity {
 						phonenum, password)) {
 					mLoadingMenuItem.setVisible(true);
 					// 数据合法，则进行联网登录
-					UserManager.API.signIn(phonenum,
+					UserManager.Task.signIn(phonenum,
 							SecurityUtils.getMD5Str(password),
 							new OnTaskOverListener<User>() {
 
