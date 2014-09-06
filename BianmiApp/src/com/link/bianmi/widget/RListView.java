@@ -66,7 +66,7 @@ public class RListView extends ListView implements OnScrollListener {
 	private boolean mIsFootRecord = false;
 
 	/** 页角进度条增长速率 **/
-	private static float FOOTRATE = 1.5f;
+	private static float FOOTRATE = 2f;
 	/** Head动画 **/
 	private ValueAnimator mHeadAnimator;
 	/** Foot动画 **/
@@ -86,7 +86,7 @@ public class RListView extends ListView implements OnScrollListener {
 	private int mFootMaxOverscrollDistance;
 
 	/** 最大允许拖动距离 dp **/
-	private final static int MaxOverscrollDistance = 300;
+	private final static int MaxOverscrollDistance = 360;
 
 	/** 滑动方向 **/
 	private TouchDirectionState mTouchDirection = TouchDirectionState.None;

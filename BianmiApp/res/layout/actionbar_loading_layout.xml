@@ -1,11 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/dp_48"
-    android:layout_height="@dimen/dp_48" >
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center" >
 
-    <ProgressBar
-        style="@android:style/Widget.ProgressBar.Large.Inverse"
-        android:layout_width="@dimen/dp_20"
-        android:layout_height="@dimen/dp_20"
-        android:layout_centerInParent="true" />
+    <!-- 外层须再嵌套一层FrameLayout，不然在4.0版本会显示有误 -->
+    <RelativeLayout
+        android:layout_width="@dimen/dp_56"
+        android:layout_height="@dimen/dp_48" >
 
-</RelativeLayout>
+        <ProgressBar
+            style="@android:style/Widget.ProgressBar.Large.Inverse"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+</FrameLayout>

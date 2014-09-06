@@ -1,12 +1,11 @@
 package com.link.bianmi.entity.manager;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
-
-import android.os.AsyncTask;
 
 import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
@@ -48,7 +47,7 @@ public class UserManager {
 			requestParams.add(passmd5Param);
 			taskParams.put("request", requestParams);
 			UserTask userTask = new UserTask(TaskType.TYPE_SIGNIN, listener);
-			userTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
 		}
 
@@ -63,7 +62,7 @@ public class UserManager {
 			requestParams.add(useridParam);
 			taskParams.put("request", requestParams);
 			UserTask userTask = new UserTask(TaskType.TYPE_SIGNOUT, listener);
-			userTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
 
 		}
@@ -81,7 +80,7 @@ public class UserManager {
 			requestParams.add(passmd5Param);
 			taskParams.put("request", requestParams);
 			UserTask userTask = new UserTask(TaskType.TYPE_SIGNUP, listener);
-			userTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
 		}
 	}
