@@ -28,7 +28,7 @@ public class SysConfig {
 
 		mProperties = new Properties();
 
-		mProperties.setProperty("bianmi.debug", String.valueOf(true));// 是否为debug模式
+		mProperties.setProperty("bianmi.debug", String.valueOf(false));// 是否为debug模式
 
 		// ---------------debug
 		mProperties.setProperty("bianmi.url.base.debug", "http://infinigag-us.aws.af.cm");
@@ -40,9 +40,9 @@ public class SysConfig {
 		// ---------------release
 		mProperties.setProperty("bianmi.dbname.release", "bianmi_v1");
 		mProperties.setProperty("bianmi.url.base.release", "http://infinigag-us.aws.af.cm"); // Base URL
-		mProperties.setProperty("bianmi.url.signup.release", "/signup"); // 注册
-		mProperties.setProperty("bianmi.url.signin.release", "/signin"); // 登录
-		mProperties.setProperty("bianmi.url.signout.release", "/signout"); // 登出
+		mProperties.setProperty("bianmi.url.signup.release", "http://192.168.1.102/bianmi/signup.php"); // 注册
+		mProperties.setProperty("bianmi.url.signin.release", "http://192.168.1.102/bianmi/signin.php"); // 登录
+		mProperties.setProperty("bianmi.url.signout.release", "http://192.168.1.102/bianmi/signout.php"); // 登出
 
 	}
 

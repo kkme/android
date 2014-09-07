@@ -3,6 +3,7 @@ package com.link.bianmi.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -58,6 +59,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 				new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						mLoadingItem.setVisible(true);
 						UserManager.Task
 								.signOut(new OnTaskOverListener<Object>() {
 									@Override
@@ -71,6 +73,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 
 									@Override
 									public void onSuccess(Object t) {
+										mLoadingItem.setVisible(false);
 										BianmiApplication.getInstance()
 												.signOut();
 										launchActivity(WelcomeActivity.class);
@@ -90,6 +93,16 @@ public class SettingsActivity extends BaseFragmentActivity {
 				&& resultCode == Activity.RESULT_OK)
 			changeSwitchButtonState();
 
+	}
+
+	private MenuItem mLoadingItem;
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.loading, menu);
+		mLoadingItem = menu.findItem(R.id.action_loading);
+		mLoadingItem.setVisible(false);
+		return true;
 	}
 
 	@Override

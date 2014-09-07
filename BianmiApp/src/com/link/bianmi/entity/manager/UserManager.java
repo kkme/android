@@ -79,8 +79,8 @@ public class UserManager {
 			ResultStatus status = new ResultStatus();
 
 			Response response = HttpClient.doGet(String.format("%s?userid=%s",
-					SysConfig.getInstance().getSignOutUrl(), 
-					UserConfig.getInstance().getUserId()));
+					SysConfig.getInstance().getSignOutUrl(), UserConfig
+							.getInstance().getUserId()));
 			try {
 				// 解析Status
 				JSONObject jsonObj = response.asJSONObject();
@@ -134,9 +134,9 @@ public class UserManager {
 	static class UserTask extends BaseAsyncTask {
 
 		TaskType taskType;
-		ITaskOverListener listener;
+		ITaskOverListener<?> listener;
 
-		public UserTask(TaskType taskType, ITaskOverListener listener) {
+		public UserTask(TaskType taskType, ITaskOverListener<?> listener) {
 			this.taskType = taskType;
 			this.listener = listener;
 		}
@@ -213,7 +213,7 @@ public class UserManager {
 				// 登出
 			} else if (taskType == TaskType.TYPE_SIGNOUT) {
 				if (taskResult.getStatus() == TaskStatus.OK) {
-					listener.onSuccess();
+					listener.onSuccess(null);
 				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
 					ResultStatus result = (ResultStatus) taskResult.getEntity();
 					listener.onFailure(result.code, result.msg);

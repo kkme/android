@@ -26,9 +26,10 @@ public class StatusBuilder implements BaseEntityBuilder<ResultStatus> {
 		ResultStatus status = null;
 		try {
 			if (jsonObj != null && jsonObj.has("status")) {
+				JSONObject statusJson = jsonObj.getJSONObject("status");
 				status = new ResultStatus();
-				status.code = jsonObj.getInt("code");
-				status.msg = jsonObj.getString("msg");
+				status.code = statusJson.getInt("code");
+				status.msg = statusJson.getString("msg");
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

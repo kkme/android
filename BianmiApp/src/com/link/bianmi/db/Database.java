@@ -34,8 +34,6 @@ public class Database {
 
 	public SQLiteDatabase getDb(boolean writeable) {
 
-		if (!mDebaug)
-			return null;
 		if (writeable) {
 			return mDBHelper.getWritableDatabase();
 		} else {
