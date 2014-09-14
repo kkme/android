@@ -81,14 +81,16 @@ public class UserManager {
 			Response response = HttpClient.doGet(String.format("%s?userid=%s",
 					SysConfig.getInstance().getSignOutUrl(), UserConfig
 							.getInstance().getUserId()));
-			try {
-				// 解析Status
-				JSONObject jsonObj = response.asJSONObject();
-				status = StatusBuilder.getInstance().buildEntity(jsonObj);
-			} catch (ResponseException e) {
-				e.printStackTrace();
-			}
+			if (response != null) {
+				try {
+					// 解析Status
+					JSONObject jsonObj = response.asJSONObject();
+					status = StatusBuilder.getInstance().buildEntity(jsonObj);
+				} catch (ResponseException e) {
+					e.printStackTrace();
+				}
 
+			}
 			return status;
 		}
 

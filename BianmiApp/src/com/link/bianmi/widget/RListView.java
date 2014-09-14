@@ -66,7 +66,7 @@ public class RListView extends ListView implements OnScrollListener {
 	private boolean mIsFootRecord = false;
 
 	/** 页角进度条增长速率 **/
-	private static float FOOTRATE = 2f;
+	private static float FOOTRATE = 1.5f;
 	/** Head动画 **/
 	private ValueAnimator mHeadAnimator;
 	/** Foot动画 **/

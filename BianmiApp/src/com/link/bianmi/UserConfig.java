@@ -37,6 +37,42 @@ public class UserConfig {
 	public String getUserId() {
 		return mPref.getString("bianmi.user.userid", null);
 	}
+	
+	/** 设置sessionId **/
+	public void setSessionId(String sessionId) {
+		SharedPreferences.Editor editor = mPref.edit();
+		editor.putString("bianmi.user.sessionid", sessionId);
+		editor.commit();
+	}
+
+	/** 获取sessionId **/
+	public String getSessionId() {
+		return mPref.getString("bianmi.user.sessionid", null);
+	}
+	
+	/** 设置phone **/
+	public void setPhone(String phone) {
+		SharedPreferences.Editor editor = mPref.edit();
+		editor.putString("bianmi.user.phone", phone);
+		editor.commit();
+	}
+
+	/** 获取phone **/
+	public String getPhone() {
+		return mPref.getString("bianmi.user.phone", null);
+	}
+	
+	/** 设置加密后的登录密码 **/
+	public void setPwd(String pwd) {
+		SharedPreferences.Editor editor = mPref.edit();
+		editor.putString("bianmi.user.pwd", pwd);
+		editor.commit();
+	}
+
+	/** 获取加密后的登录密码 **/
+	public String getPwd() {
+		return mPref.getString("bianmi.user.pwd", null);
+	}
 
 	/** 获取虚拟deviceid **/
 	public String getVirtualDeviceId() {

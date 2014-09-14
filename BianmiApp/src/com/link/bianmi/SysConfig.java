@@ -40,9 +40,9 @@ public class SysConfig {
 		// ---------------release
 		mProperties.setProperty("bianmi.dbname.release", "bianmi_v1");
 		mProperties.setProperty("bianmi.url.base.release", "http://infinigag-us.aws.af.cm"); // Base URL
-		mProperties.setProperty("bianmi.url.signup.release", "http://192.168.1.102/bianmi/signup.php"); // 注册
-		mProperties.setProperty("bianmi.url.signin.release", "http://192.168.1.102/bianmi/signin.php"); // 登录
-		mProperties.setProperty("bianmi.url.signout.release", "http://192.168.1.102/bianmi/signout.php"); // 登出
+		mProperties.setProperty("bianmi.url.signup.release", "http://192.168.1.113/bianmi/signup.php"); // 注册
+		mProperties.setProperty("bianmi.url.signin.release", "http://192.168.1.113/bianmi/signin.php"); // 登录
+		mProperties.setProperty("bianmi.url.signout.release", "http://192.168.1.113/bianmi/signout.php"); // 登出
 
 	}
 
