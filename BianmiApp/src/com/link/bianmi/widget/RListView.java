@@ -16,8 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
-import com.link.bianmi.utility.DensityHelper;
 import com.link.bianmi.utility.NetworkUtil;
+import com.link.bianmi.utility.Tools;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 /**
@@ -281,9 +281,9 @@ public class RListView extends ListView implements OnScrollListener {
 		mFootVisiable = mFootView.getVisibility();
 		mHeadVisiable = mHeadView.getVisibility();
 
-		mTouchDirectionSensitivity = DensityHelper.dip2px(mContext, 20); // 默认20DP
+		mTouchDirectionSensitivity = Tools.dip2px(mContext, 20); // 默认20DP
 
-		mHeadMaxOverscrollDistance = DensityHelper.dip2px(mContext,
+		mHeadMaxOverscrollDistance = Tools.dip2px(mContext,
 				MaxOverscrollDistance);
 		mFootMaxOverscrollDistance = mHeadMaxOverscrollDistance;
 	}
@@ -785,7 +785,7 @@ public class RListView extends ListView implements OnScrollListener {
 	public void setEnableHeader(boolean enable) {
 		setHeadVisiable(enable);
 		if (enable)
-			mHeadMaxOverscrollDistance = DensityHelper.dip2px(mContext,
+			mHeadMaxOverscrollDistance = Tools.dip2px(mContext,
 					MaxOverscrollDistance);
 		else
 			mHeadMaxOverscrollDistance = 0;
@@ -795,7 +795,7 @@ public class RListView extends ListView implements OnScrollListener {
 	public void setEnableFooter(boolean enable) {
 		setFootVisiable(enable);
 		if (enable)
-			mFootMaxOverscrollDistance = DensityHelper.dip2px(mContext,
+			mFootMaxOverscrollDistance = Tools.dip2px(mContext,
 					MaxOverscrollDistance);
 		else
 			mFootMaxOverscrollDistance = 0;
@@ -852,7 +852,7 @@ public class RListView extends ListView implements OnScrollListener {
 	 *            单位DP
 	 */
 	public void setTouchDirectionSensitivity(int value) {
-		mTouchDirectionSensitivity = DensityHelper.dip2px(mContext, value);
+		mTouchDirectionSensitivity = Tools.dip2px(mContext, value);
 	}
 
 	/** 移动监听 **/

@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -18,6 +21,7 @@ import android.widget.ImageView;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
+import com.link.bianmi.utility.Tools;
 
 /**
  * 首次进入的欢迎界面
@@ -33,6 +37,7 @@ public class WelcomeActivity extends BaseFragmentActivity {
 	private View mTipBtn;
 
 	private ViewPager mViewPager;
+	private View mViewPagerContainer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,19 +81,35 @@ public class WelcomeActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				UserConfig.getInstance().setIsGuest(true);
-				UserConfig.getInstance().setUserId(
-						UUID.randomUUID().toString());
+				UserConfig.getInstance()
+						.setUserId(UUID.randomUUID().toString());
 				launchActivity(MainActivity.class);
 				finishActivity();
 			}
 		});
 
+		// 手机屏幕宽高
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		int wScreen = dm.widthPixels;
+		//int hScreen = dm.heightPixels;
+
 		// ViewPager
 		mViewPager = (ViewPager) findViewById(R.id.view_pager);
+		LayoutParams params = mViewPager.getLayoutParams();
+		params.width = wScreen - 100;
+		params.height = Tools.dip2px(this, 450);
+		mViewPager.setLayoutParams(params);
 		mViewPager.setAdapter(mPageAdapter);
 		mViewPager.setOffscreenPageLimit(3);
 		mViewPager.setPageMargin(30);
 		mViewPager.setOnPageChangeListener(mPageChangeListener);
+		mViewPagerContainer = findViewById(R.id.viewpager_group);
+		mViewPagerContainer.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				return mViewPager.dispatchTouchEvent(event);
+			}
+		});
 	}
 
 	private PagerAdapter mPageAdapter = new PagerAdapter() {
@@ -222,6 +243,9 @@ public class WelcomeActivity extends BaseFragmentActivity {
 
 		@Override
 		public void onPageScrolled(int arg0, float arg1, int arg2) {
+			if (mViewPagerContainer != null) {
+				mViewPagerContainer.invalidate();
+			}
 		}
 
 		@Override

@@ -6,19 +6,19 @@
     <!-- 滑动页面 -->
 
     <RelativeLayout
+        android:id="@+id/viewpager_group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/signinup_btn_group"
         android:clipChildren="false"
-        android:gravity="center" >
+        android:gravity="center"
+        android:layerType="software" >
 
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="450dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
             android:clipChildren="false" />
     </RelativeLayout>
 
