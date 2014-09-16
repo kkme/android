@@ -91,17 +91,15 @@ public class WelcomeActivity extends BaseFragmentActivity {
 		// 手机屏幕宽高
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		int wScreen = dm.widthPixels;
-		//int hScreen = dm.heightPixels;
 
 		// ViewPager
 		mViewPager = (ViewPager) findViewById(R.id.view_pager);
 		LayoutParams params = mViewPager.getLayoutParams();
-		params.width = wScreen - 100;
-		params.height = Tools.dip2px(this, 450);
+		params.width = wScreen - Tools.dip2px(this, 32);
 		mViewPager.setLayoutParams(params);
 		mViewPager.setAdapter(mPageAdapter);
 		mViewPager.setOffscreenPageLimit(3);
-		mViewPager.setPageMargin(30);
+		mViewPager.setPageMargin(Tools.dip2px(this, 8));
 		mViewPager.setOnPageChangeListener(mPageChangeListener);
 		mViewPagerContainer = findViewById(R.id.viewpager_group);
 		mViewPagerContainer.setOnTouchListener(new View.OnTouchListener() {
