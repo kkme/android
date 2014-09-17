@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ProgressWheel="http://schemas.android.com/apk/res-auto"
     android:id="@+id/info_view"
     android:layout_width="match_parent"
@@ -10,7 +10,6 @@
         android:id="@+id/foot_progresswheel"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:layout_centerInParent="true"
         ProgressWheel:barColor="@color/mxx_item_theme_color_alpha"
         ProgressWheel:barLength="60dp"
         ProgressWheel:barWidth="4dp"
@@ -25,8 +24,7 @@
         android:id="@+id/foot_tips_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:textColor="#ff6f6f6f"
         android:textSize="14sp" />
 
-</RelativeLayout>
+</LinearLayout>
