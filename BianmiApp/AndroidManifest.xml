@@ -49,12 +49,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- 欢迎 -->
         <activity
             android:name="com.link.bianmi.activity.WelcomeActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <!-- 注册 -->
         <activity
             android:name="com.link.bianmi.activity.SignUpActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />
+        <!-- 登录 -->
         <activity
             android:name="com.link.bianmi.activity.SignInActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />
@@ -65,20 +68,24 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.ActionBar.NoLogo"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <!-- 秘密详情 -->
         <activity
             android:name="com.link.bianmi.activity.DetailsActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />
+        <!-- 设置 -->
         <activity
             android:name="com.link.bianmi.activity.SettingsActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />
         <activity
             android:name="com.link.bianmi.activity.AboutActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />
+        <!--设置九宫格密码 -->
         <activity
-            android:name="com.link.bianmi.activity.SettingLockPassActivity"
+            android:name="com.link.bianmi.unit.ninelock.NineLockSettingsActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />
+        <!-- 九宫格密码 -->
         <activity
-            android:name="com.link.bianmi.activity.LockScreenActivity"
+            android:name="com.link.bianmi.unit.ninelock.NineLockActivity"
             android:theme="@style/Theme.Fullscreen" />
     </application>
 

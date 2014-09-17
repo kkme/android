@@ -119,7 +119,7 @@ public class UserManager {
 
 		/** 注册 **/
 		public static void signUp(String phone, String pwdmd5,
-				OnTaskOverListener<?> listener) {
+				OnTaskOverListener<User> listener) {
 			TaskParams taskParams = new TaskParams();
 			taskParams.put("phone", phone);
 			taskParams.put("pwdmd5", pwdmd5);

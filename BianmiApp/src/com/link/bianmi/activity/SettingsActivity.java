@@ -17,6 +17,7 @@ import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.manager.UserManager;
+import com.link.bianmi.unit.ninelock.NineLockSettingsActivity;
 import com.link.bianmi.widget.SwitchButton;
 
 public class SettingsActivity extends BaseFragmentActivity {
@@ -37,7 +38,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 				new OnClickListener() {
 					@Override
 					public void onClick(View arg0) {
-						launchActivityForResult(SettingLockPassActivity.class,
+						launchActivityForResult(NineLockSettingsActivity.class,
 								REQUEST_CODE_SETPASS);
 					}
 				});

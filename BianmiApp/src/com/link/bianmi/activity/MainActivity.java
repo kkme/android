@@ -25,6 +25,7 @@ import com.link.bianmi.fragment.HotFragment;
 import com.link.bianmi.fragment.ImageFragment;
 import com.link.bianmi.fragment.NearbyFragment;
 import com.link.bianmi.fragment.SecretFragment;
+import com.link.bianmi.unit.ninelock.NineLockActivity;
 import com.link.bianmi.widget.ViewPagerTabBar;
 
 public class MainActivity extends BaseFragmentActivity {
@@ -44,7 +45,7 @@ public class MainActivity extends BaseFragmentActivity {
 		// 有没有设置锁定密码
 		if (!UserConfig.getInstance().getLockPassKey().isEmpty()
 				&& !UserConfig.getInstance().getLockPassSuccess()) {
-			launchActivity(LockScreenActivity.class);
+			launchActivity(NineLockActivity.class);
 			finishActivity();
 			return;
 		}
