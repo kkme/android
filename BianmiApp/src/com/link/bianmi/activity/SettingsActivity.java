@@ -17,7 +17,6 @@ import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.manager.UserManager;
-import com.link.bianmi.unit.ninelock.NineLockActivity;
 import com.link.bianmi.unit.ninelock.NineLockSettingsActivity;
 import com.link.bianmi.widget.SwitchButton;
 
@@ -50,9 +49,9 @@ public class SettingsActivity extends BaseFragmentActivity {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
-						if (!isChecked) {
-							launchActivity(NineLockActivity.class);
-						}
+//						if (!isChecked) {
+//							launchActivity(NineLockActivity.class);
+//						}
 					}
 				});
 		changeSwitchButtonState();
