@@ -17,6 +17,7 @@ import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.manager.UserManager;
+import com.link.bianmi.unit.ninelock.NineLockActivity;
 import com.link.bianmi.unit.ninelock.NineLockSettingsActivity;
 import com.link.bianmi.widget.SwitchButton;
 
@@ -28,7 +29,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getActionBar().setTitle("设置");
+		getActionBar().setTitle(getString(R.string.settings));
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.activity_settings);
@@ -49,8 +50,9 @@ public class SettingsActivity extends BaseFragmentActivity {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
-						// UserConfig.getInstance().setIsLockPassSeted(isChecked);
-						// launchActivity(LockScreenActivity.class);
+						if (!isChecked) {
+							launchActivity(NineLockActivity.class);
+						}
 					}
 				});
 		changeSwitchButtonState();

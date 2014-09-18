@@ -51,7 +51,7 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		getActionBar().setTitle("设置密码");
+		getActionBar().setTitle(getString(R.string.setup_password));
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -133,29 +133,34 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 				// 是否重新启动
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						NineLockSettingsActivity.this);
-				final AlertDialog dialog = builder.setTitle("是否重新启动？")
-						.setPositiveButton("是", new OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								// 退出APP
-								ActivitysManager.removeAllActivity();
-								// 重新启动
-								new Handler().postDelayed(new Runnable() {
+				final AlertDialog dialog = builder
+						.setTitle(getString(R.string.if_restart))
+						.setPositiveButton(getString(R.string.yes),
+								new OnClickListener() {
 									@Override
-									public void run() {
-										launchActivity(SplashActivity.class);
+									public void onClick(DialogInterface dialog,
+											int which) {
+										// 退出APP
+										ActivitysManager.removeAllActivity();
+										// 重新启动
+										new Handler().postDelayed(
+												new Runnable() {
+													@Override
+													public void run() {
+														launchActivity(SplashActivity.class);
+													}
+												}, 500);
 									}
-								}, 500);
-							}
-						}).setNegativeButton("否", new OnClickListener() {
+								})
+						.setNegativeButton(getString(R.string.no),
+								new OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								dialog.dismiss();
-							}
-						}).create();
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										dialog.dismiss();
+									}
+								}).create();
 				dialog.show();
 			}
 

@@ -41,6 +41,11 @@
     <string name="photo_from_album">从相册选择</string>
 
     <!-- 设置 -->
+    <string name="settings">设置</string>
+    <string name="setup_password">设置密码</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="if_restart">是否重新启动？</string>
     <string name="settings_forgot_password">忘记密码？</string>
     <!-- inputsuit -->
     <string name="inputsuit_submit">发表</string>
@@ -53,9 +58,12 @@
     <!-- 九宫格密码锁屏 -->
     <string name="cancel">取消</string>
     <string name="try_again">重试</string>
+    <string name="signin_again">重新登录</string>
+    <string name="forget_ninelock_password_dialog_tip">忘记手势密码，需要重新登录！</string>
     <string name="goon">继续</string>
     <string name="confirm">确认</string>
     <string name="lockpattern_recording_incorrect_too_short">"至少连接4个点，请重试"</string>
-    <string name="lockpattern_error">"手势密码不对"</string>
+    <string name="ninelock_password_error">"手势密码错误！"</string>
+    <string name="forget_ninelock_password">忘记手势密码？</string>
 
 </resources>

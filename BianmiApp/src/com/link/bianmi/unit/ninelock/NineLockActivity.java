@@ -2,13 +2,19 @@ package com.link.bianmi.unit.ninelock;
 
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+import com.link.bianmi.BianmiApplication;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.ActivitysManager;
 import com.link.bianmi.activity.MainActivity;
+import com.link.bianmi.activity.WelcomeActivity;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.unit.ninelock.NineLockView.Cell;
 import com.link.bianmi.unit.ninelock.NineLockView.DisplayMode;
@@ -22,7 +28,7 @@ import com.link.bianmi.unit.ninelock.NineLockView.DisplayMode;
 public class NineLockActivity extends BaseFragmentActivity implements
 		NineLockView.OnPatternListener {
 	private List<Cell> lockPattern;
-	private NineLockView lockPatternView;
+	private NineLockView nineLockView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +37,53 @@ public class NineLockActivity extends BaseFragmentActivity implements
 		lockPattern = NineLockView.stringToPattern(UserConfig.getInstance()
 				.getLockPassKey());
 		setContentView(R.layout.activity_ninelock);
-		lockPatternView = (NineLockView) findViewById(R.id.lock_pattern);
-		lockPatternView.setOnPatternListener(this);
+		nineLockView = (NineLockView) findViewById(R.id.ninelockview);
+		nineLockView.setOnPatternListener(this);
+
+		// 忘记手势密码
+		findViewById(R.id.forget_textview).setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								NineLockActivity.this);
+						final AlertDialog dialog = builder
+								.setTitle(
+										getString(R.string.forget_ninelock_password_dialog_tip))
+								.setPositiveButton(
+										getString(R.string.signin_again),
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												// 清空手势密码
+												UserConfig.getInstance()
+														.setLockPassKey("");
+												UserConfig.getInstance()
+														.setLockPassSuccess(
+																false);
+												// 跳转登录页面
+												BianmiApplication.getInstance()
+														.signOut();
+												launchActivity(WelcomeActivity.class);
+												ActivitysManager
+														.removeAllActivity();
+											}
+										})
+								.setNegativeButton(getString(R.string.cancel),
+										new DialogInterface.OnClickListener() {
+
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												dialog.dismiss();
+											}
+										}).create();
+						dialog.show();
+					}
+				});
 
 	}
 
@@ -61,9 +112,9 @@ public class NineLockActivity extends BaseFragmentActivity implements
 			UserConfig.getInstance().setLockPassSuccess(true);
 			launchActivity(MainActivity.class);
 		} else {
-			lockPatternView.setDisplayMode(DisplayMode.Wrong);
-			Toast.makeText(this, R.string.lockpattern_error, Toast.LENGTH_LONG)
-					.show();
+			nineLockView.setDisplayMode(DisplayMode.Wrong);
+			Toast.makeText(this, R.string.ninelock_password_error,
+					Toast.LENGTH_LONG).show();
 		}
 	}
 
