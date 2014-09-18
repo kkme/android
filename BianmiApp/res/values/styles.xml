@@ -22,6 +22,10 @@
     <style name="Theme.ActionBar.NoTitle" parent="@style/Theme.ActionBar.Base">
         <item name="android:actionBarStyle">@style/Theme.ActionBarStyle.NoTitle</item>
     </style>
+    <!-- Theme:Splash页面，去掉启动APP时短暂的黑屏显示 -->
+    <style name="Theme.Splash" parent="@style/Theme.Fullscreen">
+        <item name="android:windowBackground">@drawable/bg_splash</item>
+    </style>
     <!-- Theme:显示标题，不显示logo的ActionBar -->
     <style name="Theme.ActionBar.NoLogo" parent="@style/Theme.ActionBar.Base">
         <item name="android:actionBarStyle">@style/Theme.ActionBarStyle.NoLogo</item>

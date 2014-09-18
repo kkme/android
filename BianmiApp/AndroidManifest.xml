@@ -40,15 +40,19 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.ActionBar.Base" >
         <activity
-            android:name="com.link.bianmi.activity.MainActivity"
+            android:name="com.link.bianmi.activity.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.ActionBar.NoTitle" >
+            android:theme="@style/Theme.Splash" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.link.bianmi.activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.ActionBar.NoTitle" />
         <!-- 欢迎 -->
         <activity
             android:name="com.link.bianmi.activity.WelcomeActivity"

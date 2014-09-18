@@ -3,16 +3,21 @@ package com.link.bianmi.unit.ninelock;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
+import com.link.bianmi.activity.ActivitysManager;
+import com.link.bianmi.activity.SplashActivity;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.unit.ninelock.NineLockView.Cell;
 import com.link.bianmi.unit.ninelock.NineLockView.DisplayMode;
@@ -24,7 +29,7 @@ import com.link.bianmi.unit.ninelock.NineLockView.DisplayMode;
  * @date 2014-9-17 下午10:31:36
  */
 public class NineLockSettingsActivity extends BaseFragmentActivity implements
-		NineLockView.OnPatternListener, OnClickListener {
+		NineLockView.OnPatternListener, View.OnClickListener {
 
 	private NineLockView lockPatternView;
 	private Button leftButton;
@@ -122,13 +127,36 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 				step = STEP_3;
 				updateView();
 			} else if (step == STEP_4) {
-
+				// 保存九宫格密码
 				UserConfig.getInstance().setLockPassKey(
 						NineLockView.patternToString(choosePattern));
+				// 是否重新启动
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						NineLockSettingsActivity.this);
+				final AlertDialog dialog = builder.setTitle("是否重新启动？")
+						.setPositiveButton("是", new OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								// 退出APP
+								ActivitysManager.removeAllActivity();
+								// 重新启动
+								new Handler().postDelayed(new Runnable() {
+									@Override
+									public void run() {
+										launchActivity(SplashActivity.class);
+									}
+								}, 500);
+							}
+						}).setNegativeButton("否", new OnClickListener() {
 
-				launchActivity(NineLockActivity.class);
-
-				finish();
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						}).create();
+				dialog.show();
 			}
 
 			break;
