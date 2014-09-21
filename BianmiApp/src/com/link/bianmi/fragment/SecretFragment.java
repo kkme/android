@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.DetailsActivity;
-import com.link.bianmi.activity.MainActivity;
+import com.link.bianmi.activity.HomeActivity;
 import com.link.bianmi.adapter.SecretAdapter;
 import com.link.bianmi.asynctask.TaskParams;
 import com.link.bianmi.asynctask.TaskResult;
@@ -67,7 +67,7 @@ public class SecretFragment extends TaskFragment {
 		adapter.setAbsListView(mRListView);
 		mRListView.setAdapter(adapter);
 		final int max_tranY = Tools.dip2px(getActivity(), 48);
-		final View tabview = ((MainActivity) getActivity()).getViewPagerTab();
+		final View tabview = ((HomeActivity) getActivity()).getViewPagerTab();
 
 		mRListView.setActivateListener(new ActivateListener() {
 
@@ -88,7 +88,7 @@ public class SecretFragment extends TaskFragment {
 
 			@Override
 			public void onHeadActivate() {
-				((MainActivity) getActivity()).getViewPagerTab().animate()
+				((HomeActivity) getActivity()).getViewPagerTab().animate()
 						.translationY(-Tools.dip2px(getActivity(), 48));
 				mRListView.animate().translationY(
 						-Tools.dip2px(getActivity(), 48));
@@ -123,7 +123,7 @@ public class SecretFragment extends TaskFragment {
 			@Override
 			public void onHeadStop() {
 
-				((MainActivity) getActivity()).getViewPagerTab().animate()
+				((HomeActivity) getActivity()).getViewPagerTab().animate()
 						.translationY(0);
 				mRListView.animate().translationY(0);
 			}
@@ -228,7 +228,7 @@ public class SecretFragment extends TaskFragment {
 		Cursor cursor = (Cursor) result.getValues()[1];
 		mAdapter.changeCursor(cursor);
 		mAdapter.notifyDataSetChanged();
-		((MainActivity) getActivity()).finishLoaded(false);
+		((HomeActivity) getActivity()).finishLoaded(false);
 	}
 
 	// -------------------------自定义方法--------------------

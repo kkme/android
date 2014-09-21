@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.ActivitysManager;
-import com.link.bianmi.activity.SplashActivity;
+import com.link.bianmi.activity.MainActivity;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.unit.ninelock.NineLockView.Cell;
 import com.link.bianmi.unit.ninelock.NineLockView.DisplayMode;
@@ -147,7 +147,7 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 												new Runnable() {
 													@Override
 													public void run() {
-														launchActivity(SplashActivity.class);
+														launchActivity(MainActivity.class);
 													}
 												}, 500);
 									}

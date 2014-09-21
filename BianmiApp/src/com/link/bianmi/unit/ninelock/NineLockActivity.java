@@ -13,7 +13,7 @@ import com.link.bianmi.BianmiApplication;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.ActivitysManager;
-import com.link.bianmi.activity.MainActivity;
+import com.link.bianmi.activity.HomeActivity;
 import com.link.bianmi.activity.WelcomeActivity;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.unit.ninelock.NineLockView.Cell;
@@ -30,6 +30,8 @@ public class NineLockActivity extends BaseFragmentActivity implements
 	private List<Cell> lockPattern;
 	private NineLockView nineLockView;
 
+	private boolean mCloseLock = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,6 +41,12 @@ public class NineLockActivity extends BaseFragmentActivity implements
 		setContentView(R.layout.activity_ninelock);
 		nineLockView = (NineLockView) findViewById(R.id.ninelockview);
 		nineLockView.setOnPatternListener(this);
+
+		mCloseLock = false;
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null) {
+			mCloseLock = bundle.getBoolean("close_lock");
+		}
 
 		// 忘记手势密码
 		findViewById(R.id.forget_textview).setOnClickListener(
@@ -60,9 +68,9 @@ public class NineLockActivity extends BaseFragmentActivity implements
 												// 清空手势密码
 												UserConfig.getInstance()
 														.setLockPassKey("");
-												UserConfig.getInstance()
-														.setLockPassSuccess(
-																false);
+												// UserConfig.getInstance()
+												// .setLockPassSuccess(
+												// false);
 												// 跳转登录页面
 												BianmiApplication.getInstance()
 														.signOut();
@@ -89,8 +97,10 @@ public class NineLockActivity extends BaseFragmentActivity implements
 
 	@Override
 	public void onBackPressed() {
-		finishActivity();
-		ActivitysManager.removeAllActivity();
+		finish();
+		if (!mCloseLock) {
+			ActivitysManager.removeAllActivity();
+		}
 	}
 
 	@Override
@@ -107,15 +117,19 @@ public class NineLockActivity extends BaseFragmentActivity implements
 
 	@Override
 	public void onPatternDetected(List<Cell> pattern) {
-		if (pattern.equals(lockPattern)) {
-			finishActivity();
-			UserConfig.getInstance().setLockPassSuccess(true);
-			launchActivity(MainActivity.class);
+		// 退出应用
+		if (pattern.equals(lockPattern) && !mCloseLock) {
+			finish();
+			// UserConfig.getInstance().setLockPassSuccess(true);
+			launchActivity(HomeActivity.class);
+			// 关闭锁屏密码
+		} else if (pattern.equals(lockPattern) && mCloseLock) {
+			UserConfig.getInstance().setLockPassStartStatus(false);
+			finishActivityWithResult(RESULT_OK);
 		} else {
 			nineLockView.setDisplayMode(DisplayMode.Wrong);
 			Toast.makeText(this, R.string.ninelock_password_error,
 					Toast.LENGTH_LONG).show();
 		}
 	}
-
 }

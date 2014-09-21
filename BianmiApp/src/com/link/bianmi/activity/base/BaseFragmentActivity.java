@@ -30,12 +30,15 @@ public class BaseFragmentActivity extends FragmentActivity {
 		startActivity(intent);
 	}
 
-	protected void launchActivityForResult(Class<?> cls, int resultCode) {
-		startActivityForResult(new Intent(this, cls), resultCode);
+	protected void launchActivityForResult(Class<?> cls, int requestCode) {
+		startActivityForResult(new Intent(this, cls), requestCode);
 	}
 
-	protected void finishActivity() {
-		this.finish();
+	protected void launchActivityForResult(Class<?> cls, Bundle bundle,
+			int requestCode) {
+		Intent intent = new Intent(this, cls);
+		intent.putExtras(bundle);
+		startActivityForResult(intent, requestCode);
 	}
 
 	protected void finishActivityWithResult(int resultCode) {

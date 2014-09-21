@@ -74,7 +74,7 @@ public class SignUpActivity extends BaseFragmentActivity {
 									// 保存userId
 									UserConfig.getInstance().setUserId(user.id);
 									// 进入主界面
-									launchActivity(MainActivity.class);
+									launchActivity(HomeActivity.class);
 									ActivitysManager.removeAllActivity();
 								}
 							});

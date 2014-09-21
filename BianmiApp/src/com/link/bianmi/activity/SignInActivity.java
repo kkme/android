@@ -86,7 +86,7 @@ public class SignInActivity extends BaseFragmentActivity {
 									// 保存sessionId
 									UserConfig.getInstance().setSessionId(user.sessionId);
 									// 进入主界面
-									launchActivity(MainActivity.class);
+									launchActivity(HomeActivity.class);
 									ActivitysManager.removeAllActivity();
 								}
 

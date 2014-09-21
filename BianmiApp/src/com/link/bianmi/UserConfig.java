@@ -37,7 +37,7 @@ public class UserConfig {
 	public String getUserId() {
 		return mPref.getString("bianmi.user.userid", null);
 	}
-	
+
 	/** 设置sessionId **/
 	public void setSessionId(String sessionId) {
 		SharedPreferences.Editor editor = mPref.edit();
@@ -49,7 +49,7 @@ public class UserConfig {
 	public String getSessionId() {
 		return mPref.getString("bianmi.user.sessionid", null);
 	}
-	
+
 	/** 设置phone **/
 	public void setPhone(String phone) {
 		SharedPreferences.Editor editor = mPref.edit();
@@ -61,7 +61,7 @@ public class UserConfig {
 	public String getPhone() {
 		return mPref.getString("bianmi.user.phone", null);
 	}
-	
+
 	/** 设置加密后的登录密码 **/
 	public void setPwd(String pwd) {
 		SharedPreferences.Editor editor = mPref.edit();
@@ -98,28 +98,28 @@ public class UserConfig {
 		return mPref.getBoolean("bianmi.user.isguest", false);
 	}
 
-	/** 保存锁定密码 **/
+	/** 保存手势密码 **/
 	public void setLockPassKey(String key) {
 		SharedPreferences.Editor editor = mPref.edit();
 		editor.putString("bianmi.user.lockpass.key", key);
 		editor.commit();
 	}
 
-	/** 获取锁定密码 **/
+	/** 获取手势密码 **/
 	public String getLockPassKey() {
 		return mPref.getString("bianmi.user.lockpass.key", "");
 	}
 
-	/** 保存密码输入成功 **/
-	public void setLockPassSuccess(boolean success) {
+	/** 保存手势密码开启状态 **/
+	public void setLockPassStartStatus(boolean success) {
 		SharedPreferences.Editor editor = mPref.edit();
-		editor.putBoolean("bianmi.user.lockpass.key.success", success);
+		editor.putBoolean("bianmi.user.lockpass.key.status", success);
 		editor.commit();
 	}
 
-	/** 获取密码是否输入成功 **/
-	public boolean getLockPassSuccess() {
-		return mPref.getBoolean("bianmi.user.lockpass.key.success", false);
+	/** 获取手势密码开启状态 **/
+	public boolean getLockPassStartStatus() {
+		return mPref.getBoolean("bianmi.user.lockpass.key.status", false);
 	}
 
 }

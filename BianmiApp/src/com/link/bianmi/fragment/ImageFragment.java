@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.link.bianmi.R;
-import com.link.bianmi.activity.MainActivity;
+import com.link.bianmi.activity.HomeActivity;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.utility.BitmapUtil;
 import com.link.bianmi.utility.FileUtil;
@@ -168,7 +168,7 @@ public class ImageFragment extends Fragment {
 				if (isClose) {
 					mScaleImageView.setImageDrawable(null);
 					rootView.setVisibility(View.GONE);
-					((MainActivity) getActivity()).showImageFragment(null,
+					((HomeActivity) getActivity()).showImageFragment(null,
 							false, null);
 					getActivity().supportInvalidateOptionsMenu();
 					isClose = false;
