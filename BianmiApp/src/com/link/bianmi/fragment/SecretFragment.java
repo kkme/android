@@ -38,6 +38,7 @@ public class SecretFragment extends TaskFragment {
 
 	private RListView mRListView;
 	private SecretAdapter mAdapter;
+	private HomeActivity mParentActivity;
 	/**
 	 * 任务类型*
 	 */
@@ -51,23 +52,24 @@ public class SecretFragment extends TaskFragment {
 		LoadNext
 	}
 
+	private View mRootView;
+
 	private SecretManager.SecretType mSecretType;
 
 	@Override
-	public View _onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_secrets, null);
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mRootView = LayoutInflater.from(mContext).inflate(
+				R.layout.fragment_secrets, null);
 
-		mRListView = (RListView) view.findViewById(R.id.rlistview);
-		initInsetTop(mRListView);
-
-		mAdapter = new SecretAdapter(getActivity(), null);
+		mRListView = (RListView) mRootView.findViewById(R.id.rlistview);
+		mAdapter = new SecretAdapter(mContext, null);
 		final CardsAnimationAdapter adapter = new CardsAnimationAdapter(
 				mAdapter);
 		adapter.setAbsListView(mRListView);
 		mRListView.setAdapter(adapter);
-		final int max_tranY = Tools.dip2px(getActivity(), 48);
-		final View tabview = ((HomeActivity) getActivity()).getViewPagerTab();
+		final int max_tranY = Tools.dip2px(mContext, 48);
+		final View tabview = ((HomeActivity) mContext).getViewPagerTab();
 
 		mRListView.setActivateListener(new ActivateListener() {
 
@@ -88,10 +90,9 @@ public class SecretFragment extends TaskFragment {
 
 			@Override
 			public void onHeadActivate() {
-				((HomeActivity) getActivity()).getViewPagerTab().animate()
-						.translationY(-Tools.dip2px(getActivity(), 48));
-				mRListView.animate().translationY(
-						-Tools.dip2px(getActivity(), 48));
+				((HomeActivity) mContext).getViewPagerTab().animate()
+						.translationY(-Tools.dip2px(mContext, 48));
+				mRListView.animate().translationY(-Tools.dip2px(mContext, 48));
 
 				new Handler().postDelayed(new Runnable() {
 
@@ -123,7 +124,7 @@ public class SecretFragment extends TaskFragment {
 			@Override
 			public void onHeadStop() {
 
-				((HomeActivity) getActivity()).getViewPagerTab().animate()
+				((HomeActivity) mContext).getViewPagerTab().animate()
 						.translationY(0);
 				mRListView.animate().translationY(0);
 			}
@@ -162,7 +163,7 @@ public class SecretFragment extends TaskFragment {
 						.findViewById(R.id.feed_item_image);
 				if (imageView.getDrawable() == null
 						|| imageView.getDrawable().getIntrinsicWidth() == 0) {
-					Toast.makeText(getActivity(), "Please wait...",
+					Toast.makeText(mContext, "Please wait...",
 							Toast.LENGTH_SHORT).show();
 					return;
 				}
@@ -178,11 +179,22 @@ public class SecretFragment extends TaskFragment {
 		});
 
 		mSecretType = getSecretType();
+		if (isFirstFragment()) {
+			loadData();
+		}
+	}
 
-		loadCache();
-		updateCache();
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
-		return view;
+		ViewGroup p = (ViewGroup) mRootView.getParent();
+		if (p != null) {
+			p.removeAllViewsInLayout();
+		}
+
+		initInsetTop(mRListView);
+		return mRootView;
 	}
 
 	// -------------------------实现基类方法------------------
@@ -228,14 +240,14 @@ public class SecretFragment extends TaskFragment {
 		Cursor cursor = (Cursor) result.getValues()[1];
 		mAdapter.changeCursor(cursor);
 		mAdapter.notifyDataSetChanged();
-		((HomeActivity) getActivity()).finishLoaded(false);
+		((HomeActivity) mContext).finishLoaded(false);
 	}
 
-	// -------------------------自定义方法--------------------
 	/**
 	 * 从缓存中加载数据初始化界面
 	 */
-	private void loadCache() {
+	@Override
+	public void loadCache() {
 
 		Cursor cursor = SecretManager.DB.fetch();
 		mAdapter.changeCursor(cursor);
@@ -246,7 +258,8 @@ public class SecretFragment extends TaskFragment {
 	/**
 	 * 更新缓存，具体是否需要更新在后台根据时间戳判断
 	 */
-	private void updateCache() {
+	@Override
+	public void updateCache() {
 
 		TaskParams params = new TaskParams();
 		params.put(TASKPARAMS_TYPE, TaskType.RefreshAll);
@@ -255,8 +268,14 @@ public class SecretFragment extends TaskFragment {
 
 	}
 
+	// -------------------------自定义方法--------------------
+	public void loadData() {
+		loadCache();
+		updateCache();
+	}
+
 	private void initInsetTop(View headView) {
-		SystemBarTintUtil tintManager = new SystemBarTintUtil(getActivity());
+		SystemBarTintUtil tintManager = new SystemBarTintUtil(mContext);
 		SystemBarTintUtil.SystemBarConfig config = tintManager.getConfig();
 		headView.setPadding(0, config.getPixelInsetTop(true),
 				config.getPixelInsetRight(), config.getPixelInsetBottom());
@@ -295,5 +314,11 @@ public class SecretFragment extends TaskFragment {
 
 	protected SecretManager.SecretType getSecretType() {
 		return null;
+	}
+
+	protected boolean isFirstFragment() {
+
+		return false;
+
 	}
 }

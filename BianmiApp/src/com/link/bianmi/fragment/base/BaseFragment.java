@@ -47,28 +47,28 @@ public abstract class BaseFragment extends Fragment {
 		}
 	}
 
-	@Override
-	public final View onCreateView(LayoutInflater inflater,
-			ViewGroup container, Bundle savedInstanceState) {
-
-		View view = null;
-		mSuccessCreate = false;
-		try {
-			view = _onCreateView(inflater, container, savedInstanceState);
-			mSuccessCreate = true;
-		} catch (OutOfMemoryError ex) {
-			mSuccessCreate = false;
-			Log.e(TAG, "onCreate.OutOfMemoryError");
-		} catch (Exception ex) {
-			mSuccessCreate = false;
-		}
-
-		if (!mSuccessCreate)
-			mContext.finish();
-
-		mFirstOnResume = true;
-		return view;
-	}
+	// @Override
+	// public final View onCreateView(LayoutInflater inflater,
+	// ViewGroup container, Bundle savedInstanceState) {
+	//
+	// View view = null;
+	// mSuccessCreate = false;
+	// try {
+	// view = _onCreateView(inflater, container, savedInstanceState);
+	// mSuccessCreate = true;
+	// } catch (OutOfMemoryError ex) {
+	// mSuccessCreate = false;
+	// Log.e(TAG, "onCreate.OutOfMemoryError");
+	// } catch (Exception ex) {
+	// mSuccessCreate = false;
+	// }
+	//
+	// if (!mSuccessCreate)
+	// mContext.finish();
+	//
+	// mFirstOnResume = true;
+	// return view;
+	// }
 
 	@Override
 	public final void onResume() {
@@ -158,8 +158,14 @@ public abstract class BaseFragment extends Fragment {
 	public void _onAttach(Activity activity) {
 	}
 
+	public void loadCache(){
+		
+	}
+	
+	public void updateCache(){
+		
+	}
 	// ------------------
-	public abstract View _onCreateView(LayoutInflater inflater,
-			ViewGroup container, Bundle savedInstanceState);
-
+//	public abstract View _onCreateView(LayoutInflater inflater,
+//			ViewGroup container, Bundle savedInstanceState);
 }

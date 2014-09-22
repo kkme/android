@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -27,7 +29,7 @@ import com.link.bianmi.fragment.SecretFragment;
 import com.link.bianmi.widget.ViewPagerTabBar;
 
 public class HomeActivity extends BaseFragmentActivity {
-	private ViewPager mViewPager;
+	public ViewPager mViewPager;
 	private ViewPagerTabBar mViewPagerTab;
 	private ImageFragment mImageFragment;
 
@@ -186,17 +188,33 @@ public class HomeActivity extends BaseFragmentActivity {
 
 		String[] titles;
 		ArrayList<Fragment> fragments;
+		boolean[] initPages;// 页面是否已经初始化
 
 		public ViewPagerAdapter(FragmentManager fm,
 				ArrayList<Fragment> fragments, String[] titles) {
 			super(fm);
 			this.fragments = fragments;
 			this.titles = titles;
+			if (fragments != null) {
+				initPages = new boolean[fragments.size()];
+			}
 		}
 
 		@Override
 		public SecretFragment getItem(int position) {
 			return (SecretFragment) fragments.get(position);
+		}
+
+		@Override
+		public void setPrimaryItem(ViewGroup container, int position,
+				Object object) {
+
+			if (position > 0 && !initPages[position]) {
+				Log.e("bianmi", "position : " + position);
+				((SecretFragment) fragments.get(position)).loadData();
+				initPages[position] = true;
+			}
+
 		}
 
 		@Override
