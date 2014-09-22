@@ -68,9 +68,6 @@ public class NineLockActivity extends BaseFragmentActivity implements
 												// 清空手势密码
 												UserConfig.getInstance()
 														.setLockPassKey("");
-												// UserConfig.getInstance()
-												// .setLockPassSuccess(
-												// false);
 												// 跳转登录页面
 												BianmiApplication.getInstance()
 														.signOut();
@@ -97,10 +94,15 @@ public class NineLockActivity extends BaseFragmentActivity implements
 
 	@Override
 	public void onBackPressed() {
-		finish();
+
 		if (!mCloseLock) {
+			finish();
 			ActivitysManager.removeAllActivity();
+			return;
 		}
+
+		finishActivityWithResult(RESULT_CANCELED);
+
 	}
 
 	@Override

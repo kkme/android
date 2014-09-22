@@ -109,7 +109,10 @@ public class SettingsActivity extends BaseFragmentActivity {
 		if ((requestCode == REQUEST_CODE_SETPASS || requestCode == REQUEST_CODE_CLOSELOCK)
 				&& resultCode == Activity.RESULT_OK)
 			changeSwitchButtonState();
-
+		else if (requestCode == REQUEST_CODE_CLOSELOCK
+				&& resultCode != Activity.RESULT_OK) {
+			mPassSwitchBtn.setChecked(true);
+		}
 	}
 
 	private MenuItem mLoadingItem;

@@ -127,9 +127,11 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 				step = STEP_3;
 				updateView();
 			} else if (step == STEP_4) {
-				// 保存九宫格密码
+				// 保存手势密码
 				UserConfig.getInstance().setLockPassKey(
 						NineLockView.patternToString(choosePattern));
+				// 开启手势密码
+				UserConfig.getInstance().setLockPassStartStatus(true);
 				// 是否重新启动
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						NineLockSettingsActivity.this);
