@@ -10,11 +10,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.link.bianmi.R;
+import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
+import com.link.bianmi.asynctask.listener.OnTaskOverListener;
+import com.link.bianmi.entity.Secret;
+import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.widget.InputSuit;
 
+/**
+ * 发表秘密
+ * 
+ * @author pangfq
+ * @date 2014-10-3 上午7:41:08
+ */
 public class AddActivity extends BaseFragmentActivity {
 
 	private InputSuit mInputSuit;
@@ -65,6 +76,7 @@ public class AddActivity extends BaseFragmentActivity {
 		} else if (item.getItemId() == R.id.action_send) {
 			item.setVisible(false);
 			mLoadingItem.setVisible(true);
+			mInputSuit.startUpload();
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -133,6 +145,49 @@ public class AddActivity extends BaseFragmentActivity {
 		@Override
 		public void onUploadAttach(boolean result, String photoUrl,
 				String recordUrl) {
+
+			if (!result) {
+				Toast.makeText(AddActivity.this, "发表失败！", Toast.LENGTH_SHORT)
+						.show();
+				return;
+			}
+
+			Toast.makeText(AddActivity.this, "上传七牛成功！", Toast.LENGTH_SHORT)
+					.show();
+
+			Secret secret = new Secret();
+			secret.userId = UserConfig.getInstance().getUserId();
+			secret.content = mContentEdit.getText().toString();
+			secret.audioUrl = recordUrl;
+			secret.imageUrl = photoUrl;
+			secret.createdAt = System.currentTimeMillis();
+
+			SecretManager.Task.addSecret(secret,
+					new OnTaskOverListener<Secret>() {
+
+						@Override
+						public void onSuccess(Secret t) {
+							Toast.makeText(AddActivity.this, "发表成功!",
+									Toast.LENGTH_SHORT).show();
+							mLoadingItem.setVisible(false);
+							mSendItem.setVisible(true);
+							new Handler().postDelayed(new Runnable() {
+								@Override
+								public void run() {
+									finish();
+								}
+							}, 500);
+						}
+
+						@Override
+						public void onFailure(int code, String msg) {
+							Toast.makeText(AddActivity.this, "发表失败!",
+									Toast.LENGTH_SHORT).show();
+							mLoadingItem.setVisible(false);
+							mSendItem.setVisible(true);
+						}
+					});
+
 		};
 	};
 

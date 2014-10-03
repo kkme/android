@@ -30,6 +30,7 @@ import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.fragment.base.BaseFragment;
+import com.link.bianmi.qiniu.QiniuClient;
 import com.link.bianmi.utility.AudioRecorder;
 import com.link.bianmi.utility.CameraCrop;
 import com.link.bianmi.utility.ContextHelper;
@@ -55,7 +56,7 @@ public class InputSuit extends LinearLayout {
 	/** 图片URL **/
 	private String mPhotoUrl = "";
 
-	/** 录音地址 **/ 
+	/** 录音地址 **/
 	private String mRecordPath = "";
 	/** 音频URL **/
 	private String mRecordUrl = "";
@@ -578,13 +579,13 @@ public class InputSuit extends LinearLayout {
 							filePathTemp, 640, 80);
 				}
 
-				key = String.format("/forum/image/%s_%s.%s", UUID.randomUUID()
+				key = String.format("secret/image/%s_%s.%s", UUID.randomUUID()
 						.toString().replace("-", ""),
 						System.currentTimeMillis(),
 						FileHelper.getExtensionName(mPhotoPath));
 				uploadType = UPLOAD_TYPE_PHOTO;
 			} else {
-				key = String.format("/forum/audio/%s_%s.%s", UUID.randomUUID()
+				key = String.format("secret/audio/%s_%s.%s", UUID.randomUUID()
 						.toString().replace("-", ""),
 						System.currentTimeMillis(),
 						FileHelper.getExtensionName(mRecordPath));
@@ -594,33 +595,33 @@ public class InputSuit extends LinearLayout {
 
 			final String f_uploadFile = filePathTemp;
 
-			// QiniuClient qc = new QiniuClient();
-			// qc.setOnListener(new QiniuClient.OnListener() {
-			// @Override
-			// public void onFailure(Exception ex) { // 上传图片失败：失败时回传参数为空
-			// mListener.onUploadAttach(false, mPhotoUrl, mRecordUrl);
-			// }
-			//
-			// @Override
-			// public void onComplete(String key) { // 上传成功
-			// if (uploadType == UPLOAD_TYPE_PHOTO) {
-			// mPhotoUrl = String.format("http://%s/%s", SysConfig
-			// .getInstance().getQiniuBucketDomainAttach(),
-			// key);
-			// } else {
-			// mRecordUrl = String.format("http://%s/%s", SysConfig
-			// .getInstance().getQiniuBucketDomainAttach(),
-			// key);
-			// }
-			// if (f_uploadFile.contains(SysConfig.getInstance()
-			// .getPathLLS())) // lls文件夹中的文件可以删除
-			// FileHelper.delete(f_uploadFile);
-			// uploadAttach();
-			// }
-			// });
-			//
-			// qc.doUpload(f_uploadFile, key, SysConfig.getInstance()
-			// .getQiniuBucketNameAttach(), false, false);
+			QiniuClient qc = new QiniuClient();
+			qc.setOnListener(new QiniuClient.OnListener() {
+				@Override
+				public void onFailure(Exception ex) { // 上传图片失败：失败时回传参数为空
+					mListener.onUploadAttach(false, mPhotoUrl, mRecordUrl);
+				}
+
+				@Override
+				public void onComplete(String key) { // 上传成功
+					if (uploadType == UPLOAD_TYPE_PHOTO) {
+						mPhotoUrl = String.format("http://%s/%s", SysConfig
+								.getInstance().getQiniuBucketDomainAttach(),
+								key);
+					} else {
+						mRecordUrl = String.format("http://%s/%s", SysConfig
+								.getInstance().getQiniuBucketDomainAttach(),
+								key);
+					}
+					if (f_uploadFile.contains(SysConfig.getInstance()
+							.getPathTemp())) // lls文件夹中的文件可以删除
+						FileHelper.delete(f_uploadFile);
+					uploadAttach();
+				}
+			});
+
+			qc.doUpload(f_uploadFile, key, SysConfig.getInstance()
+					.getQiniuBucketNameAttach(), false, false);
 
 		} catch (Exception ex) {
 			mListener.onUploadAttach(false, mPhotoUrl, mRecordUrl);

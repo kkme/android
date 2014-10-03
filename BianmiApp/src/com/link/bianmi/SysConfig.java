@@ -31,18 +31,37 @@ public class SysConfig {
 		mProperties.setProperty("bianmi.debug", String.valueOf(false));// 是否为debug模式
 
 		// ---------------debug
-		mProperties.setProperty("bianmi.url.base.debug", "http://infinigag-us.aws.af.cm");
+		mProperties.setProperty("bianmi.url.base.debug",
+				"http://infinigag-us.aws.af.cm");
 		mProperties.setProperty("bianmi.dbname.debug", "bianmi_d");
-		mProperties.setProperty("bianmi.url.signup.debug", "http://121.40.88.136/bianmi/index.php/Index/Login/reg");
-		mProperties.setProperty("bianmi.url.signin.debug", "http://121.40.88.136/bianmi/index.php/Index/Login/index");
-		mProperties.setProperty("bianmi.url.signout.debug", "http://121.40.88.136/bianmi/index.php/Index/Login/signout");
+		mProperties.setProperty("bianmi.url.signup.debug",
+				"http://121.40.88.136/bianmi/index.php/Index/Login/reg");
+		mProperties.setProperty("bianmi.url.signin.debug",
+				"http://121.40.88.136/bianmi/index.php/Index/Login/index");
+		mProperties.setProperty("bianmi.url.signout.debug",
+				"http://121.40.88.136/bianmi/index.php/Index/Login/signout");
+		mProperties.setProperty("bianmi.url.secret.add.debug",
+				"http://192.168.1.110/bianmi/add.php");
 
 		// ---------------release
 		mProperties.setProperty("bianmi.dbname.release", "bianmi_v1");
-		mProperties.setProperty("bianmi.url.base.release", "http://infinigag-us.aws.af.cm"); // Base URL
-		mProperties.setProperty("bianmi.url.signup.release", "http://192.168.1.113/bianmi/signup.php"); // 注册
-		mProperties.setProperty("bianmi.url.signin.release", "http://192.168.1.113/bianmi/signin.php"); // 登录
-		mProperties.setProperty("bianmi.url.signout.release", "http://192.168.1.113/bianmi/signout.php"); // 登出
+		mProperties.setProperty("bianmi.url.base.release",
+				"http://infinigag-us.aws.af.cm"); // Base URL
+		mProperties.setProperty("bianmi.url.signup.release",
+				"http://192.168.1.110/bianmi/signup.php"); // 注册
+		mProperties.setProperty("bianmi.url.signin.release",
+				"http://192.168.1.110/bianmi/signin.php"); // 登录
+		mProperties.setProperty("bianmi.url.signout.release",
+				"http://192.168.1.110/bianmi/signout.php"); // 登出
+		mProperties.setProperty("bianmi.qiniu.uptoken",
+				"http://192.168.1.110/bianmi/token.php?type=uptoken");// 上传token
+		mProperties.setProperty("bianmi.url.secret.add.release",
+				"http://192.168.1.110/bianmi/add.php");
+		// 七牛
+		mProperties.setProperty("qiniu.bucketname.attach", "bianmi"); // 七牛
+																		// Bucket
+		mProperties.setProperty("qiniu.bucketdomain.attach",
+				"bianmi.qiniudn.com"); // 七牛 BucketDomain.Image
 
 	}
 
@@ -165,6 +184,33 @@ public class SysConfig {
 			return mProperties.getProperty("bianmi.url.signout.debug");
 		} else {
 			return mProperties.getProperty("bianmi.url.signout.release");
+		}
+	}
+
+	/** 获取七牛 bucketname.attach **/
+	public String getQiniuBucketNameAttach() {
+		return mProperties.getProperty("qiniu.bucketname.attach");
+	}
+
+	public String getQiniuBucketDomainAttach() {
+		return mProperties.getProperty("qiniu.bucketdomain.attach");
+	}
+
+	/**
+	 * 获取七牛上传资源的token
+	 */
+	public String getQiniuUptoken() {
+		return mProperties.getProperty("bianmi.qiniu.uptoken");
+	}
+
+	/**
+	 * 发表秘密的url
+	 */
+	public String getAddSecretUrl() {
+		if (isDebug()) {
+			return mProperties.getProperty("bianmi.url.secret.add.debug");
+		} else {
+			return mProperties.getProperty("bianmi.url.secret.add.release");
 		}
 	}
 

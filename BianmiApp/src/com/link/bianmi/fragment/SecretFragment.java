@@ -23,7 +23,7 @@ import com.link.bianmi.asynctask.TaskResult;
 import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.SecretManager;
-import com.link.bianmi.entity.manager.SecretManager.SecretType;
+import com.link.bianmi.entity.manager.SecretManager.TaskType;
 import com.link.bianmi.fragment.base.TaskFragment;
 import com.link.bianmi.utility.SystemBarTintUtil;
 import com.link.bianmi.utility.Tools;
@@ -54,7 +54,7 @@ public class SecretFragment extends TaskFragment {
 
 	private View mRootView;
 
-	private SecretManager.SecretType mSecretType;
+	private SecretManager.TaskType mTaskType;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -178,7 +178,7 @@ public class SecretFragment extends TaskFragment {
 			}
 		});
 
-		mSecretType = getSecretType();
+		mTaskType = getTaskType();
 		if (isFirstFragment()) {
 			loadData();
 		}
@@ -203,7 +203,7 @@ public class SecretFragment extends TaskFragment {
 		TaskParams param = params[0];
 		TaskType taskType = (TaskType) param.get(TASKPARAMS_TYPE);
 
-		SecretType secretType = (SecretType) param.get(TASKPARAMS_SECRET_TYPE);
+		SecretManager.TaskType secretType = (SecretManager.TaskType) param.get(TASKPARAMS_SECRET_TYPE);
 		String resultMsg = "";
 		TaskResult.TaskStatus resultStatu = TaskResult.TaskStatus.OK;
 
@@ -263,7 +263,7 @@ public class SecretFragment extends TaskFragment {
 
 		TaskParams params = new TaskParams();
 		params.put(TASKPARAMS_TYPE, TaskType.RefreshAll);
-		params.put(TASKPARAMS_SECRET_TYPE, mSecretType);
+		params.put(TASKPARAMS_SECRET_TYPE, mTaskType);
 		doTask(params);
 
 	}
@@ -312,7 +312,7 @@ public class SecretFragment extends TaskFragment {
 		}
 	}
 
-	protected SecretManager.SecretType getSecretType() {
+	protected SecretManager.TaskType getTaskType() {
 		return null;
 	}
 

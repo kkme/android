@@ -70,6 +70,8 @@ public class HttpClient {
 	}
 
 	public static Response doPost(List<NameValuePair> params, String url) {
+		if(url == null || url.isEmpty())
+			return null;
 		HttpPost httpPost = new HttpPost(url);
 		HttpResponse httpRes = null;
 		Response res = null;

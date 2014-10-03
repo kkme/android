@@ -8,6 +8,7 @@ public class Secret implements Serializable {
 
 	public String id;
 	public String resourceId = "";
+	public String userId = "";
 	public String from = "";// 1、朋友：朋友，朋友的朋友 2、热门：地点 3、附近：距离
 	public String content = "";// 内容
 	public int likes;// 点赞数
