@@ -10,7 +10,6 @@ import org.json.JSONObject;
 
 /**
  * Caller参数
- * @author sunpf
  *
  */
 public class CallerParam{

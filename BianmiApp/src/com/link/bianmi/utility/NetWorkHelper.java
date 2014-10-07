@@ -9,7 +9,6 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 /**
  * 网络帮助类
- * @author sunpf
  *
  */
 public class NetWorkHelper {
@@ -17,7 +16,6 @@ public class NetWorkHelper {
 
 	/**
 	 * 网络类型
-	 * @author sunpf
 	 */
 	public enum NetWorkType implements IntEnum {
 		/**

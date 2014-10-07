@@ -37,7 +37,6 @@ import android.util.Base64;
 /**
  * 图片帮助类
  * 
- * @author sunpf
  * 
  */
 public class ImageHelper {

@@ -31,7 +31,6 @@ import com.link.bianmi.http.Response;
 
 /**
  * 延迟加载图片 
- * @author sunpf
  */
 public class ImageManager implements ImageCache {
 	private static final String TAG = "ImageManager";

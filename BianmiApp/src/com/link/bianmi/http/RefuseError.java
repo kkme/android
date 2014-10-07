@@ -8,7 +8,6 @@ import org.json.JSONObject;
 
 /**
  * 服务器响应的错误信息
- * @author sunpf
  *
  */
 public class RefuseError implements java.io.Serializable{

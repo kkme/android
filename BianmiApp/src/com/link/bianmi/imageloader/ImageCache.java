@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 
 /**
  * 延迟加载图片 
- * @author sunpf
  */
 public interface ImageCache {
 	

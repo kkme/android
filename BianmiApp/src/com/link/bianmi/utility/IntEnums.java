@@ -6,7 +6,6 @@ import java.util.Map;
 
 /**
  * Int-enum 转换
- * @author sunpf
  *
  */
 public class IntEnums {

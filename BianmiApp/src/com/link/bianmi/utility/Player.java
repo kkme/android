@@ -14,7 +14,6 @@ import android.util.Log;
 
 /**
  *  网络播放器 
- * @author sunpf
  *
  */
 public class Player implements IPlayer, OnBufferingUpdateListener,

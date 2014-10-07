@@ -29,6 +29,12 @@ import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.ActivateListener;
 import com.link.bianmi.widget.RListView.TouchDirectionState;
 
+/**
+ * 秘密列表
+ * 
+ * @author pangfq
+ * @date 2014-10-7 下午8:39:43
+ */
 public class SecretFragment extends BaseFragment {
 
 	// 根视图
@@ -39,8 +45,10 @@ public class SecretFragment extends BaseFragment {
 	private SecretAdapter mAdapter;
 	// 当前页中最后一条内容的ID
 	private String mLastId = "";
-	// 当前页码
-	private int mCurrentPage = 1;
+	// 列表的页数
+	private int mPageSize = 1;
+
+	private List<Secret> mSecretsList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +89,7 @@ public class SecretFragment extends BaseFragment {
 				mRListView.animate().translationY(-Tools.dip2px(mContext, 48));
 				long pretime = System.currentTimeMillis();
 				// 刷新列表
-				refreshList();
+				fetchNew();
 				// 菊花至少转1.5秒
 				long suftime = System.currentTimeMillis();
 				new Handler().postDelayed(new Runnable() {
@@ -209,7 +217,7 @@ public class SecretFragment extends BaseFragment {
 	 * 从缓存中加载数据初始化界面
 	 */
 	private void loadCache() {
-		Cursor cursor = SecretManager.DB.fetch(mCurrentPage);
+		Cursor cursor = SecretManager.DB.fetch(mPageSize);
 		refreshRListView(cursor);
 
 	}
@@ -218,8 +226,7 @@ public class SecretFragment extends BaseFragment {
 	 * 更新缓存，具体是否需要更新在后台根据时间戳判断
 	 */
 	private void updateCache() {
-
-		executeTask("");
+		fetchNew();
 	}
 
 	private void initInsetTop(View headView) {
@@ -230,12 +237,24 @@ public class SecretFragment extends BaseFragment {
 		headView.requestLayout();
 	}
 
-	private void refreshList() {
-		executeTask("");
+	/**
+	 * 拉取最新
+	 */
+	private void fetchNew() {
+		mLastId = "";
+		mPageSize = 1;
+		executeGetSecretsTask(mLastId, mPageSize);
 	}
 
+	/**
+	 * 加载更多
+	 */
 	private void loadMore() {
-		executeTask(mLastId);
+		if (mSecretsList != null && mSecretsList.size() > 0) {
+			mLastId = mSecretsList.get(mSecretsList.size() - 1).id;
+			mPageSize++;
+			executeGetSecretsTask(mLastId, mPageSize);
+		}
 	}
 
 	/**
@@ -249,29 +268,39 @@ public class SecretFragment extends BaseFragment {
 		}
 	}
 
-	private void executeTask(final String startId) {
+	/**
+	 * 执行获取秘密列表数据的异步任务
+	 * 
+	 * @param lastId
+	 *            当前页最后一条内容的id
+	 * @param pageSize
+	 *            页数
+	 */
+	private void executeGetSecretsTask(final String lastId, final int pageSize) {
 
-		SecretManager.Task.getSecrets(startId,
+		SecretManager.Task.getSecrets(lastId,
 				new OnTaskOverListener<List<Secret>>() {
 					@Override
-					public void onSuccess(List<Secret> t) {
-						mCurrentPage++;
-						if (t != null && t.size() > 0) {
-							mLastId = t.get(t.size() - 1).id;
-						}
-
-						if (startId != null && startId.isEmpty()) {
+					public void onSuccess(List<Secret> secretsList) {
+						// 清空数据库
+						if (lastId != null && lastId.isEmpty()) {
 							SecretManager.DB.cleanSecret();
 						}
-						SecretManager.DB.addSecrets(t);
-						Cursor cursor = SecretManager.DB.fetch(mCurrentPage);
-						refreshRListView(cursor);
+
+						// 刷新列表
+						if (secretsList != null && secretsList.size() > 0) {
+							mSecretsList = secretsList;
+							SecretManager.DB.addSecrets(secretsList);
+							refreshRListView(SecretManager.DB.fetch(pageSize));
+						}
 						((HomeActivity) mContext).finishLoaded(false);
 					}
 
 					@Override
 					public void onFailure(int code, String msg) {
 						((HomeActivity) mContext).finishLoaded(false);
+						Toast.makeText(mContext, msg, Toast.LENGTH_SHORT)
+								.show();
 					}
 				});
 	}

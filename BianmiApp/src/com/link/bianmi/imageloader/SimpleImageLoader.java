@@ -24,7 +24,6 @@ import com.link.bianmi.http.HttpException;
 
 /**
  * 延迟加载图片 
- * @author sunpf
  */
 public class SimpleImageLoader {
 	private static final String TAG = "SimpleImageLoader";

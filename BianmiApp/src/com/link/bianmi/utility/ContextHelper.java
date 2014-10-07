@@ -19,7 +19,6 @@ import com.link.bianmi.UserConfig;
 
 /**
  * 上下文信息
- * @author sunpf
  *
  */
 public class ContextHelper {
