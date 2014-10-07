@@ -10,51 +10,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.DetailsActivity;
 import com.link.bianmi.activity.HomeActivity;
+import com.link.bianmi.adapter.CardsAnimationAdapter;
 import com.link.bianmi.adapter.SecretAdapter;
-import com.link.bianmi.asynctask.TaskParams;
-import com.link.bianmi.asynctask.TaskResult;
+import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.SecretManager;
-import com.link.bianmi.entity.manager.SecretManager.TaskType;
-import com.link.bianmi.fragment.base.TaskFragment;
+import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.utility.SystemBarTintUtil;
 import com.link.bianmi.utility.Tools;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.ActivateListener;
 import com.link.bianmi.widget.RListView.TouchDirectionState;
-import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.ObjectAnimator;
 
-public class SecretFragment extends TaskFragment {
+public class SecretFragment extends BaseFragment {
 
-	private RListView mRListView;
-	private SecretAdapter mAdapter;
-	private HomeActivity mParentActivity;
-	/**
-	 * 任务类型*
-	 */
-	private final String TASKPARAMS_TYPE = "taskparams_type";
-	private final String TASKPARAMS_PAGE = "taskparams_page";
-	private final String TASKPARAMS_SECRET_TYPE = "taskparams_secret_type";
-
-	enum TaskType {
-		RefreshAll,
-
-		LoadNext
-	}
-
+	// 根视图
 	private View mRootView;
-
-	private SecretManager.TaskType mTaskType;
+	// 列表
+	private RListView mRListView;
+	// 列表适配器
+	private SecretAdapter mAdapter;
+	// 当前页中最后一条内容的ID
+	private String mLastId = "";
+	// 当前页码
+	private int mCurrentPage = 1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -93,31 +79,35 @@ public class SecretFragment extends TaskFragment {
 				((HomeActivity) mContext).getViewPagerTab().animate()
 						.translationY(-Tools.dip2px(mContext, 48));
 				mRListView.animate().translationY(-Tools.dip2px(mContext, 48));
-
+				long pretime = System.currentTimeMillis();
+				// 刷新列表
+				refreshList();
+				// 菊花至少转1.5秒
+				long suftime = System.currentTimeMillis();
 				new Handler().postDelayed(new Runnable() {
 
 					@Override
 					public void run() {
 						mRListView.stopHeadActiving();
 					}
-				}, 2000);
+				}, suftime - pretime > 1500 ? 0 : 1500);
+			}
+
+			@Override
+			public void onFootActivate() {
+				// 菊花至少转0.8秒
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						loadMore();
+						mRListView.stopFootActiving();
+					}
+				}, 800);
 
 			}
 
 			@Override
 			public void onFootTouchActivate(boolean activate) {
-
-			}
-
-			@Override
-			public void onFootActivate() {
-				new Handler().postDelayed(new Runnable() {
-
-					@Override
-					public void run() {
-						mRListView.stopFootActiving();
-					}
-				}, 2000);
 
 			}
 
@@ -178,9 +168,8 @@ public class SecretFragment extends TaskFragment {
 			}
 		});
 
-		mTaskType = getTaskType();
 		if (isFirstFragment()) {
-			loadData();
+			onFirstLoad();
 		}
 	}
 
@@ -197,81 +186,40 @@ public class SecretFragment extends TaskFragment {
 		return mRootView;
 	}
 
-	// -------------------------实现基类方法------------------
-	// @Override
-	protected TaskResult onTaskBackground(TaskParams... params) {
-		TaskParams param = params[0];
-		TaskType taskType = (TaskType) param.get(TASKPARAMS_TYPE);
-
-		SecretManager.TaskType secretType = (SecretManager.TaskType) param.get(TASKPARAMS_SECRET_TYPE);
-		String resultMsg = "";
-		TaskResult.TaskStatus resultStatu = TaskResult.TaskStatus.OK;
-
-		try {
-			if (taskType == TaskType.RefreshAll) {
-				List<Secret> secretsList = SecretManager.API
-						.getSecrets(secretType);
-				SecretManager.DB.addSecrets(secretsList);
-				Cursor cursor = SecretManager.DB.fetch();
-				return new TaskResult(resultStatu, resultMsg, taskType, cursor,
-						secretsList, 1);
-			} else if (taskType == TaskType.LoadNext) {
-				// int page = Integer.parseInt(param.getString(TASKPARAMS_PAGE,
-				// "1"));
-				// Tmodel<Secret[]> tm = SecretHelper.API.getSecretsArray(page);
-				// SecretHelper.DB.addSecret(tm.t);
-				// Cursor cursor = SecretHelper.DB.fetch();
-				// return new TaskResult(resultStatu, resultMsg, taskType,
-				// cursor,
-				// tm.currentPage, tm.total);
-			}
-		} catch (Exception ex) {
-			resultStatu = TaskResult.TaskStatus.FAILED;
-		}
-		return new TaskResult(resultStatu, resultMsg, taskType);
-	}
-
-	/**
-	 * 后台任务结束后更新UI *
-	 */
 	@Override
-	protected void onTaskDoneUI(TaskResult result) {
-
-		Cursor cursor = (Cursor) result.getValues()[1];
-		mAdapter.changeCursor(cursor);
-		mAdapter.notifyDataSetChanged();
-		((HomeActivity) mContext).finishLoaded(false);
+	public void onFirstLoad() {
+		loadCache();
+		updateCache();
 	}
+
+	// --------------------------protected----------------
+	protected SecretManager.TaskType getTaskType() {
+		return null;
+	}
+
+	protected boolean isFirstFragment() {
+
+		return false;
+
+	}
+
+	// -------------------------private--------------------
 
 	/**
 	 * 从缓存中加载数据初始化界面
 	 */
-	@Override
-	public void loadCache() {
-
-		Cursor cursor = SecretManager.DB.fetch();
-		mAdapter.changeCursor(cursor);
-		mAdapter.notifyDataSetChanged();
+	private void loadCache() {
+		Cursor cursor = SecretManager.DB.fetch(mCurrentPage);
+		refreshRListView(cursor);
 
 	}
 
 	/**
 	 * 更新缓存，具体是否需要更新在后台根据时间戳判断
 	 */
-	@Override
-	public void updateCache() {
+	private void updateCache() {
 
-		TaskParams params = new TaskParams();
-		params.put(TASKPARAMS_TYPE, TaskType.RefreshAll);
-		params.put(TASKPARAMS_SECRET_TYPE, mTaskType);
-		doTask(params);
-
-	}
-
-	// -------------------------自定义方法--------------------
-	public void loadData() {
-		loadCache();
-		updateCache();
+		executeTask("");
 	}
 
 	private void initInsetTop(View headView) {
@@ -282,43 +230,50 @@ public class SecretFragment extends TaskFragment {
 		headView.requestLayout();
 	}
 
-	class CardsAnimationAdapter extends AnimationAdapter {
-		private float mTranslationY = 400;
+	private void refreshList() {
+		executeTask("");
+	}
 
-		private float mRotationX = 15;
+	private void loadMore() {
+		executeTask(mLastId);
+	}
 
-		private long mDuration = 400;
-
-		public CardsAnimationAdapter(BaseAdapter baseAdapter) {
-			super(baseAdapter);
-		}
-
-		@Override
-		protected long getAnimationDelayMillis() {
-			return 30;
-		}
-
-		@Override
-		protected long getAnimationDurationMillis() {
-			return mDuration;
-		}
-
-		@Override
-		public Animator[] getAnimators(ViewGroup parent, View view) {
-			return new Animator[] {
-					ObjectAnimator.ofFloat(view, "translationY", mTranslationY,
-							0),
-					ObjectAnimator.ofFloat(view, "rotationX", mRotationX, 0) };
+	/**
+	 * 刷新RListView
+	 * 
+	 */
+	private void refreshRListView(Cursor cursor) {
+		if (cursor != null) {
+			mAdapter.changeCursor(cursor);
+			mAdapter.notifyDataSetChanged();
 		}
 	}
 
-	protected SecretManager.TaskType getTaskType() {
-		return null;
+	private void executeTask(final String startId) {
+
+		SecretManager.Task.getSecrets(startId,
+				new OnTaskOverListener<List<Secret>>() {
+					@Override
+					public void onSuccess(List<Secret> t) {
+						mCurrentPage++;
+						if (t != null && t.size() > 0) {
+							mLastId = t.get(t.size() - 1).id;
+						}
+
+						if (startId != null && startId.isEmpty()) {
+							SecretManager.DB.cleanSecret();
+						}
+						SecretManager.DB.addSecrets(t);
+						Cursor cursor = SecretManager.DB.fetch(mCurrentPage);
+						refreshRListView(cursor);
+						((HomeActivity) mContext).finishLoaded(false);
+					}
+
+					@Override
+					public void onFailure(int code, String msg) {
+						((HomeActivity) mContext).finishLoaded(false);
+					}
+				});
 	}
 
-	protected boolean isFirstFragment() {
-
-		return false;
-
-	}
 }

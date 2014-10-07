@@ -41,22 +41,27 @@ public class SysConfig {
 		mProperties.setProperty("bianmi.url.signout.debug",
 				"http://121.40.88.136/bianmi/index.php/Index/Login/signout");
 		mProperties.setProperty("bianmi.url.secret.add.debug",
-				"http://192.168.1.110/bianmi/add.php");
+				"http://192.168.1.101/bianmi/add.php");
+		mProperties.setProperty("bianmi.url.secret.list.debug",
+				"http://192.168.1.101/bianmi/secrets.php");
 
 		// ---------------release
 		mProperties.setProperty("bianmi.dbname.release", "bianmi_v1");
 		mProperties.setProperty("bianmi.url.base.release",
 				"http://infinigag-us.aws.af.cm"); // Base URL
 		mProperties.setProperty("bianmi.url.signup.release",
-				"http://192.168.1.110/bianmi/signup.php"); // 注册
+				"http://192.168.1.101/bianmi/signup.php"); // 注册
 		mProperties.setProperty("bianmi.url.signin.release",
-				"http://192.168.1.110/bianmi/signin.php"); // 登录
+				"http://192.168.1.101/bianmi/signin.php"); // 登录
 		mProperties.setProperty("bianmi.url.signout.release",
-				"http://192.168.1.110/bianmi/signout.php"); // 登出
+				"http://192.168.1.101/bianmi/signout.php"); // 登出
 		mProperties.setProperty("bianmi.qiniu.uptoken",
-				"http://192.168.1.110/bianmi/token.php?type=uptoken");// 上传token
+				"http://192.168.1.101/bianmi/token.php?type=uptoken");// 上传token
 		mProperties.setProperty("bianmi.url.secret.add.release",
-				"http://192.168.1.110/bianmi/add.php");
+				"http://192.168.1.101/bianmi/add.php");
+		mProperties.setProperty("bianmi.url.secret.list.release",
+				"http://192.168.1.101/bianmi/secrets.php");
+		
 		// 七牛
 		mProperties.setProperty("qiniu.bucketname.attach", "bianmi"); // 七牛
 																		// Bucket
@@ -211,6 +216,17 @@ public class SysConfig {
 			return mProperties.getProperty("bianmi.url.secret.add.debug");
 		} else {
 			return mProperties.getProperty("bianmi.url.secret.add.release");
+		}
+	}
+
+	/**
+	 * 获取秘密列表
+	 */
+	public String getSecretsUrl() {
+		if (isDebug()) {
+			return mProperties.getProperty("bianmi.url.secret.list.debug");
+		} else {
+			return mProperties.getProperty("bianmi.url.secret.list.release");
 		}
 	}
 

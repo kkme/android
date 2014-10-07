@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.link.bianmi.R;
 import com.link.bianmi.db.SecretDB;
-import com.link.bianmi.entity.Secret;
 import com.link.bianmi.imageloader.ImageLoader;
 import com.link.bianmi.utility.ViewHolder;
 import com.link.bianmi.widget.AudioButton;
@@ -19,7 +18,9 @@ import com.link.bianmi.widget.AudioButton;
 public class SecretAdapter extends CursorAdapter {
 
 	private Context mContext;
+	private IndexHolder mIndexHolder;
 
+	@SuppressWarnings("deprecation")
 	public SecretAdapter(Context context, Cursor c) {
 		super(context, c);
 		mContext = context;
@@ -34,18 +35,43 @@ public class SecretAdapter extends CursorAdapter {
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 
-		int count = cursor.getCount();
-		Secret secret = SecretDB.getInstance().buildEntity(cursor);
+		if (mIndexHolder == null) {
+			mIndexHolder = new IndexHolder();
+			mIndexHolder.contentIndex = cursor
+					.getColumnIndex(SecretDB.FIELD_CONTENT);
+			mIndexHolder.likesIndex = cursor
+					.getColumnIndex(SecretDB.FIELD_LIKES);
+			mIndexHolder.imageUrlIndex = cursor
+					.getColumnIndex(SecretDB.FIELD_IMAGE_URL);
+			mIndexHolder.audioUrlIndex = cursor
+					.getColumnIndex(SecretDB.FIELD_AUDIO_LENGTH);
+			mIndexHolder.audioLengthIndex = cursor
+					.getColumnIndex(SecretDB.FIELD_AUDIO_LENGTH);
+		}
 
 		TextView contentText = ViewHolder.get(view, R.id.feed_item_title);
-		contentText.setText(secret.content);
+		contentText.setText(cursor.getString(mIndexHolder.contentIndex));
 		TextView likeCountText = ViewHolder.get(view, R.id.feed_item_text_info);
-		likeCountText.setText(String.valueOf(secret.likes));
+		likeCountText.setText(String.valueOf(mIndexHolder.likesIndex));
 		ImageView pictureImage = ViewHolder.get(view, R.id.feed_item_image);
-		new ImageLoader().displayImage(pictureImage, secret.imageUrl,
+		ImageLoader.displayImage(pictureImage,
+				cursor.getString(mIndexHolder.imageUrlIndex),
 				R.drawable.ic_launcher, false);
-		
+
 		AudioButton audioBtn = ViewHolder.get(view, R.id.audio_button);
-		audioBtn.setAudioFile("http://bianmi.qiniudn.com//secret/audio/ffa02859b5214856bae1b5ae8ec3ba5f_1412342833184.amr?attname=&e=1412429240&token=6uoNKRkDEm7rUXoMoEMXffVW8nuKCfW1RRXATji4:4mFgnqJUHtMq5DguLcrUQWdtBoY", 120);
+		audioBtn.setAudioFile(cursor.getString(mIndexHolder.audioUrlIndex),
+				cursor.getInt(mIndexHolder.audioLengthIndex));
+	}
+
+	/**
+	 * 缓存ColumnIndex
+	 * 
+	 */
+	private class IndexHolder {
+		int contentIndex;
+		int likesIndex;
+		int imageUrlIndex;
+		int audioUrlIndex;
+		int audioLengthIndex;
 	}
 }

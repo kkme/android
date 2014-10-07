@@ -6,14 +6,13 @@ import java.util.concurrent.Executors;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.link.bianmi.SysConfig;
+import com.link.bianmi.UserConfig;
 import com.link.bianmi.asynctask.BaseAsyncTask;
 import com.link.bianmi.asynctask.TaskParams;
 import com.link.bianmi.asynctask.TaskResult;
@@ -25,7 +24,7 @@ import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.entity.Result;
 import com.link.bianmi.entity.ResultStatus;
 import com.link.bianmi.entity.Secret;
-import com.link.bianmi.entity.Tmodel;
+import com.link.bianmi.entity.builder.SecretBuilder;
 import com.link.bianmi.entity.builder.StatusBuilder;
 import com.link.bianmi.http.HttpClient;
 import com.link.bianmi.http.Response;
@@ -34,20 +33,26 @@ import com.link.bianmi.http.ResponseException;
 public class SecretManager {
 
 	public static enum TaskType {
-		ADD, HOT, FRIEND, NEARBY
+		ADD, GET_SECRETS, HOT, FRIEND, NEARBY
 	}
+
+	/** 单页数量 **/
+	private static final int BATCH = 8;
 
 	public static class DB {
 
+		/**
+		 * 清空秘密表
+		 */
 		public static void cleanSecret() {
-
+			Database.getInstance().cleanData(SecretDB.TABLE_NAME);
 		}
 
-		public static Cursor fetch() {
+		public static Cursor fetch(int page) {
 			SQLiteDatabase db = Database.getInstance().getDb(false);
-			String orderBy = SecretDB.FIELD_CREATEDAT + " DESC ";// 按创建时间的倒叙排
+			String orderBy = SecretDB.FIELD_CREATED_TIME + " DESC ";// 按创建时间的倒叙排
 			return db.query(SecretDB.TABLE_NAME, SecretDB.TABLE_COLUMNS, null,
-					null, null, null, orderBy);
+					null, null, null, orderBy, String.valueOf(page * BATCH));
 		}
 
 		public static void addSecrets(List<Secret> secretsList) {
@@ -71,10 +76,10 @@ public class SecretManager {
 			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("userid", secret.userId));
 			params.add(new BasicNameValuePair("content", secret.content));
-			params.add(new BasicNameValuePair("imageUrl", secret.imageUrl));
-			params.add(new BasicNameValuePair("audioUrl", secret.audioUrl));
-			params.add(new BasicNameValuePair("createAt", String
-					.valueOf(secret.createdAt)));
+			params.add(new BasicNameValuePair("image_url", secret.imageUrl));
+			params.add(new BasicNameValuePair("audio_url", secret.audioUrl));
+			params.add(new BasicNameValuePair("created_time", String
+					.valueOf(secret.createdTime)));
 
 			Response response = HttpClient.doPost(params, SysConfig
 					.getInstance().getAddSecretUrl());
@@ -90,48 +95,32 @@ public class SecretManager {
 			return result;
 		}
 
-		/** 单页数量 **/
-		private static final int pageSize = 20;
+		public static Result<List<Secret>> getSecrets(String userid,
+				String secretid) {
+			Result<List<Secret>> result = new Result<List<Secret>>();
 
-		public static List<Secret> getSecrets(TaskType type) {
-			String url = null;
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("userid", userid));
+			params.add(new BasicNameValuePair("secretid", secretid));
+			params.add(new BasicNameValuePair("batch", String.valueOf(BATCH)));
+			Response res = HttpClient.doPost(params, SysConfig.getInstance()
+					.getSecretsUrl());
 
-			Response res = HttpClient.doGet(url);
-			List<Secret> secretsList = null;
 			try {
-				secretsList = parseSecrets(res.asJSONObject());
+				// 解析Status
+				JSONObject jsonObj = res.asJSONObject();
+				result.status = StatusBuilder.getInstance()
+						.buildEntity(jsonObj);
+				if (result.status != null
+						&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
+					result.t = SecretBuilder.getInstance().buildEntity(jsonObj);
+				}
 			} catch (ResponseException e) {
 				e.printStackTrace();
 			}
-			return secretsList;
+
+			return result;
 		}
-
-		public static Tmodel<Secret[]> getSecretsArray(int page) {
-
-			return null;
-		}
-
-	}
-
-	private static List<Secret> parseSecrets(JSONObject jsonObject) {
-		ArrayList<Secret> secretList = new ArrayList<Secret>();
-		try {
-			JSONArray dataJSONArray = jsonObject.getJSONArray("data");
-			for (int i = 0; i < dataJSONArray.length(); i++) {
-				JSONObject secretJSONObject = dataJSONArray.getJSONObject(i);
-				Secret secret = new Secret();
-				secret.resourceId = secretJSONObject.getString("id");
-				secret.content = secretJSONObject.getString("caption");
-				secret.imageUrl = secretJSONObject.getJSONObject("images")
-						.getString("small");
-				secret.likes = secretJSONObject.getJSONObject("votes").getInt(
-						"count");
-				secretList.add(secret);
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return secretList;
 	}
 
 	public static class Task {
@@ -140,6 +129,16 @@ public class SecretManager {
 			TaskParams taskParams = new TaskParams();
 			taskParams.put("secret", secret);
 			SecretTask userTask = new SecretTask(TaskType.ADD, listener);
+			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
+					taskParams);
+		}
+
+		public static void getSecrets(String secretId,
+				OnTaskOverListener<List<Secret>> listener) {
+			TaskParams taskParams = new TaskParams();
+			taskParams.put("userid", UserConfig.getInstance().getUserId());
+			taskParams.put("secretid", secretId);
+			SecretTask userTask = new SecretTask(TaskType.GET_SECRETS, listener);
 			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
 		}
@@ -177,6 +176,20 @@ public class SecretManager {
 							TaskStatus.FAILED, result.status);
 				}
 
+				// 秘密列表
+			} else if (taskType == TaskType.GET_SECRETS) {
+				String userid = params[0].getString("userid");
+				String secretid = params[0].getString("secretid");
+				Result<List<Secret>> result = API.getSecrets(userid, secretid);
+				if (result.status != null
+						&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
+					taskResult = new TaskResult<List<Secret>>(TaskStatus.OK,
+							result.t);
+				} else {
+					taskResult = new TaskResult<ResultStatus>(
+							TaskStatus.FAILED, result.status);
+				}
+
 			}
 
 			return taskResult;
@@ -195,6 +208,16 @@ public class SecretManager {
 				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
 					ResultStatus result = (ResultStatus) taskResult.getEntity();
 					((OnTaskOverListener<Secret>) listener).onFailure(
+							result.code, result.msg);
+				}
+				// 秘密列表
+			} else if (taskType == TaskType.GET_SECRETS) {
+				if (taskResult.getStatus() == TaskStatus.OK) {
+					((OnTaskOverListener<List<Secret>>) listener)
+							.onSuccess((List<Secret>) taskResult.getEntity());
+				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
+					ResultStatus result = (ResultStatus) taskResult.getEntity();
+					((OnTaskOverListener<List<Secret>>) listener).onFailure(
 							result.code, result.msg);
 				}
 			}

@@ -160,7 +160,7 @@ public class AddActivity extends BaseFragmentActivity {
 			secret.content = mContentEdit.getText().toString();
 			secret.audioUrl = recordUrl;
 			secret.imageUrl = photoUrl;
-			secret.createdAt = System.currentTimeMillis();
+			secret.createdTime = System.currentTimeMillis();
 
 			SecretManager.Task.addSecret(secret,
 					new OnTaskOverListener<Secret>() {

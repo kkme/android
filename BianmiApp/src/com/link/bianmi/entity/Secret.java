@@ -16,7 +16,7 @@ public class Secret implements Serializable {
 	public String audioUrl = "";// 语音url
 	public int audioLength;// 语音长度
 	public String imageUrl = "";// 图片url
-	public long createdAt = 0;// 创建时间
-	public long repliedAt = 0;// 回复时间
+	public long createdTime = 0;// 创建时间
+	public long repliedTime = 0;// 回复时间
 
 }

@@ -21,9 +21,7 @@ import com.link.bianmi.utility.Tools;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 /**
- * 上下拖动时提示 列表
- * 
- * @author sunpf
+ * 下拉刷新，下拉加载更多的ListView
  * 
  */
 public class RListView extends ListView implements OnScrollListener {
@@ -453,10 +451,8 @@ public class RListView extends ListView implements OnScrollListener {
 	public void doActionUp(MotionEvent event) {
 		if (!mIsActivingHead && mHeadView.getPaddingTop() != -mViewHeight) { // Head没有恢复到位
 			bounceHead();
-			startHeadAnim(mContext);
 		} else if (mFootInfoView.getPaddingTop() != 0) { // Foot 没有恢复到位
 			bounceFoot();
-			startFootAnim(mContext);
 		}
 
 		NetworkUtil.isNetworkAvailable(getContext());
@@ -558,6 +554,7 @@ public class RListView extends ListView implements OnScrollListener {
 				mHeadTouchActivate = false;
 				if (mIsActivingHead) {
 					mHeadView.setPadding(0, 0, 0, 0);
+					startHeadAnim();
 				} else {
 					mHeadView.setPadding(0, -mViewHeight, 0, 0);
 				}
@@ -635,9 +632,11 @@ public class RListView extends ListView implements OnScrollListener {
 				mIsFootRecord = false;
 				mFootTouchActivate = false;
 				mFootInfoView.setPadding(0, 0, 0, 0);
+				if (mIsActivingFoot) {
+					startFootAnim();
+				}
 				if (mIsActivingFoot && mActivateListener != null)
 					mActivateListener.onFootActivate();
-
 			}
 
 			@Override
@@ -650,66 +649,6 @@ public class RListView extends ListView implements OnScrollListener {
 	}
 
 	// ----------------------------------------外部事件-----------------------
-	// -----------------
-
-	/** 触发Head activing状态 **/
-	public void startHeadActiving(int duration) {
-		mIsActivingHead = true;
-		mHeadProgressWheel.setVisibility(View.GONE);
-		mIsHeadAnimator = false;
-		mIsHeadRecord = false;
-		mHeadTouchActivate = false;
-		mHeadProgressWheel.setProgress(0);
-		if (duration <= 0) {
-			mHeadView.setPadding(0, 0, 0, 0);
-			if (mIsActivingHead && mActivateListener != null)
-				mActivateListener.onHeadActivate();
-		} else {
-			ValueAnimator animator = ValueAnimator.ofInt(-mViewHeight, 0)
-					.setDuration(duration);
-			animator.addUpdateListener(new AnimatorUpdateListener() {
-				@Override
-				public void onAnimationUpdate(ValueAnimator animation) {
-					int curStep = (Integer) animation.getAnimatedValue();
-					mHeadView.setPadding(0, curStep / 2, 0, curStep / 2);
-				}
-			});
-			animator.addListener(new AnimatorListener() {
-				@Override
-				public void onAnimationStart(Animator animation) {
-				}
-
-				@Override
-				public void onAnimationRepeat(Animator animation) {
-				}
-
-				@Override
-				public void onAnimationEnd(Animator animation) {
-					mHeadView.setPadding(0, 0, 0, 0);
-					if (mIsActivingHead && mActivateListener != null)
-						mActivateListener.onHeadActivate();
-				}
-
-				@Override
-				public void onAnimationCancel(Animator animation) {
-				}
-			});
-			animator.start();
-		}
-
-	}
-
-	/** 触发Foot activing状态 **/
-	public void startFootActiving() {
-		mIsActivingFoot = true;
-		mIsFootAnimator = false;
-		mIsFootRecord = false;
-		mFootTouchActivate = false;
-		mFootInfoView.setPadding(0, 0, 0, 0);
-		if (mIsActivingFoot && mActivateListener != null)
-			mActivateListener.onFootActivate();
-	}
-
 	/** 停止Foot的activing状态 **/
 	public void stopFootActiving() {
 		if (!mIsActivingFoot)
@@ -722,6 +661,8 @@ public class RListView extends ListView implements OnScrollListener {
 		mFootProgressWheel.setProgress(0);
 		mFootInfoView.setPadding(0, 0, 0, 0);
 		mFootProgressWheel.setVisibility(View.VISIBLE);
+
+		stopFootAnim();
 
 		mActivateListener.onFootStop();
 	}
@@ -776,7 +717,8 @@ public class RListView extends ListView implements OnScrollListener {
 			});
 			animator.start();
 		}
-		;
+
+		stopHeadAnim();
 
 		mActivateListener.onHeadStop();
 	}
@@ -894,20 +836,37 @@ public class RListView extends ListView implements OnScrollListener {
 
 	}
 
-	private void startFootAnim(final Context context) {
-		final ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(
-				mFootProgressWheel, "rotationY", 0f, 360f);
-		objectAnimator.setDuration(1000);
-		objectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
-		objectAnimator.start();
+	private void startFootAnim() {
+		startAnim(mFootProgressWheel);
 	}
 
-	private void startHeadAnim(final Context context) {
-		final ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(
-				mHeadProgressWheel, "rotationY", 0f, 360f);
-		objectAnimator.setDuration(1000);
-		objectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
-		objectAnimator.start();
+	private void stopFootAnim() {
+		stopAnim();
+	}
+
+	private void stopHeadAnim() {
+		stopAnim();
+	}
+
+	private void startHeadAnim() {
+		startAnim(mHeadProgressWheel);
+	}
+
+	private ObjectAnimator mObjectAnimator = null;
+
+	private void startAnim(View view) {
+
+		mObjectAnimator = ObjectAnimator.ofFloat(view, "rotationY", 0f, 360f);
+		mObjectAnimator.setDuration(1000);
+		mObjectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
+		mObjectAnimator.start();
+
+	}
+
+	private void stopAnim() {
+		if (mObjectAnimator != null) {
+			mObjectAnimator.end();
+		}
 	}
 
 }

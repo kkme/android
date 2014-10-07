@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +25,7 @@ import com.link.bianmi.fragment.HotFragment;
 import com.link.bianmi.fragment.ImageFragment;
 import com.link.bianmi.fragment.NearbyFragment;
 import com.link.bianmi.fragment.SecretFragment;
+import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.widget.ViewPagerTabBar;
 
 public class HomeActivity extends BaseFragmentActivity {
@@ -210,8 +210,7 @@ public class HomeActivity extends BaseFragmentActivity {
 				Object object) {
 
 			if (position > 0 && !initPages[position]) {
-				Log.e("bianmi", "position : " + position);
-				((SecretFragment) fragments.get(position)).loadData();
+				((BaseFragment) fragments.get(position)).onFirstLoad();
 				initPages[position] = true;
 			}
 
@@ -229,6 +228,7 @@ public class HomeActivity extends BaseFragmentActivity {
 
 	}
 
+	// ---------------------------------外部接口-------------------------------
 	public void finishLoaded(boolean isStopAtOnce) {
 		if (isStopAtOnce) {
 			mLoadingItem.getActionView().clearAnimation();
@@ -257,6 +257,11 @@ public class HomeActivity extends BaseFragmentActivity {
 		});
 		mLoadingItem.getActionView().setAnimation(anim);
 
+	}
+
+	public void startLoading() {
+		mLoadingItem.setVisible(true);
+		mMoreItem.setVisible(false);
 	}
 
 }

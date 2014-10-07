@@ -10,15 +10,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 
 import com.link.bianmi.BianmiApplication;
-import com.link.bianmi.SysConfig;
 
 public class Database {
 
 	public static final String TAG = "Database";
 	private static Database mInstance = null;
 	private SQLiteOpenHelper mDBHelper = null;
-
-	private boolean mDebaug = SysConfig.getInstance().isDebug();
 
 	private Database(Context context) {
 		mDBHelper = new DatabaseHelper(context);
@@ -41,7 +38,7 @@ public class Database {
 		}
 	}
 
-	public void CleanData(String tableName) {
+	public void cleanData(String tableName) {
 		SQLiteDatabase db = getDb(true);
 		db.execSQL("DELETE FROM " + tableName);
 	}

@@ -96,9 +96,8 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		// 头像
 		ImageView avatarImage = ViewHolder.get(convertView,
 				R.id.avatar_imageview);
-		new ImageLoader().displayImage(avatarImage,
-				comment.getAvatarImageUrl(), R.drawable.ic_comment_avatar,
-				false);
+		ImageLoader.displayImage(avatarImage, comment.getAvatarImageUrl(),
+				R.drawable.ic_comment_avatar, false);
 		// 内容
 		TextView contentText = ViewHolder.get(convertView,
 				R.id.content_textview);
@@ -138,7 +137,7 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		// 图片
 		ImageView pictureImage = ViewHolder.get(convertView,
 				R.id.picture_imageview);
-		new ImageLoader().displayImage(pictureImage, secret.imageUrl,
+		ImageLoader.displayImage(pictureImage, secret.imageUrl,
 				R.drawable.ic_launcher, false);
 		// 来自哪里
 		TextView whereText = ViewHolder.get(convertView,
