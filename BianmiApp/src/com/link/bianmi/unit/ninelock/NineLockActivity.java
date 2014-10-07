@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 
 import com.link.bianmi.BianmiApplication;
 import com.link.bianmi.R;
@@ -18,6 +17,7 @@ import com.link.bianmi.activity.WelcomeActivity;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.unit.ninelock.NineLockView.Cell;
 import com.link.bianmi.unit.ninelock.NineLockView.DisplayMode;
+import com.link.bianmi.widget.SuperToast;
 
 /**
  * 九宫格密码锁屏
@@ -130,8 +130,8 @@ public class NineLockActivity extends BaseFragmentActivity implements
 			finishActivityWithResult(RESULT_OK);
 		} else {
 			nineLockView.setDisplayMode(DisplayMode.Wrong);
-			Toast.makeText(this, R.string.ninelock_password_error,
-					Toast.LENGTH_LONG).show();
+			SuperToast.makeText(this, R.string.ninelock_password_error,
+					SuperToast.LENGTH_LONG).show();
 		}
 	}
 }

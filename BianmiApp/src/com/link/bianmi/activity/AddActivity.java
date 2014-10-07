@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
@@ -19,6 +18,7 @@ import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.widget.InputSuit;
+import com.link.bianmi.widget.SuperToast;
 
 /**
  * 发表秘密
@@ -147,13 +147,13 @@ public class AddActivity extends BaseFragmentActivity {
 				String recordUrl) {
 
 			if (!result) {
-				Toast.makeText(AddActivity.this, "发表失败！", Toast.LENGTH_SHORT)
-						.show();
+				SuperToast.makeText(AddActivity.this, "发表失败！",
+						SuperToast.LENGTH_SHORT).show();
 				return;
 			}
 
-			Toast.makeText(AddActivity.this, "上传七牛成功！", Toast.LENGTH_SHORT)
-					.show();
+			SuperToast.makeText(AddActivity.this, "上传七牛成功！",
+					SuperToast.LENGTH_SHORT).show();
 
 			Secret secret = new Secret();
 			secret.userId = UserConfig.getInstance().getUserId();
@@ -167,8 +167,8 @@ public class AddActivity extends BaseFragmentActivity {
 
 						@Override
 						public void onSuccess(Secret t) {
-							Toast.makeText(AddActivity.this, "发表成功!",
-									Toast.LENGTH_SHORT).show();
+							SuperToast.makeText(AddActivity.this, "发表成功!",
+									SuperToast.LENGTH_SHORT).show();
 							mLoadingItem.setVisible(false);
 							mSendItem.setVisible(true);
 							new Handler().postDelayed(new Runnable() {
@@ -181,8 +181,8 @@ public class AddActivity extends BaseFragmentActivity {
 
 						@Override
 						public void onFailure(int code, String msg) {
-							Toast.makeText(AddActivity.this, "发表失败!",
-									Toast.LENGTH_SHORT).show();
+							SuperToast.makeText(AddActivity.this, "发表失败!",
+									SuperToast.LENGTH_SHORT).show();
 							mLoadingItem.setVisible(false);
 							mSendItem.setVisible(true);
 						}

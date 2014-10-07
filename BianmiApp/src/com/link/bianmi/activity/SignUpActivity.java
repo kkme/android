@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
@@ -17,6 +16,7 @@ import com.link.bianmi.entity.User;
 import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.utility.DataCheckUtil;
 import com.link.bianmi.utility.SecurityUtils;
+import com.link.bianmi.widget.SuperToast;
 
 /**
  * 注册
@@ -63,8 +63,8 @@ public class SignUpActivity extends BaseFragmentActivity {
 								@Override
 								public void onFailure(int code, String msg) {
 									mLoadingMenuItem.setVisible(false);
-									Toast.makeText(getApplicationContext(),
-											"SignUp Error!", Toast.LENGTH_SHORT)
+									SuperToast.makeText(getApplicationContext(),
+											"SignUp Error!", SuperToast.LENGTH_SHORT)
 											.show();
 								}
 

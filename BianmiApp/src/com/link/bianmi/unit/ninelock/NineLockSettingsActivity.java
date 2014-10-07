@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
@@ -21,6 +20,7 @@ import com.link.bianmi.activity.MainActivity;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.unit.ninelock.NineLockView.Cell;
 import com.link.bianmi.unit.ninelock.NineLockView.DisplayMode;
+import com.link.bianmi.widget.SuperToast;
 
 /**
  * 九宫格密码锁屏设置
@@ -190,9 +190,9 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 	public void onPatternDetected(List<Cell> pattern) {
 
 		if (pattern.size() < NineLockView.MIN_LOCK_PATTERN_SIZE) {
-			Toast.makeText(this,
+			SuperToast.makeText(this,
 					R.string.lockpattern_recording_incorrect_too_short,
-					Toast.LENGTH_LONG).show();
+					SuperToast.LENGTH_LONG).show();
 			lockPatternView.setDisplayMode(DisplayMode.Wrong);
 			return;
 		}

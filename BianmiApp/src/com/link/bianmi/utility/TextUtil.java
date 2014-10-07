@@ -6,8 +6,8 @@ import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.TypefaceSpan;
 
 public class TextUtil {
@@ -50,8 +50,8 @@ public class TextUtil {
 					.getSystemService(Context.CLIPBOARD_SERVICE);
 			clipboard.setText(content);
 		}
-		Toast.makeText(context, "The text has been copied to clipboard.",
-				Toast.LENGTH_SHORT).show();
+		SuperToast.makeText(context, "The text has been copied to clipboard.",
+				SuperToast.LENGTH_SHORT).show();
 	}
 
 	public static String pasteString(Context context) {

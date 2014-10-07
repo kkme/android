@@ -14,7 +14,7 @@
     <com.link.bianmi.widget.ViewPagerTabBar
         android:id="@+id/viewpagertab"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="46dp"
         android:background="@color/mxx_item_theme_color_alpha" >
     </com.link.bianmi.widget.ViewPagerTabBar>
 

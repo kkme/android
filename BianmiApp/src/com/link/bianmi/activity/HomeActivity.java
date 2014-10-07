@@ -14,7 +14,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
@@ -26,6 +25,7 @@ import com.link.bianmi.fragment.ImageFragment;
 import com.link.bianmi.fragment.NearbyFragment;
 import com.link.bianmi.fragment.SecretFragment;
 import com.link.bianmi.fragment.base.BaseFragment;
+import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.ViewPagerTabBar;
 
 public class HomeActivity extends BaseFragmentActivity {
@@ -144,11 +144,11 @@ public class HomeActivity extends BaseFragmentActivity {
 				super.onBackPressed();
 			} else {
 				mLastBackPressedTime = cur_time;
-				Toast.makeText(
+				SuperToast.makeText(
 						HomeActivity.this,
 						getResources().getString(
 								R.string.press_back_again_to_exit),
-						Toast.LENGTH_SHORT).show();
+						SuperToast.LENGTH_SHORT).show();
 			}
 
 		}

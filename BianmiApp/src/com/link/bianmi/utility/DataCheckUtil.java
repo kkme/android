@@ -5,7 +5,8 @@ import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.widget.Toast;
+
+import com.link.bianmi.widget.SuperToast;
 
 /**
  * 数据合法性验证
@@ -42,21 +43,21 @@ public class DataCheckUtil {
 			String password, String passwordConfirm) {
 		boolean ok = true;
 		if (TextUtils.isEmpty(phonenum)) {
-			Toast.makeText(context, "phonenum为空！", Toast.LENGTH_SHORT).show();
+			SuperToast.makeText(context, "phonenum为空！", SuperToast.LENGTH_SHORT).show();
 			ok = false;
 		} else if (!isPhoneNum(phonenum)) {
-			Toast.makeText(context, "WrongPhonenumber!", Toast.LENGTH_SHORT)
+			SuperToast.makeText(context, "WrongPhonenumber!", SuperToast.LENGTH_SHORT)
 					.show();
 			ok = false;
 		} else if (TextUtils.isEmpty(password)) {
-			Toast.makeText(context, "password为空！", Toast.LENGTH_SHORT).show();
+			SuperToast.makeText(context, "password为空！", SuperToast.LENGTH_SHORT).show();
 			ok = false;
 		} else if (TextUtils.isEmpty(passwordConfirm)) {
-			Toast.makeText(context, "passwordConfirm为空！", Toast.LENGTH_SHORT)
+			SuperToast.makeText(context, "passwordConfirm为空！", SuperToast.LENGTH_SHORT)
 					.show();
 			ok = false;
 		} else if (!password.equals(passwordConfirm)) {
-			Toast.makeText(context, "两次输入密码不一致!", Toast.LENGTH_SHORT).show();
+			SuperToast.makeText(context, "两次输入密码不一致!", SuperToast.LENGTH_SHORT).show();
 			ok = false;
 		}
 
@@ -75,14 +76,14 @@ public class DataCheckUtil {
 			String password) {
 		boolean ok = true;
 		if (TextUtils.isEmpty(phonenum)) {
-			Toast.makeText(context, "phonenum为空！", Toast.LENGTH_SHORT).show();
+			SuperToast.makeText(context, "phonenum为空！", SuperToast.LENGTH_SHORT).show();
 			ok = false;
 		} else if (!isPhoneNum(phonenum)) {
-			Toast.makeText(context, "WrongPhonenumber!", Toast.LENGTH_SHORT)
+			SuperToast.makeText(context, "WrongPhonenumber!", SuperToast.LENGTH_SHORT)
 					.show();
 			ok = false;
 		} else if (TextUtils.isEmpty(password)) {
-			Toast.makeText(context, "password为空！", Toast.LENGTH_SHORT).show();
+			SuperToast.makeText(context, "password为空！", SuperToast.LENGTH_SHORT).show();
 			ok = false;
 		}
 

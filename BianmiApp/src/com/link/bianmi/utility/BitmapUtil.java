@@ -13,7 +13,8 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.link.bianmi.widget.SuperToast;
 
 public class BitmapUtil {
 
@@ -202,11 +203,11 @@ public class BitmapUtil {
 			super.onPostExecute(result);
 			dialog.dismiss();
 			if (result) {
-				Toast.makeText(dialog.getContext(), "Save success.",
-						Toast.LENGTH_SHORT).show();
+				SuperToast.makeText(dialog.getContext(), "Save success.",
+						SuperToast.LENGTH_SHORT).show();
 			} else {
-				Toast.makeText(dialog.getContext(), "Save failed.",
-						Toast.LENGTH_SHORT).show();
+				SuperToast.makeText(dialog.getContext(), "Save failed.",
+						SuperToast.LENGTH_SHORT).show();
 			}
 		}
 	}

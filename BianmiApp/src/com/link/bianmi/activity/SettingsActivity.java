@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.Toast;
 
 import com.link.bianmi.BianmiApplication;
 import com.link.bianmi.R;
@@ -19,6 +18,7 @@ import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.unit.ninelock.NineLockActivity;
 import com.link.bianmi.unit.ninelock.NineLockSettingsActivity;
+import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.SwitchButton;
 
 public class SettingsActivity extends BaseFragmentActivity {
@@ -80,11 +80,11 @@ public class SettingsActivity extends BaseFragmentActivity {
 								.signOut(new OnTaskOverListener<Object>() {
 									@Override
 									public void onFailure(int code, String msg) {
-										Toast.makeText(
+										SuperToast.makeText(
 												SettingsActivity.this,
 												"SignOut Error!" + "code:"
 														+ code + ",msg:" + msg,
-												Toast.LENGTH_SHORT).show();
+												SuperToast.LENGTH_SHORT).show();
 									}
 
 									@Override

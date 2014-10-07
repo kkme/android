@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.DetailsActivity;
@@ -28,6 +27,7 @@ import com.link.bianmi.utility.Tools;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.ActivateListener;
 import com.link.bianmi.widget.RListView.TouchDirectionState;
+import com.link.bianmi.widget.SuperToast;
 
 /**
  * 秘密列表
@@ -161,8 +161,8 @@ public class SecretFragment extends BaseFragment {
 						.findViewById(R.id.feed_item_image);
 				if (imageView.getDrawable() == null
 						|| imageView.getDrawable().getIntrinsicWidth() == 0) {
-					Toast.makeText(mContext, "Please wait...",
-							Toast.LENGTH_SHORT).show();
+					SuperToast.makeText(mContext, "Please wait...",
+							SuperToast.LENGTH_SHORT).show();
 					return;
 				}
 				Object item = arg0.getItemAtPosition(position);
@@ -294,12 +294,13 @@ public class SecretFragment extends BaseFragment {
 							refreshRListView(SecretManager.DB.fetch(pageSize));
 						}
 						((HomeActivity) mContext).finishLoaded(false);
+
 					}
 
 					@Override
 					public void onFailure(int code, String msg) {
 						((HomeActivity) mContext).finishLoaded(false);
-						Toast.makeText(mContext, msg, Toast.LENGTH_SHORT)
+						SuperToast.makeText(mContext, msg, SuperToast.LENGTH_SHORT)
 								.show();
 					}
 				});

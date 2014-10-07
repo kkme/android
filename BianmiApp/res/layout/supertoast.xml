@@ -1,0 +1,19 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent" >
+
+    <TextView
+        android:id="@+id/textview"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:background="@drawable/bg_supertoast"
+        android:gravity="center"
+        android:textColor="@color/fc_tip"
+        android:textSize="@dimen/sp_14"
+        android:textStyle="bold" />
+
+</RelativeLayout>

@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.HomeActivity;
@@ -29,6 +28,7 @@ import com.link.bianmi.utility.TextUtil;
 import com.link.bianmi.widget.ProgressWheel;
 import com.link.bianmi.widget.ScaleImageView;
 import com.link.bianmi.widget.ScaleImageView.ImageViewListener;
+import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.blur.BlurView;
 import com.link.bianmi.widget.imageviewex.ImageViewEx;
 
@@ -231,9 +231,9 @@ public class ImageFragment extends Fragment {
 			String path = FileUtil.getImagePath() + "/"
 					+ mCurrentFeedItem.resourceId + ".jpg";
 			if (new File(path).exists()) {
-				Toast.makeText(getActivity(),
+				SuperToast.makeText(getActivity(),
 						"This image has already been saved.",
-						Toast.LENGTH_SHORT).show();
+						SuperToast.LENGTH_SHORT).show();
 			} else {
 			}
 			return true;

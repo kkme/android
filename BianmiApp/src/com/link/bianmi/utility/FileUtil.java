@@ -9,10 +9,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
-import android.widget.Toast;
 
 /**
  * 
@@ -194,7 +192,7 @@ public class FileUtil {
 	 * ��ȡ�ı���� ���filename�������򷵻�null�����򷵻���string����
 	 */
 	public static String loaddata(String filename, Context context) {
-		// Toast.makeText(context, "������ʾ�������", Toast.LENGTH_SHORT).show();
+		// SuperToast.makeText(context, "������ʾ�������", SuperToast.LENGTH_SHORT).show();
 		if (!isFileExist(filename, context)) {
 			// Log.e("Tools", "loaddata" + filename + "������");
 			return null;

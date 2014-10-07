@@ -15,10 +15,10 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
+import com.link.bianmi.widget.SuperToast;
 
 public class CameraCrop {
 
@@ -220,7 +220,7 @@ public class CameraCrop {
 				savedir.mkdirs();
 			}
 		} else {
-			Toast.makeText(mContext, mContext.getString(R.string.photo_sd_error), Toast.LENGTH_SHORT).show();
+			SuperToast.makeText(mContext, mContext.getString(R.string.photo_sd_error), SuperToast.LENGTH_SHORT).show();
 			return null;
 		}
 
