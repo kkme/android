@@ -105,7 +105,7 @@ public class SecretManager {
 
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("userid", userid));
-			params.add(new BasicNameValuePair("secretid", secretid));
+			params.add(new BasicNameValuePair("lastid", secretid));
 			params.add(new BasicNameValuePair("batch", String.valueOf(BATCH)));
 			Response response = HttpClient.doPost(params, SysConfig
 					.getInstance().getSecretsUrl());

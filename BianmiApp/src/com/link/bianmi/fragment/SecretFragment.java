@@ -89,18 +89,8 @@ public class SecretFragment extends BaseFragment {
 				((HomeActivity) mContext).getViewPagerTab().animate()
 						.translationY(-Tools.dip2px(mContext, 48));
 				mRListView.animate().translationY(-Tools.dip2px(mContext, 48));
-				long pretime = System.currentTimeMillis();
 				// 刷新列表
 				fetchNew();
-				// 菊花至少转1.5秒
-				long suftime = System.currentTimeMillis();
-				new Handler().postDelayed(new Runnable() {
-
-					@Override
-					public void run() {
-						mRListView.stopHeadActiving();
-					}
-				}, suftime - pretime > 1500 ? 0 : 1500);
 			}
 
 			@Override
@@ -219,8 +209,7 @@ public class SecretFragment extends BaseFragment {
 	 * 从缓存中加载数据初始化界面
 	 */
 	private void loadCache() {
-		Cursor cursor = SecretManager.DB.fetch(mPageSize);
-		refreshRListView(cursor, false);
+		refreshRListView(SecretManager.DB.fetch(mPageSize), false, -1);
 
 	}
 
@@ -267,11 +256,21 @@ public class SecretFragment extends BaseFragment {
 	 * @param hasMore
 	 *            是否还有更多
 	 */
-	private void refreshRListView(Cursor cursor, boolean hasMore) {
+	private void refreshRListView(Cursor cursor, boolean hasMore, long beginTime) {
 		if (cursor != null) {
 			mAdapter.changeCursor(cursor);
 			mAdapter.notifyDataSetChanged();
 		}
+
+		mRListView.setFootVisiable(hasMore);
+		mRListView.setEnableFooter(hasMore);
+		long endTime = System.currentTimeMillis();
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				mRListView.stopHeadActiving();
+			}
+		}, endTime - beginTime > 1000 ? 0 : 1000 - (endTime - beginTime));
 	}
 
 	/**
@@ -283,11 +282,12 @@ public class SecretFragment extends BaseFragment {
 	 *            页数
 	 */
 	private void executeGetSecretsTask(final String lastId, final int pageSize) {
-
+		final long beginTime = System.currentTimeMillis();
 		SecretManager.Task.getSecrets(lastId,
 				new OnTaskOverListener<ListResult<Secret>>() {
 					@Override
 					public void onSuccess(ListResult<Secret> listResult) {
+
 						// 清空数据库
 						if (lastId != null && lastId.isEmpty()) {
 							SecretManager.DB.cleanSecret();
@@ -299,7 +299,7 @@ public class SecretFragment extends BaseFragment {
 							mSecretsList = listResult.list;
 							SecretManager.DB.addSecrets(listResult.list);
 							refreshRListView(SecretManager.DB.fetch(pageSize),
-									listResult.hasMore);
+									listResult.hasMore, beginTime);
 						}
 						((HomeActivity) mContext).finishLoaded(false);
 
@@ -307,6 +307,7 @@ public class SecretFragment extends BaseFragment {
 
 					@Override
 					public void onFailure(int code, String msg) {
+						mRListView.stopHeadActiving();
 						((HomeActivity) mContext).finishLoaded(true);
 						SuperToast.makeText(mContext, msg,
 								SuperToast.LENGTH_SHORT).show();

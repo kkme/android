@@ -44,7 +44,7 @@ public class SecretAdapter extends CursorAdapter {
 			mIndexHolder.imageUrlIndex = cursor
 					.getColumnIndex(SecretDB.FIELD_IMAGE_URL);
 			mIndexHolder.audioUrlIndex = cursor
-					.getColumnIndex(SecretDB.FIELD_AUDIO_LENGTH);
+					.getColumnIndex(SecretDB.FIELD_AUDIO_URL);
 			mIndexHolder.audioLengthIndex = cursor
 					.getColumnIndex(SecretDB.FIELD_AUDIO_LENGTH);
 		}
