@@ -21,6 +21,7 @@ import com.link.bianmi.asynctask.listener.ITaskOverListener;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.db.Database;
 import com.link.bianmi.db.SecretDB;
+import com.link.bianmi.entity.ListResult;
 import com.link.bianmi.entity.Result;
 import com.link.bianmi.entity.ResultStatus;
 import com.link.bianmi.entity.Secret;
@@ -72,7 +73,7 @@ public class SecretManager {
 		private static Result<Secret> addSecret(Secret secret) {
 			if (secret == null)
 				return null;
-			Result<Secret> result = new Result<Secret>();
+			Result<Secret> result = null;
 			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("userid", secret.userId));
 			params.add(new BasicNameValuePair("content", secret.content));
@@ -83,40 +84,47 @@ public class SecretManager {
 
 			Response response = HttpClient.doPost(params, SysConfig
 					.getInstance().getAddSecretUrl());
-			try {
-				// 解析Status
-				JSONObject jsonObj = response.asJSONObject();
-				result.status = StatusBuilder.getInstance()
-						.buildEntity(jsonObj);
-			} catch (ResponseException e) {
-				e.printStackTrace();
+			if (response != null) {
+				try {
+					// 解析Status
+					JSONObject jsonObj = response.asJSONObject();
+					result = new Result<Secret>();
+					result.status = StatusBuilder.getInstance().buildEntity(
+							jsonObj);
+				} catch (ResponseException e) {
+					e.printStackTrace();
+				}
 			}
 
 			return result;
 		}
 
-		public static Result<List<Secret>> getSecrets(String userid,
+		public static Result<ListResult<Secret>> getSecrets(String userid,
 				String secretid) {
-			Result<List<Secret>> result = new Result<List<Secret>>();
+			Result<ListResult<Secret>> result = null;
 
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("userid", userid));
 			params.add(new BasicNameValuePair("secretid", secretid));
 			params.add(new BasicNameValuePair("batch", String.valueOf(BATCH)));
-			Response res = HttpClient.doPost(params, SysConfig.getInstance()
-					.getSecretsUrl());
+			Response response = HttpClient.doPost(params, SysConfig
+					.getInstance().getSecretsUrl());
 
-			try {
-				// 解析Status
-				JSONObject jsonObj = res.asJSONObject();
-				result.status = StatusBuilder.getInstance()
-						.buildEntity(jsonObj);
-				if (result.status != null
-						&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
-					result.t = SecretBuilder.getInstance().buildEntity(jsonObj);
+			if (response != null) {
+				try {
+					// 解析Status
+					JSONObject jsonObj = response.asJSONObject();
+					result = new Result<ListResult<Secret>>();
+					result.status = StatusBuilder.getInstance().buildEntity(
+							jsonObj);
+					if (result.status != null
+							&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
+						result.t = SecretBuilder.getInstance().buildEntity(
+								jsonObj);
+					}
+				} catch (ResponseException e) {
+					e.printStackTrace();
 				}
-			} catch (ResponseException e) {
-				e.printStackTrace();
 			}
 
 			return result;
@@ -134,7 +142,7 @@ public class SecretManager {
 		}
 
 		public static void getSecrets(String secretId,
-				OnTaskOverListener<List<Secret>> listener) {
+				OnTaskOverListener<ListResult<Secret>> listener) {
 			TaskParams taskParams = new TaskParams();
 			taskParams.put("userid", UserConfig.getInstance().getUserId());
 			taskParams.put("secretid", secretId);
@@ -161,33 +169,45 @@ public class SecretManager {
 
 		@Override
 		protected TaskResult<?> doInBackground(TaskParams... params) {
-			ResultStatus resultStatus = new ResultStatus();
-			TaskResult<?> taskResult = new TaskResult<ResultStatus>(
-					TaskStatus.FAILED, resultStatus);
+			ResultStatus resultStatus = null;
+			TaskResult<?> taskResult = null;
 			// 发表
 			if (taskType == TaskType.ADD) {
 				Secret secret = (Secret) params[0].get("secret");
 				Result<Secret> result = API.addSecret(secret);
-				if (result.status != null
+				if (result != null
+						&& result.status != null
 						&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
 					taskResult = new TaskResult<Secret>(TaskStatus.OK, result.t);
-				} else {
+				} else if (result != null && result.status != null) {
 					taskResult = new TaskResult<ResultStatus>(
 							TaskStatus.FAILED, result.status);
+				} else {
+					resultStatus = new ResultStatus();
+					resultStatus.msg = "获取数据失败!";
+					taskResult = new TaskResult<ResultStatus>(
+							TaskStatus.FAILED, resultStatus);
 				}
 
 				// 秘密列表
 			} else if (taskType == TaskType.GET_SECRETS) {
 				String userid = params[0].getString("userid");
 				String secretid = params[0].getString("secretid");
-				Result<List<Secret>> result = API.getSecrets(userid, secretid);
-				if (result.status != null
+				Result<ListResult<Secret>> result = API.getSecrets(userid,
+						secretid);
+				if (result != null
+						&& result.status != null
 						&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
-					taskResult = new TaskResult<List<Secret>>(TaskStatus.OK,
-							result.t);
-				} else {
+					taskResult = new TaskResult<ListResult<Secret>>(
+							TaskStatus.OK, result.t);
+				} else if (result != null && result.status != null) {
 					taskResult = new TaskResult<ResultStatus>(
 							TaskStatus.FAILED, result.status);
+				} else {
+					resultStatus = new ResultStatus();
+					resultStatus.msg = "获取数据失败!";
+					taskResult = new TaskResult<ResultStatus>(
+							TaskStatus.FAILED, resultStatus);
 				}
 
 			}
@@ -213,12 +233,13 @@ public class SecretManager {
 				// 秘密列表
 			} else if (taskType == TaskType.GET_SECRETS) {
 				if (taskResult.getStatus() == TaskStatus.OK) {
-					((OnTaskOverListener<List<Secret>>) listener)
-							.onSuccess((List<Secret>) taskResult.getEntity());
+					((OnTaskOverListener<ListResult<Secret>>) listener)
+							.onSuccess((ListResult<Secret>) taskResult
+									.getEntity());
 				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
 					ResultStatus result = (ResultStatus) taskResult.getEntity();
-					((OnTaskOverListener<List<Secret>>) listener).onFailure(
-							result.code, result.msg);
+					((OnTaskOverListener<ListResult<Secret>>) listener)
+							.onFailure(result.code, result.msg);
 				}
 			}
 		}

@@ -19,6 +19,7 @@ import com.link.bianmi.adapter.CardsAnimationAdapter;
 import com.link.bianmi.adapter.SecretAdapter;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.db.SecretDB;
+import com.link.bianmi.entity.ListResult;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.fragment.base.BaseFragment;
@@ -62,6 +63,7 @@ public class SecretFragment extends BaseFragment {
 				mAdapter);
 		adapter.setAbsListView(mRListView);
 		mRListView.setAdapter(adapter);
+		mRListView.setFootVisiable(false);
 		final int max_tranY = Tools.dip2px(mContext, 48);
 		final View tabview = ((HomeActivity) mContext).getViewPagerTab();
 
@@ -218,7 +220,7 @@ public class SecretFragment extends BaseFragment {
 	 */
 	private void loadCache() {
 		Cursor cursor = SecretManager.DB.fetch(mPageSize);
-		refreshRListView(cursor);
+		refreshRListView(cursor, false);
 
 	}
 
@@ -260,8 +262,12 @@ public class SecretFragment extends BaseFragment {
 	/**
 	 * 刷新RListView
 	 * 
+	 * @param cursor
+	 *            游标
+	 * @param hasMore
+	 *            是否还有更多
 	 */
-	private void refreshRListView(Cursor cursor) {
+	private void refreshRListView(Cursor cursor, boolean hasMore) {
 		if (cursor != null) {
 			mAdapter.changeCursor(cursor);
 			mAdapter.notifyDataSetChanged();
@@ -279,19 +285,21 @@ public class SecretFragment extends BaseFragment {
 	private void executeGetSecretsTask(final String lastId, final int pageSize) {
 
 		SecretManager.Task.getSecrets(lastId,
-				new OnTaskOverListener<List<Secret>>() {
+				new OnTaskOverListener<ListResult<Secret>>() {
 					@Override
-					public void onSuccess(List<Secret> secretsList) {
+					public void onSuccess(ListResult<Secret> listResult) {
 						// 清空数据库
 						if (lastId != null && lastId.isEmpty()) {
 							SecretManager.DB.cleanSecret();
 						}
 
 						// 刷新列表
-						if (secretsList != null && secretsList.size() > 0) {
-							mSecretsList = secretsList;
-							SecretManager.DB.addSecrets(secretsList);
-							refreshRListView(SecretManager.DB.fetch(pageSize));
+						if (listResult != null && listResult.list != null
+								&& listResult.list.size() > 0) {
+							mSecretsList = listResult.list;
+							SecretManager.DB.addSecrets(listResult.list);
+							refreshRListView(SecretManager.DB.fetch(pageSize),
+									listResult.hasMore);
 						}
 						((HomeActivity) mContext).finishLoaded(false);
 
@@ -299,9 +307,9 @@ public class SecretFragment extends BaseFragment {
 
 					@Override
 					public void onFailure(int code, String msg) {
-						((HomeActivity) mContext).finishLoaded(false);
-						SuperToast.makeText(mContext, msg, SuperToast.LENGTH_SHORT)
-								.show();
+						((HomeActivity) mContext).finishLoaded(true);
+						SuperToast.makeText(mContext, msg,
+								SuperToast.LENGTH_SHORT).show();
 					}
 				});
 	}
