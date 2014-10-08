@@ -144,10 +144,8 @@ public class HomeActivity extends BaseFragmentActivity {
 				super.onBackPressed();
 			} else {
 				mLastBackPressedTime = cur_time;
-				SuperToast.makeText(
-						HomeActivity.this,
-						getResources().getString(
-								R.string.press_back_again_to_exit),
+				SuperToast.makeText(HomeActivity.this,
+						R.string.press_back_again_to_exit,
 						SuperToast.LENGTH_SHORT).show();
 			}
 

@@ -12,6 +12,7 @@ import com.link.bianmi.R;
 public class SuperToast {
 
 	private static Toast mToast;
+	private static TextView mText;
 	private static SuperToast mSuperToast = new SuperToast();
 
 	public static final int LENGTH_SHORT = Toast.LENGTH_SHORT;
@@ -23,18 +24,18 @@ public class SuperToast {
 	}
 
 	public static SuperToast makeText(Context context, String text, int duration) {
-
 		if (mToast == null) {
 			mToast = new Toast(context);
 			View rootView = LayoutInflater.from(context).inflate(
 					R.layout.supertoast, null);
-			TextView textView = (TextView) rootView.findViewById(R.id.textview);
-			textView.setText(text);
+			mText = (TextView) rootView.findViewById(R.id.textview);
 			mToast.setView(rootView);
-			mToast.setDuration(duration);
 			mToast.setMargin(0, 0);
 			mToast.setGravity(Gravity.BOTTOM, 0, 0);
 		}
+
+		mToast.setDuration(duration);
+		mText.setText(text);
 
 		return mSuperToast;
 	}
