@@ -8,6 +8,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -34,7 +35,7 @@ import com.link.bianmi.http.ResponseException;
 public class SecretManager {
 
 	public static enum TaskType {
-		ADD, GET_SECRETS, HOT, FRIEND, NEARBY
+		ADD, GET_SECRETS, LIKE, HOT, FRIEND, NEARBY
 	}
 
 	/** 单页数量 **/
@@ -64,6 +65,16 @@ public class SecretManager {
 
 		public static void addSecret(Secret secret) {
 			Database.getInstance().addEntity(SecretDB.getInstance(), secret);
+		}
+
+		public static void like(String resourceId, boolean isLiked) {
+
+			SQLiteDatabase db = Database.getInstance().getDb(true);
+			ContentValues values = new ContentValues();
+			values.put("resourceid", resourceId);
+			db.update(SecretDB.TABLE_NAME, values, "resourceid=?",
+					new String[] { resourceId });
+
 		}
 
 	}
@@ -129,6 +140,40 @@ public class SecretManager {
 
 			return result;
 		}
+
+		private static Result<Boolean> likeOrDislike(String secretId,
+				boolean isLiked) {
+			if (secretId == null)
+				return null;
+			Result<Boolean> result = null;
+			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("userid", UserConfig
+					.getInstance().getUserId()));
+			params.add(new BasicNameValuePair("secretid", secretId));
+			params.add(new BasicNameValuePair("isliked", String
+					.valueOf(isLiked)));
+
+			Response response = HttpClient.doPost(params, SysConfig
+					.getInstance().getLikeUrl());
+			if (response != null) {
+				try {
+					// 解析Status
+					JSONObject jsonObj = response.asJSONObject();
+					result = new Result<Boolean>();
+					result.t = false;
+					result.status = StatusBuilder.getInstance().buildEntity(
+							jsonObj);
+					if (result.status != null
+							&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
+						result.t = true;
+					}
+				} catch (ResponseException e) {
+					e.printStackTrace();
+				}
+			}
+
+			return result;
+		}
 	}
 
 	public static class Task {
@@ -150,6 +195,17 @@ public class SecretManager {
 			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
 		}
+
+		public static void likeOrDislike(String secretId, boolean isLiked,
+				OnTaskOverListener<Boolean> listener) {
+			TaskParams taskParams = new TaskParams();
+			taskParams.put("secretid", secretId);
+			taskParams.put("isliked", isLiked);
+			SecretTask likeTask = new SecretTask(TaskType.LIKE, listener);
+			likeTask.executeOnExecutor(Executors.newCachedThreadPool(),
+					taskParams);
+		}
+
 	}
 
 	static class SecretTask extends BaseAsyncTask {
@@ -210,6 +266,24 @@ public class SecretManager {
 							TaskStatus.FAILED, resultStatus);
 				}
 
+			} else if (taskType == TaskType.LIKE) {
+				String secretId = (String) params[0].get("secretid");
+				boolean isLiked = (Boolean) params[0].get("isliked");
+				Result<Boolean> result = API.likeOrDislike(secretId, isLiked);
+				if (result != null
+						&& result.status != null
+						&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
+					taskResult = new TaskResult<Boolean>(TaskStatus.OK,
+							result.t);
+				} else if (result != null && result.status != null) {
+					taskResult = new TaskResult<ResultStatus>(
+							TaskStatus.FAILED, result.status);
+				} else {
+					resultStatus = new ResultStatus();
+					resultStatus.msg = "操作失败!";
+					taskResult = new TaskResult<ResultStatus>(
+							TaskStatus.FAILED, resultStatus);
+				}
 			}
 
 			return taskResult;
@@ -240,6 +314,17 @@ public class SecretManager {
 					ResultStatus result = (ResultStatus) taskResult.getEntity();
 					((OnTaskOverListener<ListResult<Secret>>) listener)
 							.onFailure(result.code, result.msg);
+				}
+
+				// 点赞
+			} else if (taskType == TaskType.LIKE) {
+				if (taskResult.getStatus() == TaskStatus.OK) {
+					((OnTaskOverListener<Boolean>) listener)
+							.onSuccess((Boolean) taskResult.getEntity());
+				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
+					ResultStatus result = (ResultStatus) taskResult.getEntity();
+					((OnTaskOverListener<Boolean>) listener).onFailure(
+							result.code, result.msg);
 				}
 			}
 		}

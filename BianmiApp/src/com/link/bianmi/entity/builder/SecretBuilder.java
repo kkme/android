@@ -42,7 +42,7 @@ public class SecretBuilder implements BaseEntityBuilder<ListResult<Secret>> {
 						JSONObject jsonArrObj = jsonArr.getJSONObject(i);
 
 						Secret secret = new Secret();
-						secret.id = jsonArrObj.getString("id");
+						secret.resourceId = jsonArrObj.getString("id");
 						secret.content = jsonArrObj.getString("content");
 						secret.imageUrl = jsonArrObj.getString("image_url");
 						secret.audioUrl = jsonArrObj.getString("audio_url");

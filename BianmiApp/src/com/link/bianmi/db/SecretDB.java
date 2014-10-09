@@ -14,7 +14,8 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 	public static final String FIELD_CONTENT = "content";
 	public static final String FIELD_WHEREFROM = "wherefrom";
 	public static final String FIELD_LIKES = "likes";
-	public static final String FIELD_REPLIES = "replies";
+	public static final String FIELD_COMMENTS = "comments";
+	public static final String FIELD_ISLIKED = "isliked";
 	public static final String FIELD_AUDIO_URL = "audio_url";
 	public static final String FIELD_AUDIO_LENGTH = "audio_length";
 	public static final String FIELD_IMAGE_URL = "image_url";
@@ -22,17 +23,18 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 	public static final String FIELD_REPLIED_TIME = "replied_time";
 
 	public final static String[] TABLE_COLUMNS = { _ID, FIELD_RESOURCEID,
-			FIELD_CONTENT, FIELD_WHEREFROM, FIELD_LIKES, FIELD_REPLIES,
-			FIELD_AUDIO_URL, FIELD_AUDIO_LENGTH, FIELD_IMAGE_URL,
-			FIELD_CREATED_TIME, FIELD_REPLIED_TIME };
+			FIELD_CONTENT, FIELD_WHEREFROM, FIELD_LIKES, FIELD_COMMENTS,
+			FIELD_ISLIKED, FIELD_AUDIO_URL, FIELD_AUDIO_LENGTH,
+			FIELD_IMAGE_URL, FIELD_CREATED_TIME, FIELD_REPLIED_TIME };
 
 	public static final String CREATE_TABLE_SQL = "create table " + TABLE_NAME
 			+ " (" + _ID + " text primary key on conflict replace, "
 			+ FIELD_RESOURCEID + " text ," + FIELD_CONTENT + " text ,"
 			+ FIELD_WHEREFROM + " text, " + FIELD_LIKES + " integer , "
-			+ FIELD_REPLIES + " integer , " + FIELD_AUDIO_URL + " text , "
-			+ FIELD_AUDIO_LENGTH + " integer, " + FIELD_IMAGE_URL + " text, "
-			+ FIELD_CREATED_TIME + " integer , " + FIELD_REPLIED_TIME + " integer )";
+			+ FIELD_COMMENTS + " integer , " + FIELD_ISLIKED + " integer , "
+			+ FIELD_AUDIO_URL + " text , " + FIELD_AUDIO_LENGTH + " integer, "
+			+ FIELD_IMAGE_URL + " text, " + FIELD_CREATED_TIME + " integer , "
+			+ FIELD_REPLIED_TIME + " integer )";
 
 	private static SecretDB mInstance = null;
 
@@ -56,7 +58,8 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 		s.content = c.getString(c.getColumnIndex(FIELD_CONTENT));
 		s.from = c.getString(c.getColumnIndex(FIELD_WHEREFROM));
 		s.likes = c.getInt(c.getColumnIndex(FIELD_LIKES));
-		s.comments = c.getInt(c.getColumnIndex(FIELD_REPLIES));
+		s.isLiked = c.getInt(c.getColumnIndex(FIELD_ISLIKED)) > 0;
+		s.comments = c.getInt(c.getColumnIndex(FIELD_COMMENTS));
 		s.audioUrl = c.getString(c.getColumnIndex(FIELD_AUDIO_URL));
 		s.audioLength = c.getInt(c.getColumnIndex(FIELD_AUDIO_LENGTH));
 		s.imageUrl = c.getString(c.getColumnIndex(FIELD_IMAGE_URL));
@@ -72,7 +75,8 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 		cv.put(FIELD_CONTENT, s.content);
 		cv.put(FIELD_WHEREFROM, s.from);
 		cv.put(FIELD_LIKES, s.likes);
-		cv.put(FIELD_REPLIES, s.comments);
+		cv.put(FIELD_COMMENTS, s.comments);
+		cv.put(FIELD_ISLIKED, s.isLiked);
 		cv.put(FIELD_AUDIO_URL, s.audioUrl);
 		cv.put(FIELD_AUDIO_LENGTH, s.audioLength);
 		cv.put(FIELD_IMAGE_URL, s.imageUrl);

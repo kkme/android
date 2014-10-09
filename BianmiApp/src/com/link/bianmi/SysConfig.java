@@ -44,6 +44,8 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/add.php");
 		mProperties.setProperty("bianmi.url.secret.list.debug",
 				"http://192.168.1.101/bianmi/secrets.php");
+		mProperties.setProperty("bianmi.url.secret.like.debug",
+				"http://192.168.1.101/bianmi/like.php");
 
 		// ---------------release
 		mProperties.setProperty("bianmi.dbname.release", "bianmi_v1");
@@ -61,7 +63,9 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/add.php");
 		mProperties.setProperty("bianmi.url.secret.list.release",
 				"http://192.168.1.101/bianmi/secrets.php");
-		
+		mProperties.setProperty("bianmi.url.secret.like.release",
+				"http://192.168.1.101/bianmi/like.php");
+
 		// 七牛
 		mProperties.setProperty("qiniu.bucketname.attach", "bianmi"); // 七牛
 																		// Bucket
@@ -227,6 +231,17 @@ public class SysConfig {
 			return mProperties.getProperty("bianmi.url.secret.list.debug");
 		} else {
 			return mProperties.getProperty("bianmi.url.secret.list.release");
+		}
+	}
+
+	/**
+	 * 点赞的url
+	 */
+	public String getLikeUrl() {
+		if (isDebug()) {
+			return mProperties.getProperty("bianmi.url.secret.like.debug");
+		} else {
+			return mProperties.getProperty("bianmi.url.secret.like.release");
 		}
 	}
 

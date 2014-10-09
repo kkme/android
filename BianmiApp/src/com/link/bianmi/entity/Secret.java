@@ -18,5 +18,6 @@ public class Secret implements Serializable {
 	public String imageUrl = "";// 图片url
 	public long createdTime = 0;// 创建时间
 	public long repliedTime = 0;// 回复时间
+	public boolean isLiked = false;// 是否喜欢
 
 }

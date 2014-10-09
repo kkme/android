@@ -150,7 +150,7 @@ public class SecretFragment extends BaseFragment {
 			public void onItemClick(AdapterView<?> arg0, View convertView,
 					int position, long arg3) {
 				final ImageView imageView = (ImageView) convertView
-						.findViewById(R.id.feed_item_image);
+						.findViewById(R.id.picture_imageview);
 				if (imageView.getDrawable() == null
 						|| imageView.getDrawable().getIntrinsicWidth() == 0) {
 					SuperToast.makeText(mContext, "Please wait...",
@@ -242,7 +242,7 @@ public class SecretFragment extends BaseFragment {
 	 */
 	private void loadMore() {
 		if (mSecretsList != null && mSecretsList.size() > 0) {
-			mLastId = mSecretsList.get(mSecretsList.size() - 1).id;
+			mLastId = mSecretsList.get(mSecretsList.size() - 1).resourceId;
 			mPageSize++;
 			executeGetSecretsTask(mLastId, mPageSize);
 		}
