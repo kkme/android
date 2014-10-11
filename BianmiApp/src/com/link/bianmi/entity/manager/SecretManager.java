@@ -71,9 +71,9 @@ public class SecretManager {
 
 			SQLiteDatabase db = Database.getInstance().getDb(true);
 			ContentValues values = new ContentValues();
-			values.put("resourceid", resourceId);
-			db.update(SecretDB.TABLE_NAME, values, "resourceid=?",
-					new String[] { resourceId });
+			values.put(SecretDB.FIELD_ISLIKED, isLiked);
+			int result = db.update(SecretDB.TABLE_NAME, values, SecretDB.FIELD_RESOURCEID
+					+ "=?", new String[] { resourceId });
 
 		}
 
@@ -160,12 +160,12 @@ public class SecretManager {
 					// 解析Status
 					JSONObject jsonObj = response.asJSONObject();
 					result = new Result<Boolean>();
-					result.t = false;
+					result.t = !isLiked;
 					result.status = StatusBuilder.getInstance().buildEntity(
 							jsonObj);
 					if (result.status != null
 							&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
-						result.t = true;
+						result.t = isLiked;
 					}
 				} catch (ResponseException e) {
 					e.printStackTrace();

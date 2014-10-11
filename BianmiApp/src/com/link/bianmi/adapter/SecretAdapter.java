@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.link.bianmi.R;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.db.SecretDB;
-import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.imageloader.ImageLoader;
 import com.link.bianmi.utility.ViewHolder;
@@ -49,7 +48,7 @@ public class SecretAdapter extends CursorAdapter {
 					.getColumnIndex(SecretDB.FIELD_CONTENT);
 			mIndexHolder.likesIndex = cursor
 					.getColumnIndex(SecretDB.FIELD_LIKES);
-			mIndexHolder.likesIndex = cursor
+			mIndexHolder.isLikedIndex = cursor
 					.getColumnIndex(SecretDB.FIELD_ISLIKED);
 			mIndexHolder.commentsIndex = cursor
 					.getColumnIndex(SecretDB.FIELD_COMMENTS);
@@ -90,6 +89,7 @@ public class SecretAdapter extends CursorAdapter {
 							public void onSuccess(Boolean t) {
 								SecretManager.DB.like(resourceId, t);
 								likeOrDislike(likesText, t);
+								SecretAdapter.this.changeCursor(SecretManager.DB.fetch(1));
 							}
 
 							@Override
