@@ -3,7 +3,10 @@ package com.link.bianmi;
 import java.io.File;
 import java.util.Properties;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 /**
@@ -14,17 +17,19 @@ import android.text.TextUtils;
  */
 public class SysConfig {
 	private static SysConfig mInstance;
+	private SharedPreferences mPref;
 
 	public static SysConfig getInstance() {
 		if (mInstance == null) {
-			mInstance = new SysConfig();
+			mInstance = new SysConfig(BianmiApplication.getInstance());
 		}
 		return mInstance;
 	}
 
 	private Properties mProperties;
 
-	private SysConfig() {
+	private SysConfig(Context context) {
+		mPref = PreferenceManager.getDefaultSharedPreferences(context);
 
 		mProperties = new Properties();
 
@@ -46,6 +51,8 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/secrets.php");
 		mProperties.setProperty("bianmi.url.secret.like.debug",
 				"http://192.168.1.101/bianmi/like.php");
+		mProperties.setProperty("bianmi.url.config.debug",
+				"http://192.168.1.101/bianmi/config.php");
 
 		// ---------------release
 		mProperties.setProperty("bianmi.dbname.release", "bianmi_v1");
@@ -65,6 +72,8 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/secrets.php");
 		mProperties.setProperty("bianmi.url.secret.like.release",
 				"http://192.168.1.101/bianmi/like.php");
+		mProperties.setProperty("bianmi.url.config.release",
+				"http://192.168.1.101/bianmi/config.php");
 
 		// 七牛
 		mProperties.setProperty("qiniu.bucketname.attach", "bianmi"); // 七牛
@@ -245,8 +254,30 @@ public class SysConfig {
 		}
 	}
 
+	/**
+	 * 获取服务端下发配置的url
+	 */
+	public String getConfigUrl() {
+		if (isDebug()) {
+			return mProperties.getProperty("bianmi.url.config.debug");
+		} else {
+			return mProperties.getProperty("bianmi.url.config.release");
+		}
+	}
+
 	public static class Constant {
 		public static final String INTENT_BUNDLE_KEY_ISGUEST = "is_guest";
 	}
 
+	/** 是否展示广告 **/
+	public boolean showAd() {
+		return mPref.getBoolean("bianmi.config.showad", false);
+	}
+
+	/** 设置是否展示 **/
+	public void setShowAd(boolean showAd) {
+		SharedPreferences.Editor editor = mPref.edit();
+		editor.putBoolean("bianmi.config.showad", showAd);
+		editor.commit();
+	}
 }

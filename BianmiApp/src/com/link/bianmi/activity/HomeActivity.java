@@ -16,9 +16,13 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 
 import com.link.bianmi.R;
+import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
+import com.link.bianmi.asynctask.listener.OnTaskOverListener;
+import com.link.bianmi.entity.Config;
 import com.link.bianmi.entity.Secret;
+import com.link.bianmi.entity.manager.ConfigManager;
 import com.link.bianmi.fragment.FriendFragment;
 import com.link.bianmi.fragment.HotFragment;
 import com.link.bianmi.fragment.ImageFragment;
@@ -80,6 +84,7 @@ public class HomeActivity extends BaseFragmentActivity {
 			}
 		});
 
+		initSysConfig();
 	}
 
 	@Override
@@ -152,22 +157,27 @@ public class HomeActivity extends BaseFragmentActivity {
 		}
 	}
 
-	// ----------------------------------自定义方法
-	public void showImageFragment(ImageView smallImageView, boolean show,
-			Secret item) {
-		// showActionbarWithTabs(!show);
-		if (show) {
-			getSupportFragmentManager().beginTransaction().show(mImageFragment)
-					.commit();
-			mImageFragment.startScaleAnimation(smallImageView, item);
-		} else {
-			getSupportFragmentManager().beginTransaction().hide(mImageFragment)
-					.commit();
-		}
+	// ----------------------------------自定义方法-----------------------------
+	/**
+	 * 初始化系统配置
+	 */
+	private void initSysConfig() {
+		ConfigManager.Task.getConfig(new OnTaskOverListener<Config>() {
+			@Override
+			public void onSuccess(Config t) {
+				if (t != null) {
+					SysConfig.getInstance().setShowAd(t.showAd);
+				}
+			}
 
+			@Override
+			public void onFailure(int code, String msg) {
+
+			}
+		});
 	}
 
-	public void showActionbarWithTabs(boolean show) {
+	private void showActionbarWithTabs(boolean show) {
 		if (show) {
 			getActionBar().show();
 			mViewPagerTab.setVisibility(View.VISIBLE);
@@ -175,10 +185,6 @@ public class HomeActivity extends BaseFragmentActivity {
 			getActionBar().hide();
 			mViewPagerTab.setVisibility(View.GONE);
 		}
-	}
-
-	public View getViewPagerTab() {
-		return mViewPagerTab;
 	}
 
 	private class ViewPagerAdapter extends
@@ -226,6 +232,10 @@ public class HomeActivity extends BaseFragmentActivity {
 
 	}
 
+	public View getViewPagerTab() {
+		return mViewPagerTab;
+	}
+
 	// ---------------------------------外部接口-------------------------------
 	public void finishLoaded(boolean isStopAtOnce) {
 		if (isStopAtOnce) {
@@ -260,6 +270,20 @@ public class HomeActivity extends BaseFragmentActivity {
 	public void startLoading() {
 		mLoadingItem.setVisible(true);
 		mMoreItem.setVisible(false);
+	}
+
+	public void showImageFragment(ImageView smallImageView, boolean show,
+			Secret item) {
+		// showActionbarWithTabs(!show);
+		if (show) {
+			getSupportFragmentManager().beginTransaction().show(mImageFragment)
+					.commit();
+			mImageFragment.startScaleAnimation(smallImageView, item);
+		} else {
+			getSupportFragmentManager().beginTransaction().hide(mImageFragment)
+					.commit();
+		}
+
 	}
 
 }

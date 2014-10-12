@@ -16,7 +16,7 @@ import com.link.bianmi.asynctask.TaskResult.TaskStatus;
 import com.link.bianmi.asynctask.listener.ITaskOverListener;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.Result;
-import com.link.bianmi.entity.ResultStatus;
+import com.link.bianmi.entity.Status_;
 import com.link.bianmi.entity.User;
 import com.link.bianmi.entity.builder.StatusBuilder;
 import com.link.bianmi.entity.builder.UserBuilder;
@@ -51,7 +51,7 @@ public class UserManager {
 						.buildEntity(jsonObj);
 				// 返回数据成功
 				if (result.status != null
-						&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
+						&& result.status.code == Status_.OK) {
 					// 解析User
 					result.t = UserBuilder.getInstance().buildEntity(jsonObj);
 				}
@@ -75,8 +75,8 @@ public class UserManager {
 		}
 
 		// 登出
-		public static ResultStatus signOut() {
-			ResultStatus status = new ResultStatus();
+		public static Status_ signOut() {
+			Status_ status = new Status_();
 
 			Response response = HttpClient.doGet(String.format("%s?userid=%s",
 					SysConfig.getInstance().getSignOutUrl(), UserConfig
@@ -150,8 +150,8 @@ public class UserManager {
 
 		@Override
 		protected TaskResult<?> doInBackground(TaskParams... params) {
-			ResultStatus resultStatus = new ResultStatus();
-			TaskResult<?> taskResult = new TaskResult<ResultStatus>(
+			Status_ resultStatus = new Status_();
+			TaskResult<?> taskResult = new TaskResult<Status_>(
 					TaskStatus.FAILED, resultStatus);
 			// 登录
 			if (taskType == TaskType.TYPE_SIGNIN) {
@@ -159,23 +159,23 @@ public class UserManager {
 				String pwdmd5 = params[0].getString("pwdmd5");
 				Result<User> result = API.signIn(phone, pwdmd5);
 				if (result.status != null
-						&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
+						&& result.status.code == Status_.OK) {
 					taskResult = new TaskResult<User>(TaskStatus.OK, result.t);
 				} else {
-					taskResult = new TaskResult<ResultStatus>(
+					taskResult = new TaskResult<Status_>(
 							TaskStatus.FAILED, result.status);
 				}
 
 				// 登出
 			} else if (taskType == TaskType.TYPE_SIGNOUT) {
 
-				ResultStatus status = API.signOut();
+				Status_ status = API.signOut();
 				// 返回数据成功
 				if (status != null
-						&& status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
-					taskResult = new TaskResult<ResultStatus>(TaskStatus.OK);
+						&& status.code == Status_.OK) {
+					taskResult = new TaskResult<Status_>(TaskStatus.OK);
 				} else {
-					taskResult = new TaskResult<ResultStatus>(
+					taskResult = new TaskResult<Status_>(
 							TaskStatus.FAILED, status);
 				}
 
@@ -186,10 +186,10 @@ public class UserManager {
 				Result<User> result = API.signUp(phone, pwdmd5);
 				// 返回数据成功
 				if (result.status != null
-						&& result.status.code == ResultStatus.RESULT_STATUS_CODE_OK) {
+						&& result.status.code == Status_.OK) {
 					taskResult = new TaskResult<User>(TaskStatus.OK, result.t);
 				} else {
-					taskResult = new TaskResult<ResultStatus>(
+					taskResult = new TaskResult<Status_>(
 							TaskStatus.FAILED, result.status);
 				}
 			}
@@ -208,7 +208,7 @@ public class UserManager {
 					((OnTaskOverListener<User>) listener)
 							.onSuccess((User) taskResult.getEntity());
 				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
-					ResultStatus result = (ResultStatus) taskResult.getEntity();
+					Status_ result = (Status_) taskResult.getEntity();
 					((OnTaskOverListener<User>) listener).onFailure(
 							result.code, result.msg);
 				}
@@ -217,7 +217,7 @@ public class UserManager {
 				if (taskResult.getStatus() == TaskStatus.OK) {
 					listener.onSuccess(null);
 				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
-					ResultStatus result = (ResultStatus) taskResult.getEntity();
+					Status_ result = (Status_) taskResult.getEntity();
 					listener.onFailure(result.code, result.msg);
 				}
 				// 注册
@@ -226,7 +226,7 @@ public class UserManager {
 					((OnTaskOverListener<User>) listener)
 							.onSuccess((User) taskResult.getEntity());
 				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
-					ResultStatus result = (ResultStatus) taskResult.getEntity();
+					Status_ result = (Status_) taskResult.getEntity();
 					listener.onFailure(result.code, result.msg);
 				}
 			}

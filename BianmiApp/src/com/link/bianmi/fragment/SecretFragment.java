@@ -13,6 +13,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 
 import com.link.bianmi.R;
+import com.link.bianmi.SysConfig;
 import com.link.bianmi.activity.DetailsActivity;
 import com.link.bianmi.activity.HomeActivity;
 import com.link.bianmi.adapter.CardsAnimationAdapter;
@@ -57,6 +58,9 @@ public class SecretFragment extends BaseFragment {
 		mRootView = LayoutInflater.from(mContext).inflate(
 				R.layout.fragment_secrets, null);
 
+		final View bannerGroup = mRootView.findViewById(R.id.banner_group);
+		bannerGroup.setVisibility(View.GONE);
+
 		mRListView = (RListView) mRootView.findViewById(R.id.rlistview);
 		mAdapter = new SecretAdapter(mContext, null);
 		final CardsAnimationAdapter adapter = new CardsAnimationAdapter(
@@ -91,6 +95,12 @@ public class SecretFragment extends BaseFragment {
 				mRListView.animate().translationY(-Tools.dip2px(mContext, 48));
 				// 刷新列表
 				fetchNew();
+				if (SysConfig.getInstance().showAd()) {
+					bannerGroup.setVisibility(View.VISIBLE);
+				} else {
+					bannerGroup.setVisibility(View.GONE);
+				}
+
 			}
 
 			@Override
@@ -117,6 +127,7 @@ public class SecretFragment extends BaseFragment {
 				((HomeActivity) mContext).getViewPagerTab().animate()
 						.translationY(0);
 				mRListView.animate().translationY(0);
+				bannerGroup.setVisibility(View.GONE);
 			}
 
 			@Override
@@ -270,7 +281,7 @@ public class SecretFragment extends BaseFragment {
 			public void run() {
 				mRListView.stopHeadActiving();
 			}
-		}, endTime - beginTime > 1000 ? 0 : 1000 - (endTime - beginTime));
+		}, endTime - beginTime > 1500 ? 0 : 1500 - (endTime - beginTime));
 	}
 
 	/**

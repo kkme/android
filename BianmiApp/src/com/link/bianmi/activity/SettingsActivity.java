@@ -85,6 +85,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 												"SignOut Error!" + "code:"
 														+ code + ",msg:" + msg,
 												SuperToast.LENGTH_SHORT).show();
+										mLoadingItem.setVisible(false);
 									}
 
 									@Override

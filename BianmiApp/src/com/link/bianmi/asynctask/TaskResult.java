@@ -15,19 +15,13 @@ public class TaskResult<T> {
 		this.t = t;
 	}
 
-	public TaskResult(TaskStatus status, String msg, Object... values) {
+	public TaskResult(TaskStatus status, String msg) {
 		this.status = status;
-		this.values = values;
 		this.msg = msg;
 	}
 
-	private Object[] values;
 	private String msg;
 	private TaskStatus status;
-
-	public Object[] getValues() {
-		return values;
-	}
 
 	public T getEntity() {
 		return this.t;
