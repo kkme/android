@@ -96,21 +96,26 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		// 头像
 		ImageView avatarImage = ViewHolder.get(convertView,
 				R.id.avatar_imageview);
-		ImageLoader.displayImage(avatarImage, comment.getAvatarImageUrl(),
+		ImageLoader.displayImage(avatarImage, comment.avatarUrl,
 				R.drawable.ic_comment_avatar, false);
 		// 内容
 		TextView contentText = ViewHolder.get(convertView,
 				R.id.content_textview);
-		contentText.setText(comment.getContent());
+		contentText.setText(comment.content);
+		// 楼层、时间、赞数
+		TextView floorTimeLikesText = ViewHolder.get(convertView,
+				R.id.floor_time_likes_textview);
+		floorTimeLikesText.setText(String.format(
+				mContext.getString(R.string.details_comments_list_item), 1,
+				comment.createdAt, comment.likes));
 		// 语音
 		AudioButton audioButton = ViewHolder
 				.get(convertView, R.id.audio_button);
-		audioButton.setAudioFile(comment.getAudioUrl(),
-				comment.getAudioLength());
+		audioButton.setAudioFile(comment.audioUrl, comment.audioLength);
 		// 点赞
 		ImageView likedImage = ViewHolder
 				.get(convertView, R.id.liked_imageview);
-		if (comment.isLiked()) {
+		if (comment.isLiked) {
 			likedImage.setImageResource(R.drawable.ic_action_liked);
 		} else {
 			likedImage.setImageResource(R.drawable.ic_action_like);
@@ -151,7 +156,8 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		return mCommentsList.size();
 	}
 
-	public void setCommentsList(List<Comment> commentsList) {
+	public void refresh(List<Comment> commentsList) {
 		this.mCommentsList = commentsList;
+		this.notifyDataSetChanged();
 	}
 }

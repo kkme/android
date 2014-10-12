@@ -38,7 +38,7 @@ public class ConfigManager {
 				result = new Result<Config>();
 				result.status = StatusBuilder.getInstance()
 						.buildEntity(jsonObj);
-				// 返回数据成功6
+				// 返回数据成功
 				if (result.status != null && result.status.code == Status_.OK) {
 					// 继续解析其他对象
 					result.t = ConfigBuilder.getInstance().buildEntity(jsonObj);
@@ -53,7 +53,6 @@ public class ConfigManager {
 	}
 
 	public static class Task {
-
 		/** 获取服务端下发的配置 **/
 		public static void getConfig(OnTaskOverListener<Config> listener) {
 			ConfigTask configTask = new ConfigTask(listener);
@@ -61,11 +60,7 @@ public class ConfigManager {
 		}
 	}
 
-	public static class DB {
-
-	}
-
-	static class ConfigTask extends BaseAsyncTask {
+	private static class ConfigTask extends BaseAsyncTask {
 
 		ITaskOverListener<Config> listener;
 
@@ -113,5 +108,4 @@ public class ConfigManager {
 
 		}
 	}
-
 }

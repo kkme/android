@@ -38,15 +38,16 @@
             android:text="评论内容评论内容评论内容评论内容评论内容评论内容"
             android:textSize="16sp" />
 
-        <!-- 所在楼层、评论时间 -->
+        <!-- 所在楼层、评论时间 、赞数-->
 
         <TextView
-            android:id="@+id/floor_textview"
+            android:id="@+id/floor_time_likes_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableRight="@drawable/ic_action_like"
             android:gravity="center_vertical"
-            android:text="100楼.13小时前"
-            android:textSize="11sp" />
+            android:text="@string/details_comments_list_item"
+            android:textSize="12sp" />
     </LinearLayout>
     <!-- 点赞 -->
 

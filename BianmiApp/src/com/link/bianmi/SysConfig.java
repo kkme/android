@@ -53,6 +53,8 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/like.php");
 		mProperties.setProperty("bianmi.url.config.debug",
 				"http://192.168.1.101/bianmi/config.php");
+		mProperties.setProperty("bianmi.url.comment.list.debug",
+				"http://192.168.1.101/bianmi/comments.php");
 
 		// ---------------release
 		mProperties.setProperty("bianmi.dbname.release", "bianmi_v1");
@@ -74,7 +76,8 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/like.php");
 		mProperties.setProperty("bianmi.url.config.release",
 				"http://192.168.1.101/bianmi/config.php");
-
+		mProperties.setProperty("bianmi.url.comment.list.release",
+				"http://192.168.1.101/bianmi/comments.php");
 		// 七牛
 		mProperties.setProperty("qiniu.bucketname.attach", "bianmi"); // 七牛
 																		// Bucket
@@ -262,6 +265,17 @@ public class SysConfig {
 			return mProperties.getProperty("bianmi.url.config.debug");
 		} else {
 			return mProperties.getProperty("bianmi.url.config.release");
+		}
+	}
+
+	/**
+	 * 获取评论列表
+	 */
+	public String getCommentsUrl() {
+		if (isDebug()) {
+			return mProperties.getProperty("bianmi.url.comment.list.debug");
+		} else {
+			return mProperties.getProperty("bianmi.url.comment.list.release");
 		}
 	}
 
