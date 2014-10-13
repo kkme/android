@@ -558,7 +558,8 @@ public class InputSuit extends LinearLayout {
 		// 是否已经上传结束
 		if (!needUploadPhoto && !needUploadRecord) {
 			if (mListener != null) {
-				mListener.onUploadAttach(true, mPhotoUrl, mRecordUrl);
+				mListener.onUploadAttach(true, mPhotoUrl, mRecordUrl,
+						mRecordLen);
 			}
 			return;
 		}
@@ -599,7 +600,8 @@ public class InputSuit extends LinearLayout {
 			qc.setOnListener(new QiniuClient.OnListener() {
 				@Override
 				public void onFailure(Exception ex) { // 上传图片失败：失败时回传参数为空
-					mListener.onUploadAttach(false, mPhotoUrl, mRecordUrl);
+					mListener.onUploadAttach(false, mPhotoUrl, mRecordUrl,
+							mRecordLen);
 				}
 
 				@Override
@@ -624,9 +626,9 @@ public class InputSuit extends LinearLayout {
 					.getQiniuBucketNameAttach(), false, false);
 
 		} catch (Exception ex) {
-			mListener.onUploadAttach(false, mPhotoUrl, mRecordUrl);
+			mListener.onUploadAttach(false, mPhotoUrl, mRecordUrl, mRecordLen);
 		} catch (OutOfMemoryError ex) {
-			mListener.onUploadAttach(false, mPhotoUrl, mRecordUrl);
+			mListener.onUploadAttach(false, mPhotoUrl, mRecordUrl, mRecordLen);
 		}
 	}
 
@@ -648,7 +650,7 @@ public class InputSuit extends LinearLayout {
 		 *            音频url
 		 * **/
 		public void onUploadAttach(boolean result, String photoUrl,
-				String recordUrl);
+				String recordUrl, int recordLength);
 	}
 
 	/** 内容是否为空 **/
@@ -821,7 +823,7 @@ public class InputSuit extends LinearLayout {
 		/** 文件不存在上传成功 **/
 		if (TextUtils.isEmpty(mPhotoPath) && TextUtils.isEmpty(mRecordPath)) {
 			if (mListener != null) {
-				mListener.onUploadAttach(true, "", "");
+				mListener.onUploadAttach(true, "", "", 0);
 			}
 			return;
 		}

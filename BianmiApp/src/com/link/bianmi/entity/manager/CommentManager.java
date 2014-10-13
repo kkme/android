@@ -42,17 +42,16 @@ public class CommentManager {
 				return null;
 			Result<Comment> result = null;
 			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-			// params.add(new BasicNameValuePair("userid", comment.userId));
-			// params.add(new BasicNameValuePair("content", comment.content));
-			// params.add(new BasicNameValuePair("image_url",
-			// comment.imageUrl));
-			// params.add(new BasicNameValuePair("audio_url",
-			// comment.audioUrl));
-			// params.add(new BasicNameValuePair("created_time", String
-			// .valueOf(comment.createdTime)));
+			params.add(new BasicNameValuePair("secretid", comment.secretid));
+			params.add(new BasicNameValuePair("userid", comment.userid));
+			params.add(new BasicNameValuePair("content", comment.content));
+			params.add(new BasicNameValuePair("audio_url", comment.audioUrl));
+			params.add(new BasicNameValuePair("audio_length", String.valueOf(comment.audioLength)));
+			params.add(new BasicNameValuePair("created_time", String
+					.valueOf(comment.createdTime)));
 
 			Response response = HttpClient.doPost(params, SysConfig
-					.getInstance().getAddSecretUrl());
+					.getInstance().getAddCommentUrl());
 			if (response != null) {
 				try {
 					// 解析Status

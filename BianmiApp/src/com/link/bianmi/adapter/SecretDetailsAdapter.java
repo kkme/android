@@ -107,7 +107,7 @@ public class SecretDetailsAdapter extends BaseAdapter {
 				R.id.floor_time_likes_textview);
 		floorTimeLikesText.setText(String.format(
 				mContext.getString(R.string.details_comments_list_item), 1,
-				comment.createdAt, comment.likes));
+				comment.createdTime, comment.likes));
 		// 语音
 		AudioButton audioButton = ViewHolder
 				.get(convertView, R.id.audio_button);

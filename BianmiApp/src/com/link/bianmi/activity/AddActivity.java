@@ -144,7 +144,7 @@ public class AddActivity extends BaseFragmentActivity {
 
 		@Override
 		public void onUploadAttach(boolean result, String photoUrl,
-				String recordUrl) {
+				String recordUrl, int recordLength) {
 
 			if (!result) {
 				SuperToast.makeText(AddActivity.this, "发表失败！",
@@ -159,6 +159,7 @@ public class AddActivity extends BaseFragmentActivity {
 			secret.userId = UserConfig.getInstance().getUserId();
 			secret.content = mContentEdit.getText().toString();
 			secret.audioUrl = recordUrl;
+			secret.audioLength = recordLength;
 			secret.imageUrl = photoUrl;
 			secret.createdTime = System.currentTimeMillis();
 

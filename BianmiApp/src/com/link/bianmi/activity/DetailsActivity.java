@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.link.bianmi.R;
+import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.adapter.SecretDetailsAdapter;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
@@ -154,10 +155,10 @@ public class DetailsActivity extends BaseFragmentActivity {
 	/**
 	 * 执行获取评论列表任务
 	 * 
-	 * @param secretid
+	 * @param commentid
 	 * @param lastid
 	 */
-	private void executeGetCommentsTask(String lastid) {
+	private void executeGetCommentsTask(final String lastid) {
 		final long beginTime = System.currentTimeMillis();
 		if (mSecretId == null || mSecretId.isEmpty())
 			return;
@@ -165,9 +166,12 @@ public class DetailsActivity extends BaseFragmentActivity {
 				new OnTaskOverListener<ListResult<Comment>>() {
 					@Override
 					public void onSuccess(ListResult<Comment> t) {
-						if (t != null) {
-							refreshRListView(t.list, t.hasMore, beginTime);
+						if (t == null)
+							return;
+						if (lastid.isEmpty() && mCommentsList != null) {
+							mCommentsList.clear();
 						}
+						refreshRListView(t.list, t.hasMore, beginTime);
 					}
 
 					@Override
@@ -204,11 +208,50 @@ public class DetailsActivity extends BaseFragmentActivity {
 		public void onSubmit(String photoPath, String recordPath,
 				int recordLen, String message, String userName, String UserId) {
 			mLoadingItem.setVisible(true);
+			mInputSuit.startUpload();
 		}
 
 		@Override
 		public void onUploadAttach(boolean result, String photoUrl,
-				String recordUrl) {
+				String recordUrl, int recordLength) {
+
+			if (!result) {
+				SuperToast.makeText(DetailsActivity.this, "发表失败！",
+						SuperToast.LENGTH_SHORT).show();
+				return;
+			}
+
+			SuperToast.makeText(DetailsActivity.this, "上传七牛成功！",
+					SuperToast.LENGTH_SHORT).show();
+
+			Comment comment = new Comment();
+			comment.secretid = mSecretId;
+			comment.userid = UserConfig.getInstance().getUserId();
+			comment.content = mInputSuit.getMessage();
+			comment.audioUrl = recordUrl;
+			comment.audioLength = recordLength;
+			comment.createdTime = System.currentTimeMillis();
+
+			CommentManager.Task.addComment(comment,
+					new OnTaskOverListener<Comment>() {
+
+						@Override
+						public void onSuccess(Comment t) {
+							SuperToast.makeText(DetailsActivity.this, "发表成功!",
+									SuperToast.LENGTH_SHORT).show();
+							mLoadingItem.setVisible(false);
+							mInputSuit.reset();
+							fetchNew();
+						}
+
+						@Override
+						public void onFailure(int code, String msg) {
+							SuperToast.makeText(DetailsActivity.this, "发表失败!",
+									SuperToast.LENGTH_SHORT).show();
+							mLoadingItem.setVisible(false);
+						}
+					});
+
 		};
 	};
 

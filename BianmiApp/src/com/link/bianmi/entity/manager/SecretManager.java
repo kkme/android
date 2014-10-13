@@ -90,6 +90,7 @@ public class SecretManager {
 			params.add(new BasicNameValuePair("content", secret.content));
 			params.add(new BasicNameValuePair("image_url", secret.imageUrl));
 			params.add(new BasicNameValuePair("audio_url", secret.audioUrl));
+			params.add(new BasicNameValuePair("audio_length", String.valueOf(secret.audioLength)));
 			params.add(new BasicNameValuePair("created_time", String
 					.valueOf(secret.createdTime)));
 

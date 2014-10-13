@@ -50,7 +50,7 @@ public class CommentBuilder implements BaseEntityBuilder<ListResult<Comment>> {
 						comment.audioLength = jsonArrObj.getInt("audio_length");
 						comment.likes = jsonArrObj.getInt("likes");
 						comment.isLiked = jsonArrObj.getBoolean("isliked");
-						comment.createdAt = jsonArrObj.getLong("created_time");
+						comment.createdTime = jsonArrObj.getLong("created_time");
 						listResult.list.add(comment);
 					}
 				}
