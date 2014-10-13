@@ -5,9 +5,9 @@
     <solid android:color="@color/mxx_item_theme_color_alpha" />
 
     <corners
-        android:bottomLeftRadius="1.5dp"
-        android:bottomRightRadius="1.5dp"
-        android:topLeftRadius="1.5dp"
-        android:topRightRadius="1.5dp" />
+        android:bottomLeftRadius="0dp"
+        android:bottomRightRadius="0dp"
+        android:topLeftRadius="0dp"
+        android:topRightRadius="0dp" />
 
 </shape>

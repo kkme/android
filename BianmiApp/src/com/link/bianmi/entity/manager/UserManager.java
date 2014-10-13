@@ -36,7 +36,7 @@ public class UserManager {
 
 		public static Result<User> signInOrUp(String phone, String pwdmd5,
 				String url) {
-			Result<User> result = new Result<User>();
+			Result<User> result = null;
 			ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
 			NameValuePair phoneParam = new BasicNameValuePair("phone", phone);
 			NameValuePair pwdmd5Param = new BasicNameValuePair("pwdmd5", pwdmd5);
@@ -46,14 +46,18 @@ public class UserManager {
 			Response response = HttpClient.doPost(requestParams, url);
 			try {
 				// 解析Result
-				JSONObject jsonObj = response.asJSONObject();
-				result.status = StatusBuilder.getInstance()
-						.buildEntity(jsonObj);
-				// 返回数据成功
-				if (result.status != null
-						&& result.status.code == Status_.OK) {
-					// 解析User
-					result.t = UserBuilder.getInstance().buildEntity(jsonObj);
+				if (response != null) {
+					JSONObject jsonObj = response.asJSONObject();
+					result = new Result<User>();
+					result.status = StatusBuilder.getInstance().buildEntity(
+							jsonObj);
+					// 返回数据成功
+					if (result.status != null
+							&& result.status.code == Status_.OK) {
+						// 解析User
+						result.t = UserBuilder.getInstance().buildEntity(
+								jsonObj);
+					}
 				}
 			} catch (ResponseException e) {
 				e.printStackTrace();
@@ -158,12 +162,17 @@ public class UserManager {
 				String phone = params[0].getString("phone");
 				String pwdmd5 = params[0].getString("pwdmd5");
 				Result<User> result = API.signIn(phone, pwdmd5);
-				if (result.status != null
+				if (result != null && result.status != null
 						&& result.status.code == Status_.OK) {
 					taskResult = new TaskResult<User>(TaskStatus.OK, result.t);
+				} else if (result != null) {
+					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
+							result.status);
 				} else {
-					taskResult = new TaskResult<Status_>(
-							TaskStatus.FAILED, result.status);
+					Status_ status = new Status_();
+					status.msg = "获取数据失败！";
+					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
+							status);
 				}
 
 				// 登出
@@ -171,12 +180,11 @@ public class UserManager {
 
 				Status_ status = API.signOut();
 				// 返回数据成功
-				if (status != null
-						&& status.code == Status_.OK) {
+				if (status != null && status.code == Status_.OK) {
 					taskResult = new TaskResult<Status_>(TaskStatus.OK);
 				} else {
-					taskResult = new TaskResult<Status_>(
-							TaskStatus.FAILED, status);
+					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
+							status);
 				}
 
 				// 注册
@@ -185,12 +193,17 @@ public class UserManager {
 				String pwdmd5 = params[0].getString("pwdmd5");
 				Result<User> result = API.signUp(phone, pwdmd5);
 				// 返回数据成功
-				if (result.status != null
+				if (result != null && result.status != null
 						&& result.status.code == Status_.OK) {
 					taskResult = new TaskResult<User>(TaskStatus.OK, result.t);
+				} else if (result != null) {
+					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
+							result.status);
 				} else {
-					taskResult = new TaskResult<Status_>(
-							TaskStatus.FAILED, result.status);
+					Status_ status = new Status_();
+					status.msg = "获取数据失败！";
+					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
+							status);
 				}
 			}
 
