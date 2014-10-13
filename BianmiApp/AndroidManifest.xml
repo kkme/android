@@ -93,6 +93,24 @@
         <activity
             android:name="com.link.bianmi.unit.ninelock.NineLockActivity"
             android:theme="@style/Theme.Fullscreen" />
+
+        <!-- 友盟SDK -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="543b838cfd98c5055701d798" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Channel ID" />
+
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
     </application>
 
 </manifest>

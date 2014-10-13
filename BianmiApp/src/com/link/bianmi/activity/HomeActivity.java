@@ -31,6 +31,8 @@ import com.link.bianmi.fragment.SecretFragment;
 import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.ViewPagerTabBar;
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UpdateStatus;
 
 public class HomeActivity extends BaseFragmentActivity {
 	public ViewPager mViewPager;
@@ -40,6 +42,12 @@ public class HomeActivity extends BaseFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// 检查更新
+		UmengUpdateAgent.setUpdateAutoPopup(true);
+		UmengUpdateAgent.setUpdateOnlyWifi(false);
+		UmengUpdateAgent.setUpdateUIStyle(UpdateStatus.STYLE_NOTIFICATION);
+		UmengUpdateAgent.update(this);
+		// 初始化ActionBar
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowHomeEnabled(true);
 		setContentView(R.layout.activity_main);

@@ -13,6 +13,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
@@ -192,7 +193,8 @@ public class Tools {
 		try {
 			InputStream myInput;
 			OutputStream myOutput = new FileOutputStream(strOutFileName);
-			myInput = BianmiApplication.getInstance().getAssets().open(filename);
+			myInput = BianmiApplication.getInstance().getAssets()
+					.open(filename);
 			byte[] buffer = new byte[1024];
 			int length = myInput.read(buffer);
 			while (length > 0) {
@@ -209,22 +211,41 @@ public class Tools {
 
 		return result;
 	}
-	
-	/** 
-	* 根据手机的分辨率从 dp 的单位 转成为 px(像素) 
-	*/  
-	public static int dip2px(Context context, float dpValue) {  
-		
-		final float scale = context.getResources().getDisplayMetrics().density;  
-		return (int) (dpValue * scale + 0.5f);  
-	}  
-	
-	/** 
-	* 根据手机的分辨率从 px(像素) 的单位 转成为 dp 
-	*/  
-	public static int px2dip(Context context, float pxValue) {  
-		final float scale = context.getResources().getDisplayMetrics().density;  
-		return (int) (pxValue / scale + 0.5f);  
+
+	/**
+	 * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+	 */
+	public static int dip2px(Context context, float dpValue) {
+
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (dpValue * scale + 0.5f);
+	}
+
+	/**
+	 * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+	 */
+	public static int px2dip(Context context, float pxValue) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (pxValue / scale + 0.5f);
+	}
+
+	/**
+	 * 返回应用当前版本名称
+	 * 
+	 */
+	public static String getVersionName(Context context) {
+		String versionName = "";
+		try {
+			PackageManager pm = context.getPackageManager();
+			PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
+			versionName = pi.versionName;
+			if (versionName == null || versionName.length() <= 0) {
+				return "";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return versionName;
 	}
 
 }
