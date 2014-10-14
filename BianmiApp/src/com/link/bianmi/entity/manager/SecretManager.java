@@ -95,7 +95,7 @@ public class SecretManager {
 					.valueOf(secret.createdTime)));
 
 			Response response = HttpClient.doPost(params, SysConfig
-					.getInstance().getAddSecretUrl());
+					.getInstance().getPublishSecretUrl());
 			if (response != null) {
 				try {
 					// 解析Status

@@ -26,7 +26,7 @@ import com.link.bianmi.widget.SuperToast;
  * @author pangfq
  * @date 2014-10-3 上午7:41:08
  */
-public class AddActivity extends BaseFragmentActivity {
+public class PublishActivity extends BaseFragmentActivity {
 
 	private InputSuit mInputSuit;
 	private EditText mContentEdit;
@@ -35,7 +35,7 @@ public class AddActivity extends BaseFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActionBar().setTitle(
-				getResources().getString(R.string.add_action_title));
+				getResources().getString(R.string.publish_secret_title));
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.activity_add);
@@ -147,12 +147,12 @@ public class AddActivity extends BaseFragmentActivity {
 				String recordUrl, int recordLength) {
 
 			if (!result) {
-				SuperToast.makeText(AddActivity.this, "发表失败！",
+				SuperToast.makeText(PublishActivity.this, "发表失败！",
 						SuperToast.LENGTH_SHORT).show();
 				return;
 			}
 
-			SuperToast.makeText(AddActivity.this, "上传七牛成功！",
+			SuperToast.makeText(PublishActivity.this, "上传七牛成功！",
 					SuperToast.LENGTH_SHORT).show();
 
 			Secret secret = new Secret();
@@ -168,7 +168,7 @@ public class AddActivity extends BaseFragmentActivity {
 
 						@Override
 						public void onSuccess(Secret t) {
-							SuperToast.makeText(AddActivity.this, "发表成功!",
+							SuperToast.makeText(PublishActivity.this, "发表成功!",
 									SuperToast.LENGTH_SHORT).show();
 							mLoadingItem.setVisible(false);
 							mSendItem.setVisible(true);
@@ -182,7 +182,7 @@ public class AddActivity extends BaseFragmentActivity {
 
 						@Override
 						public void onFailure(int code, String msg) {
-							SuperToast.makeText(AddActivity.this, "发表失败!",
+							SuperToast.makeText(PublishActivity.this, "发表失败!",
 									SuperToast.LENGTH_SHORT).show();
 							mLoadingItem.setVisible(false);
 							mSendItem.setVisible(true);

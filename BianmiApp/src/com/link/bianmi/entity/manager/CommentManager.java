@@ -51,7 +51,7 @@ public class CommentManager {
 					.valueOf(comment.createdTime)));
 
 			Response response = HttpClient.doPost(params, SysConfig
-					.getInstance().getAddCommentUrl());
+					.getInstance().getPublishCommentUrl());
 			if (response != null) {
 				try {
 					// 解析Status

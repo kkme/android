@@ -69,7 +69,7 @@
             android:theme="@style/Theme.ActionBar.NoLogo" />
         <!-- 发表秘密 -->
         <activity
-            android:name="com.link.bianmi.activity.AddActivity"
+            android:name="com.link.bianmi.activity.PublishActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.ActionBar.NoLogo"

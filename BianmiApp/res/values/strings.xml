@@ -8,24 +8,24 @@
     <string name="no_more_to_load">木有啦</string>
 
     <!-- 主界面 -->
-    <string name="main_viewpagertab_title_hot">热门</string>
-    <string name="main_viewpagertab_title_friend">朋友</string>
-    <string name="main_viewpagertab_title_nearby">附近</string>
-    <string name="main_actionitem_title_add">发秘密</string>
-    <string name="main_actionitem_title_notice">瞧提醒</string>
-    <string name="main_actionitem_title_more">看更多</string>
-    <string name="main_actionitem_title_more_addfriend">添加朋友</string>
-    <string name="main_actionitem_title_more_recommend">推荐</string>
-    <string name="main_actionitem_title_more_settings">设置</string>
+    <string name="hot">热门</string>
+    <string name="friend">朋友</string>
+    <string name="nearby">附近</string>
+    <string name="publish_secret">发秘密</string>
+    <string name="look_notices">瞧提醒</string>
+    <string name="look_more">看更多</string>
+    <string name="add_friend">添加朋友</string>
+    <string name="recommend">推荐</string>
     <!-- 发表秘密 -->
-    <string name="add_action_title">发表秘密</string>
+    <string name="publish_secret_title">发表秘密</string>
     <string name="add_edit_hint">匿名发表秘密</string>
-    <string name="add_actionitem_title_send">发表新秘密</string>
+    <string name="publish_new_secret">发表新秘密</string>
 
     <!-- 秘密详情 -->
     <string name="details_action_title">秘密详情</string>
-    <string name="details_actionitem_title_like">点赞</string>
-    <string name="details_actionitem_title_share">分享</string>
+    <string name="like">点赞</string>
+    <string name="share">分享</string>
+    <string name="follow">关注</string>
     <string name="details_comments_list_item">%1$d楼.%2$d前.%3$d</string>
 
     <!-- 登录 -->
@@ -48,7 +48,7 @@
     <string name="no">否</string>
     <string name="if_restart">是否重新启动？</string>
     <string name="settings_forgot_password">忘记密码？</string>
-    <string name="current_version">当前版本:%1$s</string>
+    <string name="current_version">版本:V%1$s</string>
     <!-- inputsuit -->
     <string name="inputsuit_submit">发表</string>
     <string name="inputsuit_photo_album">照片</string>

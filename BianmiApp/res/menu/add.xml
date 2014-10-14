@@ -7,7 +7,7 @@
         android:icon="@drawable/selector_btn_commit"
         android:orderInCategory="99"
         android:showAsAction="always"
-        android:title="@string/add_actionitem_title_send"/>
+        android:title="@string/publish_new_secret"/>
     <item
         android:id="@+id/action_loading"
         android:actionLayout="@layout/actionbar_loading_layout"

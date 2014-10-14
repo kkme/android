@@ -6,35 +6,35 @@
         android:icon="@drawable/ic_action_add"
         android:orderInCategory="99"
         android:showAsAction="always"
-        android:title="@string/main_actionitem_title_add"/>
+        android:title="@string/publish_secret"/>
     <item
         android:id="@+id/action_notice"
         android:icon="@drawable/ic_action_notice"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="@string/main_actionitem_title_notice"/>
+        android:title="@string/look_notices"/>
     <item
         android:id="@+id/action_more"
         android:icon="@drawable/ic_action_more"
         android:orderInCategory="101"
         android:showAsAction="always"
-        android:title="@string/main_actionitem_title_more">
+        android:title="@string/look_more">
         <menu>
             <item
                 android:id="@+id/action_more_addfriend"
                 android:orderInCategory="101"
                 android:showAsAction="ifRoom|withText"
-                android:title="@string/main_actionitem_title_more_addfriend"/>
+                android:title="@string/add_friend"/>
             <item
                 android:id="@+id/action_more_recommend"
                 android:orderInCategory="101"
                 android:showAsAction="ifRoom|withText"
-                android:title="@string/main_actionitem_title_more_recommend"/>
+                android:title="@string/recommend"/>
             <item
                 android:id="@+id/action_more_settings"
                 android:orderInCategory="101"
                 android:showAsAction="ifRoom|withText"
-                android:title="@string/main_actionitem_title_more_settings"/>
+                android:title="@string/settings"/>
         </menu>
     </item>
     <item

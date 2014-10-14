@@ -45,7 +45,7 @@ public class SysConfig {
 				"http://121.40.88.136/bianmi/index.php/Index/Login/index");
 		mProperties.setProperty("bianmi.url.signout.debug",
 				"http://121.40.88.136/bianmi/index.php/Index/Login/signout");
-		mProperties.setProperty("bianmi.url.secret.add.debug",
+		mProperties.setProperty("bianmi.url.secret.publish.debug",
 				"http://192.168.1.101/bianmi/add.php");
 		mProperties.setProperty("bianmi.url.secret.list.debug",
 				"http://192.168.1.101/bianmi/secrets.php");
@@ -55,7 +55,7 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/config.php");
 		mProperties.setProperty("bianmi.url.comment.list.debug",
 				"http://192.168.1.101/bianmi/comments.php");
-		mProperties.setProperty("bianmi.url.comment.add.debug",
+		mProperties.setProperty("bianmi.url.comment.publish.debug",
 				"http://192.168.1.101/bianmi/add_comment.php");
 
 		// ---------------release
@@ -70,7 +70,7 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/signout.php"); // 登出
 		mProperties.setProperty("bianmi.qiniu.uptoken",
 				"http://192.168.1.101/bianmi/token.php?type=uptoken");// 上传token
-		mProperties.setProperty("bianmi.url.secret.add.release",
+		mProperties.setProperty("bianmi.url.secret.publish.release",
 				"http://192.168.1.101/bianmi/add.php");
 		mProperties.setProperty("bianmi.url.secret.list.release",
 				"http://192.168.1.101/bianmi/secrets.php");
@@ -80,7 +80,7 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/config.php");
 		mProperties.setProperty("bianmi.url.comment.list.release",
 				"http://192.168.1.101/bianmi/comments.php");
-		mProperties.setProperty("bianmi.url.comment.add.release",
+		mProperties.setProperty("bianmi.url.comment.publish.release",
 				"http://192.168.1.101/bianmi/add_comment.php");
 		// 七牛
 		mProperties.setProperty("qiniu.bucketname.attach", "bianmi"); // 七牛
@@ -231,11 +231,11 @@ public class SysConfig {
 	/**
 	 * 发表秘密的url
 	 */
-	public String getAddSecretUrl() {
+	public String getPublishSecretUrl() {
 		if (isDebug()) {
-			return mProperties.getProperty("bianmi.url.secret.add.debug");
+			return mProperties.getProperty("bianmi.url.secret.publish.debug");
 		} else {
-			return mProperties.getProperty("bianmi.url.secret.add.release");
+			return mProperties.getProperty("bianmi.url.secret.publish.release");
 		}
 	}
 
@@ -286,11 +286,12 @@ public class SysConfig {
 	/**
 	 * 发表评论的url
 	 */
-	public String getAddCommentUrl() {
+	public String getPublishCommentUrl() {
 		if (isDebug()) {
-			return mProperties.getProperty("bianmi.url.comment.add.debug");
+			return mProperties.getProperty("bianmi.url.comment.publish.debug");
 		} else {
-			return mProperties.getProperty("bianmi.url.comment.add.release");
+			return mProperties
+					.getProperty("bianmi.url.comment.publish.release");
 		}
 	}
 

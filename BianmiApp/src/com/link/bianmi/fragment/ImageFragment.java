@@ -218,7 +218,7 @@ public class ImageFragment extends Fragment {
 			Bitmap bitmap = BitmapUtil.drawableToBitmap(mScaleImageView
 					.getDrawable());
 			String chooserDialogTitleString = getResources().getString(
-					R.string.add_action_title);
+					R.string.publish_secret_title);
 			return true;
 		} else if (item.getItemId() == R.id.fragment_image_action_share_text) {
 			return true;

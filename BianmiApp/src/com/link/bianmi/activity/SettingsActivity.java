@@ -102,7 +102,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 									public void onFailure(int code, String msg) {
 										SuperToast.makeText(
 												SettingsActivity.this,
-												"退出失败，" + msg,
+												"退出失败" + msg,
 												SuperToast.LENGTH_SHORT).show();
 										mLoadingItem.setVisible(false);
 									}

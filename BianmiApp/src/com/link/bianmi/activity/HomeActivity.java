@@ -61,21 +61,16 @@ public class HomeActivity extends BaseFragmentActivity {
 			fragments.add(new HotFragment());
 			fragments.add(new NearbyFragment());
 			fragmentTitles = new String[] {
-					this.getResources().getString(
-							R.string.main_viewpagertab_title_hot),
-					this.getResources().getString(
-							R.string.main_viewpagertab_title_nearby) };
+					this.getResources().getString(R.string.hot),
+					this.getResources().getString(R.string.nearby) };
 		} else {
 			fragments.add(new HotFragment());
 			fragments.add(new FriendFragment());
 			fragments.add(new NearbyFragment());
 			fragmentTitles = new String[] {
-					this.getResources().getString(
-							R.string.main_viewpagertab_title_hot),
-					this.getResources().getString(
-							R.string.main_viewpagertab_title_friend),
-					this.getResources().getString(
-							R.string.main_viewpagertab_title_nearby) };
+					this.getResources().getString(R.string.hot),
+					this.getResources().getString(R.string.friend),
+					this.getResources().getString(R.string.nearby) };
 		}
 		mViewPager.setOffscreenPageLimit(fragments.size());
 		mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),
@@ -98,19 +93,7 @@ public class HomeActivity extends BaseFragmentActivity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		// UserConfig.getInstance().setLockPassSuccess(false);
 	}
-
-	// @Override
-	// public boolean onPrepareOptionsMenu(Menu menu) {
-	// if (mImageFragment != null) {
-	// menu.findItem(R.id.action_add)
-	// .setVisible(!mImageFragment.canBack());
-	// menu.findItem(R.id.action_more).setVisible(
-	// !mImageFragment.canBack());
-	// }
-	// return super.onPrepareOptionsMenu(menu);
-	// }
 
 	private MenuItem mMoreItem;
 	private MenuItem mLoadingItem;
@@ -128,7 +111,7 @@ public class HomeActivity extends BaseFragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_add) {
-			launchActivity(AddActivity.class);
+			launchActivity(PublishActivity.class);
 		} else if (item.getItemId() == R.id.action_more_addfriend) {
 		} else if (item.getItemId() == R.id.action_more_recommend) {
 		} else if (item.getItemId() == R.id.action_more_settings) {
