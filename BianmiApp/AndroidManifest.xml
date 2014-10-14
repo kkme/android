@@ -94,7 +94,11 @@
         <!-- 九宫格密码 -->
         <activity
             android:name="com.link.bianmi.unit.ninelock.NineLockActivity"
-            android:theme="@style/Theme.Fullscreen" />
+            android:theme="@style/Theme.ActionBar.NoLogo" />
+        <!-- 加载web页面 -->
+        <activity
+            android:name="com.link.bianmi.activity.WebActivity"
+            android:theme="@style/Theme.ActionBar.NoLogo" />
 
         <!-- 友盟SDK -->
         <meta-data

@@ -101,7 +101,7 @@ public class HomeActivity extends BaseFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.home, menu);
 		mMoreItem = menu.findItem(R.id.action_more);
 		mLoadingItem = menu.findItem(R.id.action_loading);
 		mMoreItem.setVisible(false);

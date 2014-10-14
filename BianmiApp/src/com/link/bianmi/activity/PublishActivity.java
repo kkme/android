@@ -62,7 +62,7 @@ public class PublishActivity extends BaseFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.add, menu);
+		getMenuInflater().inflate(R.menu.publish, menu);
 		mSendItem = menu.getItem(0);
 		mLoadingItem = menu.getItem(1);
 		return true;

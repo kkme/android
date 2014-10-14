@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="设置密码" />
+            android:text="@string/settings_password" />
 
         <com.link.bianmi.widget.SwitchButton
             android:id="@+id/settings_item_password_switchbutton"
@@ -47,6 +47,7 @@
         android:background="@android:color/holo_blue_dark" />
 
     <RelativeLayout
+        android:id="@+id/faq_group"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:background="@drawable/actionbar_menu_selector" >

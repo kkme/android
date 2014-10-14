@@ -42,12 +42,13 @@
 
     <!-- 设置 -->
     <string name="settings">设置</string>
-    <string name="setup_password">设置密码</string>
+    <string name="settings_password">设置密码</string>
     <string name="yes">是</string>
     <string name="no">否</string>
     <string name="if_restart">是否重新启动？</string>
     <string name="settings_forgot_password">忘记密码？</string>
     <string name="current_version">版本:V%1$s</string>
+    <string name="faq">常见问题</string>
     <!-- inputsuit -->
     <string name="inputsuit_submit">发表</string>
     <string name="inputsuit_photo_album">照片</string>

@@ -77,6 +77,13 @@ public class SettingsActivity extends BaseFragmentActivity {
 						}
 					}
 				});
+		// 常见问题
+		findViewById(R.id.faq_group).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				launchActivity(WebActivity.class);
+			}
+		});
 		// 检查更新
 		findViewById(R.id.update_group).setOnClickListener(
 				new OnClickListener() {

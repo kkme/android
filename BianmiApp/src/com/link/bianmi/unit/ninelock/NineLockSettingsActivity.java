@@ -51,7 +51,7 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		getActionBar().setTitle(getString(R.string.setup_password));
+		getActionBar().setTitle(getString(R.string.settings_password));
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
