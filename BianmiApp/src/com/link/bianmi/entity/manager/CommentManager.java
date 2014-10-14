@@ -115,7 +115,7 @@ public class CommentManager {
 					.valueOf(isLiked)));
 
 			Response response = HttpClient.doPost(params, SysConfig
-					.getInstance().getLikeUrl());
+					.getInstance().getCommentLikeUrl());
 			if (response != null) {
 				try {
 					// 解析Status

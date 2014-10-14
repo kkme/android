@@ -31,7 +31,6 @@ public class SecretDetailsAdapter extends BaseAdapter {
 
 	private Secret mSecret;
 	private List<Comment> mCommentsList;
-	private int mPosition;
 
 	public SecretDetailsAdapter(Context context, Secret secret) {
 		mContext = context;
@@ -74,7 +73,6 @@ public class SecretDetailsAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		mPosition = position;
 		int type = getItemViewType(position);
 		if (convertView == null) {
 			if (type == TYPE_SECRET) {
@@ -91,14 +89,14 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		if (type == TYPE_SECRET) {
 			bindSecretView(convertView, (Secret) getItem(position));
 		} else if (type == TYPE_COMMENT) {
-			bindCommentView(convertView, (Comment) getItem(position));
+			bindCommentView(convertView, (Comment) getItem(position), position);
 		}
 
 		return convertView;
 	}
 
 	/** 评论列表 **/
-	private void bindCommentView(View convertView, final Comment comment) {
+	private void bindCommentView(View convertView, final Comment comment, final int position) {
 		// 头像
 		ImageView avatarImage = ViewHolder.get(convertView,
 				R.id.avatar_imageview);
@@ -132,7 +130,7 @@ public class SecretDetailsAdapter extends BaseAdapter {
 							@Override
 							public void onSuccess(Boolean t) {
 								comment.isLiked = t;
-								mCommentsList.set(mPosition, comment);
+								mCommentsList.set(position - 1, comment);
 								likeOrDislike(likedImage, t);
 							}
 

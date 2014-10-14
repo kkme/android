@@ -51,6 +51,8 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/secrets.php");
 		mProperties.setProperty("bianmi.url.secret.like.debug",
 				"http://192.168.1.101/bianmi/like.php");
+		mProperties.setProperty("bianmi.url.comment.like.debug",
+				"http://192.168.1.101/bianmi/comment_like.php");
 		mProperties.setProperty("bianmi.url.config.debug",
 				"http://192.168.1.101/bianmi/config.php");
 		mProperties.setProperty("bianmi.url.comment.list.debug",
@@ -76,6 +78,8 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/secrets.php");
 		mProperties.setProperty("bianmi.url.secret.like.release",
 				"http://192.168.1.101/bianmi/like.php");
+		mProperties.setProperty("bianmi.url.comment.like.release",
+				"http://192.168.1.101/bianmi/comment_like.php");
 		mProperties.setProperty("bianmi.url.config.release",
 				"http://192.168.1.101/bianmi/config.php");
 		mProperties.setProperty("bianmi.url.comment.list.release",
@@ -251,13 +255,24 @@ public class SysConfig {
 	}
 
 	/**
-	 * 点赞的url
+	 * 秘密点赞的url
 	 */
 	public String getLikeUrl() {
 		if (isDebug()) {
 			return mProperties.getProperty("bianmi.url.secret.like.debug");
 		} else {
 			return mProperties.getProperty("bianmi.url.secret.like.release");
+		}
+	}
+
+	/**
+	 * 评论点赞的url
+	 */
+	public String getCommentLikeUrl() {
+		if (isDebug()) {
+			return mProperties.getProperty("bianmi.url.comment.like.debug");
+		} else {
+			return mProperties.getProperty("bianmi.url.comment.like.release");
 		}
 	}
 
