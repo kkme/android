@@ -106,7 +106,6 @@ public class DetailsActivity extends BaseFragmentActivity {
 		mInputSuit.init(this, null, mInputListener);
 
 		fetchNew();
-
 	}
 
 	private MenuItem mLoadingItem;
@@ -117,8 +116,8 @@ public class DetailsActivity extends BaseFragmentActivity {
 		getMenuInflater().inflate(R.menu.details, menu);
 		mMoreItem = menu.findItem(R.id.action_more);
 		mLoadingItem = menu.findItem(R.id.action_loading);
-		mLoadingItem.setVisible(false);
-		mMoreItem.setVisible(true);
+		mLoadingItem.setVisible(true);
+		mMoreItem.setVisible(false);
 		return true;
 	}
 
@@ -179,12 +178,17 @@ public class DetailsActivity extends BaseFragmentActivity {
 							mCommentsList.clear();
 						}
 						refreshRListView(t.list, t.hasMore, beginTime);
+
+						mLoadingItem.setVisible(false);
+						mMoreItem.setVisible(true);
 					}
 
 					@Override
 					public void onFailure(int code, String msg) {
 						SuperToast.makeText(DetailsActivity.this, msg,
 								SuperToast.LENGTH_SHORT).show();
+						mLoadingItem.setVisible(false);
+						mMoreItem.setVisible(true);
 					}
 				});
 	}
