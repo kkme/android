@@ -17,6 +17,7 @@ import com.link.bianmi.entity.Comment;
 import com.link.bianmi.entity.ListResult;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.CommentManager;
+import com.link.bianmi.utility.ShareUtil;
 import com.link.bianmi.widget.InputSuit;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.ActivateListener;
@@ -128,6 +129,8 @@ public class DetailsActivity extends BaseFragmentActivity {
 			return true;
 		} else if (item.getItemId() == R.id.action_like) {
 			item.setIcon(R.drawable.ic_action_liked);
+		} else if (item.getItemId() == R.id.action_more_share) {
+			ShareUtil.showShare(DetailsActivity.this);
 		}
 		return super.onOptionsItemSelected(item);
 	}

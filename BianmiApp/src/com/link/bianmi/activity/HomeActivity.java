@@ -29,6 +29,7 @@ import com.link.bianmi.fragment.ImageFragment;
 import com.link.bianmi.fragment.NearbyFragment;
 import com.link.bianmi.fragment.SecretFragment;
 import com.link.bianmi.fragment.base.BaseFragment;
+import com.link.bianmi.utility.ShareUtil;
 import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.ViewPagerTabBar;
 import com.umeng.update.UmengUpdateAgent;
@@ -113,6 +114,7 @@ public class HomeActivity extends BaseFragmentActivity {
 		if (item.getItemId() == R.id.action_add) {
 			launchActivity(PublishActivity.class);
 		} else if (item.getItemId() == R.id.action_more_addfriend) {
+			ShareUtil.showShare(HomeActivity.this);
 		} else if (item.getItemId() == R.id.action_more_recommend) {
 		} else if (item.getItemId() == R.id.action_more_settings) {
 			launchActivityForResult(SettingsActivity.class, 6666);
