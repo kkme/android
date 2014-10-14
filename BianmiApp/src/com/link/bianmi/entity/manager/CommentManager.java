@@ -29,15 +29,17 @@ import com.link.bianmi.http.ResponseException;
 public class CommentManager {
 
 	public static enum TaskType {
-		ADD, GET_COMMENTS
+		PUBLISH, // 发表评论
+		GET_COMMENTS, // 获取评论列表
+		LIKE// 评论点赞
 	}
 
 	/** 单页数量 **/
-	private static final int BATCH = 8;
+	private static final int BATCH = 20;
 
 	public static class API {
 
-		private static Result<Comment> addComment(Comment comment) {
+		private static Result<Comment> publishComment(Comment comment) {
 			if (comment == null)
 				return null;
 			Result<Comment> result = null;
@@ -46,7 +48,8 @@ public class CommentManager {
 			params.add(new BasicNameValuePair("userid", comment.userid));
 			params.add(new BasicNameValuePair("content", comment.content));
 			params.add(new BasicNameValuePair("audio_url", comment.audioUrl));
-			params.add(new BasicNameValuePair("audio_length", String.valueOf(comment.audioLength)));
+			params.add(new BasicNameValuePair("audio_length", String
+					.valueOf(comment.audioLength)));
 			params.add(new BasicNameValuePair("created_time", String
 					.valueOf(comment.createdTime)));
 
@@ -67,7 +70,7 @@ public class CommentManager {
 			return result;
 		}
 
-		public static Result<ListResult<Comment>> getComments(String userid,
+		private static Result<ListResult<Comment>> getComments(String userid,
 				String secretid, String lastid) {
 			Result<ListResult<Comment>> result = null;
 
@@ -99,14 +102,48 @@ public class CommentManager {
 			return result;
 		}
 
+		private static Result<Boolean> likeOrDislike(String secretId,
+				boolean isLiked) {
+			if (secretId == null)
+				return null;
+			Result<Boolean> result = null;
+			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("userid", UserConfig
+					.getInstance().getUserId()));
+			params.add(new BasicNameValuePair("commentid", secretId));
+			params.add(new BasicNameValuePair("isliked", String
+					.valueOf(isLiked)));
+
+			Response response = HttpClient.doPost(params, SysConfig
+					.getInstance().getLikeUrl());
+			if (response != null) {
+				try {
+					// 解析Status
+					JSONObject jsonObj = response.asJSONObject();
+					result = new Result<Boolean>();
+					result.t = !isLiked;
+					result.status = StatusBuilder.getInstance().buildEntity(
+							jsonObj);
+					if (result.status != null
+							&& result.status.code == Status_.OK) {
+						result.t = isLiked;
+					}
+				} catch (ResponseException e) {
+					e.printStackTrace();
+				}
+			}
+
+			return result;
+		}
+
 	}
 
 	public static class Task {
-		public static void addComment(Comment comment,
+		public static void publishComment(Comment comment,
 				OnTaskOverListener<Comment> listener) {
 			TaskParams taskParams = new TaskParams();
 			taskParams.put("comment", comment);
-			CommentTask userTask = new CommentTask(TaskType.ADD, listener);
+			CommentTask userTask = new CommentTask(TaskType.PUBLISH, listener);
 			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
 		}
@@ -120,6 +157,16 @@ public class CommentManager {
 			CommentTask userTask = new CommentTask(TaskType.GET_COMMENTS,
 					listener);
 			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
+					taskParams);
+		}
+
+		public static void likeOrDislike(String commentId, boolean isLiked,
+				OnTaskOverListener<Boolean> listener) {
+			TaskParams taskParams = new TaskParams();
+			taskParams.put("commentid", commentId);
+			taskParams.put("isliked", isLiked);
+			CommentTask likeTask = new CommentTask(TaskType.LIKE, listener);
+			likeTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
 		}
 
@@ -144,10 +191,10 @@ public class CommentManager {
 		protected TaskResult<?> doInBackground(TaskParams... params) {
 			Status_ resultStatus = null;
 			TaskResult<?> taskResult = null;
-			// 发表
-			if (taskType == TaskType.ADD) {
+			// 发表评论
+			if (taskType == TaskType.PUBLISH) {
 				Comment comment = (Comment) params[0].get("comment");
-				Result<Comment> result = API.addComment(comment);
+				Result<Comment> result = API.publishComment(comment);
 				if (result != null && result.status != null
 						&& result.status.code == Status_.OK) {
 					taskResult = new TaskResult<Comment>(TaskStatus.OK,
@@ -182,6 +229,24 @@ public class CommentManager {
 					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
 							resultStatus);
 				}
+				// 评论点赞
+			} else if (taskType == TaskType.LIKE) {
+				String commentId = (String) params[0].get("commentid");
+				boolean isLiked = (Boolean) params[0].get("isliked");
+				Result<Boolean> result = API.likeOrDislike(commentId, isLiked);
+				if (result != null && result.status != null
+						&& result.status.code == Status_.OK) {
+					taskResult = new TaskResult<Boolean>(TaskStatus.OK,
+							result.t);
+				} else if (result != null && result.status != null) {
+					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
+							result.status);
+				} else {
+					resultStatus = new Status_();
+					resultStatus.msg = "操作失败!";
+					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
+							resultStatus);
+				}
 			}
 			return taskResult;
 		}
@@ -191,8 +256,8 @@ public class CommentManager {
 		protected void onPostExecute(TaskResult<?> taskResult) {
 			super.onPostExecute(taskResult);
 
-			// 发表
-			if (taskType == TaskType.ADD) {
+			// 发表评论
+			if (taskType == TaskType.PUBLISH) {
 				if (taskResult.getStatus() == TaskStatus.OK) {
 					((OnTaskOverListener<Comment>) listener)
 							.onSuccess((Comment) taskResult.getEntity());
@@ -212,7 +277,16 @@ public class CommentManager {
 					((OnTaskOverListener<ListResult<Comment>>) listener)
 							.onFailure(result.code, result.msg);
 				}
-
+				// 评论点赞
+			} else if (taskType == TaskType.LIKE) {
+				if (taskResult.getStatus() == TaskStatus.OK) {
+					((OnTaskOverListener<Boolean>) listener)
+							.onSuccess((Boolean) taskResult.getEntity());
+				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
+					Status_ result = (Status_) taskResult.getEntity();
+					((OnTaskOverListener<Boolean>) listener).onFailure(
+							result.code, result.msg);
+				}
 			}
 		}
 	}

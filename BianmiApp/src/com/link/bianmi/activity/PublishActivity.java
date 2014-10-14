@@ -163,7 +163,7 @@ public class PublishActivity extends BaseFragmentActivity {
 			secret.imageUrl = photoUrl;
 			secret.createdTime = System.currentTimeMillis();
 
-			SecretManager.Task.addSecret(secret,
+			SecretManager.Task.publishSecret(secret,
 					new OnTaskOverListener<Secret>() {
 
 						@Override

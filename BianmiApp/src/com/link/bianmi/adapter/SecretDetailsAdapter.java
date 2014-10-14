@@ -6,17 +6,21 @@ import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
+import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.Comment;
 import com.link.bianmi.entity.Secret;
+import com.link.bianmi.entity.manager.CommentManager;
 import com.link.bianmi.imageloader.ImageLoader;
 import com.link.bianmi.utility.ViewHolder;
 import com.link.bianmi.widget.AudioButton;
+import com.link.bianmi.widget.SuperToast;
 
 public class SecretDetailsAdapter extends BaseAdapter {
 
@@ -27,6 +31,7 @@ public class SecretDetailsAdapter extends BaseAdapter {
 
 	private Secret mSecret;
 	private List<Comment> mCommentsList;
+	private int mPosition;
 
 	public SecretDetailsAdapter(Context context, Secret secret) {
 		mContext = context;
@@ -69,6 +74,7 @@ public class SecretDetailsAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		mPosition = position;
 		int type = getItemViewType(position);
 		if (convertView == null) {
 			if (type == TYPE_SECRET) {
@@ -92,7 +98,7 @@ public class SecretDetailsAdapter extends BaseAdapter {
 	}
 
 	/** 评论列表 **/
-	private void bindCommentView(View convertView, Comment comment) {
+	private void bindCommentView(View convertView, final Comment comment) {
 		// 头像
 		ImageView avatarImage = ViewHolder.get(convertView,
 				R.id.avatar_imageview);
@@ -113,13 +119,31 @@ public class SecretDetailsAdapter extends BaseAdapter {
 				.get(convertView, R.id.audio_button);
 		audioButton.setAudioFile(comment.audioUrl, comment.audioLength);
 		// 点赞
-		ImageView likedImage = ViewHolder
-				.get(convertView, R.id.liked_imageview);
-		if (comment.isLiked) {
-			likedImage.setImageResource(R.drawable.ic_action_liked);
-		} else {
-			likedImage.setImageResource(R.drawable.ic_action_like);
-		}
+		final ImageView likedImage = ViewHolder.get(convertView,
+				R.id.liked_imageview);
+		likeOrDislike(likedImage, comment.isLiked);
+
+		likedImage.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				final String resourceId = comment.resourceId;
+				CommentManager.Task.likeOrDislike(resourceId, !comment.isLiked,
+						new OnTaskOverListener<Boolean>() {
+							@Override
+							public void onSuccess(Boolean t) {
+								comment.isLiked = t;
+								mCommentsList.set(mPosition, comment);
+								likeOrDislike(likedImage, t);
+							}
+
+							@Override
+							public void onFailure(int code, String msg) {
+								SuperToast.makeText(mContext, msg,
+										SuperToast.LENGTH_SHORT).show();
+							}
+						});
+			}
+		});
 	}
 
 	/** 秘密正文 **/
@@ -154,6 +178,14 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		if (mCommentsList == null)
 			return 0;
 		return mCommentsList.size();
+	}
+
+	private void likeOrDislike(ImageView imageView, boolean isliked) {
+		if (isliked) {
+			imageView.setImageResource(R.drawable.ic_action_liked);
+		} else {
+			imageView.setImageResource(R.drawable.ic_action_like);
+		}
 	}
 
 	public void refresh(List<Comment> commentsList) {

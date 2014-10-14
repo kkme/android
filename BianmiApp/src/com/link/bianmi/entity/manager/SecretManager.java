@@ -35,7 +35,10 @@ import com.link.bianmi.http.ResponseException;
 public class SecretManager {
 
 	public static enum TaskType {
-		ADD, GET_SECRETS, LIKE, HOT, FRIEND, NEARBY
+		PUBLISH, // 发表秘密
+		GET_SECRETS, // 获取秘密列表
+		LIKE, // 秘密点赞
+		HOT, FRIEND, NEARBY
 	}
 
 	/** 单页数量 **/
@@ -81,7 +84,7 @@ public class SecretManager {
 
 	public static class API {
 
-		private static Result<Secret> addSecret(Secret secret) {
+		private static Result<Secret> publishSecret(Secret secret) {
 			if (secret == null)
 				return null;
 			Result<Secret> result = null;
@@ -90,7 +93,8 @@ public class SecretManager {
 			params.add(new BasicNameValuePair("content", secret.content));
 			params.add(new BasicNameValuePair("image_url", secret.imageUrl));
 			params.add(new BasicNameValuePair("audio_url", secret.audioUrl));
-			params.add(new BasicNameValuePair("audio_length", String.valueOf(secret.audioLength)));
+			params.add(new BasicNameValuePair("audio_length", String
+					.valueOf(secret.audioLength)));
 			params.add(new BasicNameValuePair("created_time", String
 					.valueOf(secret.createdTime)));
 
@@ -111,7 +115,7 @@ public class SecretManager {
 			return result;
 		}
 
-		public static Result<ListResult<Secret>> getSecrets(String userid,
+		private static Result<ListResult<Secret>> getSecrets(String userid,
 				String secretid) {
 			Result<ListResult<Secret>> result = null;
 
@@ -178,11 +182,11 @@ public class SecretManager {
 	}
 
 	public static class Task {
-		public static void addSecret(Secret secret,
+		public static void publishSecret(Secret secret,
 				OnTaskOverListener<Secret> listener) {
 			TaskParams taskParams = new TaskParams();
 			taskParams.put("secret", secret);
-			SecretTask userTask = new SecretTask(TaskType.ADD, listener);
+			SecretTask userTask = new SecretTask(TaskType.PUBLISH, listener);
 			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
 		}
@@ -229,9 +233,9 @@ public class SecretManager {
 			Status_ resultStatus = null;
 			TaskResult<?> taskResult = null;
 			// 发表
-			if (taskType == TaskType.ADD) {
+			if (taskType == TaskType.PUBLISH) {
 				Secret secret = (Secret) params[0].get("secret");
-				Result<Secret> result = API.addSecret(secret);
+				Result<Secret> result = API.publishSecret(secret);
 				if (result != null && result.status != null
 						&& result.status.code == Status_.OK) {
 					taskResult = new TaskResult<Secret>(TaskStatus.OK, result.t);
@@ -293,7 +297,7 @@ public class SecretManager {
 			super.onPostExecute(taskResult);
 
 			// 发表
-			if (taskType == TaskType.ADD) {
+			if (taskType == TaskType.PUBLISH) {
 				if (taskResult.getStatus() == TaskStatus.OK) {
 					((OnTaskOverListener<Secret>) listener)
 							.onSuccess((Secret) taskResult.getEntity());

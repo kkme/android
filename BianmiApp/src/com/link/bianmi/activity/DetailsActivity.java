@@ -240,7 +240,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 			comment.audioLength = recordLength;
 			comment.createdTime = System.currentTimeMillis();
 
-			CommentManager.Task.addComment(comment,
+			CommentManager.Task.publishComment(comment,
 					new OnTaskOverListener<Comment>() {
 
 						@Override
