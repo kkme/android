@@ -107,7 +107,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 
 		fetchNew();
 	}
-
+	
 	private MenuItem mLoadingItem;
 	private MenuItem mMoreItem;
 
@@ -156,41 +156,6 @@ public class DetailsActivity extends BaseFragmentActivity {
 		if (mCommentsList != null && mCommentsList.size() > 0) {
 			executeGetCommentsTask(mCommentsList.get(mCommentsList.size() - 1).resourceId);
 		}
-	}
-
-	/**
-	 * 执行获取评论列表任务
-	 * 
-	 * @param commentid
-	 * @param lastid
-	 */
-	private void executeGetCommentsTask(final String lastid) {
-		final long beginTime = System.currentTimeMillis();
-		if (mSecretId == null || mSecretId.isEmpty())
-			return;
-		CommentManager.Task.getComments(mSecretId, lastid,
-				new OnTaskOverListener<ListResult<Comment>>() {
-					@Override
-					public void onSuccess(ListResult<Comment> t) {
-						if (t == null)
-							return;
-						if (lastid.isEmpty() && mCommentsList != null) {
-							mCommentsList.clear();
-						}
-						refreshRListView(t.list, t.hasMore, beginTime);
-
-						mLoadingItem.setVisible(false);
-						mMoreItem.setVisible(true);
-					}
-
-					@Override
-					public void onFailure(int code, String msg) {
-						SuperToast.makeText(DetailsActivity.this, msg,
-								SuperToast.LENGTH_SHORT).show();
-						mLoadingItem.setVisible(false);
-						mMoreItem.setVisible(true);
-					}
-				});
 	}
 
 	private void refreshRListView(List<Comment> comments, boolean hasMore,
@@ -268,5 +233,47 @@ public class DetailsActivity extends BaseFragmentActivity {
 
 		};
 	};
+
+	// --------------------------Task-------------------------------
+	/**
+	 * 执行获取评论列表任务
+	 * 
+	 * @param commentid
+	 * @param lastid
+	 */
+	private void executeGetCommentsTask(final String lastid) {
+		final long beginTime = System.currentTimeMillis();
+		if (mSecretId == null || mSecretId.isEmpty())
+			return;
+		CommentManager.Task.getComments(mSecretId, lastid,
+				new OnTaskOverListener<ListResult<Comment>>() {
+					@Override
+					public void onSuccess(ListResult<Comment> t) {
+						if (t == null)
+							return;
+						if (lastid.isEmpty() && mCommentsList != null) {
+							mCommentsList.clear();
+						}
+						refreshRListView(t.list, t.hasMore, beginTime);
+
+						mLoadingItem.setVisible(false);
+						mMoreItem.setVisible(true);
+					}
+
+					@Override
+					public void onFailure(int code, String msg) {
+						SuperToast.makeText(DetailsActivity.this, msg,
+								SuperToast.LENGTH_SHORT).show();
+						new Handler().postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								mRListView.stopHeadActiving();
+								mLoadingItem.setVisible(false);
+								mMoreItem.setVisible(true);
+							}
+						}, 1000);
+					}
+				});
+	}
 
 }

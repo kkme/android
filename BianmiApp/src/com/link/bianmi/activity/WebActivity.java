@@ -29,7 +29,7 @@ public class WebActivity extends FragmentActivity {
 		mWebView = (WebView) findViewById(R.id.webview);
 
 		initWebViewSettings();
-		mWebView.loadUrl("http://www.baidu.com");
+		mWebView.loadUrl("http://lightapp.baidu.com?appid=825829");
 
 	}
 
