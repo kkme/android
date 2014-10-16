@@ -176,6 +176,7 @@ public class SecretFragment extends BaseFragment {
 						launchActivity(DetailsActivity.class, "secret", secret);
 					}
 				}
+
 			}
 		});
 

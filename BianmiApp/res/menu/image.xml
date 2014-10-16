@@ -1,27 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    
-    <item
-        android:id="@+id/fragment_image_action_translate"
-        android:icon="@drawable/mxx_holo_ic_translate_white"
-        android:orderInCategory="25"
-        android:showAsAction="always"
-        android:visible="false"
-        android:title="@string/app_name"/>
 
-    <item
-        android:id="@+id/fragment_image_action_copy"
-        android:icon="@drawable/mxx_holo_ic_copy_white"
-        android:orderInCategory="26"
-        android:showAsAction="always"
-        android:visible="false"
-        android:title="@string/app_name"/>
     <item
         android:id="@+id/fragment_image_action_save"
         android:icon="@drawable/mxx_holo_ic_save_white"
         android:orderInCategory="27"
         android:showAsAction="always"
-        android:visible="false"
-        android:title="@string/app_name"/>
+        android:title="@string/app_name"
+        android:visible="false"/>
     <item
         android:id="@+id/fragment_image_action_weblink"
         android:icon="@drawable/mxx_holo_ic_web"
@@ -35,24 +20,6 @@
         android:orderInCategory="29"
         android:showAsAction="always"
         android:title="@string/app_name"
-        android:visible="false">
-        <menu>
-            <item
-                android:id="@+id/fragment_image_action_share_all"
-                android:orderInCategory="100"
-                android:showAsAction="ifRoom|withText"
-                android:title="@string/app_name"/>
-            <item
-                android:id="@+id/fragment_image_action_share_image"
-                android:orderInCategory="100"
-                android:showAsAction="ifRoom|withText"
-                android:title="@string/app_name"/>
-            <item
-                android:id="@+id/fragment_image_action_share_text"
-                android:orderInCategory="100"
-                android:showAsAction="ifRoom|withText"
-                android:title="@string/app_name"/>
-        </menu>
-    </item>
+        android:visible="false"/>
 
 </menu>

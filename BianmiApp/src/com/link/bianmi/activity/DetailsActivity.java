@@ -175,6 +175,8 @@ public class DetailsActivity extends BaseFragmentActivity {
 			@Override
 			public void run() {
 				mRListView.stopHeadActiving();
+				mLoadingItem.setVisible(false);
+				mMoreItem.setVisible(true);
 			}
 		}, endTime - beginTime > 1500 ? 0 : 1500 - (endTime - beginTime));
 	}
@@ -255,9 +257,6 @@ public class DetailsActivity extends BaseFragmentActivity {
 							mCommentsList.clear();
 						}
 						refreshRListView(t.list, t.hasMore, beginTime);
-
-						mLoadingItem.setVisible(false);
-						mMoreItem.setVisible(true);
 					}
 
 					@Override

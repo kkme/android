@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
+import com.link.bianmi.activity.HomeActivity;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.entity.manager.SecretManager;
@@ -68,7 +69,8 @@ public class SecretAdapter extends CursorAdapter {
 		likeOrDislike(likesText, cursor.getInt(mIndexHolder.isLikedIndex) > 0);
 		TextView commentsText = ViewHolder.get(view, R.id.comments_textview);
 		commentsText.setText(String.valueOf(mIndexHolder.commentsIndex));
-		ImageView pictureImage = ViewHolder.get(view, R.id.picture_imageview);
+		final ImageView pictureImage = ViewHolder.get(view,
+				R.id.picture_imageview);
 		ImageLoader.displayImage(pictureImage,
 				cursor.getString(mIndexHolder.imageUrlIndex),
 				R.drawable.ic_launcher, false);
@@ -76,7 +78,16 @@ public class SecretAdapter extends CursorAdapter {
 		AudioButton audioBtn = ViewHolder.get(view, R.id.audio_button);
 		audioBtn.setAudioFile(cursor.getString(mIndexHolder.audioUrlIndex),
 				cursor.getInt(mIndexHolder.audioLengthIndex));
+		// 图片
+		pictureImage.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View arg0) {
+				((HomeActivity) mContext).showImageFragment(pictureImage, true,
+						SecretDB.getInstance().buildEntity(cursor));
+			}
+		});
+		// 点赞
 		likesText.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -89,7 +100,8 @@ public class SecretAdapter extends CursorAdapter {
 							public void onSuccess(Boolean t) {
 								SecretManager.DB.like(resourceId, t);
 								likeOrDislike(likesText, t);
-								SecretAdapter.this.changeCursor(SecretManager.DB.fetch(1));
+								SecretAdapter.this
+										.changeCursor(SecretManager.DB.fetch(1));
 							}
 
 							@Override
