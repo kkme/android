@@ -10,7 +10,7 @@
         android:id="@+id/foot_progresswheel"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        ProgressWheel:barColor="@color/mxx_item_theme_color_alpha"
+        ProgressWheel:barColor="@color/main_green"
         ProgressWheel:barLength="60dp"
         ProgressWheel:barWidth="4dp"
         ProgressWheel:contourColor="#66000000"

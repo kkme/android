@@ -31,7 +31,7 @@ public class SuperToast {
 			mText = (TextView) rootView.findViewById(R.id.textview);
 			mToast.setView(rootView);
 			mToast.setMargin(0, 0);
-			mToast.setGravity(Gravity.BOTTOM, 0, 0);
+			mToast.setGravity(Gravity.BOTTOM | Gravity.FILL_HORIZONTAL, 0, 0);
 		}
 
 		mToast.setDuration(duration);

@@ -22,6 +22,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
@@ -74,29 +75,29 @@ public class ViewPagerTabBar extends HorizontalScrollView {
 
 	private boolean checkedTabWidths = false;
 
-	private int indicatorColor = 0x3Affffff;// 0xff005092;//
-											// 0x66ffffff;//0xFF666666;//0xff379bff��ɫ;//0xFF666666;
-	private int underlineColor = 0x00ffffff;
 	private int dividerColor = 0x3Affffff;
+	
+	private int indicatorColor = Color.parseColor("#40AA53");// 0xff01d9ae;
+	private int underlineColor = Color.parseColor("#DADADA");
 
 	private boolean shouldExpand = true;
 	private boolean textAllCaps = true;
 
 	private int scrollOffset = 52;
-	private int indicatorHeight = 6;// �»��߸߶�dp
-	private int underlineHeight = 2;
+	private int indicatorHeight = 4;
+	private int underlineHeight = 1;
 	private int dividerPadding = 12;
-	private int tabPadding = 24;
+	
+	private int tabPadding = 0;
 	private int dividerWidth = 1;
+	private int lastScrollX = 0;
 
 	private int tabTextSize = 14;
-	private int tabTextColor = 0xffffffff;// 0xFF666666;
+	private int tabTextColor = Color.parseColor("#353535");
 	private Typeface tabTypeface = null;
 	private int tabTypefaceStyle = Typeface.NORMAL;
 
-	private int lastScrollX = 0;
-
-	private int tabBackgroundResId = R.drawable.mxx_tab_background;
+	private int tabBackgroundResId = R.drawable.viewpagertabbar_tab_selector;
 
 	private Locale locale;
 
