@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.link.bianmi.R;
 import com.link.bianmi.activity.HomeActivity;
 import com.link.bianmi.entity.Secret;
-import com.link.bianmi.utility.SystemBarTintUtil;
 import com.link.bianmi.widget.ScaleImageView;
 import com.link.bianmi.widget.ScaleImageView.ImageViewListener;
 import com.link.bianmi.widget.blur.BlurView;
@@ -64,9 +63,6 @@ public class ImageFragment extends Fragment {
 		this.mScaleImageView = (ScaleImageView) rootView
 				.findViewById(R.id.fragment_image_scaleimageview);
 		mScaleImageView.setBlurView(blurView);
-		SystemBarTintUtil manager = new SystemBarTintUtil(getActivity());
-		View view = (View) mScaleImageView.getParent();
-		view.setPadding(0, manager.getConfig().getPixelInsetTop(true), 0, 0);
 		return rootView;
 	}
 

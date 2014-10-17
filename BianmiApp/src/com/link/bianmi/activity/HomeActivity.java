@@ -60,7 +60,7 @@ public class HomeActivity extends BaseFragmentActivity {
 		// 初始化ActionBar
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowHomeEnabled(true);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_home);
 
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
 		mViewPagerTab = (ViewPagerTabBar) findViewById(R.id.viewpagertab);
@@ -118,12 +118,28 @@ public class HomeActivity extends BaseFragmentActivity {
 	private MenuItem mLoadingItem;
 
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (mImageFragment != null) {
+
+			menu.findItem(R.id.action_add)
+					.setVisible(!mImageFragment.canBack());
+			menu.findItem(R.id.action_notice).setVisible(
+					!mImageFragment.canBack());
+			mMoreItem.setVisible(!mImageFragment.canBack());
+		}
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	private boolean mFetched = false;
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.home, menu);
 		mMoreItem = menu.findItem(R.id.action_more);
 		mLoadingItem = menu.findItem(R.id.action_loading);
-		mMoreItem.setVisible(false);
-		mLoadingItem.setVisible(true);
+//		mMoreItem.setVisible(mFetched);
+//		mLoadingItem.setVisible(!mFetched);
+
 		return true;
 	}
 
@@ -183,16 +199,6 @@ public class HomeActivity extends BaseFragmentActivity {
 
 			}
 		});
-	}
-
-	private void showActionbarWithTabs(boolean show) {
-		if (show) {
-			getActionBar().show();
-			mViewPagerTab.setVisibility(View.VISIBLE);
-		} else {
-			getActionBar().hide();
-			mViewPagerTab.setVisibility(View.GONE);
-		}
 	}
 
 	private void showMoreOptionMenu(View view) {
@@ -337,6 +343,7 @@ public class HomeActivity extends BaseFragmentActivity {
 	 *            true 立即结束
 	 */
 	public void finishLoaded(boolean isStopAtOnce) {
+		mFetched = true;
 		if (isStopAtOnce) {
 			mLoadingItem.getActionView().clearAnimation();
 			mLoadingItem.setVisible(false);
@@ -363,7 +370,6 @@ public class HomeActivity extends BaseFragmentActivity {
 			}
 		});
 		mLoadingItem.getActionView().setAnimation(anim);
-
 	}
 
 	/**
@@ -383,7 +389,6 @@ public class HomeActivity extends BaseFragmentActivity {
 	 */
 	public void showImageFragment(ImageView smallImageView, boolean show,
 			Secret item) {
-		// showActionbarWithTabs(!show);
 		if (show) {
 			getSupportFragmentManager().beginTransaction().show(mImageFragment)
 					.commit();

@@ -24,7 +24,6 @@ import com.link.bianmi.entity.ListResult;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.fragment.base.BaseFragment;
-import com.link.bianmi.utility.SystemBarTintUtil;
 import com.link.bianmi.utility.Tools;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.ActivateListener;
@@ -68,7 +67,7 @@ public class SecretFragment extends BaseFragment {
 		adapter.setAbsListView(mRListView);
 		mRListView.setAdapter(adapter);
 		mRListView.setFootVisiable(false);
-		final int max_tranY = Tools.dip2px(mContext, 48);
+		final int max_tranY = Tools.dip2px(mContext, 40);
 		final View tabview = ((HomeActivity) mContext).getViewPagerTab();
 
 		mRListView.setActivateListener(new ActivateListener() {
@@ -91,8 +90,8 @@ public class SecretFragment extends BaseFragment {
 			@Override
 			public void onHeadActivate() {
 				((HomeActivity) mContext).getViewPagerTab().animate()
-						.translationY(-Tools.dip2px(mContext, 48));
-				mRListView.animate().translationY(-Tools.dip2px(mContext, 48));
+						.translationY(-Tools.dip2px(mContext, 40));
+				mRListView.animate().translationY(-Tools.dip2px(mContext, 40));
 				// 刷新列表
 				fetchNew();
 				if (SysConfig.getInstance().showAd()) {
@@ -194,7 +193,6 @@ public class SecretFragment extends BaseFragment {
 			p.removeAllViewsInLayout();
 		}
 
-		initInsetTop(mRListView);
 		return mRootView;
 	}
 
@@ -230,14 +228,6 @@ public class SecretFragment extends BaseFragment {
 	 */
 	private void updateCache() {
 		fetchNew();
-	}
-
-	private void initInsetTop(View headView) {
-		SystemBarTintUtil tintManager = new SystemBarTintUtil(mContext);
-		SystemBarTintUtil.SystemBarConfig config = tintManager.getConfig();
-		headView.setPadding(0, config.getPixelInsetTop(true),
-				config.getPixelInsetRight(), config.getPixelInsetBottom());
-		headView.requestLayout();
 	}
 
 	/**
