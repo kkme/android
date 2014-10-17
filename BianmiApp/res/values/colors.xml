@@ -93,5 +93,8 @@
     <color name="actionbar_background">@color/main_green</color>
     <color name="viewpagertabbar_tab_pressed">@color/main_pressed</color>
     <color name="action_menu_item_pressed">@color/main_pressed</color>
+    <color name="list_divider_color">#DADADA</color>
+    <color name="list_item_background_normal">#ffffff</color>
+    <color name="list_item_background_pressed">#F1F1F1</color>
 
 </resources>

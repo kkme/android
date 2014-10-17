@@ -376,5 +376,7 @@
     <dimen name="sp_64">64sp</dimen>
     <dimen name="sp_76">76sp</dimen>
     <dimen name="sp_100">100sp</dimen>
+    <!-- PopupMenu宽 -->
+    <dimen name="popupmenu_dialog_width">180dp</dimen>
 
 </resources>

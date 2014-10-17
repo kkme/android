@@ -2,10 +2,12 @@ package com.link.bianmi.activity;
 
 import java.util.ArrayList;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +15,12 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListPopupWindow;
+import android.widget.TextView;
 
 import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
@@ -39,6 +46,8 @@ public class HomeActivity extends BaseFragmentActivity {
 	public ViewPager mViewPager;
 	private ViewPagerTabBar mViewPagerTab;
 	private ImageFragment mImageFragment;
+	private ListPopupWindow mMenuWindow;
+	private MenuAdapter mMenuAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +101,15 @@ public class HomeActivity extends BaseFragmentActivity {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (mMenuAdapter != null) {
+			mMenuAdapter.notifyDataSetChanged();
+		}
+	}
+
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 	}
@@ -113,11 +131,8 @@ public class HomeActivity extends BaseFragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_add) {
 			launchActivity(PublishActivity.class);
-		} else if (item.getItemId() == R.id.action_more_addfriend) {
-			ShareUtil.showShare(HomeActivity.this);
-		} else if (item.getItemId() == R.id.action_more_recommend) {
-		} else if (item.getItemId() == R.id.action_more_settings) {
-			launchActivityForResult(SettingsActivity.class, 6666);
+		} else if (item.getItemId() == R.id.action_more) {
+			showMoreOptionMenu(findViewById(R.id.action_more));
 		}
 		return true;
 	}
@@ -180,6 +195,90 @@ public class HomeActivity extends BaseFragmentActivity {
 		}
 	}
 
+	private void showMoreOptionMenu(View view) {
+		if (mMenuWindow != null) {
+			mMenuWindow.dismiss();
+			mMenuWindow = null;
+		}
+		mMenuWindow = new ListPopupWindow(this);
+		if (mMenuAdapter == null) {
+			mMenuAdapter = new MenuAdapter();
+		}
+		mMenuWindow.setModal(true);
+		mMenuWindow.setContentWidth(getResources().getDimensionPixelSize(
+				R.dimen.popupmenu_dialog_width));
+		mMenuWindow.setAdapter(mMenuAdapter);
+		mMenuWindow.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				switch (position) {
+				case 0:
+					ShareUtil.showShare(HomeActivity.this);
+					break;
+				case 1:
+					break;
+				case 2:
+					launchActivityForResult(SettingsActivity.class, 6666);
+					break;
+				default:
+					break;
+				}
+				if (mMenuWindow != null) {
+					mMenuWindow.dismiss();
+					mMenuWindow = null;
+				}
+			}
+
+		});
+		mMenuWindow.setAnchorView(view);
+		mMenuWindow.show();
+		mMenuWindow.getListView().setDividerHeight(1);
+	}
+
+	// ---------------------------内部类--------------------------------
+
+	private class MenuAdapter extends BaseAdapter {
+
+		@Override
+		public int getCount() {
+			return 3;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			convertView = LayoutInflater.from(parent.getContext()).inflate(
+					R.layout.popup_menu_item, null);
+			TextView name = (TextView) convertView.findViewById(R.id.tv_name);
+			int iconResId = R.drawable.ic_action_add;
+
+			if (position == 0) {
+				name.setText(R.string.add_friend);
+				iconResId = R.drawable.ic_action_add;
+			} else if (position == 1) {
+				name.setText(R.string.recommend);
+				iconResId = R.drawable.ic_action_add;
+			} else if (position == 2) {
+				name.setText(R.string.settings);
+				iconResId = R.drawable.ic_action_add;
+			}
+			Drawable drawable = getResources().getDrawable(iconResId);
+			drawable.setBounds(0, 0, drawable.getMinimumWidth(),
+					drawable.getMinimumHeight());
+			name.setCompoundDrawables(drawable, null, null, null);
+			return convertView;
+		}
+	}
+
 	private class ViewPagerAdapter extends
 			android.support.v4.app.FragmentPagerAdapter {
 
@@ -225,11 +324,18 @@ public class HomeActivity extends BaseFragmentActivity {
 
 	}
 
+	// ---------------------------------外部接口-------------------------------
+
 	public View getViewPagerTab() {
 		return mViewPagerTab;
 	}
 
-	// ---------------------------------外部接口-------------------------------
+	/**
+	 * 结束加载
+	 * 
+	 * @param isStopAtOnce
+	 *            true 立即结束
+	 */
 	public void finishLoaded(boolean isStopAtOnce) {
 		if (isStopAtOnce) {
 			mLoadingItem.getActionView().clearAnimation();
@@ -260,11 +366,21 @@ public class HomeActivity extends BaseFragmentActivity {
 
 	}
 
+	/**
+	 * 开始加载
+	 */
 	public void startLoading() {
 		mLoadingItem.setVisible(true);
 		mMoreItem.setVisible(false);
 	}
 
+	/**
+	 * 放大图片
+	 * 
+	 * @param smallImageView
+	 * @param show
+	 * @param item
+	 */
 	public void showImageFragment(ImageView smallImageView, boolean show,
 			Secret item) {
 		// showActionbarWithTabs(!show);
@@ -278,5 +394,4 @@ public class HomeActivity extends BaseFragmentActivity {
 		}
 
 	}
-
 }

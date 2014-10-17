@@ -18,25 +18,7 @@
         android:icon="@drawable/ic_action_more"
         android:orderInCategory="101"
         android:showAsAction="always"
-        android:title="@string/look_more">
-        <menu>
-            <item
-                android:id="@+id/action_more_addfriend"
-                android:orderInCategory="101"
-                android:showAsAction="ifRoom|withText"
-                android:title="@string/add_friend"/>
-            <item
-                android:id="@+id/action_more_recommend"
-                android:orderInCategory="101"
-                android:showAsAction="ifRoom|withText"
-                android:title="@string/recommend"/>
-            <item
-                android:id="@+id/action_more_settings"
-                android:orderInCategory="101"
-                android:showAsAction="ifRoom|withText"
-                android:title="@string/settings"/>
-        </menu>
-    </item>
+        android:title="@string/look_more"/>
     <item
         android:id="@+id/action_loading"
         android:actionLayout="@layout/actionbar_loading_layout"
