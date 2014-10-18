@@ -3,10 +3,19 @@ package com.link.bianmi.activity;
 import java.util.List;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.ListPopupWindow;
+import android.widget.TextView;
 
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
@@ -31,6 +40,8 @@ public class DetailsActivity extends BaseFragmentActivity {
 	private SecretDetailsAdapter mAdapter;
 	private List<Comment> mCommentsList;
 	private String mSecretId;
+	private ListPopupWindow mMenuWindow;
+	private MenuAdapter mMenuAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +118,16 @@ public class DetailsActivity extends BaseFragmentActivity {
 
 		fetchNew();
 	}
-	
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (mMenuAdapter != null) {
+			mMenuAdapter.notifyDataSetChanged();
+		}
+	}
+
 	private MenuItem mLoadingItem;
 	private MenuItem mMoreItem;
 
@@ -128,8 +148,8 @@ public class DetailsActivity extends BaseFragmentActivity {
 			return true;
 		} else if (item.getItemId() == R.id.action_like) {
 			item.setIcon(R.drawable.ic_action_liked);
-		} else if (item.getItemId() == R.id.action_more_share) {
-			ShareUtil.showShare(DetailsActivity.this);
+		} else if (item.getItemId() == R.id.action_more) {
+			showMoreOptionMenu(findViewById(R.id.action_more));
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -235,6 +255,83 @@ public class DetailsActivity extends BaseFragmentActivity {
 
 		};
 	};
+
+	private void showMoreOptionMenu(View view) {
+		if (mMenuWindow != null) {
+			mMenuWindow.dismiss();
+			mMenuWindow = null;
+		}
+		mMenuWindow = new ListPopupWindow(this);
+		if (mMenuAdapter == null) {
+			mMenuAdapter = new MenuAdapter();
+		}
+		mMenuWindow.setModal(true);
+		mMenuWindow.setContentWidth(getResources().getDimensionPixelSize(
+				R.dimen.popupmenu_dialog_width));
+		mMenuWindow.setAdapter(mMenuAdapter);
+		mMenuWindow.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				switch (position) {
+				case 0:
+					ShareUtil.showShare(DetailsActivity.this);
+					break;
+				case 1:
+					break;
+				default:
+					break;
+				}
+				if (mMenuWindow != null) {
+					mMenuWindow.dismiss();
+					mMenuWindow = null;
+				}
+			}
+
+		});
+		mMenuWindow.setAnchorView(view);
+		mMenuWindow.show();
+		mMenuWindow.getListView().setDividerHeight(1);
+	}
+
+	// --------------------------内部类--------------------------
+	private class MenuAdapter extends BaseAdapter {
+
+		@Override
+		public int getCount() {
+			return 2;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			convertView = LayoutInflater.from(parent.getContext()).inflate(
+					R.layout.popup_menu_item, null);
+			TextView name = (TextView) convertView.findViewById(R.id.tv_name);
+			int iconResId = R.drawable.ic_action_add;
+
+			if (position == 0) {
+				name.setText(R.string.share);
+				iconResId = R.drawable.ic_action_add;
+			} else if (position == 1) {
+				name.setText(R.string.follow);
+				iconResId = R.drawable.ic_action_add;
+			}
+			Drawable drawable = getResources().getDrawable(iconResId);
+			drawable.setBounds(0, 0, drawable.getMinimumWidth(),
+					drawable.getMinimumHeight());
+			name.setCompoundDrawables(drawable, null, null, null);
+			return convertView;
+		}
+	}
 
 	// --------------------------Task-------------------------------
 	/**
