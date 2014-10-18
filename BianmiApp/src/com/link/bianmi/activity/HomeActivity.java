@@ -287,7 +287,7 @@ public class HomeActivity extends BaseFragmentActivity {
 				iconResId = R.drawable.ic_action_add;
 			} else if (position == 2) {
 				name.setText(R.string.settings);
-				iconResId = R.drawable.ic_action_add;
+				iconResId = R.drawable.ic_settings;
 			}
 			Drawable drawable = getResources().getDrawable(iconResId);
 			drawable.setBounds(0, 0, drawable.getMinimumWidth(),
