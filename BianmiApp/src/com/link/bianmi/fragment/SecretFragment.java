@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -51,9 +53,13 @@ public class SecretFragment extends BaseFragment {
 
 	private List<Secret> mSecretsList;
 
+	private HomeActivity mParentActivity;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+		mParentActivity = (HomeActivity) getActivity();
 		mRootView = LayoutInflater.from(mContext).inflate(
 				R.layout.fragment_secrets, null);
 
@@ -68,7 +74,7 @@ public class SecretFragment extends BaseFragment {
 		mRListView.setAdapter(adapter);
 		mRListView.setFootVisiable(false);
 		final int max_tranY = Tools.dip2px(mContext, 40);
-		final View tabview = ((HomeActivity) mContext).getViewPagerTab();
+		final View tabview = mParentActivity.getViewPagerTab();
 
 		mRListView.setActivateListener(new ActivateListener() {
 
@@ -89,7 +95,7 @@ public class SecretFragment extends BaseFragment {
 
 			@Override
 			public void onHeadActivate() {
-				((HomeActivity) mContext).getViewPagerTab().animate()
+				mParentActivity.getViewPagerTab().animate()
 						.translationY(-Tools.dip2px(mContext, 40));
 				mRListView.animate().translationY(-Tools.dip2px(mContext, 40));
 				// 刷新列表
@@ -123,8 +129,7 @@ public class SecretFragment extends BaseFragment {
 			@Override
 			public void onHeadStop() {
 
-				((HomeActivity) mContext).getViewPagerTab().animate()
-						.translationY(0);
+				mParentActivity.getViewPagerTab().animate().translationY(0);
 				mRListView.animate().translationY(0);
 				bannerGroup.setVisibility(View.GONE);
 			}
@@ -179,9 +184,6 @@ public class SecretFragment extends BaseFragment {
 			}
 		});
 
-		if (isFirstFragment()) {
-			onFirstLoad();
-		}
 	}
 
 	@Override
@@ -197,9 +199,12 @@ public class SecretFragment extends BaseFragment {
 	}
 
 	@Override
-	public void onFirstLoad() {
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		mParentActivity.startLoading();
 		loadCache();
 		updateCache();
+
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	// --------------------------protected----------------
@@ -303,14 +308,14 @@ public class SecretFragment extends BaseFragment {
 							refreshRListView(SecretManager.DB.fetch(pageSize),
 									listResult.hasMore, beginTime);
 						}
-						((HomeActivity) mContext).finishLoaded(false);
+						mParentActivity.finishLoaded(false);
 
 					}
 
 					@Override
 					public void onFailure(int code, String msg) {
 						mRListView.stopHeadActiving();
-						((HomeActivity) mContext).finishLoaded(true);
+						mParentActivity.finishLoaded(true);
 						SuperToast.makeText(mContext, msg,
 								SuperToast.LENGTH_SHORT).show();
 					}

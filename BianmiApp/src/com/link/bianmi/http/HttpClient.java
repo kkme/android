@@ -12,8 +12,14 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.HttpClientParams;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnManagerParams;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -34,6 +40,13 @@ public class HttpClient {
 		if (mClient == null) {
 			final HttpParams httpParams = new BasicHttpParams();
 
+			SchemeRegistry schemeRegistry = new SchemeRegistry();
+			schemeRegistry.register(new Scheme("http", PlainSocketFactory
+					.getSocketFactory(), 80));
+			final SSLSocketFactory sslSocketFactory = SSLSocketFactory
+					.getSocketFactory();
+			schemeRegistry.register(new Scheme("https", sslSocketFactory, 443));
+
 			ConnManagerParams.setTimeout(httpParams, 1000);
 			HttpConnectionParams.setConnectionTimeout(httpParams,
 					DEFAULT_SOCKET_TIMEOUT);
@@ -44,8 +57,9 @@ public class HttpClient {
 			HttpProtocolParams.setVersion(httpParams, HttpVersion.HTTP_1_1);
 			HttpProtocolParams.setContentCharset(httpParams, HTTP.UTF_8);
 			HttpClientParams.setRedirecting(httpParams, false);
-			mClient = new DefaultHttpClient();
-			mClient.setParams(httpParams);
+			ClientConnectionManager cm = new ThreadSafeClientConnManager(
+					httpParams, schemeRegistry);
+			mClient = new DefaultHttpClient(cm, httpParams);
 		}
 
 		return mClient;
@@ -70,7 +84,7 @@ public class HttpClient {
 	}
 
 	public static Response doPost(List<NameValuePair> params, String url) {
-		if(url == null || url.isEmpty())
+		if (url == null || url.isEmpty())
 			return null;
 		HttpPost httpPost = new HttpPost(url);
 		HttpResponse httpRes = null;

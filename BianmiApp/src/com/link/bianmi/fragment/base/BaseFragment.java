@@ -155,10 +155,6 @@ public abstract class BaseFragment extends Fragment {
 	public void _onAttach(Activity activity) {
 	}
 
-	public void onFirstLoad() {
-
-	}
-	// ------------------
 	// public abstract View _onCreateView(LayoutInflater inflater,
 	// ViewGroup container, Bundle savedInstanceState);
 }

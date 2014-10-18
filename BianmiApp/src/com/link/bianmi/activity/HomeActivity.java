@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,6 @@ import com.link.bianmi.fragment.HotFragment;
 import com.link.bianmi.fragment.ImageFragment;
 import com.link.bianmi.fragment.NearbyFragment;
 import com.link.bianmi.fragment.SecretFragment;
-import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.utility.ShareUtil;
 import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.ViewPagerTabBar;
@@ -48,6 +48,7 @@ public class HomeActivity extends BaseFragmentActivity {
 	private ImageFragment mImageFragment;
 	private ListPopupWindow mMenuWindow;
 	private MenuAdapter mMenuAdapter;
+	private ArrayList<Fragment> mFragments;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,27 +65,27 @@ public class HomeActivity extends BaseFragmentActivity {
 
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
 		mViewPagerTab = (ViewPagerTabBar) findViewById(R.id.viewpagertab);
-		ArrayList<Fragment> fragments = new ArrayList<Fragment>();
+		mFragments = new ArrayList<Fragment>();
 		String fragmentTitles[];
 
 		if (UserConfig.getInstance().getIsGuest()) {
-			fragments.add(new HotFragment());
-			fragments.add(new NearbyFragment());
+			mFragments.add(new HotFragment());
+			mFragments.add(new NearbyFragment());
 			fragmentTitles = new String[] {
 					this.getResources().getString(R.string.hot),
 					this.getResources().getString(R.string.nearby) };
 		} else {
-			fragments.add(new HotFragment());
-			fragments.add(new FriendFragment());
-			fragments.add(new NearbyFragment());
+			mFragments.add(new HotFragment());
+			mFragments.add(new FriendFragment());
+			mFragments.add(new NearbyFragment());
 			fragmentTitles = new String[] {
 					this.getResources().getString(R.string.hot),
 					this.getResources().getString(R.string.friend),
 					this.getResources().getString(R.string.nearby) };
 		}
-		mViewPager.setOffscreenPageLimit(fragments.size());
+		mViewPager.setOffscreenPageLimit(mFragments.size());
 		mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),
-				fragments, fragmentTitles));
+				mFragments, fragmentTitles));
 
 		mViewPagerTab.setViewPager(mViewPager);
 		mImageFragment = (ImageFragment) getSupportFragmentManager()
@@ -125,22 +126,33 @@ public class HomeActivity extends BaseFragmentActivity {
 					.setVisible(!mImageFragment.canBack());
 			menu.findItem(R.id.action_notice).setVisible(
 					!mImageFragment.canBack());
-			mMoreItem.setVisible(!mImageFragment.canBack());
+			if (mLoadingItem.isVisible()) {
+				mMoreItem.setVisible(false);
+			} else {
+				mMoreItem.setVisible(!mImageFragment.canBack());
+			}
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
-	private boolean mFetched = false;
+	private boolean mFragmentsLoaded = false;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.home, menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.home, menu);
 		mMoreItem = menu.findItem(R.id.action_more);
 		mLoadingItem = menu.findItem(R.id.action_loading);
-//		mMoreItem.setVisible(mFetched);
-//		mLoadingItem.setVisible(!mFetched);
+		mLoadingItem.setVisible(false);
+		mMoreItem.setVisible(true);
+		if (!mFragmentsLoaded) {
+			for (int i = 0; i < mFragments.size(); i++) {
+				mFragments.get(i).onCreateOptionsMenu(menu, inflater);
+			}
+			mFragmentsLoaded = true;
+		}
 
-		return true;
+		return true;// 返回true，否则不显示Menu
 	}
 
 	@Override
@@ -287,40 +299,40 @@ public class HomeActivity extends BaseFragmentActivity {
 
 	private class ViewPagerAdapter extends
 			android.support.v4.app.FragmentPagerAdapter {
-
 		String[] titles;
-		ArrayList<Fragment> fragments;
-		boolean[] initPages;// 页面是否已经初始化
+		ArrayList<Fragment> mFragments;
+
+		// boolean[] initPages;// 页面是否已经初始化
 
 		public ViewPagerAdapter(FragmentManager fm,
-				ArrayList<Fragment> fragments, String[] titles) {
+				ArrayList<Fragment> mFragments, String[] titles) {
 			super(fm);
-			this.fragments = fragments;
+			this.mFragments = mFragments;
 			this.titles = titles;
-			if (fragments != null) {
-				initPages = new boolean[fragments.size()];
-			}
+			// if (mFragments != null) {
+			// initPages = new boolean[mFragments.size()];
+			// }
 		}
 
 		@Override
 		public SecretFragment getItem(int position) {
-			return (SecretFragment) fragments.get(position);
+			return (SecretFragment) mFragments.get(position);
 		}
 
 		@Override
 		public void setPrimaryItem(ViewGroup container, int position,
 				Object object) {
 
-			if (position > 0 && !initPages[position]) {
-				((BaseFragment) fragments.get(position)).onFirstLoad();
-				initPages[position] = true;
-			}
+			// if (position > 0 && !initPages[position]) {
+			// ((BaseFragment) mFragments.get(position)).onFirstLoad();
+			// initPages[position] = true;
+			// }
 
 		}
 
 		@Override
 		public int getCount() {
-			return fragments.size();
+			return mFragments.size();
 		}
 
 		@Override
@@ -343,7 +355,10 @@ public class HomeActivity extends BaseFragmentActivity {
 	 *            true 立即结束
 	 */
 	public void finishLoaded(boolean isStopAtOnce) {
-		mFetched = true;
+
+		if (mLoadingItem == null || mMoreItem == null)
+			return;
+
 		if (isStopAtOnce) {
 			mLoadingItem.getActionView().clearAnimation();
 			mLoadingItem.setVisible(false);
@@ -351,7 +366,7 @@ public class HomeActivity extends BaseFragmentActivity {
 			return;
 		}
 		AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
-		anim.setDuration(1500);
+		anim.setDuration(1000);
 		anim.setFillAfter(true);
 		anim.setAnimationListener(new AnimationListener() {
 
@@ -365,8 +380,7 @@ public class HomeActivity extends BaseFragmentActivity {
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				mLoadingItem.setVisible(false);
-				mMoreItem.setVisible(true);
+				finishLoaded(true);
 			}
 		});
 		mLoadingItem.getActionView().setAnimation(anim);
@@ -376,8 +390,11 @@ public class HomeActivity extends BaseFragmentActivity {
 	 * 开始加载
 	 */
 	public void startLoading() {
-		mLoadingItem.setVisible(true);
+		if (mLoadingItem == null || mMoreItem == null)
+			return;
 		mMoreItem.setVisible(false);
+		mLoadingItem.setVisible(true);
+
 	}
 
 	/**
