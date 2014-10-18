@@ -3,14 +3,14 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/mxx_item_stroke_color" />
+            <solid android:color="@color/main_pressed" />
             <corners android:radius="3dp"/>
         </shape>
     </item>
     <item >
         <shape android:shape="rectangle">
             <corners android:radius="3dp"/>
-            <solid android:color="@color/mxx_item_pressed_color" />
+            <solid android:color="@color/main_pressed" />
         </shape>
     </item>
 </layer-list>

@@ -3,7 +3,7 @@
     android:id="@+id/info_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/clewhead_bg"
+    android:background="@color/rlistview_head_bg"
     android:gravity="center_horizontal" >
 
     <com.link.bianmi.widget.ProgressWheel

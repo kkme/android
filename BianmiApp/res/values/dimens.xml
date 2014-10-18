@@ -378,5 +378,10 @@
     <dimen name="sp_100">100sp</dimen>
     <!-- PopupMenu宽 -->
     <dimen name="popupmenu_dialog_width">180dp</dimen>
-
-</resources>
+    <dimen name="dialog_margin">7.0dip</dimen>
+    <dimen name="global_padding">8.0dip</dimen>
+    <dimen name="global_dialog_padding">16.0dip</dimen>
+    <dimen name="text_regular_primary_size">14.0dip</dimen>
+    <dimen name="text_large_secondary_size">12.0dip</dimen>
+    <dimen name="text_large_primary_size">16.0dip</dimen>
+</resources>

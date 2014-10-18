@@ -84,9 +84,6 @@
         <activity
             android:name="com.link.bianmi.activity.SettingsActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />
-        <activity
-            android:name="com.link.bianmi.activity.AboutActivity"
-            android:theme="@style/Theme.ActionBar.NoLogo" />
         <!-- 设置九宫格密码 -->
         <activity
             android:name="com.link.bianmi.unit.ninelock.NineLockSettingsActivity"
@@ -94,7 +91,7 @@
         <!-- 九宫格密码 -->
         <activity
             android:name="com.link.bianmi.unit.ninelock.NineLockActivity"
-            android:theme="@style/Theme.ActionBar.NoLogo" />
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
         <!-- 加载web页面 -->
         <activity
             android:name="com.link.bianmi.activity.WebActivity"

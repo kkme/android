@@ -68,23 +68,8 @@
     <color name="welcom_page_enter_btn_text">#ff00868f</color>
     <color name="welcom_page_blank_view_background">#80000000</color>
     <color name="user_agent_about_light_color">#ff395f87</color>
-    <color name="mxx_text_main_color">#ff000000</color>
-    <color name="mxx_text_sub_color">#ff888888</color>
-    <color name="mxx_text_title_underline_color">#ffafafaf</color>
-    <color name="mxx_awesome_dark_color">#ff2f3136</color>
-    <color name="mxx_item_actionbar_color">#55ffffff</color>
-    <color name="mxx_item_theme_color">#ff005092</color>
-    <color name="mxx_item_theme_color_black">#ff393d43</color>
-    <color name="mxx_item_normal_color">#ffffffff</color>
-    <color name="mxx_item_pressed_color">#ffededed</color>
-    <color name="mxx_item_divider_color">#ffededed</color>
-    <color name="mxx_item_padding_color">#ffe0e0e0</color>
-    <color name="mxx_item_stroke_color">#ffbbbbbb</color>
-    <color name="mxx_listview_bg">#ffe6e6e6</color>
-    <color name="mxx_item_actionbar_listview_divider_color">#22ffffff</color>
 
-    <!-- ClewList_Head背景 -->
-    <color name="clewhead_bg">#e9e9e9</color>
+    <color name="rlistview_head_bg">#e9e9e9</color>
     <color name="main_green">#40AA53</color>
     <color name="main_gray">#9A9A9A</color>
     <color name="main_black">#353535</color>
@@ -96,5 +81,11 @@
     <color name="list_divider_color">#DADADA</color>
     <color name="list_item_background_normal">#ffffff</color>
     <color name="list_item_background_pressed">#F1F1F1</color>
+    <color name="text_light">#3f000000</color>
+    <color name="text_dark">#af000000</color>
+    <color name="lightest_gray">#0a000000</color>
+    <color name="bg_touch">@color/lightest_gray</color>
+    <color name="ui_dialog_divider">@color/list_divider_color</color>
+    <color name="window_background">#EBEBEB</color>
 
 </resources>

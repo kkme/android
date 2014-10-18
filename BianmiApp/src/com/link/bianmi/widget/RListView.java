@@ -255,7 +255,7 @@ public class RListView extends ListView implements OnScrollListener {
 				R.layout.rlistview_head, null);
 		mHeadProgressWheel = (ProgressWheel) mHeadView
 				.findViewById(R.id.head_progresswheel);
-		mHeadView.setBackgroundResource(R.color.clewhead_bg);
+		mHeadView.setBackgroundResource(R.color.rlistview_head_bg);
 		mHeadTips = (TextView) mHeadView.findViewById(R.id.head_tips_textview);
 		mHeadProgressWheel.setProgress(0);
 		measureView(mHeadView); // 测量尺寸
