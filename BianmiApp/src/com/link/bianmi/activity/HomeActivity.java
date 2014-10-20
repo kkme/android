@@ -24,11 +24,8 @@ import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
-import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
-import com.link.bianmi.asynctask.listener.OnTaskOverListener;
-import com.link.bianmi.entity.Config;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.ConfigManager;
 import com.link.bianmi.fragment.FriendFragment;
@@ -198,19 +195,7 @@ public class HomeActivity extends BaseFragmentActivity {
 	 * 初始化系统配置
 	 */
 	private void initSysConfig() {
-		ConfigManager.Task.getConfig(new OnTaskOverListener<Config>() {
-			@Override
-			public void onSuccess(Config t) {
-				if (t != null) {
-					SysConfig.getInstance().setShowAd(t.showAd);
-				}
-			}
-
-			@Override
-			public void onFailure(int code, String msg) {
-
-			}
-		});
+		ConfigManager.Task.getConfig();
 	}
 
 	private void showMoreOptionMenu(View view) {

@@ -14,4 +14,6 @@ public class Config implements Serializable {
 
 	public boolean showAd = false;// 是否展示广告
 
+	public boolean smsAccess = true;// 短信验证是否可用(防止第三方出现短信无法发送的情况)
+
 }

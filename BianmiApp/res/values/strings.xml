@@ -31,6 +31,15 @@
     <string name="signin">登录</string>
     <!-- 注册 -->
     <string name="signup">注册</string>
+    <string name="signup_finish">完成注册</string>
+    <string name="choose_countrycode">选择国家和地区代码</string>
+    <string name="please_input_keyword">请输入关键字</string>
+    <string name="sms_code">短信验证码</string>
+    <string name="sms_dialog_title">确认手机号码</string>
+    <string name="sms_dialog_msg">我们将发送验证码短信到这个号码：%1$s</string>
+    <string name="country_or_area">国家或地区</string>
+    <string name="default_country_name">中国</string>
+    <string name="default_country_code">+86</string>
 
     <!-- 拍照 -->
     <string name="photo_sd_error">保存图像失败！</string>

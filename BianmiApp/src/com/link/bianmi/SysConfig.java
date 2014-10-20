@@ -325,4 +325,16 @@ public class SysConfig {
 		editor.putBoolean("bianmi.config.showad", showAd);
 		editor.commit();
 	}
+
+	/** 短信验证是否可用 **/
+	public boolean smsAccess() {
+		return mPref.getBoolean("bianmi.config.sms", true);
+	}
+
+	/** 设置短信验证是否可用 **/
+	public void setSmsAccess(boolean showAd) {
+		SharedPreferences.Editor editor = mPref.edit();
+		editor.putBoolean("bianmi.config.sms", showAd);
+		editor.commit();
+	}
 }

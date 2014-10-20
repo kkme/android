@@ -28,6 +28,7 @@ public class ConfigBuilder implements BaseEntityBuilder<Config> {
 				JSONObject configJson = jsonObj.getJSONObject("config");
 				config = new Config();
 				config.showAd = configJson.getBoolean("show_ad");
+				config.smsAccess = configJson.getBoolean("sms_access");
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
