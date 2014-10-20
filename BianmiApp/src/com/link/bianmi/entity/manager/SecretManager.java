@@ -95,6 +95,10 @@ public class SecretManager {
 			params.add(new BasicNameValuePair("audio_url", secret.audioUrl));
 			params.add(new BasicNameValuePair("audio_length", String
 					.valueOf(secret.audioLength)));
+			params.add(new BasicNameValuePair("longitude", String
+					.valueOf(secret.longitude)));
+			params.add(new BasicNameValuePair("latitude", String
+					.valueOf(secret.latitude)));
 			params.add(new BasicNameValuePair("created_time", String
 					.valueOf(secret.createdTime)));
 

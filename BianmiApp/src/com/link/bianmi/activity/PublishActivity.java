@@ -161,6 +161,8 @@ public class PublishActivity extends BaseFragmentActivity {
 			secret.audioUrl = recordUrl;
 			secret.audioLength = recordLength;
 			secret.imageUrl = photoUrl;
+			secret.longitude = UserConfig.getInstance().getLongitude();
+			secret.latitude = UserConfig.getInstance().getLatitude();
 			secret.createdTime = System.currentTimeMillis();
 
 			SecretManager.Task.publishSecret(secret,

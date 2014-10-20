@@ -122,4 +122,28 @@ public class UserConfig {
 		return mPref.getBoolean("bianmi.user.lockpass.key.status", false);
 	}
 
+	/** 保存经度 **/
+	public void setLongitude(float longitude) {
+		SharedPreferences.Editor editor = mPref.edit();
+		editor.putFloat("bianmi.user.location.longitude", longitude);
+		editor.commit();
+	}
+
+	/** 获取经度 **/
+	public float getLongitude() {
+		return mPref.getFloat("bianmi.user.location.longitude", 22.57967f);
+	}
+
+	/** 保存纬度 **/
+	public void setLatitude(float latitude) {
+		SharedPreferences.Editor editor = mPref.edit();
+		editor.putFloat("bianmi.user.location.latitude", latitude);
+		editor.commit();
+	}
+
+	/** 获取纬度 **/
+	public float getLatitude() {
+		return mPref.getFloat("bianmi.user.location.latitude", 113.85987f);
+	}
+
 }
