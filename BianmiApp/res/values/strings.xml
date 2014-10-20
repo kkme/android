@@ -40,6 +40,8 @@
     <string name="country_or_area">国家或地区</string>
     <string name="default_country_name">中国</string>
     <string name="default_country_code">+86</string>
+    <string name="dont_receive_sms_verify_code">收不到验证码？</string>
+    <string name="resend_sms_verify_code">重新获取验证码</string>
 
     <!-- 拍照 -->
     <string name="photo_sd_error">保存图像失败！</string>

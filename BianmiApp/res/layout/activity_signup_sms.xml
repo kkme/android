@@ -5,14 +5,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:weightSum="4" >
+        android:orientation="vertical" >
 
         <RelativeLayout
             android:id="@+id/country_group"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_48"
-            android:layout_weight="1"
             android:gravity="center_vertical" >
 
             <TextView
@@ -33,7 +31,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="horizontal" >
 
             <TextView
@@ -53,8 +50,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" >
+            android:layout_height="wrap_content" >
 
             <EditText
                 android:id="@+id/password_edittext"
@@ -81,7 +77,6 @@
             android:id="@+id/sms_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="horizontal" >
 
             <TextView
@@ -99,8 +94,15 @@
             android:id="@+id/signup_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="注册" />
+
+        <TextView
+            android:id="@+id/resend_sms_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="@dimen/dp_5"
+            android:text="@string/dont_receive_sms_verify_code" />
     </LinearLayout>
 
 </RelativeLayout>

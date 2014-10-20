@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
@@ -21,6 +22,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import cn.smssdk.gui.SMSReceiver;
+import cn.smssdk.gui.SMSReceiver.SMSVerifyCodeListener;
 
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
@@ -50,6 +53,11 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 
 	private View mSmsGroup = null;
 
+	private EditText mPhonenumEdit = null;
+	private EditText mPasswordEdit = null;
+
+	private SMSReceiver mSMSReceiver;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,15 +70,16 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 
 		mCountryNameText = (TextView) findViewById(R.id.country_name_textview);
 		mCountryCodeText = (TextView) findViewById(R.id.country_code_textview);
-		final EditText phonenumEdit = (EditText) findViewById(R.id.phonenum_edittext);
-		final EditText passwordEdit = (EditText) findViewById(R.id.password_edittext);
-		final EditText smscodeEdit = (EditText) findViewById(R.id.smscode_edittext);
+		mPhonenumEdit = (EditText) findViewById(R.id.phonenum_edittext);
+		mPasswordEdit = (EditText) findViewById(R.id.password_edittext);
+		final EditText smsVerifyCodeEdit = (EditText) findViewById(R.id.smscode_edittext);
 		mSmsGroup = findViewById(R.id.sms_group);
 		mSmsGroup.setVisibility(View.INVISIBLE);
 		final Button signUpButton = (Button) findViewById(R.id.signup_button);
 
 		initSDK();
 
+		// 国家或地区
 		findViewById(R.id.country_group).setOnClickListener(
 				new OnClickListener() {
 					@Override
@@ -90,15 +99,56 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 							boolean isChecked) {
 						if (isChecked) {
 							// 明文
-							passwordEdit
+							mPasswordEdit
 									.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 						} else {
 							// 暗文
-							passwordEdit.setInputType(InputType.TYPE_CLASS_TEXT
-									| InputType.TYPE_TEXT_VARIATION_PASSWORD);
+							mPasswordEdit
+									.setInputType(InputType.TYPE_CLASS_TEXT
+											| InputType.TYPE_TEXT_VARIATION_PASSWORD);
 						}
 					}
 				});
+
+		// 收不到验证码
+		final View resendSMSView = findViewById(R.id.resend_sms_textview);
+		resendSMSView.setVisibility(View.INVISIBLE);
+		resendSMSView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						SignUpBySmsActivity.this);
+				final AlertDialog dialog = builder
+						.setMessage(getString(R.string.resend_sms_verify_code))
+						.setPositiveButton(getString(R.string.yes),
+								new Dialog.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										smsVerifyCodeEdit.setText("");
+										signUpButton
+												.setText(getString(R.string.signup));
+										// 发送短信验证码
+										mLoadingItem.setVisible(true);
+										SMSSDK.getVerificationCode(
+												mCountryCodeText.getText()
+														.toString(),
+												mPhonenumEdit.getText()
+														.toString());
+									}
+								})
+						.setNegativeButton(getString(R.string.no),
+								new Dialog.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										dialog.dismiss();
+									}
+								}).create();
+				dialog.show();
+			}
+		});
 
 		// 点击注册
 		signUpButton.setOnClickListener(new OnClickListener() {
@@ -107,7 +157,7 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 			public void onClick(View v) {
 				final String code = mCountryCodeText.getText().toString()
 						.substring(1);
-				final String phone = phonenumEdit.getText().toString();
+				final String phone = mPhonenumEdit.getText().toString();
 				// 注册按钮，点击提示发送验证码
 				if (signUpButton.getText().equals(getString(R.string.signup))) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -125,9 +175,11 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 												DialogInterface dialog,
 												int which) {
 											// 发送短信验证码
-											mLoadingMenuItem.setVisible(true);
 											SMSSDK.getVerificationCode(code,
 													phone);
+											mLoadingItem.setVisible(true);
+											resendSMSView
+													.setVisibility(View.VISIBLE);
 										}
 									})
 							.setNegativeButton(getString(R.string.no),
@@ -144,44 +196,24 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 					// 完成注册按钮
 				} else if (signUpButton.getText().equals(
 						getString(R.string.signup_finish))) {
-					SMSSDK.submitVerificationCode(code, phone, smscodeEdit
-							.getText().toString());
-					final String phonenum = phonenumEdit.getText().toString();
-					String password = passwordEdit.getText().toString();
-
-					// 校验注册数据合法性
-					if (DataCheckUtil.checkSignInData(SignUpBySmsActivity.this,
-							phonenum, password)) {
-						mLoadingMenuItem.setVisible(true);
-						// 数据合法，则跳转登录
-						UserManager.Task.signUp(phonenum,
-								SecurityUtils.getMD5Str(password),
-								new OnTaskOverListener<User>() {
-
-									@Override
-									public void onFailure(int code, String msg) {
-										mLoadingMenuItem.setVisible(false);
-										SuperToast.makeText(
-												getApplicationContext(),
-												"SignUp Error!",
-												SuperToast.LENGTH_SHORT).show();
-									}
-
-									@Override
-									public void onSuccess(User user) {
-										mLoadingMenuItem.setVisible(false);
-										// 保存userId
-										UserConfig.getInstance().setUserId(
-												user.id);
-										// 进入主界面
-										launchActivity(HomeActivity.class);
-										ActivitysManager.removeAllActivity();
-									}
-								});
-					}
+					SMSSDK.submitVerificationCode(code, phone,
+							smsVerifyCodeEdit.getText().toString());
 				}
 			}
 		});
+
+		mSMSReceiver = new SMSReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(SMSReceiver.SMS_RECEIVED_ACTION);
+		mSMSReceiver.setSMSVerifyCodeListener(new SMSVerifyCodeListener() {
+			@Override
+			public void receiveVerifyCode(String verifyCode) {
+				mLoadingItem.setVisible(false);
+				smsVerifyCodeEdit.setText(verifyCode);
+				signUpButton.setText(getString(R.string.signup_finish));
+			}
+		});
+		registerReceiver(mSMSReceiver, filter);
 
 	}
 
@@ -199,6 +231,8 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 		if (ready) {
 			SMSSDK.unregisterAllEventHandler();
 		}
+
+		unregisterReceiver(mSMSReceiver);
 	}
 
 	@Override
@@ -220,12 +254,12 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 		}
 	}
 
-	private MenuItem mLoadingMenuItem;
+	private MenuItem mLoadingItem;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.loading, menu);
-		mLoadingMenuItem = menu.findItem(R.id.action_loading);
+		mLoadingItem = menu.findItem(R.id.action_loading);
 		return true;
 	}
 
@@ -236,6 +270,17 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBackPressed() {
+		// 如果正在加载，则取消加载
+		if (mLoadingItem.isVisible()) {
+			mLoadingItem.setVisible(false);
+			return;
+		}
+
+		super.onBackPressed();
 	}
 
 	// ------------------初始化SMSSDK-----------------
@@ -270,7 +315,6 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 			SuperToast.makeText(getApplicationContext(), "获取验证码",
 					SuperToast.LENGTH_SHORT).show();
 			mSmsGroup.setVisibility(View.VISIBLE);
-			mLoadingMenuItem.setVisible(false);
 		} else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
 			// 提交验证码
 			SuperToast.makeText(getApplicationContext(), "提交验证码",
@@ -278,12 +322,52 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 			if (result == SMSSDK.RESULT_COMPLETE) {
 				SuperToast.makeText(getApplicationContext(), "验证成功",
 						SuperToast.LENGTH_SHORT).show();
+				finishSignUp();
 			} else {
 				((Throwable) data).printStackTrace();
 				SuperToast.makeText(getApplicationContext(), "验证失败",
 						SuperToast.LENGTH_SHORT).show();
+				mLoadingItem.setVisible(false);
 			}
 		}
 		return false;
 	}
+
+	/**
+	 * 完成注册
+	 */
+	private void finishSignUp() {
+		final String phonenum = mPhonenumEdit.getText().toString();
+		String password = mPasswordEdit.getText().toString();
+
+		// 校验注册数据合法性
+		if (DataCheckUtil.checkSignInData(SignUpBySmsActivity.this, phonenum,
+				password)) {
+			mLoadingItem.setVisible(true);
+			// 数据合法，则跳转登录
+			UserManager.Task.signUp(phonenum,
+					SecurityUtils.getMD5Str(password),
+					new OnTaskOverListener<User>() {
+
+						@Override
+						public void onFailure(int code, String msg) {
+							mLoadingItem.setVisible(false);
+							SuperToast.makeText(getApplicationContext(),
+									"SignUp Error!", SuperToast.LENGTH_SHORT)
+									.show();
+						}
+
+						@Override
+						public void onSuccess(User user) {
+							mLoadingItem.setVisible(false);
+							// 保存userId
+							UserConfig.getInstance().setUserId(user.id);
+							// 进入主界面
+							launchActivity(HomeActivity.class);
+							ActivitysManager.removeAllActivity();
+						}
+					});
+		}
+	}
+
 }
