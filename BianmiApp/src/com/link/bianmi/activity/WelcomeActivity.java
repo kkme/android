@@ -19,6 +19,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 
 import com.link.bianmi.R;
+import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.utility.Tools;
@@ -60,7 +61,11 @@ public class WelcomeActivity extends BaseFragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				launchActivity(SignUpActivity.class);
+				if (SysConfig.getInstance().smsAccess()) {
+					launchActivity(SignUpBySmsActivity.class);
+				} else {
+					launchActivity(SignUpActivity.class);
+				}
 			}
 		});
 

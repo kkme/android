@@ -62,9 +62,17 @@
         <activity
             android:name="com.link.bianmi.activity.WelcomeActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar" />
+         <!-- 注册 -->
+        <activity
+            android:name="com.link.bianmi.unit.country.CountryActivity"
+            android:theme="@style/Theme.ActionBar.NoLogo" />
         <!-- 注册 -->
         <activity
             android:name="com.link.bianmi.activity.SignUpActivity"
+            android:theme="@style/Theme.ActionBar.NoLogo" />
+        <!-- 短信注册 -->
+        <activity
+            android:name="com.link.bianmi.activity.SignUpBySmsActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />
         <!-- 登录 -->
         <activity
@@ -115,6 +123,13 @@
             android:name="com.umeng.update.net.DownloadingService"
             android:process=":DownloadingService" >
         </service>
+        <!-- SMSSDK -->
+        <activity
+            android:name="cn.smssdk.SMSSDKUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
         <!-- ShareSDK -->
         <activity
             android:name="cn.sharesdk.framework.ShareSDKUIShell"

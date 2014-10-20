@@ -9,8 +9,6 @@ import com.link.bianmi.asynctask.BaseAsyncTask;
 import com.link.bianmi.asynctask.TaskParams;
 import com.link.bianmi.asynctask.TaskResult;
 import com.link.bianmi.asynctask.TaskResult.TaskStatus;
-import com.link.bianmi.asynctask.listener.ITaskOverListener;
-import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.Config;
 import com.link.bianmi.entity.Result;
 import com.link.bianmi.entity.Status_;
@@ -54,18 +52,15 @@ public class ConfigManager {
 
 	public static class Task {
 		/** 获取服务端下发的配置 **/
-		public static void getConfig(OnTaskOverListener<Config> listener) {
-			ConfigTask configTask = new ConfigTask(listener);
+		public static void getConfig() {
+			ConfigTask configTask = new ConfigTask();
 			configTask.executeOnExecutor(Executors.newCachedThreadPool());
 		}
 	}
 
 	private static class ConfigTask extends BaseAsyncTask {
 
-		ITaskOverListener<Config> listener;
-
-		public ConfigTask(ITaskOverListener<Config> listener) {
-			this.listener = listener;
+		public ConfigTask() {
 		}
 
 		@Override
@@ -99,13 +94,9 @@ public class ConfigManager {
 			super.onPostExecute(taskResult);
 			if (taskResult.getStatus() == TaskStatus.OK) {
 				Config config = (Config) taskResult.getEntity();
-				((OnTaskOverListener<Config>) listener).onSuccess(config);
-			} else {
-				Status_ status = (Status_) taskResult.getEntity();
-				((OnTaskOverListener<Config>) listener).onFailure(status.code,
-						status.msg);
+				SysConfig.getInstance().setShowAd(config.showAd);
+				SysConfig.getInstance().setShowAd(config.smsAccess);
 			}
-
 		}
 	}
 }
