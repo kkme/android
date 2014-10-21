@@ -22,8 +22,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
-import cn.smssdk.gui.SMSReceiver;
-import cn.smssdk.gui.SMSReceiver.SMSVerifyCodeListener;
 
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
@@ -31,6 +29,8 @@ import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.User;
 import com.link.bianmi.entity.manager.UserManager;
+import com.link.bianmi.receiver.SMSReceiver;
+import com.link.bianmi.receiver.SMSReceiver.SMSVerifyCodeListener;
 import com.link.bianmi.unit.country.Country;
 import com.link.bianmi.unit.country.CountryActivity;
 import com.link.bianmi.utility.DataCheckUtil;
