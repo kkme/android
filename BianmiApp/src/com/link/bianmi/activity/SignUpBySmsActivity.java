@@ -125,7 +125,7 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 									@Override
 									public void onClick(DialogInterface dialog,
 											int which) {
-										smsVerifyCodeEdit.setText("");
+										smsVerifyCodeEdit.getText().clear();
 										signUpButton
 												.setText(getString(R.string.signup));
 										// 发送短信验证码
