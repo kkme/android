@@ -58,7 +58,6 @@ public class SecretFragment extends BaseFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
 		mParentActivity = (HomeActivity) getActivity();
 		mRootView = LayoutInflater.from(mContext).inflate(
 				R.layout.fragment_secrets, null);
