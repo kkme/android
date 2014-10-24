@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,9 +16,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
+import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.unit.country.SideBar.OnTouchingLetterChangedListener;
 
-public class CountryActivity extends Activity {
+public class CountryActivity extends BaseFragmentActivity {
 	private ListView sortListView;
 	private SideBar sideBar;
 	private TextView dialog;

@@ -1,42 +1,38 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/page_padding_left"
+    android:paddingRight="@dimen/page_padding_right"
+    android:paddingTop="@dimen/page_padding_top" >
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/phonenum_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:weightSum="4" >
+        android:hint="phonenum" />
 
-        <EditText
-            android:id="@+id/phonenum_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="phonenum" />
+    <EditText
+        android:id="@+id/password_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:hint="password"
+        android:inputType="textPassword" />
 
-        <EditText
-            android:id="@+id/password_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="password"
-            android:inputType="textPassword" />
+    <EditText
+        android:id="@+id/password_confirm_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:hint="confirm"
+        android:inputType="textPassword" />
 
-        <EditText
-            android:id="@+id/password_confirm_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="confirm"
-            android:inputType="textPassword" />
+    <Button
+        android:id="@+id/signup_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/signup" />
 
-        <Button
-            android:id="@+id/signup_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="注册" />
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

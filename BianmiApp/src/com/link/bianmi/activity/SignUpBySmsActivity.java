@@ -264,15 +264,6 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
-			finish();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
 	public void onBackPressed() {
 		// 如果正在加载，则取消加载
 		if (mLoadingItem.isVisible()) {

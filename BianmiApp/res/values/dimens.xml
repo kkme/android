@@ -384,4 +384,8 @@
     <dimen name="text_regular_primary_size">14.0dip</dimen>
     <dimen name="text_large_secondary_size">12.0dip</dimen>
     <dimen name="text_large_primary_size">16.0dip</dimen>
-</resources>
+    <dimen name="page_padding_left">@dimen/dp_10</dimen>
+    <dimen name="page_padding_right">@dimen/dp_10</dimen>
+    <dimen name="page_padding_top">@dimen/dp_15</dimen>
+
+</resources>

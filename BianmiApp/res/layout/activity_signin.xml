@@ -1,35 +1,35 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/page_padding_left"
+    android:paddingRight="@dimen/page_padding_right"
+    android:paddingTop="@dimen/page_padding_top" >
 
-    <LinearLayout
+    <com.link.bianmi.widget.ClearEditText
+        android:id="@+id/phonenum_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:weightSum="3" >
+        android:drawableLeft="@drawable/ic_phone"
+        android:hint="phonenum"
+        android:inputType="phone"
+        android:padding="@dimen/dp_10" />
 
-        <EditText
-            android:id="@+id/phonenum_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="phonenum"
-            android:inputType="phone" />
+    <com.link.bianmi.widget.ClearEditText
+        android:id="@+id/password_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:drawableLeft="@drawable/ic_pwd"
+        android:hint="password"
+        android:inputType="textPassword"
+        android:padding="@dimen/dp_10" />
 
-        <EditText
-            android:id="@+id/password_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="password"
-            android:inputType="textPassword" />
+    <Button
+        android:id="@+id/signin_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/signin" />
 
-        <Button
-            android:id="@+id/signin_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="登录" />
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

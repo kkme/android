@@ -3,6 +3,7 @@ package com.link.bianmi.activity.base;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.MenuItem;
 
 import com.link.bianmi.activity.ActivitysManager;
 
@@ -18,6 +19,15 @@ public class BaseFragmentActivity extends FragmentActivity {
 	public void onDestroy() {
 		super.onDestroy();
 		ActivitysManager.onDestory(this);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item != null && item.getItemId() == android.R.id.home) {
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	protected void launchActivity(Class<?> cls) {

@@ -1,108 +1,110 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/page_padding_left"
+    android:paddingRight="@dimen/page_padding_right"
+    android:paddingTop="@dimen/dp_5" >
+
+    <RelativeLayout
+        android:id="@+id/country_group"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/country_or_area" />
+
+        <TextView
+            android:id="@+id/country_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical"
+            android:text="@string/default_country_name" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <RelativeLayout
-            android:id="@+id/country_group"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_48"
-            android:gravity="center_vertical" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:text="@string/country_or_area" />
-
-            <TextView
-                android:id="@+id/country_name_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center_vertical"
-                android:text="@string/default_country_name" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/country_code_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/default_country_code" />
-
-            <EditText
-                android:id="@+id/phonenum_edittext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="phonenum"
-                android:inputType="phone" />
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/password_edittext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/switch_pwd_checkbox"
-                android:hint="password"
-                android:inputType="textPassword" />
-
-            <CheckBox
-                android:id="@+id/switch_pwd_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:button="@null"
-                android:checked="false"
-                android:drawableRight="@drawable/selector_btn_commit"
-                android:padding="@dimen/dp_5" />
-        </RelativeLayout>
-
-        <!-- SMS验证码 -->
-
-        <LinearLayout
-            android:id="@+id/sms_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sms_code" />
-
-            <EditText
-                android:id="@+id/smscode_edittext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/signup_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="注册" />
+        android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/resend_sms_textview"
+            android:id="@+id/country_code_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:padding="@dimen/dp_5"
-            android:text="@string/dont_receive_sms_verify_code" />
+            android:text="@string/default_country_code" />
+
+        <EditText
+            android:id="@+id/phonenum_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="phonenum"
+            android:inputType="phone" />
     </LinearLayout>
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15" >
+
+        <EditText
+            android:id="@+id/password_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/switch_pwd_checkbox"
+            android:hint="password"
+            android:inputType="textPassword" />
+
+        <CheckBox
+            android:id="@+id/switch_pwd_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:button="@null"
+            android:checked="false"
+            android:drawableRight="@drawable/selector_btn_commit"
+            android:padding="@dimen/dp_5" />
+    </RelativeLayout>
+
+    <!-- SMS验证码 -->
+
+    <LinearLayout
+        android:id="@+id/sms_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sms_code" />
+
+        <EditText
+            android:id="@+id/smscode_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/signup_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:text="注册" />
+
+    <TextView
+        android:id="@+id/resend_sms_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_15"
+        android:padding="@dimen/dp_5"
+        android:text="@string/dont_receive_sms_verify_code" />
+
+</LinearLayout>

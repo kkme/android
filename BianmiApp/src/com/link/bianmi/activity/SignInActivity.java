@@ -105,14 +105,4 @@ public class SignInActivity extends BaseFragmentActivity {
 		mLoadingMenuItem = menu.findItem(R.id.action_loading);
 		return true;
 	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
-			finish();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 }
