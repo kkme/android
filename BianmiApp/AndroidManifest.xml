@@ -62,7 +62,7 @@
         <!-- 欢迎 -->
         <activity
             android:name="com.link.bianmi.activity.WelcomeActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar" />
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
          <!-- 注册 -->
         <activity
             android:name="com.link.bianmi.unit.country.CountryActivity"

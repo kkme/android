@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 选中时效果 -->
+    <item android:drawable="@drawable/input_bg_focus" android:state_focused="true"/>
+    <!-- disable效果 windows焦点在前时  注意写法 -->
+    <item android:drawable="@drawable/input_bg_normal" android:state_enabled="false" android:state_window_focused="true"/>
+    <!-- 默认时效果 -->
+    <item android:drawable="@drawable/input_bg_normal"/>
+
+</selector>

@@ -6,25 +6,27 @@
     android:paddingRight="@dimen/page_padding_right"
     android:paddingTop="@dimen/page_padding_top" >
 
-    <EditText
+    <com.link.bianmi.widget.ClearEditText
         android:id="@+id/phonenum_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="phonenum" />
 
-    <EditText
+    <com.link.bianmi.widget.ClearEditText
         android:id="@+id/password_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_15"
+        android:background="@drawable/selector_input"
         android:hint="password"
         android:inputType="textPassword" />
 
-    <EditText
+    <com.link.bianmi.widget.ClearEditText
         android:id="@+id/password_confirm_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_15"
+        android:background="@drawable/selector_input"
         android:hint="confirm"
         android:inputType="textPassword" />
 

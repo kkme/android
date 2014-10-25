@@ -10,7 +10,7 @@
         android:id="@+id/phonenum_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_phone"
+        android:background="@drawable/selector_input"
         android:hint="phonenum"
         android:inputType="phone"
         android:padding="@dimen/dp_10" />
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_15"
-        android:drawableLeft="@drawable/ic_pwd"
+        android:background="@drawable/selector_input"
         android:hint="password"
         android:inputType="textPassword"
         android:padding="@dimen/dp_10" />
