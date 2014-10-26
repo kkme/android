@@ -148,7 +148,9 @@ public class ContactsManager {
 				listener.onSuccess(null);
 			} else if (taskResult.getStatus() == TaskStatus.FAILED) {
 				Status_ status = (Status_) taskResult.getEntity();
-				listener.onFailure(status.code, status.msg);
+				if (status != null) {
+					listener.onFailure(status.code, status.msg);
+				}
 			}
 		}
 	}
