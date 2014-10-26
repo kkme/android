@@ -24,6 +24,7 @@ import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.entity.ListResult;
 import com.link.bianmi.entity.Secret;
+import com.link.bianmi.entity.manager.ContactsManager;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.utility.Tools;
@@ -182,6 +183,22 @@ public class SecretFragment extends BaseFragment {
 
 			}
 		});
+
+		// 上传联系人
+		ContactsManager.Task.uploadContacts(getActivity(),
+				new OnTaskOverListener<Object>() {
+					@Override
+					public void onSuccess(Object t) {
+						SuperToast.makeText(mParentActivity, "上传联系人成功",
+								SuperToast.LENGTH_SHORT).show();
+					}
+
+					@Override
+					public void onFailure(int code, String msg) {
+						SuperToast.makeText(mParentActivity, "上传联系人失败" + msg,
+								SuperToast.LENGTH_SHORT).show();
+					}
+				});
 
 	}
 

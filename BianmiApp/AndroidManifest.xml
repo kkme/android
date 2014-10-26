@@ -32,6 +32,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -63,7 +64,7 @@
         <activity
             android:name="com.link.bianmi.activity.WelcomeActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
-         <!-- 注册 -->
+        <!-- 注册 -->
         <activity
             android:name="com.link.bianmi.unit.country.CountryActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />
@@ -166,7 +167,8 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="TRs03tQdVQXBWHYG4f2UmO6A" />
-        <service
+
+        <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" >
