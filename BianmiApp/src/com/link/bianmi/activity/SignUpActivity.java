@@ -1,11 +1,15 @@
 package com.link.bianmi.activity;
 
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
 import com.link.bianmi.R;
@@ -38,8 +42,27 @@ public class SignUpActivity extends BaseFragmentActivity {
 
 		final EditText phonenumEdit = (EditText) findViewById(R.id.phonenum_edittext);
 		final EditText passwordEdit = (EditText) findViewById(R.id.password_edittext);
-		final EditText passwordConfirmEdit = (EditText) findViewById(R.id.password_confirm_edittext);
 		Button signUpButton = (Button) findViewById(R.id.signup_button);
+
+		// 切换密码明文、暗文
+		CheckBox switchPwdCheckbox = (CheckBox) findViewById(R.id.switch_pwd_checkbox);
+		switchPwdCheckbox.setChecked(false);
+		switchPwdCheckbox
+				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView,
+							boolean isChecked) {
+						if (isChecked) {
+							// 明文
+							passwordEdit
+									.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+						} else {
+							// 暗文
+							passwordEdit.setInputType(InputType.TYPE_CLASS_TEXT
+									| InputType.TYPE_TEXT_VARIATION_PASSWORD);
+						}
+					}
+				});
 
 		// 点击注册
 		signUpButton.setOnClickListener(new OnClickListener() {
@@ -48,24 +71,23 @@ public class SignUpActivity extends BaseFragmentActivity {
 			public void onClick(View v) {
 				final String phonenum = phonenumEdit.getText().toString();
 				String password = passwordEdit.getText().toString();
-				String passwordConfirm = passwordConfirmEdit.getText()
-						.toString();
 
 				// 校验注册数据合法性
-				if (DataCheckUtil.checkSignUpData(SignUpActivity.this,
-						phonenum, password, passwordConfirm)) {
+				if (DataCheckUtil.checkSignInUpData(SignUpActivity.this,
+						phonenum, password)) {
 					mLoadingMenuItem.setVisible(true);
 					// 数据合法，则跳转登录
 					UserManager.Task.signUp(phonenum,
-							SecurityUtils.getMD5Str(passwordConfirm),
+							SecurityUtils.getMD5Str(password),
 							new OnTaskOverListener<User>() {
 
 								@Override
 								public void onFailure(int code, String msg) {
 									mLoadingMenuItem.setVisible(false);
-									SuperToast.makeText(getApplicationContext(),
-											"SignUp Error!", SuperToast.LENGTH_SHORT)
-											.show();
+									SuperToast.makeText(
+											getApplicationContext(),
+											"SignUp Error!",
+											SuperToast.LENGTH_SHORT).show();
 								}
 
 								@Override

@@ -118,7 +118,6 @@ public class SecretFragment extends BaseFragment {
 						mRListView.stopFootActiving();
 					}
 				}, 800);
-
 			}
 
 			@Override

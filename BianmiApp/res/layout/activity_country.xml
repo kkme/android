@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/window_background"
@@ -8,41 +8,46 @@
     <com.link.bianmi.unit.country.ClearEditText
         android:id="@+id/filter_edit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_5"
-        android:drawableLeft="@drawable/search_bar_icon_normal"
+        android:layout_height="@dimen/dp_48"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/page_padding_left"
+        android:layout_marginRight="@dimen/dp_38"
+        android:background="@drawable/selector_input"
+        android:drawableLeft="@drawable/ic_search"
         android:hint="@string/please_input_keyword"
-        android:padding="@dimen/dp_5"
+        android:padding="@dimen/dp_10"
         android:singleLine="true"
         android:textSize="@dimen/dp_15" />
 
-    <FrameLayout
+    <ListView
+        android:id="@+id/country_lvcountry"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_below="@+id/filter_edit"
+        android:layout_gravity="center"
+        android:divider="@color/main_green"
+        android:dividerHeight="1px"
+        android:listSelector="@drawable/selector_list_item"
+        android:paddingLeft="@dimen/page_padding_left"
+        android:paddingRight="@dimen/page_padding_right"
+        android:scrollbars="none" />
 
-        <ListView
-            android:id="@+id/country_lvcountry"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:divider="@null" />
+    <TextView
+        android:id="@+id/dialog"
+        android:layout_width="@dimen/dp_108"
+        android:layout_height="@dimen/dp_108"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:background="@drawable/btn_red_pressed"
+        android:gravity="center"
+        android:textColor="@color/main_purple"
+        android:textSize="@dimen/sp_36"
+        android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/dialog"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="@dimen/dp_80"
-            android:layout_gravity="center"
-            android:background="@drawable/bg_country_toast"
-            android:gravity="center"
-            android:textColor="@color/fc_fff"
-            android:textSize="@dimen/sp_30"
-            android:visibility="invisible" />
+    <com.link.bianmi.unit.country.SideBar
+        android:id="@+id/sidrbar"
+        android:layout_width="@dimen/dp_28"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true" />
 
-        <com.link.bianmi.unit.country.SideBar
-            android:id="@+id/sidrbar"
-            android:layout_width="@dimen/dp_30"
-            android:layout_height="match_parent"
-            android:layout_gravity="right|center" />
-    </FrameLayout>
-
-</LinearLayout>
+</RelativeLayout>

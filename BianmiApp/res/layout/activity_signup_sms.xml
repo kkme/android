@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical"
-            android:text="@string/default_country_name" />
+            android:text="@string/default_country_name"
+            android:textColor="@color/main_green" />
     </RelativeLayout>
 
     <LinearLayout
@@ -101,7 +102,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_15"
-        android:text="注册" />
+        android:background="@drawable/selector_btn_red"
+        android:text="@string/signup" />
 
     <TextView
         android:id="@+id/resend_sms_textview"

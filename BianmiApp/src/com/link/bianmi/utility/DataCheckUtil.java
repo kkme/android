@@ -10,6 +10,7 @@ import com.link.bianmi.widget.SuperToast;
 
 /**
  * 数据合法性验证
+ * 
  * @author pangfq
  * @date 2014年8月1日 上午9:52:12
  */
@@ -31,40 +32,6 @@ public class DataCheckUtil {
 	}
 
 	/**
-	 * 校验注册数据合法性
-	 * 
-	 * @param context
-	 * @param phonenum
-	 * @param password
-	 * @param passwordConfirm
-	 * @return
-	 */
-	public static boolean checkSignUpData(Context context, String phonenum,
-			String password, String passwordConfirm) {
-		boolean ok = true;
-		if (TextUtils.isEmpty(phonenum)) {
-			SuperToast.makeText(context, "phonenum为空！", SuperToast.LENGTH_SHORT).show();
-			ok = false;
-		} else if (!isPhoneNum(phonenum)) {
-			SuperToast.makeText(context, "WrongPhonenumber!", SuperToast.LENGTH_SHORT)
-					.show();
-			ok = false;
-		} else if (TextUtils.isEmpty(password)) {
-			SuperToast.makeText(context, "password为空！", SuperToast.LENGTH_SHORT).show();
-			ok = false;
-		} else if (TextUtils.isEmpty(passwordConfirm)) {
-			SuperToast.makeText(context, "passwordConfirm为空！", SuperToast.LENGTH_SHORT)
-					.show();
-			ok = false;
-		} else if (!password.equals(passwordConfirm)) {
-			SuperToast.makeText(context, "两次输入密码不一致!", SuperToast.LENGTH_SHORT).show();
-			ok = false;
-		}
-
-		return ok;
-	}
-
-	/**
 	 * 校验登录数据合法性
 	 * 
 	 * @param context
@@ -72,18 +39,22 @@ public class DataCheckUtil {
 	 * @param password
 	 * @return
 	 */
-	public static boolean checkSignInData(Context context, String phonenum,
+	public static boolean checkSignInUpData(Context context, String phonenum,
 			String password) {
 		boolean ok = true;
 		if (TextUtils.isEmpty(phonenum)) {
-			SuperToast.makeText(context, "phonenum为空！", SuperToast.LENGTH_SHORT).show();
-			ok = false;
-		} else if (!isPhoneNum(phonenum)) {
-			SuperToast.makeText(context, "WrongPhonenumber!", SuperToast.LENGTH_SHORT)
+			SuperToast
+					.makeText(context, "phonenum为空！", SuperToast.LENGTH_SHORT)
 					.show();
 			ok = false;
+		} else if (!isPhoneNum(phonenum)) {
+			SuperToast.makeText(context, "WrongPhonenumber!",
+					SuperToast.LENGTH_SHORT).show();
+			ok = false;
 		} else if (TextUtils.isEmpty(password)) {
-			SuperToast.makeText(context, "password为空！", SuperToast.LENGTH_SHORT).show();
+			SuperToast
+					.makeText(context, "password为空！", SuperToast.LENGTH_SHORT)
+					.show();
 			ok = false;
 		}
 

@@ -4,20 +4,18 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
+import com.link.bianmi.utility.Tools;
 
 public class SideBar extends View {
-	private OnTouchingLetterChangedListener onTouchingLetterChangedListener;
 	public static String[] b = { "A", "B", "C", "D", "E", "F", "G", "H", "I",
 			"J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
-			"W", "X", "Y", "Z", "#" };
+			"W", "X", "Y", "Z" };
 	private int choose = -1;
 	private Paint paint = new Paint();
 
@@ -45,12 +43,11 @@ public class SideBar extends View {
 		int width = getWidth();
 		int singleHeight = height / b.length;
 		for (int i = 0; i < b.length; i++) {
-			paint.setColor(Color.rgb(33, 65, 98));
-			paint.setTypeface(Typeface.DEFAULT_BOLD);
+			paint.setColor(Color.parseColor("#576B95"));
 			paint.setAntiAlias(true);
-			paint.setTextSize(28);
+			paint.setTextSize(Tools.sp2px(getContext(), 14));
 			if (i == choose) {
-				paint.setColor(Color.parseColor("#3399ff"));
+				paint.setColor(Color.parseColor("#40AA53"));
 				paint.setFakeBoldText(true);
 			}
 			float xPos = width / 2 - paint.measureText(b[i]) / 2;
@@ -65,25 +62,34 @@ public class SideBar extends View {
 		final int action = event.getAction();
 		final float y = event.getY();
 		final int oldChoose = choose;
-		final OnTouchingLetterChangedListener listener = onTouchingLetterChangedListener;
 		final int c = (int) (y / getHeight() * b.length);
 
 		switch (action) {
+		case MotionEvent.ACTION_DOWN:
+			if (mOnTouchListener != null) {
+				mOnTouchListener.onActionDown();
+			}
+			break;
 		case MotionEvent.ACTION_UP:
-			setBackgroundDrawable(new ColorDrawable(0x00000000));
-			choose = -1;//
+			setBackgroundResource(R.color.transparent);
+			choose = -1;
 			invalidate();
 			if (mTextDialog != null) {
 				mTextDialog.setVisibility(View.INVISIBLE);
 			}
+
+			if (mOnTouchListener != null) {
+				mOnTouchListener.onActionUp();
+			}
+
 			break;
 
 		default:
-			setBackgroundResource(R.drawable.bg_supertoast);
+			setBackgroundResource(R.drawable.btn_red_pressed);
 			if (oldChoose != c) {
 				if (c >= 0 && c < b.length) {
-					if (listener != null) {
-						listener.onTouchingLetterChanged(b[c]);
+					if (mOnTouchListener != null) {
+						mOnTouchListener.onActionMove(b[c]);
 					}
 					if (mTextDialog != null) {
 						mTextDialog.setText(b[c]);
@@ -98,12 +104,17 @@ public class SideBar extends View {
 		return true;
 	}
 
-	public void setOnTouchingLetterChangedListener(
-			OnTouchingLetterChangedListener onTouchingLetterChangedListener) {
-		this.onTouchingLetterChangedListener = onTouchingLetterChangedListener;
+	private OnTouchListener mOnTouchListener = null;
+
+	public void setOnTouchListener(OnTouchListener listener) {
+		this.mOnTouchListener = listener;
 	}
 
-	public interface OnTouchingLetterChangedListener {
-		public void onTouchingLetterChanged(String s);
+	public interface OnTouchListener {
+		public void onActionDown();
+
+		public void onActionMove(String letter);
+
+		public void onActionUp();
 	}
 }

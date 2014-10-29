@@ -49,7 +49,7 @@ public class SignInActivity extends BaseFragmentActivity {
 				final String password = passwordEdit.getText().toString();
 
 				// 校验登录数据合法性
-				if (DataCheckUtil.checkSignInData(SignInActivity.this,
+				if (DataCheckUtil.checkSignInUpData(SignInActivity.this,
 						phonenum, password)) {
 					mLoadingMenuItem.setVisible(true);
 					// 数据合法，则进行联网登录
@@ -84,7 +84,8 @@ public class SignInActivity extends BaseFragmentActivity {
 									// 保存userId
 									UserConfig.getInstance().setUserId(user.id);
 									// 保存sessionId
-									UserConfig.getInstance().setSessionId(user.sessionId);
+									UserConfig.getInstance().setSessionId(
+											user.sessionId);
 									// 进入主界面
 									launchActivity(HomeActivity.class);
 									ActivitysManager.removeAllActivity();

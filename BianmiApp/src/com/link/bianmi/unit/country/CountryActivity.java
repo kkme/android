@@ -17,19 +17,19 @@ import android.widget.TextView;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
-import com.link.bianmi.unit.country.SideBar.OnTouchingLetterChangedListener;
+import com.link.bianmi.unit.country.SideBar.OnTouchListener;
 
 public class CountryActivity extends BaseFragmentActivity {
-	private ListView sortListView;
-	private SideBar sideBar;
-	private TextView dialog;
-	private SortAdapter adapter;
+	private ListView mSortListView;
+	private SideBar mLetterSideBar;
+	private TextView mLetterDialog;
+	private SortAdapter mAdapter;
 	private ClearEditText mClearEditText;
 
-	private CharacterParser characterParser;
-	private List<Country> SourceDateList;
+	private CharacterParser mCharacterParser;
+	private List<Country> mCountryLists;
 
-	private PinyinComparator pinyinComparator;
+	private PinyinComparator mPinyinComparator;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,45 +41,51 @@ public class CountryActivity extends BaseFragmentActivity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		setContentView(R.layout.activity_country);
-		characterParser = CharacterParser.getInstance();
+		mCharacterParser = CharacterParser.getInstance();
 
-		pinyinComparator = new PinyinComparator();
+		mPinyinComparator = new PinyinComparator();
 
-		sideBar = (SideBar) findViewById(R.id.sidrbar);
-		dialog = (TextView) findViewById(R.id.dialog);
-		sideBar.setTextView(dialog);
-
-		sideBar.setOnTouchingLetterChangedListener(new OnTouchingLetterChangedListener() {
+		mLetterSideBar = (SideBar) findViewById(R.id.sidrbar);
+		mLetterDialog = (TextView) findViewById(R.id.dialog);
+		mLetterSideBar.setTextView(mLetterDialog);
+		mLetterSideBar.setOnTouchListener(new OnTouchListener() {
 
 			@Override
-			public void onTouchingLetterChanged(String s) {
-				int position = adapter.getPositionForSection(s.charAt(0));
+			public void onActionMove(String letter) {
+				int position = mAdapter.getPositionForSection(letter.charAt(0));
 				if (position != -1) {
-					sortListView.setSelection(position);
+					mSortListView.setSelection(position);
 				}
+			}
 
+			@Override
+			public void onActionUp() {
+			}
+
+			@Override
+			public void onActionDown() {
 			}
 		});
 
-		sortListView = (ListView) findViewById(R.id.country_lvcountry);
-		sortListView.setOnItemClickListener(new OnItemClickListener() {
+		mSortListView = (ListView) findViewById(R.id.country_lvcountry);
+		mSortListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				Intent intent = new Intent();
-				intent.putExtra("country", (Country) adapter.getItem(position));
+				intent.putExtra("country", (Country) mAdapter.getItem(position));
 				CountryActivity.this.setResult(RESULT_OK, intent);
 				CountryActivity.this.finish();
 			}
 		});
 
-		SourceDateList = new ArrayList<Country>();
+		mCountryLists = new ArrayList<Country>();
 		for (int i = R.array.country_group_a; i <= R.array.country_group_z; i++) {
-			SourceDateList.addAll(getData(i, getResources().getStringArray(i)));
+			mCountryLists.addAll(getData(i, getResources().getStringArray(i)));
 		}
-		adapter = new SortAdapter(this, SourceDateList);
-		sortListView.setAdapter(adapter);
+		mAdapter = new SortAdapter(this, mCountryLists);
+		mSortListView.setAdapter(mAdapter);
 
 		mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
 
@@ -125,21 +131,21 @@ public class CountryActivity extends BaseFragmentActivity {
 		List<Country> filterDateList = new ArrayList<Country>();
 
 		if (TextUtils.isEmpty(filterStr)) {
-			filterDateList = SourceDateList;
+			filterDateList = mCountryLists;
 		} else {
 			filterDateList.clear();
-			for (Country country : SourceDateList) {
+			for (Country country : mCountryLists) {
 				String name = country.name;
 				if (name.indexOf(filterStr.toString()) != -1
-						|| characterParser.getSelling(name).startsWith(
+						|| mCharacterParser.getSelling(name).startsWith(
 								filterStr.toString())) {
 					filterDateList.add(country);
 				}
 			}
 		}
 
-		Collections.sort(filterDateList, pinyinComparator);
-		adapter.updateListView(filterDateList);
+		Collections.sort(filterDateList, mPinyinComparator);
+		mAdapter.updateListView(filterDateList);
 	}
 
 }

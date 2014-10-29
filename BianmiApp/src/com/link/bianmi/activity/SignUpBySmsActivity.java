@@ -156,8 +156,15 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				final String code = mCountryCodeText.getText().toString()
-						.substring(1);
-				final String phone = mPhonenumEdit.getText().toString();
+						.substring(1).trim();
+				final String phonenum = mPhonenumEdit.getText().toString()
+						.trim();
+				final String password = mPasswordEdit.getText().toString()
+						.trim();
+				// 检测数据的完整性
+				if (!DataCheckUtil.checkSignInUpData(SignUpBySmsActivity.this,
+						phonenum, password))
+					return;
 				// 注册按钮，点击提示发送验证码
 				if (signUpButton.getText().equals(getString(R.string.signup))) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -167,7 +174,7 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 							.setMessage(
 									String.format(
 											getString(R.string.sms_dialog_msg),
-											phone))
+											phonenum))
 							.setPositiveButton(getString(R.string.yes),
 									new Dialog.OnClickListener() {
 										@Override
@@ -176,7 +183,7 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 												int which) {
 											// 发送短信验证码
 											SMSSDK.getVerificationCode(code,
-													phone);
+													phonenum);
 											mLoadingItem.setVisible(true);
 											resendSMSView
 													.setVisibility(View.VISIBLE);
@@ -196,7 +203,7 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 					// 完成注册按钮
 				} else if (signUpButton.getText().equals(
 						getString(R.string.signup_finish))) {
-					SMSSDK.submitVerificationCode(code, phone,
+					SMSSDK.submitVerificationCode(code, phonenum,
 							smsVerifyCodeEdit.getText().toString());
 				}
 			}
@@ -328,15 +335,15 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 	 * 完成注册
 	 */
 	private void finishSignUp() {
-		final String phonenum = mPhonenumEdit.getText().toString();
+		final String phonenumnum = mPhonenumEdit.getText().toString();
 		String password = mPasswordEdit.getText().toString();
 
 		// 校验注册数据合法性
-		if (DataCheckUtil.checkSignInData(SignUpBySmsActivity.this, phonenum,
-				password)) {
+		if (DataCheckUtil.checkSignInUpData(SignUpBySmsActivity.this,
+				phonenumnum, password)) {
 			mLoadingItem.setVisible(true);
 			// 数据合法，则跳转登录
-			UserManager.Task.signUp(phonenum,
+			UserManager.Task.signUp(phonenumnum,
 					SecurityUtils.getMD5Str(password),
 					new OnTaskOverListener<User>() {
 

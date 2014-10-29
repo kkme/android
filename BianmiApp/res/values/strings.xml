@@ -6,6 +6,8 @@
     <string name="press_back_again_to_exit">再按一次退出</string>
     <string name="no_network">木有网络</string>
     <string name="no_more_to_load">木有啦</string>
+    <string name="welcome_tip_next">滑动有惊喜></string>
+    <string name="welcome_guest">游客进入</string>
 
     <!-- 主界面 -->
     <string name="hot">热门</string>
