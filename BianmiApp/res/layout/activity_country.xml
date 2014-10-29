@@ -8,7 +8,7 @@
     <com.link.bianmi.unit.country.ClearEditText
         android:id="@+id/filter_edit"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_48"
+        android:layout_height="@dimen/dp_36"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/page_padding_left"
         android:layout_marginRight="@dimen/dp_38"

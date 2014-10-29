@@ -8,19 +8,19 @@
     <TextView
         android:id="@+id/catalog"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_48"
+        android:layout_height="@dimen/dp_36"
         android:layout_weight="1"
         android:clickable="false"
         android:gravity="center_vertical"
         android:text="A"
         android:textColor="@color/main_purple"
-        android:textSize="@dimen/sp_24"
+        android:textSize="@dimen/sp_20"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_48"
+        android:layout_height="@dimen/dp_36"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:gravity="center_vertical"
