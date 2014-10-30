@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
 
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
@@ -20,6 +19,8 @@ import com.link.bianmi.entity.User;
 import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.utility.DataCheckUtil;
 import com.link.bianmi.utility.SecurityUtils;
+import com.link.bianmi.widget.ClearEditText;
+import com.link.bianmi.widget.ClearEditText.OnFocusListener;
 import com.link.bianmi.widget.SuperToast;
 
 /**
@@ -28,7 +29,11 @@ import com.link.bianmi.widget.SuperToast;
  * @author pangfq
  * @date 2014年7月24日 下午4:22:34
  */
-public class SignUpActivity extends BaseFragmentActivity {
+public class SignUpActivity extends BaseFragmentActivity implements
+		OnFocusListener {
+
+	private ClearEditText mPwdEdit = null;
+	private CheckBox mSwitchPwdCheckbox = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,25 +45,25 @@ public class SignUpActivity extends BaseFragmentActivity {
 
 		setContentView(R.layout.activity_signup);
 
-		final EditText phonenumEdit = (EditText) findViewById(R.id.phonenum_edittext);
-		final EditText passwordEdit = (EditText) findViewById(R.id.password_edittext);
+		final ClearEditText phonenumEdit = (ClearEditText) findViewById(R.id.phonenum_edittext);
+		mPwdEdit = (ClearEditText) findViewById(R.id.password_edittext);
 		Button signUpButton = (Button) findViewById(R.id.signup_button);
 
+		mPwdEdit.setOnFocusListener(this);
 		// 切换密码明文、暗文
-		CheckBox switchPwdCheckbox = (CheckBox) findViewById(R.id.switch_pwd_checkbox);
-		switchPwdCheckbox.setChecked(false);
-		switchPwdCheckbox
+		mSwitchPwdCheckbox = (CheckBox) findViewById(R.id.switch_pwd_checkbox);
+		mSwitchPwdCheckbox.setChecked(false);
+		mSwitchPwdCheckbox
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
 						if (isChecked) {
 							// 明文
-							passwordEdit
-									.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+							mPwdEdit.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 						} else {
 							// 暗文
-							passwordEdit.setInputType(InputType.TYPE_CLASS_TEXT
+							mPwdEdit.setInputType(InputType.TYPE_CLASS_TEXT
 									| InputType.TYPE_TEXT_VARIATION_PASSWORD);
 						}
 					}
@@ -70,7 +75,7 @@ public class SignUpActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				final String phonenum = phonenumEdit.getText().toString();
-				String password = passwordEdit.getText().toString();
+				String password = mPwdEdit.getText().toString();
 
 				// 校验注册数据合法性
 				if (DataCheckUtil.checkSignInUpData(SignUpActivity.this,
@@ -113,6 +118,19 @@ public class SignUpActivity extends BaseFragmentActivity {
 		getMenuInflater().inflate(R.menu.loading, menu);
 		mLoadingMenuItem = menu.findItem(R.id.action_loading);
 		return true;
+	}
+
+	@Override
+	public void onFocusChange(View v, boolean hasFocus) {
+		if (v.equals(mPwdEdit)) {
+			if (hasFocus) {
+				mSwitchPwdCheckbox
+						.setBackgroundResource(R.drawable.input_bg_focus);
+			} else {
+				mSwitchPwdCheckbox
+						.setBackgroundResource(R.drawable.input_bg_normal);
+			}
+		}
 	}
 
 }

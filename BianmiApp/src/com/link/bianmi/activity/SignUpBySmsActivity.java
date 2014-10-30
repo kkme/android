@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
 import android.widget.TextView;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
@@ -35,6 +34,8 @@ import com.link.bianmi.unit.country.Country;
 import com.link.bianmi.unit.country.CountryActivity;
 import com.link.bianmi.utility.DataCheckUtil;
 import com.link.bianmi.utility.SecurityUtils;
+import com.link.bianmi.widget.ClearEditText;
+import com.link.bianmi.widget.ClearEditText.OnFocusListener;
 import com.link.bianmi.widget.SuperToast;
 
 /**
@@ -44,7 +45,7 @@ import com.link.bianmi.widget.SuperToast;
  * @date 2014年7月24日 下午4:22:34
  */
 public class SignUpBySmsActivity extends BaseFragmentActivity implements
-		Callback {
+		Callback, OnFocusListener {
 	private final int REQUEST_CODE_COUNTRY = 1111;// 请求码:进入国家代码查询页面
 	private boolean ready;
 
@@ -52,9 +53,13 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 	private TextView mCountryCodeText = null;
 
 	private View mSmsGroup = null;
+	private View mSmsCodeView = null;
 
-	private EditText mPhonenumEdit = null;
-	private EditText mPasswordEdit = null;
+	private ClearEditText mPhonenumEdit = null;
+	private ClearEditText mPasswordEdit = null;
+	private ClearEditText mSmsVerifyCodeEdit = null;
+
+	private CheckBox mSwitchPwdCheckbox = null;
 
 	private SMSReceiver mSMSReceiver;
 
@@ -70,12 +75,17 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 
 		mCountryNameText = (TextView) findViewById(R.id.country_name_textview);
 		mCountryCodeText = (TextView) findViewById(R.id.country_code_textview);
-		mPhonenumEdit = (EditText) findViewById(R.id.phonenum_edittext);
-		mPasswordEdit = (EditText) findViewById(R.id.password_edittext);
-		final EditText smsVerifyCodeEdit = (EditText) findViewById(R.id.smscode_edittext);
+		mPhonenumEdit = (ClearEditText) findViewById(R.id.phonenum_edittext);
+		mPasswordEdit = (ClearEditText) findViewById(R.id.password_edittext);
+		mSmsVerifyCodeEdit = (ClearEditText) findViewById(R.id.smscode_edittext);
 		mSmsGroup = findViewById(R.id.sms_group);
+		mSmsCodeView = findViewById(R.id.smscode_textview);
 		mSmsGroup.setVisibility(View.INVISIBLE);
 		final Button signUpButton = (Button) findViewById(R.id.signup_button);
+
+		mPhonenumEdit.setOnFocusListener(this);
+		mPasswordEdit.setOnFocusListener(this);
+		mSmsVerifyCodeEdit.setOnFocusListener(this);
 
 		initSDK();
 
@@ -90,9 +100,9 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 				});
 
 		// 切换密码明文、暗文
-		CheckBox switchPwdCheckbox = (CheckBox) findViewById(R.id.switch_pwd_checkbox);
-		switchPwdCheckbox.setChecked(false);
-		switchPwdCheckbox
+		mSwitchPwdCheckbox = (CheckBox) findViewById(R.id.switch_pwd_checkbox);
+		mSwitchPwdCheckbox.setChecked(false);
+		mSwitchPwdCheckbox
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
@@ -125,7 +135,7 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 									@Override
 									public void onClick(DialogInterface dialog,
 											int which) {
-										smsVerifyCodeEdit.getText().clear();
+										mSmsVerifyCodeEdit.getText().clear();
 										signUpButton
 												.setText(getString(R.string.signup));
 										// 发送短信验证码
@@ -204,7 +214,7 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 				} else if (signUpButton.getText().equals(
 						getString(R.string.signup_finish))) {
 					SMSSDK.submitVerificationCode(code, phonenum,
-							smsVerifyCodeEdit.getText().toString());
+							mSmsVerifyCodeEdit.getText().toString());
 				}
 			}
 		});
@@ -216,8 +226,9 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 			@Override
 			public void receiveVerifyCode(String verifyCode) {
 				mLoadingItem.setVisible(false);
-				smsVerifyCodeEdit.setText(verifyCode);
+				mSmsVerifyCodeEdit.setText(verifyCode);
 				signUpButton.setText(getString(R.string.signup_finish));
+				mSmsVerifyCodeEdit.requestFocus();
 			}
 		});
 		registerReceiver(mSMSReceiver, filter);
@@ -365,6 +376,30 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 							ActivitysManager.removeAllActivity();
 						}
 					});
+		}
+	}
+
+	@Override
+	public void onFocusChange(View v, boolean hasFocus) {
+		if (v.equals(mPhonenumEdit)) {
+			changeClearEditTextBackground(mCountryCodeText, hasFocus,
+					R.drawable.input_bg_normal, R.drawable.input_bg_focus);
+		} else if (v.equals(mPasswordEdit)) {
+			changeClearEditTextBackground(mSwitchPwdCheckbox, hasFocus,
+					R.drawable.input_bg_special_normal,
+					R.drawable.input_bg_special_focus);
+		} else if (v.equals(mSmsVerifyCodeEdit)) {
+			changeClearEditTextBackground(mSmsCodeView, hasFocus,
+					R.drawable.input_bg_normal, R.drawable.input_bg_focus);
+		}
+	}
+
+	private void changeClearEditTextBackground(View view, boolean hasFocus,
+			int resIdNormal, int resIdFocus) {
+		if (hasFocus) {
+			view.setBackgroundResource(resIdFocus);
+		} else {
+			view.setBackgroundResource(resIdNormal);
 		}
 	}
 

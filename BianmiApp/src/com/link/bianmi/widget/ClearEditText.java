@@ -69,6 +69,10 @@ public class ClearEditText extends EditText implements OnFocusChangeListener,
 		} else {
 			setClearIconVisible(false);
 		}
+
+		if (mListener != null) {
+			mListener.onFocusChange(v, hasFocus);
+		}
 	}
 
 	protected void setClearIconVisible(boolean visible) {
@@ -91,6 +95,16 @@ public class ClearEditText extends EditText implements OnFocusChangeListener,
 	@Override
 	public void afterTextChanged(Editable s) {
 
+	}
+
+	private OnFocusListener mListener = null;
+
+	public void setOnFocusListener(OnFocusListener listener) {
+		mListener = listener;
+	}
+
+	public interface OnFocusListener {
+		public void onFocusChange(View v, boolean hasFocus);
 	}
 
 	public void setShakeAnimation() {

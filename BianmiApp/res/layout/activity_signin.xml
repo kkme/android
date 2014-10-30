@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/selector_input"
-        android:hint="phonenum"
+        android:hint="@string/phone_num"
         android:inputType="phone"
         android:padding="@dimen/dp_10" />
 
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_15"
         android:background="@drawable/selector_input"
-        android:hint="password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:padding="@dimen/dp_10" />
 

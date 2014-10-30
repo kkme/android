@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ public class CountryActivity extends BaseFragmentActivity {
 	private SideBar mLetterSideBar;
 	private TextView mLetterDialog;
 	private SortAdapter mAdapter;
-	private ClearEditText mClearEditText;
+	private EditText mClearEditText;
 
 	private CharacterParser mCharacterParser;
 	private List<Country> mCountryLists;
@@ -87,7 +88,7 @@ public class CountryActivity extends BaseFragmentActivity {
 		mAdapter = new SortAdapter(this, mCountryLists);
 		mSortListView.setAdapter(mAdapter);
 
-		mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
+		mClearEditText = (EditText) findViewById(R.id.filter_edit);
 
 		mClearEditText.addTextChangedListener(new TextWatcher() {
 

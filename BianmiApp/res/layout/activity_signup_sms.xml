@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/selector_input_special"
-            android:hint="phonenum"
+            android:hint="@string/phone_num"
             android:inputType="phone" />
     </LinearLayout>
 
@@ -62,7 +62,7 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/switch_pwd_checkbox"
             android:background="@drawable/selector_input"
-            android:hint="password"
+            android:hint="@string/password"
             android:inputType="textPassword" />
 
         <CheckBox
@@ -87,15 +87,18 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/smscode_textview"
+            android:layout_width="@dimen/dp_70"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_input"
+            android:gravity="center"
             android:text="@string/sms_code" />
 
         <com.link.bianmi.widget.ClearEditText
             android:id="@+id/smscode_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_input" />
+            android:background="@drawable/selector_input_special" />
     </LinearLayout>
 
     <Button

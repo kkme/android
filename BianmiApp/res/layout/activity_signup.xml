@@ -10,7 +10,7 @@
         android:id="@+id/phonenum_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="phonenum" />
+        android:hint="@string/phone_num" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/switch_pwd_checkbox"
             android:background="@drawable/selector_input"
-            android:hint="password"
+            android:hint="@string/password"
             android:inputType="textPassword" />
 
         <CheckBox
