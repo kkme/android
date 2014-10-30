@@ -2,7 +2,6 @@ package com.link.bianmi.activity;
 
 import java.util.UUID;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -130,10 +129,19 @@ public class WelcomeActivity extends BaseFragmentActivity {
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
 			ImageView imageView = new ImageView(WelcomeActivity.this);
-			imageView.setBackgroundColor(Color.GREEN);
+			switch (position) {
+			case 0:
+				imageView.setImageResource(R.drawable.bg_guider_0);
+				break;
+			case 1:
+				imageView.setImageResource(R.drawable.bg_guider_1);
+				break;
+			case 2:
+				imageView.setImageResource(R.drawable.bg_guider_2);
+				break;
+			}
 			((ViewPager) container).addView(imageView, position);
 			return imageView;
-
 		}
 
 		@Override
