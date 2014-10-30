@@ -48,7 +48,8 @@
             android:layout_height="match_parent"
             android:background="@drawable/selector_input_special"
             android:hint="@string/phone_num"
-            android:inputType="phone" />
+            android:inputType="phone"
+            android:textSize="@dimen/main_edittext_size" />
     </LinearLayout>
 
     <RelativeLayout
@@ -63,7 +64,8 @@
             android:layout_toLeftOf="@+id/switch_pwd_checkbox"
             android:background="@drawable/selector_input"
             android:hint="@string/password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textSize="@dimen/main_edittext_size" />
 
         <CheckBox
             android:id="@+id/switch_pwd_checkbox"
@@ -98,7 +100,8 @@
             android:id="@+id/smscode_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_input_special" />
+            android:background="@drawable/selector_input_special"
+            android:textSize="@dimen/main_edittext_size" />
     </LinearLayout>
 
     <Button

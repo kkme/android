@@ -13,7 +13,8 @@
         android:background="@drawable/selector_input"
         android:hint="@string/phone_num"
         android:inputType="phone"
-        android:padding="@dimen/dp_10" />
+        android:padding="@dimen/dp_10"
+        android:textSize="@dimen/main_edittext_size" />
 
     <com.link.bianmi.widget.ClearEditText
         android:id="@+id/password_edittext"
@@ -23,7 +24,8 @@
         android:background="@drawable/selector_input"
         android:hint="@string/password"
         android:inputType="textPassword"
-        android:padding="@dimen/dp_10" />
+        android:padding="@dimen/dp_10"
+        android:textSize="@dimen/main_edittext_size" />
 
     <Button
         android:id="@+id/signin_button"

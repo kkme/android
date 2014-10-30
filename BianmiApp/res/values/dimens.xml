@@ -387,5 +387,6 @@
     <dimen name="page_padding_left">@dimen/dp_10</dimen>
     <dimen name="page_padding_right">@dimen/dp_10</dimen>
     <dimen name="page_padding_top">@dimen/dp_15</dimen>
+    <dimen name="main_edittext_size">@dimen/sp_14</dimen>
 
 </resources>
