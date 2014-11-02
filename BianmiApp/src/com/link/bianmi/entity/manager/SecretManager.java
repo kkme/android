@@ -35,10 +35,11 @@ import com.link.bianmi.http.ResponseException;
 public class SecretManager {
 
 	public static enum TaskType {
+		GET_HOTS, // 热门秘密
+		GET_FRIENDS, // 朋友圈秘密
+		GET_NEARBY, // 附近秘密
 		PUBLISH, // 发表秘密
-		GET_SECRETS, // 获取秘密列表
-		LIKE, // 秘密点赞
-		HOT, FRIEND, NEARBY
+		LIKE // 秘密点赞
 	}
 
 	/** 单页数量 **/
@@ -53,15 +54,53 @@ public class SecretManager {
 			Database.getInstance().cleanData(SecretDB.TABLE_NAME);
 		}
 
-		public static Cursor fetch(int page) {
+		public static Cursor fetch(int page, TaskType taskType) {
+			if (taskType == null)
+				return null;
+
 			SQLiteDatabase db = Database.getInstance().getDb(false);
 			String orderBy = SecretDB.FIELD_CREATED_TIME + " DESC ";// 按创建时间的倒叙排
-			return db.query(SecretDB.TABLE_NAME, SecretDB.TABLE_COLUMNS, null,
-					null, null, null, orderBy, String.valueOf(page * BATCH));
+			String type = null;
+			switch (taskType) {
+			case GET_HOTS:
+				type = "1";
+				break;
+			case GET_FRIENDS:
+				type = "2";
+				break;
+			case GET_NEARBY:
+				type = "3";
+				break;
+			default:
+				break;
+			}
+			if (type == null)
+				return null;
+			return db.query(SecretDB.TABLE_NAME, SecretDB.TABLE_COLUMNS,
+					"type=? ", new String[] { type }, null, null, orderBy,
+					String.valueOf(page * BATCH));
 		}
 
-		public static void addSecrets(List<Secret> secretsList) {
+		public static void addSecrets(List<Secret> secretsList,
+				TaskType taskType) {
+			int type = 0;
+			switch (taskType) {
+			case GET_HOTS:
+				type = 1;
+				break;
+			case GET_FRIENDS:
+				type = 2;
+				break;
+			case GET_NEARBY:
+				type = 3;
+				break;
+			default:
+				break;
+			}
+			if (type == 0)
+				return;
 			for (Secret s : secretsList) {
+				s.type = type;
 				addSecret(s);
 			}
 		}
@@ -71,18 +110,16 @@ public class SecretManager {
 		}
 
 		public static void like(String resourceId, boolean isLiked) {
-
 			SQLiteDatabase db = Database.getInstance().getDb(true);
 			ContentValues values = new ContentValues();
 			values.put(SecretDB.FIELD_ISLIKED, isLiked);
 			db.update(SecretDB.TABLE_NAME, values, SecretDB.FIELD_RESOURCEID
 					+ "=?", new String[] { resourceId });
-
 		}
 
 	}
 
-	public static class API {
+	private static class API {
 
 		private static Result<Secret> publishSecret(Secret secret) {
 			if (secret == null)
@@ -119,16 +156,36 @@ public class SecretManager {
 			return result;
 		}
 
-		private static Result<ListResult<Secret>> getSecrets(String userid,
-				String secretid) {
+		private static Result<ListResult<Secret>> getSecrets(String lastid,
+				TaskType taskType) {
 			Result<ListResult<Secret>> result = null;
 
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("userid", userid));
-			params.add(new BasicNameValuePair("lastid", secretid));
+			params.add(new BasicNameValuePair("userid", UserConfig
+					.getInstance().getUserId()));
+			params.add(new BasicNameValuePair("lastid", lastid));
+			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
+					.getToken()));
 			params.add(new BasicNameValuePair("batch", String.valueOf(BATCH)));
-			Response response = HttpClient.doPost(params, SysConfig
-					.getInstance().getSecretsUrl());
+			String url = null;
+			switch (taskType) {
+			case GET_HOTS:
+				url = SysConfig.getInstance().getHotSecretsUrl();
+				break;
+			case GET_FRIENDS:
+				url = SysConfig.getInstance().getFriendSecretsUrl();
+				break;
+			case GET_NEARBY:
+				url = SysConfig.getInstance().getNearbySecretsUrl();
+				break;
+			default:
+				break;
+			}
+
+			if (url == null)
+				return null;
+
+			Response response = HttpClient.doPost(params, url);
 
 			if (response != null) {
 				try {
@@ -180,7 +237,6 @@ public class SecretManager {
 					e.printStackTrace();
 				}
 			}
-
 			return result;
 		}
 	}
@@ -195,12 +251,31 @@ public class SecretManager {
 					taskParams);
 		}
 
-		public static void getSecrets(String secretId,
-				OnTaskOverListener<ListResult<Secret>> listener) {
+		public static void getSecrets(String lastid,
+				OnTaskOverListener<ListResult<Secret>> listener,
+				TaskType taskType) {
+			if (lastid == null || taskType == null)
+				return;
+			String url = null;
+			switch (taskType) {
+			case GET_HOTS:
+				url = SysConfig.getInstance().getHotSecretsUrl();
+				break;
+			case GET_FRIENDS:
+				url = SysConfig.getInstance().getFriendSecretsUrl();
+				break;
+			case GET_NEARBY:
+				url = SysConfig.getInstance().getNearbySecretsUrl();
+				break;
+			default:
+				break;
+			}
+			if (url == null || url.isEmpty())
+				return;
 			TaskParams taskParams = new TaskParams();
-			taskParams.put("userid", UserConfig.getInstance().getUserId());
-			taskParams.put("secretid", secretId);
-			SecretTask userTask = new SecretTask(TaskType.GET_SECRETS, listener);
+			taskParams.put("lastid", lastid);
+			taskParams.put("url", url);
+			SecretTask userTask = new SecretTask(taskType, listener);
 			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
 		}
@@ -236,8 +311,8 @@ public class SecretManager {
 		protected TaskResult<?> doInBackground(TaskParams... params) {
 			Status_ resultStatus = null;
 			TaskResult<?> taskResult = null;
-			// 发表
-			if (taskType == TaskType.PUBLISH) {
+			switch (taskType) {
+			case PUBLISH:
 				Secret secret = (Secret) params[0].get("secret");
 				Result<Secret> result = API.publishSecret(secret);
 				if (result != null && result.status != null
@@ -252,20 +327,20 @@ public class SecretManager {
 					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
 							resultStatus);
 				}
-
-				// 秘密列表
-			} else if (taskType == TaskType.GET_SECRETS) {
-				String userid = params[0].getString("userid");
-				String secretid = params[0].getString("secretid");
-				Result<ListResult<Secret>> result = API.getSecrets(userid,
-						secretid);
-				if (result != null && result.status != null
-						&& result.status.code == Status_.OK) {
+				break;
+			case GET_HOTS:
+			case GET_FRIENDS:
+			case GET_NEARBY:
+				String lastid = params[0].getString("lastid");
+				Result<ListResult<Secret>> result1 = API.getSecrets(lastid,
+						taskType);
+				if (result1 != null && result1.status != null
+						&& result1.status.code == Status_.OK) {
 					taskResult = new TaskResult<ListResult<Secret>>(
-							TaskStatus.OK, result.t);
-				} else if (result != null && result.status != null) {
+							TaskStatus.OK, result1.t);
+				} else if (result1 != null && result1.status != null) {
 					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
-							result.status);
+							result1.status);
 				} else {
 					resultStatus = new Status_();
 					resultStatus.msg = "获取数据失败!";
@@ -273,25 +348,29 @@ public class SecretManager {
 							resultStatus);
 				}
 
-			} else if (taskType == TaskType.LIKE) {
+				break;
+			case LIKE:
 				String secretId = (String) params[0].get("secretid");
 				boolean isLiked = (Boolean) params[0].get("isliked");
-				Result<Boolean> result = API.likeOrDislike(secretId, isLiked);
-				if (result != null && result.status != null
-						&& result.status.code == Status_.OK) {
+				Result<Boolean> result11 = API.likeOrDislike(secretId, isLiked);
+				if (result11 != null && result11.status != null
+						&& result11.status.code == Status_.OK) {
 					taskResult = new TaskResult<Boolean>(TaskStatus.OK,
-							result.t);
-				} else if (result != null && result.status != null) {
+							result11.t);
+				} else if (result11 != null && result11.status != null) {
 					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
-							result.status);
+							result11.status);
 				} else {
 					resultStatus = new Status_();
 					resultStatus.msg = "操作失败!";
 					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
 							resultStatus);
 				}
-			}
 
+				break;
+			default:
+				break;
+			}
 			return taskResult;
 		}
 
@@ -300,8 +379,8 @@ public class SecretManager {
 		protected void onPostExecute(TaskResult<?> taskResult) {
 			super.onPostExecute(taskResult);
 
-			// 发表
-			if (taskType == TaskType.PUBLISH) {
+			switch (taskType) {
+			case PUBLISH:
 				if (taskResult.getStatus() == TaskStatus.OK) {
 					((OnTaskOverListener<Secret>) listener)
 							.onSuccess((Secret) taskResult.getEntity());
@@ -310,8 +389,10 @@ public class SecretManager {
 					((OnTaskOverListener<Secret>) listener).onFailure(
 							result.code, result.msg);
 				}
-				// 秘密列表
-			} else if (taskType == TaskType.GET_SECRETS) {
+				break;
+			case GET_HOTS:
+			case GET_FRIENDS:
+			case GET_NEARBY:
 				if (taskResult.getStatus() == TaskStatus.OK) {
 					((OnTaskOverListener<ListResult<Secret>>) listener)
 							.onSuccess((ListResult<Secret>) taskResult
@@ -321,9 +402,8 @@ public class SecretManager {
 					((OnTaskOverListener<ListResult<Secret>>) listener)
 							.onFailure(result.code, result.msg);
 				}
-
-				// 点赞
-			} else if (taskType == TaskType.LIKE) {
+				break;
+			case LIKE:
 				if (taskResult.getStatus() == TaskStatus.OK) {
 					((OnTaskOverListener<Boolean>) listener)
 							.onSuccess((Boolean) taskResult.getEntity());
@@ -332,6 +412,9 @@ public class SecretManager {
 					((OnTaskOverListener<Boolean>) listener).onFailure(
 							result.code, result.msg);
 				}
+				break;
+			default:
+				break;
 			}
 		}
 	}

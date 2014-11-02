@@ -6,7 +6,7 @@ public class HotFragment extends SecretFragment {
 
 	@Override
 	protected SecretManager.TaskType getTaskType() {
-		return SecretManager.TaskType.HOT;
+		return SecretManager.TaskType.GET_HOTS;
 	}
 
 	@Override

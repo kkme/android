@@ -16,6 +16,7 @@ import com.link.bianmi.activity.HomeActivity;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.entity.manager.SecretManager;
+import com.link.bianmi.entity.manager.SecretManager.TaskType;
 import com.link.bianmi.imageloader.ImageLoader;
 import com.link.bianmi.utility.ViewHolder;
 import com.link.bianmi.widget.AudioButton;
@@ -25,11 +26,13 @@ public class SecretAdapter extends CursorAdapter {
 
 	private Context mContext;
 	private IndexHolder mIndexHolder;
+	private TaskType mTaskType;
 
 	@SuppressWarnings("deprecation")
-	public SecretAdapter(Context context, Cursor c) {
+	public SecretAdapter(Context context, Cursor c, TaskType taskType) {
 		super(context, c);
 		mContext = context;
+		mTaskType = taskType;
 	}
 
 	@Override
@@ -101,7 +104,8 @@ public class SecretAdapter extends CursorAdapter {
 								SecretManager.DB.like(resourceId, t);
 								likeOrDislike(likesText, t);
 								SecretAdapter.this
-										.changeCursor(SecretManager.DB.fetch(1));
+										.changeCursor(SecretManager.DB.fetch(1,
+												mTaskType));
 							}
 
 							@Override

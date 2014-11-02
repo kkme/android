@@ -47,8 +47,12 @@ public class SysConfig {
 				"http://121.40.88.136/bianmi/index.php/Index/Login/signout");
 		mProperties.setProperty("bianmi.url.secret.publish.debug",
 				"http://192.168.1.110/bianmi/add.php");
-		mProperties.setProperty("bianmi.url.secret.list.debug",
-				"http://192.168.1.110/bianmi/secrets.php");
+		mProperties.setProperty("bianmi.url.secret.list.hot.debug",
+				"http://192.168.1.110/bianmi/secrets_hot.php");
+		mProperties.setProperty("bianmi.url.secret.list.friend.debug",
+				"http://192.168.1.110/bianmi/secrets_friend.php");
+		mProperties.setProperty("bianmi.url.secret.list.nearby.debug",
+				"http://192.168.1.110/bianmi/secrets_nearby.php");
 		mProperties.setProperty("bianmi.url.secret.like.debug",
 				"http://192.168.1.110/bianmi/like.php");
 		mProperties.setProperty("bianmi.url.comment.like.debug",
@@ -76,8 +80,12 @@ public class SysConfig {
 				"http://192.168.1.110/bianmi/token.php?type=uptoken");// 上传token
 		mProperties.setProperty("bianmi.url.secret.publish.release",
 				"http://192.168.1.110/bianmi/add.php");
-		mProperties.setProperty("bianmi.url.secret.list.release",
-				"http://192.168.1.110/bianmi/secrets.php");
+		mProperties.setProperty("bianmi.url.secret.list.hot.release",
+				"http://192.168.1.110/bianmi/secrets_hot.php");
+		mProperties.setProperty("bianmi.url.secret.list.friend.release",
+				"http://192.168.1.110/bianmi/secrets_friend.php");
+		mProperties.setProperty("bianmi.url.secret.list.nearby.release",
+				"http://192.168.1.110/bianmi/secrets_nearby.php");
 		mProperties.setProperty("bianmi.url.secret.like.release",
 				"http://192.168.1.110/bianmi/like.php");
 		mProperties.setProperty("bianmi.url.comment.like.release",
@@ -163,36 +171,6 @@ public class SysConfig {
 		}
 	}
 
-	/** 获取Url:热门 **/
-	public String getHotUrl() {
-		if (isDebug()) {
-			return mProperties.getProperty("bianmi.url.base.debug") + "/hot/";
-		} else {
-			return mProperties.getProperty("bianmi.url.base.release") + "/hot/";
-		}
-	}
-
-	/** 获取Url:朋友 **/
-	public String getFriendUrl() {
-		if (isDebug()) {
-			return mProperties.getProperty("bianmi.url.base.debug") + "/fresh/";
-		} else {
-			return mProperties.getProperty("bianmi.url.base.release")
-					+ "/fresh/";
-		}
-	}
-
-	/** 获取Url:附近 **/
-	public String getNearbyUrl() {
-		if (isDebug()) {
-			return mProperties.getProperty("bianmi.url.base.debug")
-					+ "/trending/";
-		} else {
-			return mProperties.getProperty("bianmi.url.base.release")
-					+ "/trending/";
-		}
-	}
-
 	/** 获取注册URL **/
 	public String getSignUpUrl() {
 		if (isDebug()) {
@@ -248,13 +226,40 @@ public class SysConfig {
 	}
 
 	/**
-	 * 获取秘密列表
+	 * 获取热门秘密列表
 	 */
-	public String getSecretsUrl() {
+	public String getHotSecretsUrl() {
 		if (isDebug()) {
-			return mProperties.getProperty("bianmi.url.secret.list.debug");
+			return mProperties.getProperty("bianmi.url.secret.list.hot.debug");
 		} else {
-			return mProperties.getProperty("bianmi.url.secret.list.release");
+			return mProperties
+					.getProperty("bianmi.url.secret.list.hot.release");
+		}
+	}
+
+	/**
+	 * 获取朋友秘密列表
+	 */
+	public String getFriendSecretsUrl() {
+		if (isDebug()) {
+			return mProperties
+					.getProperty("bianmi.url.secret.list.friend.debug");
+		} else {
+			return mProperties
+					.getProperty("bianmi.url.secret.list.friend.release");
+		}
+	}
+
+	/**
+	 * 获取附近秘密列表
+	 */
+	public String getNearbySecretsUrl() {
+		if (isDebug()) {
+			return mProperties
+					.getProperty("bianmi.url.secret.list.nearby.debug");
+		} else {
+			return mProperties
+					.getProperty("bianmi.url.secret.list.nearby.release");
 		}
 	}
 

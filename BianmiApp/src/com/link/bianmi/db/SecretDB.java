@@ -21,11 +21,12 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 	public static final String FIELD_IMAGE_URL = "image_url";
 	public static final String FIELD_CREATED_TIME = "created_time";
 	public static final String FIELD_REPLIED_TIME = "replied_time";
+	public static final String FIELD_TYPE = "type";
 
 	public final static String[] TABLE_COLUMNS = { _ID, FIELD_RESOURCEID,
 			FIELD_CONTENT, FIELD_WHEREFROM, FIELD_LIKES, FIELD_COMMENTS,
 			FIELD_ISLIKED, FIELD_AUDIO_URL, FIELD_AUDIO_LENGTH,
-			FIELD_IMAGE_URL, FIELD_CREATED_TIME, FIELD_REPLIED_TIME };
+			FIELD_IMAGE_URL, FIELD_CREATED_TIME, FIELD_REPLIED_TIME, FIELD_TYPE };
 
 	public static final String CREATE_TABLE_SQL = "create table " + TABLE_NAME
 			+ " (" + _ID + " text primary key on conflict replace, "
@@ -34,7 +35,7 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 			+ FIELD_COMMENTS + " integer , " + FIELD_ISLIKED + " integer , "
 			+ FIELD_AUDIO_URL + " text , " + FIELD_AUDIO_LENGTH + " integer, "
 			+ FIELD_IMAGE_URL + " text, " + FIELD_CREATED_TIME + " integer , "
-			+ FIELD_REPLIED_TIME + " integer )";
+			+ FIELD_TYPE + " integer , " + FIELD_REPLIED_TIME + " integer )";
 
 	private static SecretDB mInstance = null;
 
@@ -65,6 +66,7 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 		s.imageUrl = c.getString(c.getColumnIndex(FIELD_IMAGE_URL));
 		s.createdTime = c.getLong(c.getColumnIndex(FIELD_CREATED_TIME));
 		s.repliedTime = c.getLong(c.getColumnIndex(FIELD_REPLIED_TIME));
+		s.type = c.getInt(c.getColumnIndex(FIELD_TYPE));
 		return s;
 	}
 
@@ -82,6 +84,7 @@ public class SecretDB extends DatabaseBuilder<Secret> implements BaseColumns {
 		cv.put(FIELD_IMAGE_URL, s.imageUrl);
 		cv.put(FIELD_CREATED_TIME, s.createdTime);
 		cv.put(FIELD_REPLIED_TIME, s.repliedTime);
+		cv.put(FIELD_TYPE, s.type);
 		return cv;
 	}
 

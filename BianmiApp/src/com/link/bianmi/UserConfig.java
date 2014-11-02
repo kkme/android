@@ -38,6 +38,18 @@ public class UserConfig {
 		return mPref.getString("bianmi.user.userid", null);
 	}
 
+	/** 设置token **/
+	public void setToken(String token) {
+		SharedPreferences.Editor editor = mPref.edit();
+		editor.putString("bianmi.user.token", token);
+		editor.commit();
+	}
+
+	/** 获取token **/
+	public String getToken() {
+		return mPref.getString("bianmi.user.token", null);
+	}
+
 	/** 设置sessionId **/
 	public void setSessionId(String sessionId) {
 		SharedPreferences.Editor editor = mPref.edit();

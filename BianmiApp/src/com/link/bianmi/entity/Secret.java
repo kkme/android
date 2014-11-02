@@ -19,9 +19,9 @@ public class Secret implements Serializable {
 	public String imageUrl = "";// 图片url
 	public long createdTime = 0;// 创建时间
 	public long repliedTime = 0;// 回复时间
-	public String city = "";// 城市
 	/** 发表秘密时，需要定位 **/
 	public double longitude;// 经度
 	public double latitude;// 纬度
+	public int type;// 类型：1--->热门 2--->朋友圈 3--->附近
 
 }

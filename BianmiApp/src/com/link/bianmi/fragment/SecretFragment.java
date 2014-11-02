@@ -67,7 +67,7 @@ public class SecretFragment extends BaseFragment {
 		bannerGroup.setVisibility(View.GONE);
 
 		mRListView = (RListView) mRootView.findViewById(R.id.rlistview);
-		mAdapter = new SecretAdapter(mContext, null);
+		mAdapter = new SecretAdapter(mContext, null, getTaskType());
 		final CardsAnimationAdapter adapter = new CardsAnimationAdapter(
 				mAdapter);
 		adapter.setAbsListView(mRListView);
@@ -239,7 +239,8 @@ public class SecretFragment extends BaseFragment {
 	 * 从缓存中加载数据初始化界面
 	 */
 	private void loadCache() {
-		refreshRListView(SecretManager.DB.fetch(mPageSize), false, -1);
+		refreshRListView(SecretManager.DB.fetch(mPageSize, getTaskType()),
+				false, -1);
 
 	}
 
@@ -319,9 +320,11 @@ public class SecretFragment extends BaseFragment {
 						if (listResult != null && listResult.list != null
 								&& listResult.list.size() > 0) {
 							mSecretsList = listResult.list;
-							SecretManager.DB.addSecrets(listResult.list);
-							refreshRListView(SecretManager.DB.fetch(pageSize),
-									listResult.hasMore, beginTime);
+							SecretManager.DB.addSecrets(listResult.list,
+									getTaskType());
+							refreshRListView(SecretManager.DB.fetch(pageSize,
+									getTaskType()), listResult.hasMore,
+									beginTime);
 						}
 						mParentActivity.finishLoaded(false);
 
@@ -334,7 +337,7 @@ public class SecretFragment extends BaseFragment {
 						SuperToast.makeText(mContext, msg,
 								SuperToast.LENGTH_SHORT).show();
 					}
-				});
+				}, getTaskType());
 	}
 
 }
