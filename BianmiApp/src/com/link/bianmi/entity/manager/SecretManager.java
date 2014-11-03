@@ -50,8 +50,25 @@ public class SecretManager {
 		/**
 		 * 清空秘密表
 		 */
-		public static void cleanSecret() {
-			Database.getInstance().cleanData(SecretDB.TABLE_NAME);
+		public static void cleanSecret(TaskType taskType) {
+			String type = null;
+			switch (taskType) {
+			case GET_HOTS:
+				type = "1";
+				break;
+			case GET_FRIENDS:
+				type = "2";
+				break;
+			case GET_NEARBY:
+				type = "3";
+				break;
+			default:
+				break;
+			}
+			if (type == null)
+				return;
+			SQLiteDatabase db = Database.getInstance().getDb(true);
+			db.delete(SecretDB.TABLE_NAME, "type=? ", new String[] { type });
 		}
 
 		public static Cursor fetch(int page, TaskType taskType) {

@@ -313,7 +313,7 @@ public class SecretFragment extends BaseFragment {
 
 						// 清空数据库
 						if (lastId != null && lastId.isEmpty()) {
-							SecretManager.DB.cleanSecret();
+							SecretManager.DB.cleanSecret(getTaskType());
 						}
 
 						// 刷新列表
