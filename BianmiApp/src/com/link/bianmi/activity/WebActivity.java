@@ -43,6 +43,17 @@ public class WebActivity extends FragmentActivity {
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	// ----------------------------Private-----------------------------------
+
 	private void initWebViewSettings() {
 
 		WebSettings setting = mWebView.getSettings();

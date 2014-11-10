@@ -24,6 +24,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
@@ -168,6 +171,24 @@ public class InputSuit extends LinearLayout {
 		mDissableTouchView = findViewById(R.id.dissableClick_view);
 		mDissableTouchView.setVisibility(View.GONE);
 		mDissableTouchView.setOnTouchListener(dissableTouchListener);
+		final RadioButton tomRadioBtn = (RadioButton) findViewById(R.id.tom_radiobtn);
+		final RadioButton wangRadioBtn = (RadioButton) findViewById(R.id.wang_radiobtn);
+		final RadioButton moreRadioBtn = (RadioButton) findViewById(R.id.more_radiobtn);
+		RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(RadioGroup arg0, int arg1) {
+				if (arg1 == tomRadioBtn.getId()) {
+
+				} else if (arg1 == wangRadioBtn.getId()) {
+
+				} else if (arg1 == moreRadioBtn.getId()) {
+
+				}
+			}
+		});
+		radioGroup.setVisibility(View.GONE);
+		findViewById(R.id.custom_group).setVisibility(View.VISIBLE);
 
 		if (attrs != null) {
 			TypedArray a = context.obtainStyledAttributes(attrs,
@@ -411,7 +432,6 @@ public class InputSuit extends LinearLayout {
 					mRecordPlayBtn.setAudioFile(filePath, mRecordLen);
 					mRecordBtn.setVisibility(View.GONE);
 					mRecordShowGroup.setVisibility(View.VISIBLE);
-					mChangeVoiceGroup.setVisibility(View.VISIBLE);
 					mTipRecord.setVisibility(View.VISIBLE);
 					mVolumnGroup.setVisibility(View.GONE);
 					cTime.cancel();
@@ -506,7 +526,6 @@ public class InputSuit extends LinearLayout {
 			mRecordLen = 0;
 			mRecordBtn.setVisibility(View.VISIBLE);
 			mRecordShowGroup.setVisibility(View.GONE);
-			mChangeVoiceGroup.setVisibility(View.GONE);
 			mTipRecord.setVisibility(View.GONE);
 		}
 	};
@@ -683,7 +702,6 @@ public class InputSuit extends LinearLayout {
 		mTipPhoto.setVisibility(View.GONE);
 		mAttachView.setVisibility(View.GONE);
 		mRecordShowGroup.setVisibility(View.GONE);
-		mChangeVoiceGroup.setVisibility(View.GONE);
 		mPhotoShowGroup.setVisibility(View.GONE);
 		mVolumnGroup.setVisibility(View.GONE);
 

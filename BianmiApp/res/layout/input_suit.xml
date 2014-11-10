@@ -187,6 +187,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipChildren="false"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" >
 
                 <Button
@@ -219,90 +220,78 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/change_voice_group"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/record_group"
-                android:orientation="vertical" >
+                android:layout_height="match_parent"
+                android:layout_below="@+id/record_group" >
 
                 <LinearLayout
+                    android:id="@+id/custom_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical" >
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/pitch_show"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="音速" />
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="Pitch Shift: 0" />
 
                     <SeekBar
+                        android:id="@+id/pitch_seek"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:max="3000"
+                        android:progress="1000" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tempo_show"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0" />
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="Tempo Change: 0%" />
+
+                    <SeekBar
+                        android:id="@+id/tempo_seek"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="15000"
+                        android:progress="5000" />
                 </LinearLayout>
 
-                <LinearLayout
+                <RadioGroup
+                    android:id="@+id/radioGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
                     android:orientation="horizontal" >
 
-                    <TextView
+                    <RadioButton
+                        android:id="@+id/tom_radiobtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="音调" />
-
-                    <SeekBar
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_48"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dp_8"
-                    android:weightSum="4" >
-
-                    <Button
-                        android:layout_width="@dimen/dp_72"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/selector_btn_normal_72"
+                        android:checked="true"
                         android:text="汤姆猫" />
 
-                    <Button
-                        android:layout_width="@dimen/dp_72"
+                    <RadioButton
+                        android:id="@+id/wang_radiobtn"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/selector_btn_normal_72"
-                        android:text="女声" />
+                        android:text="隔壁老王" />
 
-                    <Button
-                        android:layout_width="@dimen/dp_72"
+                    <RadioButton
+                        android:id="@+id/more_radiobtn"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/selector_btn_normal_72"
-                        android:text="老人" />
-
-                    <Button
-                        android:layout_width="@dimen/dp_72"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/selector_btn_normal_72"
-                        android:text="萝莉" />
-                </LinearLayout>
-            </LinearLayout>
+                        android:text="更多" />
+                </RadioGroup>
+            </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
 

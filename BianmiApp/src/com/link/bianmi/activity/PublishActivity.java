@@ -99,6 +99,8 @@ public class PublishActivity extends BaseFragmentActivity {
 		super.onBackPressed();
 	}
 
+	// --------------------------------------Private----------------------------------------------
+
 	/** 监听标题输入框的内容变化 **/
 	private TextWatcher mTextWatcher = new TextWatcher() {
 		@Override
