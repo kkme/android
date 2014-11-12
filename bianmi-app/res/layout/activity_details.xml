@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- 正文内容、评论列表 -->
+
+    <com.link.bianmi.widget.RListView
+        android:id="@+id/rlistview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        android:listSelector="@android:color/transparent"
+        android:layout_marginBottom="48dp" />
+    <!-- 输入套件 -->
+
+    <com.link.bianmi.widget.InputSuit
+        android:id="@+id/input_suit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

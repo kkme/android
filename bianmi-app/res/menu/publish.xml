@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_send"
+        android:enabled="false"
+        android:icon="@drawable/selector_btn_commit"
+        android:orderInCategory="99"
+        android:showAsAction="always"
+        android:title="@string/publish_new_secret"/>
+    <item
+        android:id="@+id/action_loading"
+        android:actionLayout="@layout/actionbar_loading_layout"
+        android:icon="@android:color/transparent"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/loading"
+        android:visible="false"/>
+
+</menu>

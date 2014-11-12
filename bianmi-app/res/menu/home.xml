@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_add"
+        android:icon="@drawable/ic_action_add"
+        android:orderInCategory="99"
+        android:showAsAction="always"
+        android:title="@string/publish_secret"/>
+    <item
+        android:id="@+id/action_notice"
+        android:icon="@drawable/ic_action_notice"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/look_notices"/>
+    <item
+        android:id="@+id/action_more"
+        android:icon="@drawable/ic_action_more"
+        android:orderInCategory="101"
+        android:showAsAction="always"
+        android:title="@string/look_more"/>
+    <item
+        android:id="@+id/action_loading"
+        android:actionLayout="@layout/actionbar_loading_layout"
+        android:icon="@android:color/transparent"
+        android:orderInCategory="102"
+        android:showAsAction="always"
+        android:title="@string/loading"/>
+
+</menu>

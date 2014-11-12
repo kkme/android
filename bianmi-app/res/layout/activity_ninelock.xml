@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:gravity="center" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_40"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_28"
+        android:textStyle="bold" />
+
+    <!-- 九宫格密码 -->
+
+    <com.link.bianmi.unit.ninelock.NineLockView
+        android:id="@+id/ninelockview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true" />
+    <!-- 忘记手势密码 -->
+
+    <TextView
+        android:id="@+id/forget_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:padding="@dimen/dp_10"
+        android:text="@string/forget_ninelock_password"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_16" />
+
+</RelativeLayout>

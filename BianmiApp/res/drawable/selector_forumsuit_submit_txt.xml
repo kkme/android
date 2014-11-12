@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- 输入控件提交按钮 文字颜色-->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_enabled="false" android:color="@color/fc_sub" />
-  <item android:color="@color/fc_fff" /> 
-</selector>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_like"
+        android:icon="@drawable/ic_action_like"
+        android:orderInCategory="99"
+        android:showAsAction="always"
+        android:title="@string/like"/>
+    <item
+        android:id="@+id/action_more"
+        android:icon="@drawable/ic_action_more"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/look_more"/>
+    <item
+        android:id="@+id/action_loading"
+        android:actionLayout="@layout/actionbar_loading_layout"
+        android:icon="@android:color/transparent"
+        android:orderInCategory="101"
+        android:showAsAction="always"
+        android:title="@string/loading"
+        android:visible="false"/>
+
+</menu>
