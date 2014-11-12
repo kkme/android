@@ -1,18 +1,21 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myattr="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center" >
 
     <!-- 外层须再嵌套一层FrameLayout，不然在4.0版本会显示有误 -->
-    <RelativeLayout
+
+    <RelativeLayout
         android:layout_width="@dimen/dp_56"
         android:layout_height="@dimen/dp_48" >
 
-        <ProgressBar
-            style="@android:style/Widget.ProgressBar.Large.Inverse"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
-            android:layout_centerInParent="true" />
+        <com.link.bianmi.widget.CircularProgressBar
+            android:id="@+id/pb"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerInParent="true"
+            myattr:borderWidth="4dp" />
     </RelativeLayout>
 
 </FrameLayout>

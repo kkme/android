@@ -91,5 +91,7 @@
         -->
         <attr name="aspect" format="string" />
     </declare-styleable>
-
+    <declare-styleable name="CircularProgressBar">
+        <attr name="borderWidth" format="dimension" />
+    </declare-styleable>
 </resources>
