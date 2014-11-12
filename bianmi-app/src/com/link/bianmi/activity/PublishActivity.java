@@ -38,7 +38,7 @@ public class PublishActivity extends BaseFragmentActivity {
 				getResources().getString(R.string.publish_secret_title));
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		setContentView(R.layout.activity_add);
+		setContentView(R.layout.activity_publish);
 
 		mInputSuit = (InputSuit) findViewById(R.id.input_suit);
 		mInputSuit.init(this, null, mInputListener);

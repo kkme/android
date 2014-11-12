@@ -3,6 +3,8 @@ package com.link.bianmi.widget;
 import java.io.File;
 import java.util.UUID;
 
+import lib.widget.seekarc.SeekArc;
+import lib.widget.seekarc.SeekArc.OnSeekArcChangeListener;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -125,6 +127,10 @@ public class InputSuit extends LinearLayout {
 
 	/** 禁止操作 **/
 	private View mDissableTouchView;
+	private SeekArc mPitchSeekArc;// 音调SeekArc
+	private SeekArc mTempoSeekArc;// 音速SeekArc
+	private TextView mPitchProgressText;
+	private TextView mTempoProgressText;
 
 	public InputSuit(Context context) {
 		super(context, null);
@@ -182,6 +188,44 @@ public class InputSuit extends LinearLayout {
 				} else if (arg1 == wangRadioBtn.getId()) {
 
 				}
+			}
+		});
+		mPitchProgressText = (TextView) findViewById(R.id.pitch_seekarc_progress_textview);
+		mTempoProgressText = (TextView) findViewById(R.id.tempo_seekarc_progress_textview);
+		mPitchSeekArc = (SeekArc) findViewById(R.id.pitch_seekarc);
+		mPitchSeekArc.setOnSeekArcChangeListener(new OnSeekArcChangeListener() {
+
+			@Override
+			public void onStopTrackingTouch(SeekArc seekArc) {
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekArc seekArc) {
+			}
+
+			@Override
+			public void onProgressChanged(SeekArc seekArc, int progress,
+					boolean fromUser) {
+				float pitch = (progress - 1000) / 100.0f;
+				mPitchProgressText.setText(String.valueOf(pitch));
+			}
+		});
+		mTempoSeekArc = (SeekArc) findViewById(R.id.tempo_seekarc);
+		mTempoSeekArc.setOnSeekArcChangeListener(new OnSeekArcChangeListener() {
+
+			@Override
+			public void onStopTrackingTouch(SeekArc seekArc) {
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekArc seekArc) {
+			}
+
+			@Override
+			public void onProgressChanged(SeekArc seekArc, int progress,
+					boolean fromUser) {
+				float tempo = (progress - 5000) / 100.0f;
+				mTempoProgressText.setText(String.valueOf(tempo + "%"));
 			}
 		});
 		if (attrs != null) {
