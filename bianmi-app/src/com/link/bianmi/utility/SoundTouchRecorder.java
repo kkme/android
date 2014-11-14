@@ -1,5 +1,6 @@
 package com.link.bianmi.utility;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -15,6 +16,8 @@ import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.util.Log;
+
+import com.link.bianmi.SysConfig;
 
 public class SoundTouchRecorder implements IRecorder {
 
@@ -57,10 +60,20 @@ public class SoundTouchRecorder implements IRecorder {
 
 			Log.d(TAG, "recordfile name:" + fileName);
 
-			fullFileName = /* recordFolderPath + */fileName + ".pcm";
+			fullFileName = SysConfig.getInstance().getPathTemp()
+					+ File.separator + fileName + ".amr";
+			File tempFile = new File(fullFileName);
+			if (!tempFile.exists()) {
+				try {
+					tempFile.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
 			try {
-				recordOutputStream = context.openFileOutput(fullFileName,
-						Context.MODE_PRIVATE);
+				recordOutputStream = new FileOutputStream(
+						new File(fullFileName));
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -83,7 +96,7 @@ public class SoundTouchRecorder implements IRecorder {
 
 				try {
 
-					Log.d(TAG, "input ST pcm size :" + inputSamples);
+					Log.d(TAG, "input ST amr size :" + inputSamples);
 
 					NativeSoundTouch.getSoundTouch().shiftingPitch(
 							recorderBuffer, 0, len);
@@ -94,7 +107,7 @@ public class SoundTouchRecorder implements IRecorder {
 										recorderBuffer.length);
 
 						totalSTSamples += receiveSTSamples;
-						Log.d(TAG, "receive ST pcm samples :"
+						Log.d(TAG, "receive ST amr samples :"
 								+ receiveSTSamples);
 
 						if (receiveSTSamples != 0) {
@@ -135,7 +148,7 @@ public class SoundTouchRecorder implements IRecorder {
 				}
 			} while (receiveSTSamples != 0);
 
-			Log.d(TAG, "Total input pcm samples:" + totalPCMSamples);
+			Log.d(TAG, "Total input amr samples:" + totalPCMSamples);
 			Log.d(TAG, "total receive ST samoles:" + totalSTSamples);
 
 			mAudioRecorder.stop();
@@ -159,7 +172,7 @@ public class SoundTouchRecorder implements IRecorder {
 
 			if (fileName != null) {
 				try {
-					playInputStream = context.openFileInput(fileName);
+					playInputStream = new FileInputStream(new File(fileName));//context.openFileInput(fileName);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -187,7 +200,7 @@ public class SoundTouchRecorder implements IRecorder {
 
 				if (len != 0) {
 					mAudioTrack.write(playerBuffer, 0, len);
-					Log.d(TAG, "write [" + len + "]pcm data into player!");
+					Log.d(TAG, "write [" + len + "]amr data into player!");
 				}
 
 			}
@@ -251,6 +264,7 @@ public class SoundTouchRecorder implements IRecorder {
 			recordThread = null;
 		}
 
+		mOnListener.OnStop();
 		return fileName;
 	}
 
@@ -308,9 +322,11 @@ public class SoundTouchRecorder implements IRecorder {
 
 	}
 
+	OnListener mOnListener;
+
 	@Override
 	public void SetOnListener(OnListener l) {
-
+		mOnListener = l;
 	}
 
 }

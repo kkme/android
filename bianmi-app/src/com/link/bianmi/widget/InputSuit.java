@@ -43,6 +43,7 @@ import com.link.bianmi.utility.ContextHelper;
 import com.link.bianmi.utility.ConvertHelper;
 import com.link.bianmi.utility.FileHelper;
 import com.link.bianmi.utility.IRecorder;
+import com.link.bianmi.utility.IRecorder.OnListener;
 import com.link.bianmi.utility.ImageHelper;
 import com.link.bianmi.utility.SoundTouchRecorder;
 
@@ -237,6 +238,28 @@ public class InputSuit extends LinearLayout {
 			}
 		});
 		mSTRecorder = new SoundTouchRecorder(context);
+		mSTRecorder.SetOnListener(new OnListener() {
+			@Override
+			public void OnVolumnPower(float power) {
+
+			}
+
+			@Override
+			public void OnStop() {
+
+				mRecordPlayBtn.setAudioFile(mLastRecordFile, 10);
+				mRecordBtn.setVisibility(View.GONE);
+				mRecordShowGroup.setVisibility(View.VISIBLE);
+				mTipRecord.setVisibility(View.VISIBLE);
+				mVolumnGroup.setVisibility(View.GONE);
+
+			}
+
+			@Override
+			public void OnCancel() {
+
+			}
+		});
 		if (attrs != null) {
 			TypedArray a = context.obtainStyledAttributes(attrs,
 					R.styleable.InputSuit);
@@ -542,12 +565,17 @@ public class InputSuit extends LinearLayout {
 			case MotionEvent.ACTION_UP: {
 				mHandler.removeCallbacks(prepareStart);
 				mRecordBtn.setText(R.string.inputsuit_record);
-				if (mRecorder != null)
-					mRecorder.stopRecord();
-				else
-					mVolumnGroup.setVisibility(View.GONE);
+				// if (mRecorder != null)
+				// mRecorder.stopRecord();
+				// else
+				// mVolumnGroup.setVisibility(View.GONE);
+
 				if (mSTRecorder != null)
 					mLastRecordFile = mSTRecorder.stopRecorder();
+				else
+					mVolumnGroup.setVisibility(View.GONE);
+				mRecordPlayBtn.setAudioFile(mLastRecordFile, 10);
+				mSTRecorder.startPlay(mLastRecordFile);
 			}
 				break;
 			case MotionEvent.ACTION_CANCEL:// 当手指移动到view外面，会cancel
