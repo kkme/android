@@ -3,6 +3,7 @@ package com.link.bianmi.widget;
 import java.io.File;
 import java.util.UUID;
 
+import lib.module.soundtouch.NativeSoundTouch;
 import lib.widget.seekarc.SeekArc;
 import lib.widget.seekarc.SeekArc.OnSeekArcChangeListener;
 import android.app.Activity;
@@ -43,6 +44,7 @@ import com.link.bianmi.utility.ConvertHelper;
 import com.link.bianmi.utility.FileHelper;
 import com.link.bianmi.utility.IRecorder;
 import com.link.bianmi.utility.ImageHelper;
+import com.link.bianmi.utility.SoundTouchRecorder;
 
 /**
  * 
@@ -77,6 +79,8 @@ public class InputSuit extends LinearLayout {
 	private CameraCrop mCamera;
 
 	private AudioRecorder mRecorder;
+	private SoundTouchRecorder mSTRecorder;
+	private String mLastRecordFile;
 
 	private String mRecorderDir;
 
@@ -197,6 +201,8 @@ public class InputSuit extends LinearLayout {
 
 			@Override
 			public void onStopTrackingTouch(SeekArc seekArc) {
+				float pitch = (seekArc.getProgress() - 1000) / 100.0f;
+				NativeSoundTouch.getSoundTouch().setPitchSemiTones(pitch);
 			}
 
 			@Override
@@ -215,6 +221,8 @@ public class InputSuit extends LinearLayout {
 
 			@Override
 			public void onStopTrackingTouch(SeekArc seekArc) {
+				float tempo = (seekArc.getProgress() - 5000) / 100.0f;
+				NativeSoundTouch.getSoundTouch().setTempoChange(tempo);
 			}
 
 			@Override
@@ -228,6 +236,7 @@ public class InputSuit extends LinearLayout {
 				mTempoProgressText.setText(String.valueOf(tempo + "%"));
 			}
 		});
+		mSTRecorder = new SoundTouchRecorder(context);
 		if (attrs != null) {
 			TypedArray a = context.obtainStyledAttributes(attrs,
 					R.styleable.InputSuit);
@@ -506,8 +515,8 @@ public class InputSuit extends LinearLayout {
 	private Runnable prepareStart = new Runnable() {
 		@Override
 		public void run() {
-
-			startRecord();
+			mSTRecorder.startRecord();
+			// startRecord();
 		}
 	};
 
@@ -537,6 +546,8 @@ public class InputSuit extends LinearLayout {
 					mRecorder.stopRecord();
 				else
 					mVolumnGroup.setVisibility(View.GONE);
+				if (mSTRecorder != null)
+					mLastRecordFile = mSTRecorder.stopRecorder();
 			}
 				break;
 			case MotionEvent.ACTION_CANCEL:// 当手指移动到view外面，会cancel

@@ -1,4 +1,4 @@
-package lib.module.soundtouch;
+package com.link.bianmi.utility;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import lib.module.soundtouch.NativeSoundTouch;
 import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -15,7 +16,7 @@ import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.util.Log;
 
-public class SoundTouchRecorder {
+public class SoundTouchRecorder implements IRecorder {
 
 	private static final String TAG = "SoundTouchRecorder";
 
@@ -205,7 +206,7 @@ public class SoundTouchRecorder {
 		}
 	}
 
-	SoundTouchRecorder(Context context) {
+	public SoundTouchRecorder(Context context) {
 		this.context = context;
 	}
 
@@ -286,6 +287,30 @@ public class SoundTouchRecorder {
 	public void stopPlay() {
 		playingstart = false;
 		playThread = null;
+	}
+
+	@Override
+	public long getDuration() {
+		return 0;
+	}
+
+	@Override
+	public Date getStart() {
+		return null;
+	}
+
+	@Override
+	public void stopRecord() {
+	}
+
+	@Override
+	public void cancelRecord() {
+
+	}
+
+	@Override
+	public void SetOnListener(OnListener l) {
+
 	}
 
 }

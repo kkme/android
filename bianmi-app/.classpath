@@ -6,5 +6,6 @@
 	<classpathentry kind="src" path="/bianmi-lib-qiniu"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="src" path="/bianmi-lib-seekarc"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -23,6 +23,7 @@
  ******************************************************************************/
 package lib.widget.seekarc;
 
+import lib.widget.R;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -34,8 +35,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
-import lib.widget.R;
 
 /**
  * 
@@ -169,6 +168,10 @@ public class SeekArc extends View {
 	public SeekArc(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init(context, attrs, R.attr.seekArcStyle);
+	}
+
+	public int getProgress() {
+		return mProgress;
 	}
 
 	public SeekArc(Context context, AttributeSet attrs, int defStyle) {
