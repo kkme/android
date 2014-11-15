@@ -336,6 +336,7 @@ public abstract class InputStreamAt implements Closeable {
 		private InputStream is;
 		private File file;
 		private String name;
+		@SuppressWarnings("unused")
 		private String mimeType;
 		private String path;
 		private long length = -1;
