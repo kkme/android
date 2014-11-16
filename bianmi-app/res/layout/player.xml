@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 播放控件 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myattr="http://schemas.android.com/apk/res/com.link.bianmi"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageButton
+        android:id="@+id/player_btn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/btn_play"
+        android:contentDescription="@null" />
+
+    <com.link.bianmi.widget.RoundProgressBar
+        android:id="@+id/player_roundBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="1dp"
+        myattr:fill="false"
+        myattr:max="100"
+        myattr:paint_color="#ff2f7a0f"
+        myattr:paint_width="@dimen/dp_6"
+        myattr:show_bottom="false" />
+
+</RelativeLayout>

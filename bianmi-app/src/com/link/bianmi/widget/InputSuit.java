@@ -12,9 +12,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -37,12 +35,10 @@ import com.link.bianmi.SysConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.qiniu.QiniuClient;
-import com.link.bianmi.utility.AudioRecorder;
 import com.link.bianmi.utility.CameraCrop;
 import com.link.bianmi.utility.ContextHelper;
 import com.link.bianmi.utility.ConvertHelper;
 import com.link.bianmi.utility.FileHelper;
-import com.link.bianmi.utility.IRecorder;
 import com.link.bianmi.utility.IRecorder.OnListener;
 import com.link.bianmi.utility.ImageHelper;
 import com.link.bianmi.utility.SoundTouchRecorder;
@@ -79,9 +75,10 @@ public class InputSuit extends LinearLayout {
 
 	private CameraCrop mCamera;
 
-	private AudioRecorder mRecorder;
 	private SoundTouchRecorder mSTRecorder;
 	private String mLastRecordFile;
+	private RecorderSuit mRecorderSuit;
+	private PlayerSuit mPlayerSuit;
 
 	private String mRecorderDir;
 
@@ -108,18 +105,8 @@ public class InputSuit extends LinearLayout {
 	/** 删除图片 **/
 	private View mPhotoDeleteView;
 
-	/** 选择声音组视图 **/
-	private View mRecordGroup;
-	/** 录音 **/
-	private Button mRecordBtn;
-	/** 声音显示组 **/
-	private View mRecordShowGroup;
 	/** 变声组 **/
 	private View mChangeVoiceGroup;
-	/** 播放声音 **/
-	private AudioButton mRecordPlayBtn;
-	/** 删除录音 **/
-	private Button mRecordDeleteBtn;
 	/** 附件区 **/
 	private View mAttachView;
 
@@ -166,14 +153,7 @@ public class InputSuit extends LinearLayout {
 		mPhotoImage.setOnClickListener(photoListener);
 		mPhotoDeleteView = findViewById(R.id.photo_delete_view);
 		mPhotoDeleteView.setOnClickListener(deletePhotoListener);
-		mRecordGroup = findViewById(R.id.record_group);
-		mRecordBtn = (Button) findViewById(R.id.record_btn);
-		mRecordBtn.setOnTouchListener(recordTouchListener);
-		mRecordShowGroup = findViewById(R.id.record_show_group);
 		mChangeVoiceGroup = findViewById(R.id.change_voice_group);
-		mRecordPlayBtn = (AudioButton) findViewById(R.id.record_play_btn);
-		mRecordDeleteBtn = (Button) findViewById(R.id.record_delete_btn);
-		mRecordDeleteBtn.setOnClickListener(recordDeleteListener);
 
 		mVolumnGroup = findViewById(R.id.volumn_group);
 		mVolumeView = (VolumeView) findViewById(R.id.volume_view);
@@ -182,19 +162,6 @@ public class InputSuit extends LinearLayout {
 		mDissableTouchView = findViewById(R.id.dissableClick_view);
 		mDissableTouchView.setVisibility(View.GONE);
 		mDissableTouchView.setOnTouchListener(dissableTouchListener);
-		final RadioButton tomRadioBtn = (RadioButton) findViewById(R.id.tom_radiobtn);
-		final RadioButton wangRadioBtn = (RadioButton) findViewById(R.id.wang_radiobtn);
-		RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(RadioGroup arg0, int arg1) {
-				if (arg1 == tomRadioBtn.getId()) {
-
-				} else if (arg1 == wangRadioBtn.getId()) {
-
-				}
-			}
-		});
 		mPitchProgressText = (TextView) findViewById(R.id.pitch_seekarc_progress_textview);
 		mTempoProgressText = (TextView) findViewById(R.id.tempo_seekarc_progress_textview);
 		mPitchSeekArc = (SeekArc) findViewById(R.id.pitch_seekarc);
@@ -237,19 +204,35 @@ public class InputSuit extends LinearLayout {
 				mTempoProgressText.setText(String.valueOf(tempo + "%"));
 			}
 		});
+		final RadioButton tomRadioBtn = (RadioButton) findViewById(R.id.tom_radiobtn);
+		final RadioButton wangRadioBtn = (RadioButton) findViewById(R.id.wang_radiobtn);
+		RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(RadioGroup arg0, int arg1) {
+				if (arg1 == tomRadioBtn.getId()) {
+					mPitchSeekArc.setProgress(2000);
+					mPitchProgressText.setText("10.00");
+					mTempoSeekArc.setProgress(5000);
+					mTempoProgressText.setText("0.00%");
+				} else if (arg1 == wangRadioBtn.getId()) {
+					mPitchSeekArc.setProgress(500);
+					mPitchProgressText.setText("-5.00");
+					mTempoSeekArc.setProgress(2500);
+					mTempoProgressText.setText("0.00%");
+				}
+			}
+		});
 		mSTRecorder = new SoundTouchRecorder(context);
 		mSTRecorder.SetOnListener(new OnListener() {
 			@Override
 			public void OnVolumnPower(float power) {
-
+				mRecorderSuit.setVolumeNumByPower(power);
 			}
 
 			@Override
 			public void OnStop() {
 
-				mRecordPlayBtn.setAudioFile(mLastRecordFile, 10);
-				mRecordBtn.setVisibility(View.GONE);
-				mRecordShowGroup.setVisibility(View.VISIBLE);
 				mTipRecord.setVisibility(View.VISIBLE);
 				mVolumnGroup.setVisibility(View.GONE);
 
@@ -260,6 +243,55 @@ public class InputSuit extends LinearLayout {
 
 			}
 		});
+
+		mRecorderSuit = (RecorderSuit) findViewById(R.id.recorder_suit);
+		mRecorderSuit.setOnListener(new RecorderSuit.OnListener() {
+			@Override
+			public void onStopRecord() {
+				// 停止录音
+				mPlayerSuit.setVisibility(View.VISIBLE);
+				if (mSTRecorder != null)
+					mLastRecordFile = mSTRecorder.stopRecorder();
+				else
+					mVolumnGroup.setVisibility(View.GONE);
+			}
+
+			@Override
+			public void onStartRecord() {
+				// 开始录音
+				mHandler.removeMessages(0, null);
+				mVolumnGroup.setVisibility(View.VISIBLE);
+				mVolumeView.setVolume(0);
+				mRecordLenText.setText("");
+				mSTRecorder.startRecord();
+			}
+
+		});
+		mPlayerSuit = (PlayerSuit) findViewById(R.id.player_suit);
+		mPlayerSuit.setVisibility(View.GONE);
+		mPlayerSuit.setOnListener(new PlayerSuit.OnListener() {
+			@Override
+			public void onStop() {
+
+			}
+
+			@Override
+			public void onPlay() {
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						mSTRecorder.startPlay(mLastRecordFile);
+					}
+				}, 200);
+			}
+
+			@Override
+			public void onPause() {
+				mSTRecorder.stopPlay();
+			}
+		});
+
 		if (attrs != null) {
 			TypedArray a = context.obtainStyledAttributes(attrs,
 					R.styleable.InputSuit);
@@ -272,7 +304,6 @@ public class InputSuit extends LinearLayout {
 			a.recycle();
 		}
 		reset();
-
 	}
 
 	// ----------------自定义方法-------------------------------------------
@@ -281,14 +312,12 @@ public class InputSuit extends LinearLayout {
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			if (hasFocus) {
-				mRecordGroup.setVisibility(View.GONE);
 				mPhotoGroup.setVisibility(View.GONE);
 				mAttachView.setVisibility(View.GONE);
 
 				mDissableTouchView.setVisibility(View.VISIBLE);
 			} else {
-				if (mPhotoGroup.getVisibility() != View.VISIBLE
-						&& mRecordGroup.getVisibility() != View.VISIBLE)
+				if (mPhotoGroup.getVisibility() != View.VISIBLE)
 					mAttachView.setVisibility(View.GONE);
 			}
 
@@ -348,13 +377,11 @@ public class InputSuit extends LinearLayout {
 	private OnClickListener attachRecordListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			if (mRecordGroup.getVisibility() == View.VISIBLE) {
-				mRecordGroup.setVisibility(View.GONE);
+			if (mAttachView.getVisibility() == View.VISIBLE) {
 				mAttachView.setVisibility(View.GONE);
 			} else {
 
 				mPhotoGroup.setVisibility(View.GONE);
-				mRecordGroup.setVisibility(View.VISIBLE);
 				mAttachView.setVisibility(View.VISIBLE);
 				hideSoftInput();
 			}
@@ -370,7 +397,6 @@ public class InputSuit extends LinearLayout {
 				mPhotoGroup.setVisibility(View.GONE);
 				mAttachView.setVisibility(View.GONE);
 			} else {
-				mRecordGroup.setVisibility(View.GONE);
 				mPhotoGroup.setVisibility(View.VISIBLE);
 				mAttachView.setVisibility(View.VISIBLE);
 				hideSoftInput();
@@ -445,94 +471,91 @@ public class InputSuit extends LinearLayout {
 	};
 
 	/** 开始录音 **/
-	private void startRecord() {
-
-		if (mRecorder != null) {
-			mRecorder.cancelRecord();
-			mRecorder = null;
-		}
-		final String filePath = mRecorderDir
-				+ String.valueOf(System.currentTimeMillis()) + ".amr";
-		final int MaxSecond = 120000;
-		final CountDownTimer cTime = new CountDownTimer(MaxSecond, 1000) {
-			public void onTick(long millisUntilFinished) {
-				mRecordLenText.setText((MaxSecond - millisUntilFinished) / 1000
-						+ "″");
-			}
-
-			public void onFinish() {
-			}
-		};
-
-		mRecorder = new AudioRecorder(filePath);
-		mRecorder.SetOnListener(new IRecorder.OnListener() {
-			@Override
-			public void OnVolumnPower(float power) {
-				mVolumeView.setVolume((int) (power * VolumeView.MAX_PERCENT));
-			}
-
-			@Override
-			public void OnStop() {
-				try {
-					long duration = mRecorder.getDuration();
-					if (duration < MIN_RECORD_LEN) {
-
-						cTime.cancel();
-						mVolumeView.setVolume(0);
-						mRecordLenText.setText(R.string.inputsuit_record_empty);
-						mHandler.postDelayed(new Runnable() {
-							@Override
-							public void run() {
-								try {
-									mVolumnGroup.setVisibility(View.GONE);
-								} catch (Exception ex) {
-								}
-							}
-						}, 1000);
-
-						return;
-					}
-
-					// 取ceil,以避免小于1s出现0s的情况
-					mRecordLen = (int) Math.ceil((float) duration / 1000.0f);
-					setRecordPath(filePath);
-					// ForumAudioController.getInstance().registeAudioButton(mRecordPlayBtn,
-					// filePath);
-					// mRecordPlayBtn.setDuation(mRecordLen);
-					mRecordPlayBtn.setAudioFile(filePath, mRecordLen);
-					mRecordBtn.setVisibility(View.GONE);
-					mRecordShowGroup.setVisibility(View.VISIBLE);
-					mTipRecord.setVisibility(View.VISIBLE);
-					mVolumnGroup.setVisibility(View.GONE);
-					cTime.cancel();
-				} catch (Exception ex) {
-					System.out.println(ex);
-				} finally {
-					mRecorder = null;
-				}
-			}
-
-			@Override
-			public void OnCancel() {
-				mRecordLen = 0;
-				setRecordPath("");
-				mVolumnGroup.setVisibility(View.GONE);
-				cTime.cancel();
-			}
-		});
-
-		// mVolumnGroup.setVisibility(View.VISIBLE);
-		// mVolumeView.setVolume(0);
-
-		mVolumnGroup.setVisibility(View.VISIBLE);
-		mVolumeView.setVolume(10);
-		mRecordLenText.setText("0″");
-		mRecorder.startRecord();
-		cTime.start();
-		Vibrator vibrator = (Vibrator) mActivity
-				.getSystemService(Context.VIBRATOR_SERVICE);
-		vibrator.vibrate(50);
-	}
+	// private void startRecord() {
+	//
+	// if (mRecorder != null) {
+	// mRecorder.cancelRecord();
+	// mRecorder = null;
+	// }
+	// final String filePath = mRecorderDir
+	// + String.valueOf(System.currentTimeMillis()) + ".amr";
+	// final int MaxSecond = 120000;
+	// final CountDownTimer cTime = new CountDownTimer(MaxSecond, 1000) {
+	// public void onTick(long millisUntilFinished) {
+	// mRecordLenText.setText((MaxSecond - millisUntilFinished) / 1000
+	// + "″");
+	// }
+	//
+	// public void onFinish() {
+	// }
+	// };
+	//
+	// mRecorder = new AudioRecorder(filePath);
+	// mRecorder.SetOnListener(new IRecorder.OnListener() {
+	// @Override
+	// public void OnVolumnPower(float power) {
+	// mRecorderSuit.setVolumeNumByPower(power);
+	// }
+	//
+	// @Override
+	// public void OnStop() {
+	// try {
+	// long duration = mRecorder.getDuration();
+	// if (duration < MIN_RECORD_LEN) {
+	//
+	// cTime.cancel();
+	// mVolumeView.setVolume(0);
+	// mRecordLenText.setText(R.string.inputsuit_record_empty);
+	// mHandler.postDelayed(new Runnable() {
+	// @Override
+	// public void run() {
+	// try {
+	// mVolumnGroup.setVisibility(View.GONE);
+	// } catch (Exception ex) {
+	// }
+	// }
+	// }, 1000);
+	//
+	// return;
+	// }
+	//
+	// // 取ceil,以避免小于1s出现0s的情况
+	// mRecordLen = (int) Math.ceil((float) duration / 1000.0f);
+	// setRecordPath(filePath);
+	// // ForumAudioController.getInstance().registeAudioButton(mRecordPlayBtn,
+	// // filePath);
+	// // mRecordPlayBtn.setDuation(mRecordLen);
+	// mTipRecord.setVisibility(View.VISIBLE);
+	// mVolumnGroup.setVisibility(View.GONE);
+	// cTime.cancel();
+	// } catch (Exception ex) {
+	// System.out.println(ex);
+	// } finally {
+	// mRecorder = null;
+	// }
+	// }
+	//
+	// @Override
+	// public void OnCancel() {
+	// mRecordLen = 0;
+	// setRecordPath("");
+	// mVolumnGroup.setVisibility(View.GONE);
+	// cTime.cancel();
+	// }
+	// });
+	//
+	// // mVolumnGroup.setVisibility(View.VISIBLE);
+	// // mVolumeView.setVolume(0);
+	//
+	// mVolumnGroup.setVisibility(View.VISIBLE);
+	// mVolumeView.setVolume(10);
+	// mRecordLenText.setText("0″");
+	// mRecorder.startRecord();
+	// cTime.start();
+	// Vibrator vibrator = (Vibrator) mActivity
+	// .getSystemService(Context.VIBRATOR_SERVICE);
+	// vibrator.vibrate(50);
+	// }
 
 	/** 准备开始录音 **/
 	private Runnable prepareStart = new Runnable() {
@@ -544,54 +567,50 @@ public class InputSuit extends LinearLayout {
 	};
 
 	/** 点击录音监听 **/
-	private OnTouchListener recordTouchListener = new OnTouchListener() {
-
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			int action = event.getAction();
-
-			switch (action) {
-
-			case MotionEvent.ACTION_DOWN: {
-				mHandler.removeMessages(0, null);
-				mVolumnGroup.setVisibility(View.VISIBLE);
-				mVolumeView.setVolume(0);
-				mRecordLenText.setText("");
-				mRecordBtn.setText(R.string.inputsuit_record_pressed);
-
-				mHandler.postDelayed(prepareStart, 200);
-			}
-				break;
-			case MotionEvent.ACTION_UP: {
-				mHandler.removeCallbacks(prepareStart);
-				mRecordBtn.setText(R.string.inputsuit_record);
-				// if (mRecorder != null)
-				// mRecorder.stopRecord();
-				// else
-				// mVolumnGroup.setVisibility(View.GONE);
-
-				if (mSTRecorder != null)
-					mLastRecordFile = mSTRecorder.stopRecorder();
-				else
-					mVolumnGroup.setVisibility(View.GONE);
-				mRecordPlayBtn.setAudioFile(mLastRecordFile, 10);
-				mSTRecorder.startPlay(mLastRecordFile);
-			}
-				break;
-			case MotionEvent.ACTION_CANCEL:// 当手指移动到view外面，会cancel
-			{
-				mRecordBtn.setText(R.string.inputsuit_record);
-				if (mRecorder != null)
-					mRecorder.cancelRecord();
-				else
-					mVolumnGroup.setVisibility(View.GONE);
-			}
-				break;
-			}
-
-			return false;
-		}
-	};
+	// private OnTouchListener recordTouchListener = new OnTouchListener() {
+	//
+	// @Override
+	// public boolean onTouch(View v, MotionEvent event) {
+	// int action = event.getAction();
+	//
+	// switch (action) {
+	//
+	// case MotionEvent.ACTION_DOWN: {
+	// mHandler.removeMessages(0, null);
+	// mVolumnGroup.setVisibility(View.VISIBLE);
+	// mVolumeView.setVolume(0);
+	// mRecordLenText.setText("");
+	//
+	// mHandler.postDelayed(prepareStart, 200);
+	// }
+	// break;
+	// case MotionEvent.ACTION_UP: {
+	// mHandler.removeCallbacks(prepareStart);
+	// // if (mRecorder != null)
+	// // mRecorder.stopRecord();
+	// // else
+	// // mVolumnGroup.setVisibility(View.GONE);
+	//
+	// if (mSTRecorder != null)
+	// mLastRecordFile = mSTRecorder.stopRecorder();
+	// else
+	// mVolumnGroup.setVisibility(View.GONE);
+	// mSTRecorder.startPlay(mLastRecordFile);
+	// }
+	// break;
+	// case MotionEvent.ACTION_CANCEL:// 当手指移动到view外面，会cancel
+	// {
+	// if (mRecorder != null)
+	// mRecorder.cancelRecord();
+	// else
+	// mVolumnGroup.setVisibility(View.GONE);
+	// }
+	// break;
+	// }
+	//
+	// return false;
+	// }
+	// };
 
 	/** 重新录音 **/
 	private OnClickListener recordDeleteListener = new OnClickListener() {
@@ -601,8 +620,6 @@ public class InputSuit extends LinearLayout {
 				FileHelper.delete(mRecordPath);
 			setRecordPath("");
 			mRecordLen = 0;
-			mRecordBtn.setVisibility(View.VISIBLE);
-			mRecordShowGroup.setVisibility(View.GONE);
 			mTipRecord.setVisibility(View.GONE);
 		}
 	};
@@ -774,16 +791,13 @@ public class InputSuit extends LinearLayout {
 		mUserId = "";
 
 		mPhotoGroup.setVisibility(View.GONE);
-		mRecordGroup.setVisibility(View.GONE);
 		mTipRecord.setVisibility(View.GONE);
 		mTipPhoto.setVisibility(View.GONE);
 		mAttachView.setVisibility(View.GONE);
-		mRecordShowGroup.setVisibility(View.GONE);
 		mPhotoShowGroup.setVisibility(View.GONE);
 		mVolumnGroup.setVisibility(View.GONE);
 
 		mPhotoOperateGroup.setVisibility(View.VISIBLE);
-		mRecordBtn.setVisibility(View.VISIBLE);
 		mMessageEdit.setText("");
 		mMessageEdit.setHint("");
 		mRecordLenText.setText("0″");

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 录音控件 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myattr="http://schemas.android.com/apk/res/com.link.bianmi"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <View
+        android:id="@+id/start_record_bg_view"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:layout_centerInParent="true"
+        android:background="@drawable/btn_record_bg" />
+
+    <View
+        android:id="@+id/recording_bg_view"
+        android:layout_width="@dimen/dp_68"
+        android:layout_height="@dimen/dp_68"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bg_record_b" />
+
+    <com.link.bianmi.widget.RoundProgressBar
+        android:id="@+id/record_roundBar"
+        android:layout_width="@dimen/dp_68"
+        android:layout_height="@dimen/dp_68"
+        android:padding="1dp"
+        myattr:fill="false"
+        myattr:maxProgress="360"
+        myattr:paint_color="#ff2f7a0f"
+        myattr:paint_width="@dimen/dp_6"
+        myattr:show_bottom="false" />
+
+    <RelativeLayout
+        android:layout_width="@dimen/dp_68"
+        android:layout_height="@dimen/dp_68"
+        android:layout_centerInParent="true"
+        android:padding="1dp" >
+
+        <View
+            android:id="@+id/record_umbrella_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@drawable/mask_recordprogress_b" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/record_mic_view"
+        android:layout_width="@dimen/dp_68"
+        android:layout_height="@dimen/dp_68"
+        android:layout_centerInParent="true"
+        android:background="@drawable/icon_record_b" />
+
+</RelativeLayout>

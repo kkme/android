@@ -173,7 +173,7 @@ public class AudioButton extends FrameLayout {
 
 		private ForumAudioController() {
 			mPlayer = new Player();
-			mPlayer.SetOnListener(new IPlayer.OnListener() {
+			mPlayer.setOnListener(new IPlayer.OnListener() {
 
 				@Override
 				public void OnCompletion() {

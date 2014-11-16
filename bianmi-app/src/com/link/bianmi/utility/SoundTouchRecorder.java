@@ -15,6 +15,8 @@ import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.link.bianmi.SysConfig;
@@ -44,6 +46,23 @@ public class SoundTouchRecorder implements IRecorder {
 	private RecordThread recordThread = null;
 
 	private PlayThread playThread = null;
+
+	// 录音音量振幅
+	private static final int MSG_AMPLITUDE = 1;
+
+	private Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case MSG_AMPLITUDE:
+				mOnListener
+						.OnVolumnPower(Math.abs(((float) msg.arg1 - 10)) / 60);
+				break;
+			}
+
+		}
+	};
 
 	class RecordThread extends Thread {
 
@@ -90,10 +109,22 @@ public class SoundTouchRecorder implements IRecorder {
 			while (recordingstart && recordOutputStream != null) {
 				int len = mAudioRecorder.read(recorderBuffer, 0,
 						recorderBuffer.length);
-
 				int inputSamples = len / ((16 * 1) / 8);
 				totalPCMSamples += inputSamples;
-
+				double sum = 0;
+				for (int i = 0; i < len; i++) {
+					sum += recorderBuffer[i] * recorderBuffer[i];
+				}
+				if (len > 0) {
+					final double amplitude = sum / len;
+					Log.d("bianmi", "len = " + len);
+					Log.d("bianmi", "amplitude = " + amplitude);
+					Log.d("bianmi", "progress = " + Math.sqrt(amplitude));
+					Message msg = new Message();
+					msg.arg1 = (int) Math.sqrt(amplitude);
+					msg.what = MSG_AMPLITUDE;
+					mHandler.sendMessage(msg);
+				}
 				try {
 
 					Log.d(TAG, "input ST amr size :" + inputSamples);
@@ -115,7 +146,6 @@ public class SoundTouchRecorder implements IRecorder {
 									receiveSTSamples * ((16 * 1) / 8));
 							recordOutputStream.flush();
 						}
-
 						// sava into file
 					} while (receiveSTSamples != 0);
 
@@ -149,7 +179,7 @@ public class SoundTouchRecorder implements IRecorder {
 			} while (receiveSTSamples != 0);
 
 			Log.d(TAG, "Total input amr samples:" + totalPCMSamples);
-			Log.d(TAG, "total receive ST samoles:" + totalSTSamples);
+			Log.d(TAG, "total receive ST samples:" + totalSTSamples);
 
 			mAudioRecorder.stop();
 			mAudioRecorder.release();
@@ -172,7 +202,7 @@ public class SoundTouchRecorder implements IRecorder {
 
 			if (fileName != null) {
 				try {
-					playInputStream = new FileInputStream(new File(fileName));//context.openFileInput(fileName);
+					playInputStream = new FileInputStream(new File(fileName));// context.openFileInput(fileName);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -241,7 +271,7 @@ public class SoundTouchRecorder implements IRecorder {
 		mAudioRecorder = new AudioRecord(MediaRecorder.AudioSource.MIC, 8000,
 				AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT,
 				minRecBuffSize * 3);
-
+		Log.d("bianmi", "minRecBuffSize = " + minRecBuffSize * 3);
 		mAudioRecorder.startRecording();
 
 		if (minRecBuffSize != 0) {

@@ -11,7 +11,7 @@ public interface IPlayer {
 	
 	/** 获取监听器 **/
 	public OnListener getListener();
-	public void SetOnListener(OnListener l);
+	public void setOnListener(OnListener l);
 	
 	
 	public interface OnListener{

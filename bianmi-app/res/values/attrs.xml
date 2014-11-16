@@ -12,7 +12,7 @@
   ~ distributed under the License is distributed on an "AS IS" BASIS,
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
+  ~ limitations under the License.
 -->
 
 <resources>
@@ -58,14 +58,6 @@
     </declare-styleable>
 
     <!-- Record 录音控件 -->
-    <declare-styleable name="Record">
-        <attr name="r_small" format="boolean" />
-        <!-- 是否小图片模式 -->
-        <attr name="r_shownormalbg" format="boolean" />
-        <!-- 是否显示录音背景 -->
-    </declare-styleable>
-
-    <!-- Record 录音控件 -->
     <declare-styleable name="Play">
         <attr name="p_shownormalbg" format="boolean" />
         <!-- 是否显示放音背景 -->
@@ -94,4 +86,29 @@
     <declare-styleable name="CircularProgressBar">
         <attr name="borderWidth" format="dimension" />
     </declare-styleable>
+
+    <!-- RoundCorner控件 -->
+    <declare-styleable name="RoundCorner">
+        <attr name="corner" format="integer" /> <!-- corner圆角方案  -1没有圆角； 0 全部; 1 TOP; 2 LEFT; 3 RIGHT; 4 BOTTOM -->
+        <attr name="round" format="dimension" /> <!-- round 圆角弧度 -->
+        <attr name="centermode" format="boolean" /> <!-- 是否使用居中模式 -->
+    </declare-styleable>
+
+    <!-- 圆角imageview -->
+    <declare-styleable name="RoundImage">
+        <attr name="rv_radius" format="dimension" /> <!-- 圆角弧度 -->
+        <attr name="rv_circle" format="boolean" /> <!-- 是否是圆形 -->
+    </declare-styleable>
+    <!-- RoundProgressBar 环形进度条控件 -->
+    <declare-styleable name="RoundProgressBar">
+        <attr name="maxProgress" format="integer" />
+        <attr name="rb_defaultvalue" format="integer" /> <!-- 默认值 -->
+        <attr name="fill" format="boolean" /> <!-- 是否填充圆形区域 -->
+        <attr name="paint_width" format="dimension" /> <!-- 画笔宽度，填充模式下无效，会被重置为0 -->
+        <attr name="paint_color" format="color" /> <!-- 画笔颜色 -->
+        <attr name="show_bottom" format="boolean" /> <!-- 是否显示底色 -->
+        <attr name="inside_interval" format="integer" /> <!-- 圆形区域向里缩进的距离 -->
+        <attr name="bottom_color" format="color" /> <!-- 背景色 -->
+    </declare-styleable>
+
 </resources>
