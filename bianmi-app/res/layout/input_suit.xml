@@ -85,7 +85,7 @@
                 android:layout_marginRight="@dimen/dp_8"
                 android:background="@drawable/selector_forumsuit_submit_bg"
                 android:enabled="false"
-                android:text="发表"
+                android:text="@string/inputsuit_submit"
                 android:textColor="@drawable/selector_forumsuit_submit_txt"
                 android:textSize="@dimen/sp_14" />
         </RelativeLayout>
@@ -133,7 +133,7 @@
                         android:layout_below="@id/photo_album_view"
                         android:layout_marginTop="@dimen/dp_5"
                         android:gravity="center"
-                        android:text="照片"
+                        android:text="@string/inputsuit_photo_album"
                         android:textColor="@color/fc_sub"
                         android:textSize="@dimen/sp_12" />
 
@@ -153,7 +153,7 @@
                         android:layout_below="@id/photo_camera_view"
                         android:layout_marginTop="@dimen/dp_5"
                         android:gravity="center"
-                        android:text="相机"
+                        android:text="@string/inputsuit_photo_camera"
                         android:textColor="@color/fc_sub"
                         android:textSize="@dimen/sp_12" />
                 </RelativeLayout>
@@ -171,6 +171,7 @@
                         android:layout_width="@dimen/dp_64"
                         android:layout_height="@dimen/dp_64"
                         android:layout_centerVertical="true"
+                        android:contentDescription="@null"
                         android:scaleType="centerCrop" />
 
                     <Button
@@ -183,38 +184,37 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <RadioGroup
-                android:id="@+id/radioGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:orientation="horizontal" >
-
-                <RadioButton
-                    android:id="@+id/tom_radiobtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="汤姆" />
-
-                <RadioButton
-                    android:id="@+id/wang_radiobtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="老王" />
-            </RadioGroup>
-
             <RelativeLayout
-                android:id="@+id/change_voice_group"
+                android:id="@+id/voice_group"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/radioGroup" >
+                android:layout_height="match_parent" >
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <RadioButton
+                        android:id="@+id/tom_radiobtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/inputsuit_voice_tom" />
+
+                    <RadioButton
+                        android:id="@+id/wang_radiobtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/inputsuit_voice_wang" />
+                </RadioGroup>
 
                 <LinearLayout
-                    android:id="@+id/custom_group"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_below="@+id/radioGroup"
                     android:layout_centerInParent="true"
                     android:baselineAligned="false"
                     android:orientation="horizontal"
@@ -258,7 +258,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:layout_centerHorizontal="true"
-                            android:text="音调"
+                            android:text="@string/pitch"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/sp_12" />
                     </RelativeLayout>
@@ -331,7 +331,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:layout_centerHorizontal="true"
-                            android:text="音速"
+                            android:text="@string/tempo"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/sp_12" />
                     </RelativeLayout>

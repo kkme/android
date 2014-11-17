@@ -64,7 +64,7 @@
     <string name="settings_forgot_password">忘记密码？</string>
     <string name="current_version">版本:V%1$s</string>
     <string name="faq">常见问题</string>
-    <!-- inputsuit -->
+    <!-- 输入控件 -->
     <string name="inputsuit_submit">发表</string>
     <string name="inputsuit_photo_album">照片</string>
     <string name="inputsuit_photo_camera">相机</string>
@@ -72,6 +72,11 @@
     <string name="inputsuit_record_pressed">松开结束</string>
     <string name="inputsuit_record_empty">录音时间太短</string>
     <string name="inputsuit_record_delete">重录</string>
+    <string name="inputsuit_voice_wang">老王</string>
+    <string name="inputsuit_voice_tom">汤姆</string>
+    <string name="pitch">音调</string>
+    <string name="tempo">音速</string>
+
     <!-- 九宫格密码锁屏 -->
     <string name="try_again">重试</string>
     <string name="signin_again">重新登录</string>
