@@ -7,8 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import lib.module.soundtouch.NativeSoundTouch;
 import android.content.Context;
@@ -23,7 +21,7 @@ import android.util.Log;
 
 import com.link.bianmi.SysConfig;
 
-public class SoundTouchRecorder implements IRecorder {
+public class SoundTouchRecorder {
 
 	private static final String TAG = "SoundTouchRecorder";
 
@@ -50,7 +48,9 @@ public class SoundTouchRecorder implements IRecorder {
 	private PlayThread playThread = null;
 
 	// 录音音量振幅
-	private static final int MSG_AMPLITUDE = 1;
+	private final int MSG_AMPLITUDE = 1;
+
+	private final int MSG_STOP_PLAY = 2;
 
 	private Handler mHandler = new Handler() {
 		@Override
@@ -58,8 +58,10 @@ public class SoundTouchRecorder implements IRecorder {
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case MSG_AMPLITUDE:
-				mOnListener
-						.OnVolumnPower(Math.abs(((float) msg.arg1 - 10)) / 60);
+				mListener.onRecording(Math.abs(((float) msg.arg1 - 10)) / 60);
+				break;
+			case MSG_STOP_PLAY:
+				mListener.onStopPlay();
 				break;
 			}
 
@@ -240,6 +242,9 @@ public class SoundTouchRecorder implements IRecorder {
 			mAudioTrack.stop();
 			mAudioTrack.release();
 			playingstart = false;
+			Message msg = new Message();
+			msg.what = MSG_STOP_PLAY;
+			mHandler.sendMessage(msg);
 
 			if (playInputStream != null) {
 				try {
@@ -275,20 +280,13 @@ public class SoundTouchRecorder implements IRecorder {
 				minRecBuffSize * 3);
 		Log.d("bianmi", "minRecBuffSize = " + minRecBuffSize * 3);
 		mAudioRecorder.startRecording();
-
 		if (minRecBuffSize != 0) {
-
-			mStartDate = new Date();
-			mEndDate = null;
-			if (mHandler != null) {
-				mRecorderTask = new RecoderTask();
-				mTimer.schedule(mRecorderTask, 0, 1000);
-			}
 
 			recorderBuffer = new byte[minRecBuffSize * 3];
 			recordingstart = true;
 			recordThread = new RecordThread();
 			recordThread.start();
+			mListener.onStartRecord();
 		}
 
 	}
@@ -303,14 +301,7 @@ public class SoundTouchRecorder implements IRecorder {
 			recordThread = null;
 		}
 
-		if (mEndDate == null)
-			mEndDate = new Date();
-		if (mRecorderTask != null) {
-			mRecorderTask.cancel();
-			mRecorderTask = null;
-		}
-
-		mOnListener.OnStop();
+		mListener.onStopRecord();
 		return fileName;
 	}
 
@@ -340,68 +331,44 @@ public class SoundTouchRecorder implements IRecorder {
 			playingstart = true;
 			playThread = new PlayThread(fileName);
 			playThread.start();
+			mListener.onStartPlay();
 		}
 	}
 
 	public void stopPlay() {
 		playingstart = false;
 		playThread = null;
+		mListener.onStopPlay();
 	}
 
-	private Date mStartDate; // 录音开始时间
-	private Date mEndDate; // 录音结束时间
-	private static final int MAX_LENGTH = 1000 * 60 + 1000 * 30;// 最大录音时长1.5分钟
-	private Timer mTimer = new Timer();
-	// 定时器任务
-	private RecoderTask mRecorderTask;
-
-	class RecoderTask extends TimerTask {
-		@Override
-		public void run() {
-			if (new Date().getTime() - mStartDate.getTime() >= MAX_LENGTH) {
-				stopRecord();
-			}
+	public void pausePlay() {
+		if (mAudioTrack != null
+				&& mAudioTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING) {
+			mAudioTrack.pause();
 		}
-	};
-
-	@Override
-	public long getDuration() {
-		if (mStartDate != null && mEndDate != null) {
-			return Math.min(mEndDate.getTime() - mStartDate.getTime(),
-					MAX_LENGTH);
-		} else {
-			return 0;
-		}
+		mListener.onPausePlay();
 	}
 
-	public long getTime() {
-		if (mStartDate != null) {
-			return Math.min(new Date().getTime() - mStartDate.getTime(),
-					MAX_LENGTH);
-		} else {
-			return 0;
-		}
+	private OnListener mListener;
+
+	public void setOnListener(OnListener l) {
+		mListener = l;
 	}
 
-	@Override
-	public Date getStart() {
-		return null;
-	}
+	public interface OnListener {
+		public void onStartRecord();
 
-	@Override
-	public void stopRecord() {
-	}
+		public void onRecording(float power);
 
-	@Override
-	public void cancelRecord() {
+		public void onStopRecord();
 
-	}
+		public void onStartPlay();
 
-	OnListener mOnListener;
+		public void onPlaying(int maxProgress, int progress);
 
-	@Override
-	public void SetOnListener(OnListener l) {
-		mOnListener = l;
+		public void onPausePlay();
+
+		public void onStopPlay();
 	}
 
 }

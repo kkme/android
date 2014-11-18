@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -39,7 +40,6 @@ import com.link.bianmi.utility.CameraCrop;
 import com.link.bianmi.utility.ContextHelper;
 import com.link.bianmi.utility.ConvertHelper;
 import com.link.bianmi.utility.FileHelper;
-import com.link.bianmi.utility.IRecorder.OnListener;
 import com.link.bianmi.utility.ImageHelper;
 import com.link.bianmi.utility.SoundTouchRecorder;
 
@@ -212,23 +212,54 @@ public class InputSuit extends LinearLayout {
 			}
 		});
 		mSTRecorder = new SoundTouchRecorder(context);
-		mSTRecorder.SetOnListener(new OnListener() {
-			@Override
-			public void OnVolumnPower(float power) {
-				mRecorderSuit.setVolumeNumByPower(power);
-				mRecordDurationText.setText(mSTRecorder.getTime() / 1000 + "\"");
-			}
+		mSTRecorder.setOnListener(new SoundTouchRecorder.OnListener() {
 
 			@Override
-			public void OnStop() {
+			public void onStopRecord() {
 				mTipRecord.setVisibility(View.VISIBLE);
 			}
 
 			@Override
-			public void OnCancel() {
+			public void onStopPlay() {
+				mPlayerSuit.stop();
+			}
+
+			@Override
+			public void onStartRecord() {
 
 			}
+
+			@Override
+			public void onStartPlay() {
+				mPlayerSuit.play();
+			}
+
+			@Override
+			public void onRecording(float power) {
+				mRecorderSuit.setVolumeNumByPower(power);
+			}
+
+			@Override
+			public void onPlaying(int maxProgress, int progress) {
+
+			}
+
+			@Override
+			public void onPausePlay() {
+				mPlayerSuit.pause();
+			}
 		});
+
+		final int MaxSecond = 120000;
+		final CountDownTimer cTime = new CountDownTimer(MaxSecond, 1000) {
+			public void onTick(long millisUntilFinished) {
+				mRecordDurationText.setText((MaxSecond - millisUntilFinished)
+						/ 1000 + "″");
+			}
+
+			public void onFinish() {
+			}
+		};
 
 		mRecorderSuit = (RecorderSuit) findViewById(R.id.recorder_suit);
 		mRecorderSuit.setOnListener(new RecorderSuit.OnListener() {
@@ -238,6 +269,7 @@ public class InputSuit extends LinearLayout {
 				mPlayerSuit.setVisibility(View.VISIBLE);
 				if (mSTRecorder != null)
 					mLastRecordFile = mSTRecorder.stopRecorder();
+				cTime.cancel();
 			}
 
 			@Override
@@ -245,6 +277,7 @@ public class InputSuit extends LinearLayout {
 				// 开始录音
 				mHandler.removeMessages(0, null);
 				mSTRecorder.startRecord();
+				cTime.start();
 			}
 
 		});
@@ -253,7 +286,6 @@ public class InputSuit extends LinearLayout {
 		mPlayerSuit.setOnListener(new PlayerSuit.OnListener() {
 			@Override
 			public void onStop() {
-
 			}
 
 			@Override
@@ -269,7 +301,7 @@ public class InputSuit extends LinearLayout {
 
 			@Override
 			public void onPause() {
-				mSTRecorder.stopPlay();
+				mSTRecorder.pausePlay();
 			}
 		});
 

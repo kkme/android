@@ -89,6 +89,24 @@ public class PlayerSuit extends RelativeLayout {
 		mListener = listener;
 	}
 
+	public void play() {
+		if (mPlayBtn != null) {
+			mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
+		}
+	}
+
+	public void stop() {
+		if (mPlayBtn != null) {
+			mPlayBtn.setBackgroundResource(R.drawable.btn_play);
+		}
+	}
+
+	public void pause() {
+		if (mPlayBtn != null) {
+			mPlayBtn.setBackgroundResource(R.drawable.btn_playing);
+		}
+	}
+
 	public interface OnListener {
 		public void onPlay();
 
