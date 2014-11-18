@@ -283,7 +283,10 @@
                             android:gravity="center"
                             android:visibility="gone" />
 
+                        <!-- 录音时长 -->
+
                         <TextView
+                            android:id="@+id/record_duration_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
@@ -339,41 +342,6 @@
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/volumn_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/input_group"
-        android:layout_alignParentTop="true" >
-
-        <ImageView
-            android:id="@+id/volumn_bg"
-            android:layout_width="@dimen/dp_96"
-            android:layout_height="@dimen/dp_96"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true" />
-
-        <com.link.bianmi.widget.VolumeView
-            android:id="@+id/volume_view"
-            android:layout_width="@dimen/dp_24"
-            android:layout_height="@dimen/dp_44"
-            android:layout_alignTop="@id/volumn_bg"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_22" />
-
-        <TextView
-            android:id="@+id/volume_recordlen_text"
-            android:layout_width="@dimen/dp_88"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/volume_view"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="6dp"
-            android:gravity="center"
-            android:text="15″"
-            android:textColor="@color/fc_fff"
-            android:textSize="@dimen/sp_12" />
-    </RelativeLayout>
 
     <!-- 禁止操作 -->
 

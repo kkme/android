@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import lib.module.soundtouch.NativeSoundTouch;
 import android.content.Context;
@@ -275,8 +277,15 @@ public class SoundTouchRecorder implements IRecorder {
 		mAudioRecorder.startRecording();
 
 		if (minRecBuffSize != 0) {
-			recorderBuffer = new byte[minRecBuffSize * 3];
 
+			mStartDate = new Date();
+			mEndDate = null;
+			if (mHandler != null) {
+				mRecorderTask = new RecoderTask();
+				mTimer.schedule(mRecorderTask, 0, 1000);
+			}
+
+			recorderBuffer = new byte[minRecBuffSize * 3];
 			recordingstart = true;
 			recordThread = new RecordThread();
 			recordThread.start();
@@ -292,6 +301,13 @@ public class SoundTouchRecorder implements IRecorder {
 		if (recordThread != null) {
 			fileName = recordThread.fullFileName;
 			recordThread = null;
+		}
+
+		if (mEndDate == null)
+			mEndDate = new Date();
+		if (mRecorderTask != null) {
+			mRecorderTask.cancel();
+			mRecorderTask = null;
 		}
 
 		mOnListener.OnStop();
@@ -325,7 +341,6 @@ public class SoundTouchRecorder implements IRecorder {
 			playThread = new PlayThread(fileName);
 			playThread.start();
 		}
-
 	}
 
 	public void stopPlay() {
@@ -333,9 +348,39 @@ public class SoundTouchRecorder implements IRecorder {
 		playThread = null;
 	}
 
+	private Date mStartDate; // 录音开始时间
+	private Date mEndDate; // 录音结束时间
+	private static final int MAX_LENGTH = 1000 * 60 + 1000 * 30;// 最大录音时长1.5分钟
+	private Timer mTimer = new Timer();
+	// 定时器任务
+	private RecoderTask mRecorderTask;
+
+	class RecoderTask extends TimerTask {
+		@Override
+		public void run() {
+			if (new Date().getTime() - mStartDate.getTime() >= MAX_LENGTH) {
+				stopRecord();
+			}
+		}
+	};
+
 	@Override
 	public long getDuration() {
-		return 0;
+		if (mStartDate != null && mEndDate != null) {
+			return Math.min(mEndDate.getTime() - mStartDate.getTime(),
+					MAX_LENGTH);
+		} else {
+			return 0;
+		}
+	}
+
+	public long getTime() {
+		if (mStartDate != null) {
+			return Math.min(new Date().getTime() - mStartDate.getTime(),
+					MAX_LENGTH);
+		} else {
+			return 0;
+		}
 	}
 
 	@Override

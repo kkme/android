@@ -53,8 +53,6 @@ import com.link.bianmi.utility.SoundTouchRecorder;
 public class InputSuit extends LinearLayout {
 
 	private Handler mHandler;
-	/** 最短录音时间 **/
-	private static final int MIN_RECORD_LEN = 900;
 
 	/** 图片地址 **/
 	private String mPhotoPath = "";
@@ -80,6 +78,7 @@ public class InputSuit extends LinearLayout {
 	private String mLastRecordFile;
 	private RecorderSuit mRecorderSuit;
 	private PlayerSuit mPlayerSuit;
+	private TextView mRecordDurationText;
 
 	private String mRecorderDir;
 
@@ -110,13 +109,6 @@ public class InputSuit extends LinearLayout {
 	private View mRecordGroup;
 	/** 附件区 **/
 	private View mAttachView;
-
-	/** 音量组 **/
-	private View mVolumnGroup;
-	/** 音量大小 **/
-	private VolumeView mVolumeView;
-	/** 录音时长 **/
-	private TextView mRecordLenText;
 
 	/** 禁止操作 **/
 	private View mDissableTouchView;
@@ -156,13 +148,12 @@ public class InputSuit extends LinearLayout {
 		mPhotoDeleteView.setOnClickListener(deletePhotoListener);
 		mRecordGroup = findViewById(R.id.voice_group);
 
-		mVolumnGroup = findViewById(R.id.volumn_group);
-		mVolumeView = (VolumeView) findViewById(R.id.volume_view);
-		mRecordLenText = (TextView) findViewById(R.id.volume_recordlen_text);
-
 		mDissableTouchView = findViewById(R.id.dissableClick_view);
 		mDissableTouchView.setVisibility(View.GONE);
 		mDissableTouchView.setOnTouchListener(dissableTouchListener);
+
+		mRecordDurationText = (TextView) findViewById(R.id.record_duration_textview);
+
 		mPitchProgressText = (TextView) findViewById(R.id.pitch_seekarc_progress_textview);
 		mTempoProgressText = (TextView) findViewById(R.id.tempo_seekarc_progress_textview);
 		mPitchSeekArc = (SeekArc) findViewById(R.id.pitch_seekarc);
@@ -182,6 +173,7 @@ public class InputSuit extends LinearLayout {
 			public void onProgressChanged(SeekArc seekArc, int progress,
 					boolean fromUser) {
 				float pitch = (progress - 1000) / 100.0f;
+				NativeSoundTouch.getSoundTouch().setPitchSemiTones(pitch);
 				mPitchProgressText.setText(String.valueOf(pitch));
 			}
 		});
@@ -202,6 +194,7 @@ public class InputSuit extends LinearLayout {
 			public void onProgressChanged(SeekArc seekArc, int progress,
 					boolean fromUser) {
 				float tempo = (progress - 5000) / 100.0f;
+				NativeSoundTouch.getSoundTouch().setTempoChange(tempo);
 				mTempoProgressText.setText(String.valueOf(tempo + "%"));
 			}
 		});
@@ -212,15 +205,9 @@ public class InputSuit extends LinearLayout {
 			@Override
 			public void onCheckedChanged(RadioGroup arg0, int arg1) {
 				if (arg1 == tomRadioBtn.getId()) {
-					mPitchSeekArc.setProgress(2000);
-					mPitchProgressText.setText("10.00");
-					mTempoSeekArc.setProgress(5000);
-					mTempoProgressText.setText("0.00%");
+					checkTomVoiceRadioBtn();
 				} else if (arg1 == wangRadioBtn.getId()) {
-					mPitchSeekArc.setProgress(500);
-					mPitchProgressText.setText("-5.00");
-					mTempoSeekArc.setProgress(2500);
-					mTempoProgressText.setText("0.00%");
+					checkWangVoiceRadioBtn();
 				}
 			}
 		});
@@ -229,14 +216,12 @@ public class InputSuit extends LinearLayout {
 			@Override
 			public void OnVolumnPower(float power) {
 				mRecorderSuit.setVolumeNumByPower(power);
+				mRecordDurationText.setText(mSTRecorder.getTime() / 1000 + "\"");
 			}
 
 			@Override
 			public void OnStop() {
-
 				mTipRecord.setVisibility(View.VISIBLE);
-				mVolumnGroup.setVisibility(View.GONE);
-
 			}
 
 			@Override
@@ -253,17 +238,12 @@ public class InputSuit extends LinearLayout {
 				mPlayerSuit.setVisibility(View.VISIBLE);
 				if (mSTRecorder != null)
 					mLastRecordFile = mSTRecorder.stopRecorder();
-				else
-					mVolumnGroup.setVisibility(View.GONE);
 			}
 
 			@Override
 			public void onStartRecord() {
 				// 开始录音
 				mHandler.removeMessages(0, null);
-				mVolumnGroup.setVisibility(View.VISIBLE);
-				mVolumeView.setVolume(0);
-				mRecordLenText.setText("");
 				mSTRecorder.startRecord();
 			}
 
@@ -308,6 +288,25 @@ public class InputSuit extends LinearLayout {
 	}
 
 	// ----------------------------------------Private-------------------------------------------
+	/**
+	 * 单选“汤姆”
+	 */
+	private void checkTomVoiceRadioBtn() {
+		mPitchSeekArc.setProgress(2000);
+		mPitchProgressText.setText("10.00");
+		mTempoSeekArc.setProgress(5000);
+		mTempoProgressText.setText("0.00%");
+	}
+
+	/**
+	 * 单选“老王”
+	 */
+	private void checkWangVoiceRadioBtn() {
+		mPitchSeekArc.setProgress(500);
+		mPitchProgressText.setText("-5.00");
+		mTempoSeekArc.setProgress(2500);
+		mTempoProgressText.setText("0.00%");
+	}
 
 	private OnFocusChangeListener textFocuseListener = new OnFocusChangeListener() {
 		@Override
@@ -661,12 +660,14 @@ public class InputSuit extends LinearLayout {
 		mTipPhoto.setVisibility(View.GONE);
 		mAttachView.setVisibility(View.GONE);
 		mPhotoShowGroup.setVisibility(View.GONE);
-		mVolumnGroup.setVisibility(View.GONE);
 
 		mPhotoOperateGroup.setVisibility(View.VISIBLE);
 		mMessageEdit.setText("");
 		mMessageEdit.setHint("");
-		mRecordLenText.setText("0″");
+		mRecordDurationText.setText("0\"");
+
+		// 变声默认是汤姆
+		checkTomVoiceRadioBtn();
 	}
 
 	/** 是否展开状态 **/
