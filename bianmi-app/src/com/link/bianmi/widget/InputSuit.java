@@ -77,7 +77,6 @@ public class InputSuit extends LinearLayout {
 	private CameraCrop mCamera;
 
 	private SoundTouchRecorder mSTRecorder;
-	private String mLastRecordFile;
 	private RecorderView mRecorderView;
 	private PlayerView mPlayerView;
 	private TextView mRecordDurationText;
@@ -357,7 +356,7 @@ public class InputSuit extends LinearLayout {
 		mRerecordingBtn.setVisibility(View.VISIBLE);
 		mRecordTipText.setVisibility(View.GONE);
 		if (mSTRecorder != null)
-			mLastRecordFile = mSTRecorder.stopRecorder();
+			mRecordPath = mSTRecorder.stopRecorder();
 		mCDTime.cancel();
 	}
 
@@ -368,7 +367,7 @@ public class InputSuit extends LinearLayout {
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				mSTRecorder.startPlay(mLastRecordFile);
+				mSTRecorder.startPlay(mRecordPath);
 			}
 		}, 200);
 	}
@@ -377,12 +376,13 @@ public class InputSuit extends LinearLayout {
 	 * 重录
 	 */
 	private void rerecording() {
-		FileHelper.delete(mLastRecordFile);
+		FileHelper.delete(mRecordPath);
 		setPhotoPath("");
 		setRecordPath("");
 		mRecordLen = 0;
 		mUserName = "";
 		mUserId = "";
+		mRecordPath = "";
 
 		mRecordDurationText.setText("0\"");
 		mRecordTipText.setText(mContext

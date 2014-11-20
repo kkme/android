@@ -23,6 +23,8 @@
     <string name="publish_secret_title">发表秘密</string>
     <string name="add_edit_hint">匿名发表秘密</string>
     <string name="publish_new_secret">发表新秘密</string>
+    <string name="confirm_abandon_input">确定放弃当前输入吗？</string>
+    <string name="abandon_input">放弃输入</string>
 
     <!-- 秘密详情 -->
     <string name="details_action_title">秘密详情</string>

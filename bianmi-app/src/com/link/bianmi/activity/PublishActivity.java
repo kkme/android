@@ -1,6 +1,8 @@
 package com.link.bianmi.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -71,6 +73,19 @@ public class PublishActivity extends BaseFragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
+			// 如果正在提交，则取消提交
+			if (mLoadingItem.isVisible()) {
+				mLoadingItem.setVisible(false);
+				mSendItem.setVisible(true);
+				return false;
+			}
+
+			// 如果内容不为空
+			if (!(mInputSuit.isEmpty() && mContentEdit.getText().toString()
+					.isEmpty())) {
+				showConfirmAbandonInputDialog();
+				return false;
+			}
 			finish();
 			return true;
 		} else if (item.getItemId() == R.id.action_send) {
@@ -96,10 +111,49 @@ public class PublishActivity extends BaseFragmentActivity {
 			return;
 		}
 
+		// 如果内容不为空
+		if (!(mInputSuit.isEmpty() && mContentEdit.getText().toString()
+				.isEmpty())) {
+			showConfirmAbandonInputDialog();
+			return;
+		}
+
 		super.onBackPressed();
 	}
 
 	// --------------------------------------Private----------------------------------------------
+
+	/**
+	 * 确定放弃输入吗？
+	 */
+	private void showConfirmAbandonInputDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final AlertDialog dialog = builder
+				.setTitle(this.getString(R.string.confirm_abandon_input))
+				.setPositiveButton(this.getString(R.string.abandon_input),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+								new Handler().postDelayed(new Runnable() {
+									@Override
+									public void run() {
+										finish();
+									}
+								}, 300);
+							}
+						})
+				.setNegativeButton(this.getString(R.string.cancel),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						}).create();
+		dialog.show();
+	}
 
 	/** 监听标题输入框的内容变化 **/
 	private TextWatcher mTextWatcher = new TextWatcher() {
