@@ -14,7 +14,7 @@
         android:contentDescription="@null" />
 
     <com.link.bianmi.widget.RoundProgressBar
-        android:id="@+id/player_roundBar"
+        android:id="@+id/player_roundbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="1dp"

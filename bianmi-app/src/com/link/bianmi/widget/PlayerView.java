@@ -2,6 +2,7 @@ package com.link.bianmi.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,17 @@ public class PlayerView extends RelativeLayout {
 	private RoundProgressBar mRoundBar;
 	private OnListener mListener = null;
 
+	private int mMax;
+	private Handler mHandler = new Handler();
+
+	private Runnable mRunnable = new Runnable() {
+		@Override
+		public void run() {
+			mRoundBar.setProgress(mMax--);
+			mHandler.postDelayed(mRunnable, 1000);
+		}
+	};
+
 	public PlayerView(Context context) {
 		this(context, null);
 	}
@@ -31,7 +43,7 @@ public class PlayerView extends RelativeLayout {
 
 		LayoutInflater.from(context).inflate(R.layout.player, this, true);
 		mPlayBtn = (ImageButton) findViewById(R.id.player_btn);
-		mRoundBar = (RoundProgressBar) findViewById(R.id.player_roundBar);
+		mRoundBar = (RoundProgressBar) findViewById(R.id.player_roundbar);
 
 		TypedArray array = context.obtainStyledAttributes(attrs,
 				R.styleable.RoundProgressBar);
@@ -53,7 +65,6 @@ public class PlayerView extends RelativeLayout {
 				case STOP:
 					mListener.onPlay();
 					mStatus = PlayStatus.PLAYING;
-					mRoundBar.setProgress(0);
 					mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
 					break;
 				case PLAYING:
@@ -85,10 +96,13 @@ public class PlayerView extends RelativeLayout {
 		mPlayBtn.setBackgroundResource(R.drawable.btn_play);
 	}
 
-	public void play() {
+	public void play(int max) {
 		if (mPlayBtn != null) {
 			mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
 			mStatus = PlayStatus.PLAYING;
+			mMax = max;
+			mRoundBar.setMax(mMax);
+			mHandler.post(mRunnable);
 		}
 	}
 

@@ -85,6 +85,8 @@ public class InputSuit extends LinearLayout {
 	private TextView mRecordTipText;// 录音提示
 	private CountDownTimer mCDTime;
 
+	private int mLastRecordLen;
+
 	/** 上下文 **/
 	private BaseFragmentActivity mActivity;
 	private BaseFragment mFragment;
@@ -237,7 +239,7 @@ public class InputSuit extends LinearLayout {
 
 			@Override
 			public void onStartPlay() {
-				mPlayerView.play();
+				mPlayerView.play(mLastRecordLen);
 			}
 
 			@Override
@@ -254,6 +256,7 @@ public class InputSuit extends LinearLayout {
 		final int MaxSecond = 120000;
 		mCDTime = new CountDownTimer(MaxSecond, 1000) {
 			public void onTick(long millisUntilFinished) {
+				mLastRecordLen = (int) ((MaxSecond - millisUntilFinished) / 1000);
 				mRecordDurationText.setText((MaxSecond - millisUntilFinished)
 						/ 1000 + "″");
 			}
