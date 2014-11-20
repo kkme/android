@@ -20,7 +20,7 @@
         android:background="@drawable/bg_record_b" />
 
     <com.link.bianmi.widget.RoundProgressBar
-        android:id="@+id/record_roundBar"
+        android:id="@+id/volume_roundbar"
         android:layout_width="@dimen/dp_68"
         android:layout_height="@dimen/dp_68"
         android:padding="1dp"
@@ -37,7 +37,7 @@
         android:padding="1dp" >
 
         <View
-            android:id="@+id/record_umbrella_view"
+            android:id="@+id/volume_bg_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"

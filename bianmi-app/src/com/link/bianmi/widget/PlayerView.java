@@ -11,19 +11,22 @@ import android.widget.RelativeLayout;
 import com.link.bianmi.R;
 
 /**
- * 播放器
+ * 播放控件
+ * 
+ * @author pangfq
+ * @date 2014年11月20日 上午11:14:45
  */
-public class PlayerSuit extends RelativeLayout {
+public class PlayerView extends RelativeLayout {
 
 	private ImageButton mPlayBtn;
 	private RoundProgressBar mRoundBar;
 	private OnListener mListener = null;
 
-	public PlayerSuit(Context context) {
+	public PlayerView(Context context) {
 		this(context, null);
 	}
 
-	public PlayerSuit(Context context, AttributeSet attrs) {
+	public PlayerView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		LayoutInflater.from(context).inflate(R.layout.player, this, true);
@@ -69,33 +72,35 @@ public class PlayerSuit extends RelativeLayout {
 	/** 播放状态 **/
 	private enum PlayStatus {
 		INIT, // 初始
-		PLAYING, // 正在播放
-		STOP, // 停止播放
+		PLAYING, // 播放中
+		STOP, // 停止
 	}
 
 	// ------------------------------------------Public--------------------------------------
 
-	/** 重置状态 **/
+	/** 重置 **/
 	public void reset() {
 		mStatus = PlayStatus.INIT;
 		mRoundBar.setProgress(0);
 		mPlayBtn.setBackgroundResource(R.drawable.btn_play);
 	}
 
-	public void setOnListener(OnListener listener) {
-		mListener = listener;
-	}
-
 	public void play() {
 		if (mPlayBtn != null) {
 			mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
+			mStatus = PlayStatus.PLAYING;
 		}
 	}
 
 	public void stop() {
 		if (mPlayBtn != null) {
 			mPlayBtn.setBackgroundResource(R.drawable.btn_play);
+			mStatus = PlayStatus.STOP;
 		}
+	}
+
+	public void setOnListener(OnListener listener) {
+		mListener = listener;
 	}
 
 	public interface OnListener {

@@ -268,14 +268,14 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1" >
 
-                        <com.link.bianmi.widget.RecorderSuit
+                        <com.link.bianmi.widget.RecorderView
                             android:id="@+id/recorder_suit"
                             android:layout_width="66dp"
                             android:layout_height="66dp"
                             android:layout_centerInParent="true"
                             android:gravity="center" />
 
-                        <com.link.bianmi.widget.PlayerSuit
+                        <com.link.bianmi.widget.PlayerView
                             android:id="@+id/player_suit"
                             android:layout_width="66dp"
                             android:layout_height="66dp"

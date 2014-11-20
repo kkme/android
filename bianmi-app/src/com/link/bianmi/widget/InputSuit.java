@@ -78,8 +78,8 @@ public class InputSuit extends LinearLayout {
 
 	private SoundTouchRecorder mSTRecorder;
 	private String mLastRecordFile;
-	private RecorderSuit mRecorderSuit;
-	private PlayerSuit mPlayerSuit;
+	private RecorderView mRecorderView;
+	private PlayerView mPlayerView;
 	private TextView mRecordDurationText;
 	private Button mRerecordingBtn;// 重录按钮
 	private TextView mRecordTipText;// 录音提示
@@ -237,12 +237,12 @@ public class InputSuit extends LinearLayout {
 
 			@Override
 			public void onStartPlay() {
-				mPlayerSuit.play();
+				mPlayerView.play();
 			}
 
 			@Override
 			public void onRecording(float power) {
-				mRecorderSuit.setVolumeNumByPower(power);
+				mRecorderView.setVolume(power);
 			}
 
 			@Override
@@ -262,8 +262,8 @@ public class InputSuit extends LinearLayout {
 			}
 		};
 
-		mRecorderSuit = (RecorderSuit) findViewById(R.id.recorder_suit);
-		mRecorderSuit.setOnListener(new RecorderSuit.OnListener() {
+		mRecorderView = (RecorderView) findViewById(R.id.recorder_suit);
+		mRecorderView.setOnListener(new RecorderView.OnListener() {
 			@Override
 			public void onStopRecord() {
 				// 停止录音
@@ -276,9 +276,9 @@ public class InputSuit extends LinearLayout {
 				startRecord();
 			}
 		});
-		mPlayerSuit = (PlayerSuit) findViewById(R.id.player_suit);
-		mPlayerSuit.setVisibility(View.GONE);
-		mPlayerSuit.setOnListener(new PlayerSuit.OnListener() {
+		mPlayerView = (PlayerView) findViewById(R.id.player_suit);
+		mPlayerView.setVisibility(View.GONE);
+		mPlayerView.setOnListener(new PlayerView.OnListener() {
 			@Override
 			public void onStop() {
 			}
@@ -350,7 +350,7 @@ public class InputSuit extends LinearLayout {
 	 * 结束录音
 	 */
 	private void stopRecord() {
-		mPlayerSuit.setVisibility(View.VISIBLE);
+		mPlayerView.setVisibility(View.VISIBLE);
 		mRerecordingBtn.setVisibility(View.VISIBLE);
 		mRecordTipText.setVisibility(View.GONE);
 		if (mSTRecorder != null)
@@ -384,10 +384,10 @@ public class InputSuit extends LinearLayout {
 		mRecordDurationText.setText("0\"");
 		mRecordTipText.setText(mContext
 				.getString(R.string.inputsuit_click_start_record));
-		mRecorderSuit.reset();
-		mPlayerSuit.reset();
-		mRecorderSuit.setVisibility(View.VISIBLE);
-		mPlayerSuit.setVisibility(View.GONE);
+		mRecorderView.reset();
+		mPlayerView.reset();
+		mRecorderView.setVisibility(View.VISIBLE);
+		mPlayerView.setVisibility(View.GONE);
 		mRerecordingBtn.setVisibility(View.GONE);
 		mTipRecord.setVisibility(View.GONE);
 
@@ -397,7 +397,7 @@ public class InputSuit extends LinearLayout {
 	 * 结束播放
 	 */
 	private void stopPlay() {
-		mPlayerSuit.stop();
+		mPlayerView.stop();
 	}
 
 	private OnFocusChangeListener textFocuseListener = new OnFocusChangeListener() {
@@ -769,9 +769,9 @@ public class InputSuit extends LinearLayout {
 		mAttachView.setVisibility(View.GONE);
 		mPhotoShowGroup.setVisibility(View.GONE);
 		mRerecordingBtn.setVisibility(View.GONE);
-		mPlayerSuit.setVisibility(View.GONE);
+		mPlayerView.setVisibility(View.GONE);
 
-		mRecorderSuit.setVisibility(View.VISIBLE);
+		mRecorderView.setVisibility(View.VISIBLE);
 		mRecordTipText.setVisibility(View.VISIBLE);
 		mPhotoOperateGroup.setVisibility(View.VISIBLE);
 		mMessageEdit.setText("");
@@ -779,8 +779,8 @@ public class InputSuit extends LinearLayout {
 		mRecordDurationText.setText("0\"");
 		mRecordTipText.setText(mContext
 				.getString(R.string.inputsuit_click_start_record));
-		mRecorderSuit.reset();
-		mPlayerSuit.reset();
+		mRecorderView.reset();
+		mPlayerView.reset();
 
 		// 变声默认是汤姆
 		checkTomVoiceRadioBtn();
