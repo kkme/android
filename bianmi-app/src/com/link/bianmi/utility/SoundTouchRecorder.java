@@ -47,9 +47,9 @@ public class SoundTouchRecorder {
 
 	private PlayThread playThread = null;
 
-	// 录音音量振幅
-	private final int MSG_AMPLITUDE = 1;
-
+	// 正在录音
+	private final int MSG_RECORDING = 1;
+	// 停止录音
 	private final int MSG_STOP_PLAY = 2;
 
 	private Handler mHandler = new Handler() {
@@ -57,7 +57,7 @@ public class SoundTouchRecorder {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			switch (msg.what) {
-			case MSG_AMPLITUDE:
+			case MSG_RECORDING:
 				mListener.onRecording(Math.abs(((float) msg.arg1 - 10)) / 60);
 				break;
 			case MSG_STOP_PLAY:
@@ -126,7 +126,7 @@ public class SoundTouchRecorder {
 					Log.d("bianmi", "progress = " + Math.sqrt(amplitude));
 					Message msg = new Message();
 					msg.arg1 = (int) Math.sqrt(amplitude);
-					msg.what = MSG_AMPLITUDE;
+					msg.what = MSG_RECORDING;
 					mHandler.sendMessage(msg);
 				}
 				try {
@@ -206,7 +206,7 @@ public class SoundTouchRecorder {
 
 			if (fileName != null) {
 				try {
-					playInputStream = new FileInputStream(new File(fileName));// context.openFileInput(fileName);
+					playInputStream = new FileInputStream(new File(fileName));
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -341,14 +341,6 @@ public class SoundTouchRecorder {
 		mListener.onStopPlay();
 	}
 
-	public void pausePlay() {
-		if (mAudioTrack != null
-				&& mAudioTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING) {
-			mAudioTrack.pause();
-		}
-		mListener.onPausePlay();
-	}
-
 	private OnListener mListener;
 
 	public void setOnListener(OnListener l) {
@@ -356,18 +348,39 @@ public class SoundTouchRecorder {
 	}
 
 	public interface OnListener {
+		/**
+		 * 开始录音
+		 */
 		public void onStartRecord();
 
+		/**
+		 * 正在录音
+		 * 
+		 * @param power
+		 */
 		public void onRecording(float power);
 
+		/**
+		 * 停止录音
+		 */
 		public void onStopRecord();
 
+		/**
+		 * 开始播放
+		 */
 		public void onStartPlay();
 
+		/**
+		 * 正在播放
+		 * 
+		 * @param maxProgress
+		 * @param progress
+		 */
 		public void onPlaying(int maxProgress, int progress);
 
-		public void onPausePlay();
-
+		/**
+		 * 停止播放
+		 */
 		public void onStopPlay();
 	}
 

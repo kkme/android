@@ -8,6 +8,7 @@
     <string name="no_more_to_load">木有啦</string>
     <string name="welcome_tip_next">滑动有惊喜></string>
     <string name="welcome_guest">游客进入</string>
+    <string name="cancel">取消</string>
 
     <!-- 主界面 -->
     <string name="hot">热门</string>
@@ -71,11 +72,14 @@
     <string name="inputsuit_record">请按住说话</string>
     <string name="inputsuit_record_pressed">松开结束</string>
     <string name="inputsuit_record_empty">录音时间太短</string>
-    <string name="inputsuit_record_delete">重录</string>
+    <string name="inputsuit_rerecord_tip">重录将删除刚才的录音</string>
+    <string name="rerecording">重录</string>
     <string name="inputsuit_voice_wang">老王</string>
     <string name="inputsuit_voice_tom">汤姆</string>
     <string name="pitch">音调</string>
     <string name="tempo">音速</string>
+    <string name="inputsuit_click_start_record">点击录音</string>
+    <string name="inputsuit_click_stop_record">点击结束</string>
 
     <!-- 九宫格密码锁屏 -->
     <string name="try_again">重试</string>

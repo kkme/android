@@ -270,15 +270,15 @@
 
                         <com.link.bianmi.widget.RecorderSuit
                             android:id="@+id/recorder_suit"
-                            android:layout_width="68dp"
-                            android:layout_height="68dp"
+                            android:layout_width="66dp"
+                            android:layout_height="66dp"
                             android:layout_centerInParent="true"
                             android:gravity="center" />
 
                         <com.link.bianmi.widget.PlayerSuit
                             android:id="@+id/player_suit"
-                            android:layout_width="68dp"
-                            android:layout_height="68dp"
+                            android:layout_width="66dp"
+                            android:layout_height="66dp"
                             android:layout_centerInParent="true"
                             android:gravity="center"
                             android:visibility="gone" />
@@ -289,9 +289,39 @@
                             android:id="@+id/record_duration_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_above="@+id/recorder_suit"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/dp_2"
+                            android:text="97&apos;&apos;"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/sp_12" />
+
+                        <!-- 重录 -->
+
+                        <Button
+                            android:id="@+id/rerecording_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/dp_24"
                             android:layout_alignParentBottom="true"
                             android:layout_centerHorizontal="true"
-                            android:text="97&apos;&apos;"
+                            android:background="@drawable/selector_btn_normal_48"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/dp_5"
+                            android:paddingRight="@dimen/dp_5"
+                            android:text="@string/rerecording"
+                            android:textColor="@color/fc_dft"
+                            android:textSize="@dimen/sp_12" />
+                        <!-- 操作提示:点击录音、点击结束 -->
+
+                        <TextView
+                            android:id="@+id/record_tip_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/dp_2"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/sp_12" />
                     </RelativeLayout>

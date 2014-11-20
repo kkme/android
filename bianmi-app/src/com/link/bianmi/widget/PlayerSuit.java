@@ -17,6 +17,7 @@ public class PlayerSuit extends RelativeLayout {
 
 	private ImageButton mPlayBtn;
 	private RoundProgressBar mRoundBar;
+	private OnListener mListener = null;
 
 	public PlayerSuit(Context context) {
 		this(context, null);
@@ -39,14 +40,13 @@ public class PlayerSuit extends RelativeLayout {
 		array.recycle();
 		mRoundBar.setPaintWidth(paintWidth);
 
-		resetStatus();
+		reset();
 
 		mPlayBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				switch (mStatus) {
 				case INIT:
-				case PAUSE:
 				case STOP:
 					mListener.onPlay();
 					mStatus = PlayStatus.PLAYING;
@@ -54,9 +54,9 @@ public class PlayerSuit extends RelativeLayout {
 					mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
 					break;
 				case PLAYING:
-					mListener.onPause();
-					mStatus = PlayStatus.PAUSE;
-					mPlayBtn.setBackgroundResource(R.drawable.btn_playing);
+					mListener.onStop();
+					mStatus = PlayStatus.STOP;
+					mPlayBtn.setBackgroundResource(R.drawable.btn_play);
 					break;
 				}
 			}
@@ -70,20 +70,17 @@ public class PlayerSuit extends RelativeLayout {
 	private enum PlayStatus {
 		INIT, // 初始
 		PLAYING, // 正在播放
-		PAUSE, // 暂停播放
 		STOP, // 停止播放
 	}
 
 	// ------------------------------------------Public--------------------------------------
 
 	/** 重置状态 **/
-	public void resetStatus() {
+	public void reset() {
 		mStatus = PlayStatus.INIT;
 		mRoundBar.setProgress(0);
 		mPlayBtn.setBackgroundResource(R.drawable.btn_play);
 	}
-
-	private OnListener mListener = null;
 
 	public void setOnListener(OnListener listener) {
 		mListener = listener;
@@ -101,16 +98,8 @@ public class PlayerSuit extends RelativeLayout {
 		}
 	}
 
-	public void pause() {
-		if (mPlayBtn != null) {
-			mPlayBtn.setBackgroundResource(R.drawable.btn_playing);
-		}
-	}
-
 	public interface OnListener {
 		public void onPlay();
-
-		public void onPause();
 
 		public void onStop();
 	}

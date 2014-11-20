@@ -45,7 +45,7 @@ public class RecorderSuit extends RelativeLayout {
 		mMicView = findViewById(R.id.record_mic_view);
 		mRoundBar = (RoundProgressBar) findViewById(R.id.record_roundBar);
 
-		init();
+		reset();
 
 		this.setOnClickListener(new OnClickListener() {
 			@Override
@@ -73,13 +73,6 @@ public class RecorderSuit extends RelativeLayout {
 			}
 		});
 
-	}
-
-	private void init() {
-		mView = this;
-		mRoundBar.setMax(360);
-		mStartRecordBgView.setVisibility(View.GONE);
-		showVolume(false);
 	}
 
 	private RecordStatus mStatus = RecordStatus.INIT;
@@ -115,6 +108,12 @@ public class RecorderSuit extends RelativeLayout {
 	}
 
 	// -------------------------------Public----------------------------------
+	public void reset() {
+		mView = this;
+		mRoundBar.setMax(360);
+		mStartRecordBgView.setVisibility(View.VISIBLE);
+		showVolume(false);
+	}
 
 	/** 根据音量登记设置音量 **/
 	public void setVolumeNumByPower(float power) {

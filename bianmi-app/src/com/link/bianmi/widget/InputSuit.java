@@ -7,7 +7,9 @@ import lib.module.soundtouch.NativeSoundTouch;
 import lib.widget.seekarc.SeekArc;
 import lib.widget.seekarc.SeekArc.OnSeekArcChangeListener;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -79,8 +81,9 @@ public class InputSuit extends LinearLayout {
 	private RecorderSuit mRecorderSuit;
 	private PlayerSuit mPlayerSuit;
 	private TextView mRecordDurationText;
-
-	private String mRecorderDir;
+	private Button mRerecordingBtn;// 重录按钮
+	private TextView mRecordTipText;// 录音提示
+	private CountDownTimer mCDTime;
 
 	/** 上下文 **/
 	private BaseFragmentActivity mActivity;
@@ -110,6 +113,8 @@ public class InputSuit extends LinearLayout {
 	/** 附件区 **/
 	private View mAttachView;
 
+	private Context mContext;
+
 	/** 禁止操作 **/
 	private View mDissableTouchView;
 	private SeekArc mPitchSeekArc;// 音调SeekArc
@@ -123,6 +128,7 @@ public class InputSuit extends LinearLayout {
 
 	public InputSuit(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		mContext = context;
 		LayoutInflater.from(context).inflate(R.layout.input_suit, this, true);
 
 		findViewById(R.id.attach_record_view).setOnClickListener(
@@ -221,7 +227,7 @@ public class InputSuit extends LinearLayout {
 
 			@Override
 			public void onStopPlay() {
-				mPlayerSuit.stop();
+				stopPlay();
 			}
 
 			@Override
@@ -243,15 +249,10 @@ public class InputSuit extends LinearLayout {
 			public void onPlaying(int maxProgress, int progress) {
 
 			}
-
-			@Override
-			public void onPausePlay() {
-				mPlayerSuit.pause();
-			}
 		});
 
 		final int MaxSecond = 120000;
-		final CountDownTimer cTime = new CountDownTimer(MaxSecond, 1000) {
+		mCDTime = new CountDownTimer(MaxSecond, 1000) {
 			public void onTick(long millisUntilFinished) {
 				mRecordDurationText.setText((MaxSecond - millisUntilFinished)
 						/ 1000 + "″");
@@ -266,20 +267,14 @@ public class InputSuit extends LinearLayout {
 			@Override
 			public void onStopRecord() {
 				// 停止录音
-				mPlayerSuit.setVisibility(View.VISIBLE);
-				if (mSTRecorder != null)
-					mLastRecordFile = mSTRecorder.stopRecorder();
-				cTime.cancel();
+				stopRecord();
 			}
 
 			@Override
 			public void onStartRecord() {
 				// 开始录音
-				mHandler.removeMessages(0, null);
-				mSTRecorder.startRecord();
-				cTime.start();
+				startRecord();
 			}
-
 		});
 		mPlayerSuit = (PlayerSuit) findViewById(R.id.player_suit);
 		mPlayerSuit.setVisibility(View.GONE);
@@ -290,20 +285,20 @@ public class InputSuit extends LinearLayout {
 
 			@Override
 			public void onPlay() {
-				new Handler().postDelayed(new Runnable() {
-
-					@Override
-					public void run() {
-						mSTRecorder.startPlay(mLastRecordFile);
-					}
-				}, 200);
-			}
-
-			@Override
-			public void onPause() {
-				mSTRecorder.pausePlay();
+				// 开始播放
+				startPlay();
 			}
 		});
+		// 重录按钮
+		mRerecordingBtn = (Button) findViewById(R.id.rerecording_btn);
+		mRerecordingBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showConfirmRerecordingDialog();
+			}
+		});
+
+		mRecordTipText = (TextView) findViewById(R.id.record_tip_textview);
 
 		if (attrs != null) {
 			TypedArray a = context.obtainStyledAttributes(attrs,
@@ -338,6 +333,71 @@ public class InputSuit extends LinearLayout {
 		mPitchProgressText.setText("-5.00");
 		mTempoSeekArc.setProgress(2500);
 		mTempoProgressText.setText("0.00%");
+	}
+
+	/**
+	 * 开始录音
+	 */
+	private void startRecord() {
+		mHandler.removeMessages(0, null);
+		mSTRecorder.startRecord();
+		mRecordTipText.setText(mActivity
+				.getString(R.string.inputsuit_click_stop_record));
+		mCDTime.start();
+	}
+
+	/**
+	 * 结束录音
+	 */
+	private void stopRecord() {
+		mPlayerSuit.setVisibility(View.VISIBLE);
+		mRerecordingBtn.setVisibility(View.VISIBLE);
+		mRecordTipText.setVisibility(View.GONE);
+		if (mSTRecorder != null)
+			mLastRecordFile = mSTRecorder.stopRecorder();
+		mCDTime.cancel();
+	}
+
+	/**
+	 * 开始播放
+	 */
+	private void startPlay() {
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				mSTRecorder.startPlay(mLastRecordFile);
+			}
+		}, 200);
+	}
+
+	/**
+	 * 重录
+	 */
+	private void rerecording() {
+		FileHelper.delete(mLastRecordFile);
+		setPhotoPath("");
+		setRecordPath("");
+		mRecordLen = 0;
+		mUserName = "";
+		mUserId = "";
+
+		mRecordDurationText.setText("0\"");
+		mRecordTipText.setText(mContext
+				.getString(R.string.inputsuit_click_start_record));
+		mRecorderSuit.reset();
+		mPlayerSuit.reset();
+		mRecorderSuit.setVisibility(View.VISIBLE);
+		mPlayerSuit.setVisibility(View.GONE);
+		mRerecordingBtn.setVisibility(View.GONE);
+		mTipRecord.setVisibility(View.GONE);
+
+	}
+
+	/**
+	 * 结束播放
+	 */
+	private void stopPlay() {
+		mPlayerSuit.stop();
 	}
 
 	private OnFocusChangeListener textFocuseListener = new OnFocusChangeListener() {
@@ -508,18 +568,6 @@ public class InputSuit extends LinearLayout {
 		}
 	};
 
-	/** 重新录音 **/
-	private OnClickListener recordDeleteListener = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			if (mRecordPath.contains(SysConfig.getInstance().getRootPath())) // lls文件夹中的文件可以删除
-				FileHelper.delete(mRecordPath);
-			setRecordPath("");
-			mRecordLen = 0;
-			mTipRecord.setVisibility(View.GONE);
-		}
-	};
-
 	private OnTouchListener dissableTouchListener = new OnTouchListener() {
 
 		@Override
@@ -641,7 +689,35 @@ public class InputSuit extends LinearLayout {
 		}
 	}
 
-	// ----------------外部接口-------------------------------------------
+	/**
+	 * 重录确认对话框
+	 */
+	private void showConfirmRerecordingDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+		final AlertDialog dialog = builder
+				.setTitle(mActivity.getString(R.string.inputsuit_rerecord_tip))
+				.setPositiveButton(mActivity.getString(R.string.rerecording),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								// 重录
+								rerecording();
+							}
+						})
+				.setNegativeButton(mActivity.getString(R.string.cancel),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								// 取消
+								dialog.dismiss();
+							}
+						}).create();
+		dialog.show();
+	}
+
+	// --------------------------------------------Public-------------------------------------------
 
 	public interface Listener {
 		/** 提交 **/
@@ -692,11 +768,19 @@ public class InputSuit extends LinearLayout {
 		mTipPhoto.setVisibility(View.GONE);
 		mAttachView.setVisibility(View.GONE);
 		mPhotoShowGroup.setVisibility(View.GONE);
+		mRerecordingBtn.setVisibility(View.GONE);
+		mPlayerSuit.setVisibility(View.GONE);
 
+		mRecorderSuit.setVisibility(View.VISIBLE);
+		mRecordTipText.setVisibility(View.VISIBLE);
 		mPhotoOperateGroup.setVisibility(View.VISIBLE);
 		mMessageEdit.setText("");
 		mMessageEdit.setHint("");
 		mRecordDurationText.setText("0\"");
+		mRecordTipText.setText(mContext
+				.getString(R.string.inputsuit_click_start_record));
+		mRecorderSuit.reset();
+		mPlayerSuit.reset();
 
 		// 变声默认是汤姆
 		checkTomVoiceRadioBtn();
@@ -717,7 +801,6 @@ public class InputSuit extends LinearLayout {
 			Listener l) {
 		mActivity = activity;
 		mFragment = fragment;
-		mRecorderDir = SysConfig.getInstance().getPathTemp() + File.separator;
 		mListener = l;
 		mHandler = new Handler();
 	}
