@@ -86,6 +86,9 @@ public class PublishActivity extends BaseFragmentActivity {
 				showConfirmAbandonInputDialog();
 				return false;
 			}
+
+			mInputSuit.cleanup();
+
 			finish();
 			return true;
 		} else if (item.getItemId() == R.id.action_send) {
@@ -118,6 +121,8 @@ public class PublishActivity extends BaseFragmentActivity {
 			return;
 		}
 
+		mInputSuit.cleanup();
+
 		super.onBackPressed();
 	}
 
@@ -135,6 +140,7 @@ public class PublishActivity extends BaseFragmentActivity {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
+								mInputSuit.cleanup();
 								dialog.dismiss();
 								new Handler().postDelayed(new Runnable() {
 									@Override

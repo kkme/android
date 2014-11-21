@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 论坛输入套件 -->
+<!-- 输入套件 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:seekarc="http://schemas.android.com/apk/res/com.link.bianmi"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:clickable="true" >
 
     <LinearLayout
         android:id="@+id/input_group"

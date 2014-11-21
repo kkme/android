@@ -63,14 +63,18 @@ public class PlayerView extends RelativeLayout {
 				switch (mStatus) {
 				case INIT:
 				case STOP:
-					mListener.onPlay();
 					mStatus = PlayStatus.PLAYING;
 					mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
+					if (mListener != null) {
+						mListener.onPlay();
+					}
 					break;
 				case PLAYING:
-					mListener.onStop();
 					mStatus = PlayStatus.STOP;
 					mPlayBtn.setBackgroundResource(R.drawable.btn_play);
+					if (mListener != null) {
+						mListener.onStop();
+					}
 					break;
 				}
 			}
@@ -110,6 +114,8 @@ public class PlayerView extends RelativeLayout {
 		if (mPlayBtn != null) {
 			mPlayBtn.setBackgroundResource(R.drawable.btn_play);
 			mStatus = PlayStatus.STOP;
+			mHandler.removeCallbacks(mRunnable);
+			mRoundBar.setProgress(0);
 		}
 	}
 

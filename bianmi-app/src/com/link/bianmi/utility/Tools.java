@@ -155,7 +155,7 @@ public class Tools {
 		PackageManager pm = mContext.getPackageManager();
 		ApplicationInfo appInfo = null;
 		try {
-			appInfo = pm.getApplicationInfo("com.liulishuo.engzo", 0);
+			appInfo = pm.getApplicationInfo("com.link.bianmi", 0);
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}

@@ -46,7 +46,7 @@ public class ContextHelper {
 		int verCode = -1;
 		try {
 			verCode = mContent.getPackageManager().getPackageInfo(
-					"com.liulishuo.engzo", 0).versionCode;
+					"com.link.bianmi", 0).versionCode;
 		} catch (Exception e) {}
 		return verCode;
 	}
@@ -60,7 +60,7 @@ public class ContextHelper {
 		String verName = "";
 		try {
 			verName = mContent.getPackageManager().getPackageInfo(
-					"com.liulishuo.engzo", 0).versionName;
+					"com.link.bianmi", 0).versionName;
 		} catch (Exception e) {}
 		return verName;	
 

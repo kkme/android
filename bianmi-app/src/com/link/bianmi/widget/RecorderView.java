@@ -59,15 +59,19 @@ public class RecorderView extends RelativeLayout {
 				case INIT:
 				case STOP:
 					showVolume(true);
-					mListener.onStartRecord();
 					mStatus = RecordStatus.RECORDING;
 					mView.setVisibility(View.VISIBLE);
+					if (mListener != null) {
+						mListener.onStartRecord();
+					}
 					break;
 				case RECORDING:
 					showVolume(false);
-					mListener.onStopRecord();
 					mStatus = RecordStatus.STOP;
 					mView.setVisibility(View.GONE);
+					if (mListener != null) {
+						mListener.onStopRecord();
+					}
 					break;
 				}
 			}

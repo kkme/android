@@ -15,7 +15,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_centerInParent="true"
-            myattr:borderWidth="2dp" />
+            myattr:borderWidth="3dp" />
     </RelativeLayout>
 
 </FrameLayout>

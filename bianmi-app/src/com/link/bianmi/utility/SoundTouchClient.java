@@ -5,8 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.UUID;
 
 import lib.module.soundtouch.NativeSoundTouch;
 import android.content.Context;
@@ -18,12 +17,13 @@ import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.link.bianmi.SysConfig;
 
-public class SoundTouchRecorder {
+public class SoundTouchClient {
 
-	private static final String TAG = "SoundTouchRecorder";
+	private static final String TAG = "SoundTouchClient";
 
 	private AudioRecord mAudioRecorder = null;
 
@@ -41,7 +41,7 @@ public class SoundTouchRecorder {
 
 	private boolean playingstart = false;
 
-	private Context context;
+	private Context mContext;
 
 	private RecordThread recordThread = null;
 
@@ -58,10 +58,17 @@ public class SoundTouchRecorder {
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case MSG_RECORDING:
-				mListener.onRecording(Math.abs(((float) msg.arg1 - 10)) / 60);
+				if (mListener != null) {
+					mListener
+							.onRecording(Math.abs(((float) msg.arg1 - 10)) / 60);
+				}
+
 				break;
 			case MSG_STOP_PLAY:
-				mListener.onStopPlay();
+				if (mListener != null) {
+					mListener.onStopPlay();
+				}
+
 				break;
 			}
 
@@ -76,13 +83,8 @@ public class SoundTouchRecorder {
 
 		RecordThread() {
 
-			SimpleDateFormat formatter = new SimpleDateFormat(
-					"yyyy_MM_dd_HH_mm_ss_SSS");
-			Date curDate = new Date(System.currentTimeMillis());
-			String fileName = formatter.format(curDate);
-
+			String fileName = UUID.randomUUID().toString();
 			Log.d(TAG, "recordfile name:" + fileName);
-
 			fullFileName = SysConfig.getInstance().getPathTemp()
 					+ File.separator + fileName + ".amr";
 			File tempFile = new File(fullFileName);
@@ -256,8 +258,8 @@ public class SoundTouchRecorder {
 		}
 	}
 
-	public SoundTouchRecorder(Context context) {
-		this.context = context;
+	public SoundTouchClient(Context context) {
+		mContext = context;
 	}
 
 	public void startRecord() {
@@ -286,7 +288,10 @@ public class SoundTouchRecorder {
 			recordingstart = true;
 			recordThread = new RecordThread();
 			recordThread.start();
-			mListener.onStartRecord();
+			if (mListener != null) {
+				mListener.onStartRecord();
+			}
+
 		}
 
 	}
@@ -301,7 +306,9 @@ public class SoundTouchRecorder {
 			recordThread = null;
 		}
 
-		mListener.onStopRecord();
+		if (mListener != null) {
+			mListener.onStopRecord();
+		}
 		return fileName;
 	}
 
@@ -314,6 +321,14 @@ public class SoundTouchRecorder {
 
 		if (playThread != null && playThread.isAlive()) {
 			Log.w(TAG, "AudioPlayer is already started!");
+			return;
+		}
+
+		if (!new File(fileName).exists() || !new File(fileName).isFile()) {
+			Toast.makeText(mContext, "无法读取录音文件！", Toast.LENGTH_SHORT).show();
+			if (mListener != null) {
+				mListener.onStopPlay();
+			}
 			return;
 		}
 
@@ -331,14 +346,20 @@ public class SoundTouchRecorder {
 			playingstart = true;
 			playThread = new PlayThread(fileName);
 			playThread.start();
-			mListener.onStartPlay();
+			if (mListener != null) {
+				mListener.onStartPlay();
+			}
+
 		}
 	}
 
 	public void stopPlay() {
 		playingstart = false;
 		playThread = null;
-		mListener.onStopPlay();
+		if (mListener != null) {
+			mListener.onStopPlay();
+		}
+
 	}
 
 	private OnListener mListener;

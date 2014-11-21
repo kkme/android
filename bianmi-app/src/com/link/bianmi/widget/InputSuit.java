@@ -43,7 +43,7 @@ import com.link.bianmi.utility.ContextHelper;
 import com.link.bianmi.utility.ConvertHelper;
 import com.link.bianmi.utility.FileHelper;
 import com.link.bianmi.utility.ImageHelper;
-import com.link.bianmi.utility.SoundTouchRecorder;
+import com.link.bianmi.utility.SoundTouchClient;
 
 /**
  * 
@@ -76,15 +76,14 @@ public class InputSuit extends LinearLayout {
 
 	private CameraCrop mCamera;
 
-	private SoundTouchRecorder mSTRecorder;
+	private SoundTouchClient mSTRecorder;
 	private RecorderView mRecorderView;
 	private PlayerView mPlayerView;
 	private TextView mRecordDurationText;
 	private Button mRerecordingBtn;// 重录按钮
 	private TextView mRecordTipText;// 录音提示
 	private CountDownTimer mCDTime;
-
-	private int mLastRecordLen;
+	private STListener mSTListener;
 
 	/** 上下文 **/
 	private BaseFragmentActivity mActivity;
@@ -218,44 +217,14 @@ public class InputSuit extends LinearLayout {
 				}
 			}
 		});
-		mSTRecorder = new SoundTouchRecorder(context);
-		mSTRecorder.setOnListener(new SoundTouchRecorder.OnListener() {
-
-			@Override
-			public void onStopRecord() {
-				mTipRecord.setVisibility(View.VISIBLE);
-			}
-
-			@Override
-			public void onStopPlay() {
-				stopPlay();
-			}
-
-			@Override
-			public void onStartRecord() {
-
-			}
-
-			@Override
-			public void onStartPlay() {
-				mPlayerView.play(mLastRecordLen);
-			}
-
-			@Override
-			public void onRecording(float power) {
-				mRecorderView.setVolume(power);
-			}
-
-			@Override
-			public void onPlaying(int maxProgress, int progress) {
-
-			}
-		});
+		mSTRecorder = new SoundTouchClient(context);
+		mSTListener = new STListener();
+		mSTRecorder.setOnListener(mSTListener);
 
 		final int MaxSecond = 120000;
 		mCDTime = new CountDownTimer(MaxSecond, 1000) {
 			public void onTick(long millisUntilFinished) {
-				mLastRecordLen = (int) ((MaxSecond - millisUntilFinished) / 1000);
+				mRecordLen = (int) ((MaxSecond - millisUntilFinished) / 1000);
 				mRecordDurationText.setText((MaxSecond - millisUntilFinished)
 						/ 1000 + "″");
 			}
@@ -561,7 +530,7 @@ public class InputSuit extends LinearLayout {
 	private OnClickListener deletePhotoListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			if (mPhotoPath.contains(SysConfig.getInstance().getRootPath())) // lls文件夹中的文件可以删除
+			if (mPhotoPath.contains(SysConfig.getInstance().getRootPath()))
 				FileHelper.delete(mPhotoPath);
 			setPhotoPath("");
 			mPhotoImage.setImageBitmap(null);
@@ -719,6 +688,42 @@ public class InputSuit extends LinearLayout {
 						}).create();
 		dialog.show();
 	}
+
+	/**
+	 * 监听SoundTouch事件
+	 */
+	private class STListener implements SoundTouchClient.OnListener {
+
+		@Override
+		public void onStopRecord() {
+			mTipRecord.setVisibility(View.VISIBLE);
+		}
+
+		@Override
+		public void onStopPlay() {
+			stopPlay();
+		}
+
+		@Override
+		public void onStartRecord() {
+
+		}
+
+		@Override
+		public void onStartPlay() {
+			mPlayerView.play(mRecordLen);
+		}
+
+		@Override
+		public void onRecording(float power) {
+			mRecorderView.setVolume(power);
+		}
+
+		@Override
+		public void onPlaying(int maxProgress, int progress) {
+
+		}
+	};
 
 	// --------------------------------------------Public-------------------------------------------
 
@@ -903,6 +908,17 @@ public class InputSuit extends LinearLayout {
 		return mUserId;
 	}
 
+	/**
+	 * 清理数据
+	 */
+	public void cleanup() {
+		mSTRecorder.setOnListener(null);
+		mSTRecorder.stopRecorder();
+		mSTRecorder.stopPlay();
+		FileHelper.delete(mRecordPath);
+		FileHelper.delete(mPhotoPath);
+	}
+
 	/** 开始上传附件 **/
 	public void startUpload() {
 
@@ -924,5 +940,4 @@ public class InputSuit extends LinearLayout {
 
 		uploadAttach();
 	}
-
 }
