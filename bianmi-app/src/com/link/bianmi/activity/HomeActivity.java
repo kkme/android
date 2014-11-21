@@ -33,7 +33,6 @@ import com.link.bianmi.fragment.HotFragment;
 import com.link.bianmi.fragment.ImageFragment;
 import com.link.bianmi.fragment.NearbyFragment;
 import com.link.bianmi.fragment.SecretFragment;
-import com.link.bianmi.utility.ShareUtil;
 import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.ViewPagerTabBar;
 import com.umeng.update.UmengUpdateAgent;
@@ -216,7 +215,6 @@ public class HomeActivity extends BaseFragmentActivity {
 					int position, long id) {
 				switch (position) {
 				case 0:
-					ShareUtil.showShare(HomeActivity.this);
 					break;
 				case 1:
 					break;

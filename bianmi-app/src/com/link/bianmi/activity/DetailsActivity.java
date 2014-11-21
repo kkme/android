@@ -26,7 +26,6 @@ import com.link.bianmi.entity.Comment;
 import com.link.bianmi.entity.ListResult;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.CommentManager;
-import com.link.bianmi.utility.ShareUtil;
 import com.link.bianmi.widget.InputSuit;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.ActivateListener;
@@ -274,7 +273,6 @@ public class DetailsActivity extends BaseFragmentActivity {
 					int position, long id) {
 				switch (position) {
 				case 0:
-					ShareUtil.showShare(DetailsActivity.this);
 					break;
 				case 1:
 					break;
