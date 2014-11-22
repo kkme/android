@@ -2,6 +2,8 @@ package com.link.bianmi.activity;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -36,6 +38,9 @@ import com.link.bianmi.fragment.SecretFragment;
 import com.link.bianmi.utility.UmengSocialClient;
 import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.ViewPagerTabBar;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
+import com.tencent.android.tpush.service.XGPushService;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UpdateStatus;
 
@@ -55,6 +60,14 @@ public class HomeActivity extends BaseFragmentActivity {
 		UmengUpdateAgent.setUpdateOnlyWifi(false);
 		UmengUpdateAgent.setUpdateUIStyle(UpdateStatus.STYLE_NOTIFICATION);
 		UmengUpdateAgent.update(this);
+
+		// 开启信鸽Push
+		XGPushConfig.enableDebug(this, true);
+		Context context = getApplicationContext();
+		XGPushManager.registerPush(context);
+		Intent service = new Intent(context, XGPushService.class);
+		context.startService(service);
+
 		// 初始化ActionBar
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowHomeEnabled(true);
