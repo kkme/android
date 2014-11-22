@@ -33,6 +33,7 @@ import com.link.bianmi.fragment.HotFragment;
 import com.link.bianmi.fragment.ImageFragment;
 import com.link.bianmi.fragment.NearbyFragment;
 import com.link.bianmi.fragment.SecretFragment;
+import com.link.bianmi.utility.UmengSocialClient;
 import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.ViewPagerTabBar;
 import com.umeng.update.UmengUpdateAgent;
@@ -217,6 +218,7 @@ public class HomeActivity extends BaseFragmentActivity {
 				case 0:
 					break;
 				case 1:
+					UmengSocialClient.showShareDialog(HomeActivity.this);
 					break;
 				case 2:
 					launchActivityForResult(SettingsActivity.class, 6666);
@@ -399,4 +401,5 @@ public class HomeActivity extends BaseFragmentActivity {
 		}
 
 	}
+
 }
