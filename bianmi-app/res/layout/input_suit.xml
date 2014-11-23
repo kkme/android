@@ -1,387 +1,373 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 输入套件 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:seekarc="http://schemas.android.com/apk/res/com.link.bianmi"
+    android:id="@+id/input_group"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clickable="true" >
-
-    <LinearLayout
-        android:id="@+id/input_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical" >
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="#b7b7b7" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#f5f5f5"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:paddingBottom="@dimen/dp_6"
-            android:paddingTop="@dimen/dp_6" >
-
-            <View
-                android:id="@+id/attach_record_view"
-                android:layout_width="@dimen/dp_32"
-                android:layout_height="@dimen/dp_32"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:background="@drawable/selector_btn_reply_voice" />
-
-            <View
-                android:id="@+id/tips_record_view"
-                android:layout_width="@dimen/dp_10"
-                android:layout_height="@dimen/dp_10"
-                android:layout_alignRight="@id/attach_record_view"
-                android:layout_alignTop="@id/attach_record_view"
-                android:background="@drawable/icon_newmsg" />
-
-            <View
-                android:id="@+id/attach_photo_view"
-                android:layout_width="@dimen/dp_32"
-                android:layout_height="@dimen/dp_32"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:layout_toRightOf="@id/attach_record_view"
-                android:background="@drawable/selector_btn_reply_media" />
-
-            <View
-                android:id="@+id/tips_photo_view"
-                android:layout_width="@dimen/dp_10"
-                android:layout_height="@dimen/dp_10"
-                android:layout_alignRight="@id/attach_photo_view"
-                android:layout_alignTop="@id/attach_photo_view"
-                android:background="@drawable/icon_newmsg" />
-
-            <EditText
-                android:id="@+id/message_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:layout_marginRight="@dimen/dp_8"
-                android:layout_toLeftOf="@+id/submit_view"
-                android:layout_toRightOf="@id/attach_photo_view"
-                android:background="@drawable/shape_edit_corner"
-                android:gravity="center_vertical"
-                android:hint="\@Lisa"
-                android:maxLines="5"
-                android:minHeight="@dimen/dp_32"
-                android:padding="@dimen/dp_8"
-                android:singleLine="false"
-                android:text=""
-                android:textColor="@color/fc_dft"
-                android:textColorHint="@color/fc_hint"
-                android:textSize="@dimen/sp_15" />
-
-            <Button
-                android:id="@id/submit_view"
-                android:layout_width="@dimen/dp_44"
-                android:layout_height="@dimen/dp_32"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp_8"
-                android:background="@drawable/selector_forumsuit_submit_bg"
-                android:enabled="false"
-                android:text="@string/inputsuit_submit"
-                android:textColor="@drawable/selector_forumsuit_submit_txt"
-                android:textSize="@dimen/sp_14" />
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="#b7b7b7" />
-
-        <!-- 附件 -->
-
-        <RelativeLayout
-            android:id="@+id/attach_group"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="#d9d9d9" >
-
-            <LinearLayout
-                android:id="@+id/photo_group"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:clipChildren="false"
-                android:orientation="horizontal"
-                android:visibility="gone" >
-
-                <RelativeLayout
-                    android:id="@+id/photo_operate_group"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_12" >
-
-                    <View
-                        android:id="@+id/photo_album_view"
-                        android:layout_width="@dimen/dp_57"
-                        android:layout_height="@dimen/dp_57"
-                        android:background="@drawable/selector_btn_reply_album" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignLeft="@id/photo_album_view"
-                        android:layout_alignRight="@id/photo_album_view"
-                        android:layout_below="@id/photo_album_view"
-                        android:layout_marginTop="@dimen/dp_5"
-                        android:gravity="center"
-                        android:text="@string/inputsuit_photo_album"
-                        android:textColor="@color/fc_sub"
-                        android:textSize="@dimen/sp_12" />
-
-                    <View
-                        android:id="@+id/photo_camera_view"
-                        android:layout_width="@dimen/dp_57"
-                        android:layout_height="@dimen/dp_57"
-                        android:layout_marginLeft="@dimen/dp_8"
-                        android:layout_toRightOf="@id/photo_album_view"
-                        android:background="@drawable/selector_btn_reply_shot" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignLeft="@id/photo_camera_view"
-                        android:layout_alignRight="@id/photo_camera_view"
-                        android:layout_below="@id/photo_camera_view"
-                        android:layout_marginTop="@dimen/dp_5"
-                        android:gravity="center"
-                        android:text="@string/inputsuit_photo_camera"
-                        android:textColor="@color/fc_sub"
-                        android:textSize="@dimen/sp_12" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/photo_show_group"
-                    android:layout_width="@dimen/dp_76"
-                    android:layout_height="@dimen/dp_88"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_12"
-                    android:clipChildren="false" >
-
-                    <ImageView
-                        android:id="@+id/photo_image"
-                        android:layout_width="@dimen/dp_64"
-                        android:layout_height="@dimen/dp_64"
-                        android:layout_centerVertical="true"
-                        android:contentDescription="@null"
-                        android:scaleType="centerCrop" />
-
-                    <Button
-                        android:id="@+id/photo_delete_view"
-                        android:layout_width="@dimen/dp_24"
-                        android:layout_height="@dimen/dp_24"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:background="@drawable/selector_btn_delete" />
-                </RelativeLayout>
-            </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/voice_group"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <RadioGroup
-                    android:id="@+id/radioGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:orientation="horizontal" >
-
-                    <RadioButton
-                        android:id="@+id/tom_radiobtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="@string/inputsuit_voice_tom" />
-
-                    <RadioButton
-                        android:id="@+id/wang_radiobtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/inputsuit_voice_wang" />
-                </RadioGroup>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/radioGroup"
-                    android:layout_centerInParent="true"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal"
-                    android:weightSum="3" >
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" >
-
-                        <lib.widget.seekarc.SeekArc
-                            android:id="@+id/pitch_seekarc"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerInParent="true"
-                            android:layout_gravity="center"
-                            android:padding="@dimen/dp_32"
-                            seekarc:arcColor="@color/blue"
-                            seekarc:clockwise="true"
-                            seekarc:max="3000"
-                            seekarc:progress="1000"
-                            seekarc:progressColor="@color/red"
-                            seekarc:rotation="180"
-                            seekarc:roundEdges="true"
-                            seekarc:startAngle="30"
-                            seekarc:sweepAngle="300"
-                            seekarc:thumb="@drawable/selector_seekarc_thumb"
-                            seekarc:touchInside="true" />
-
-                        <TextView
-                            android:id="@+id/pitch_seekarc_progress_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="2.14"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/sp_20" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:text="@string/pitch"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/sp_12" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" >
-
-                        <com.link.bianmi.widget.RecorderView
-                            android:id="@+id/recorder_suit"
-                            android:layout_width="66dp"
-                            android:layout_height="66dp"
-                            android:layout_centerInParent="true"
-                            android:gravity="center" />
-
-                        <com.link.bianmi.widget.PlayerView
-                            android:id="@+id/player_suit"
-                            android:layout_width="66dp"
-                            android:layout_height="66dp"
-                            android:layout_centerInParent="true"
-                            android:gravity="center"
-                            android:visibility="gone" />
-
-                        <!-- 录音时长 -->
-
-                        <TextView
-                            android:id="@+id/record_duration_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_above="@+id/recorder_suit"
-                            android:layout_centerHorizontal="true"
-                            android:gravity="center"
-                            android:paddingBottom="@dimen/dp_2"
-                            android:text="97&apos;&apos;"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/sp_12" />
-
-                        <!-- 重录 -->
-
-                        <Button
-                            android:id="@+id/rerecording_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/dp_24"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:background="@drawable/selector_btn_normal_48"
-                            android:gravity="center"
-                            android:paddingLeft="@dimen/dp_5"
-                            android:paddingRight="@dimen/dp_5"
-                            android:text="@string/rerecording"
-                            android:textColor="@color/fc_dft"
-                            android:textSize="@dimen/sp_12" />
-                        <!-- 操作提示:点击录音、点击结束 -->
-
-                        <TextView
-                            android:id="@+id/record_tip_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:gravity="center"
-                            android:paddingBottom="@dimen/dp_2"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/sp_12" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" >
-
-                        <lib.widget.seekarc.SeekArc
-                            android:id="@+id/tempo_seekarc"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerInParent="true"
-                            android:layout_gravity="center"
-                            android:padding="@dimen/dp_32"
-                            seekarc:arcColor="@color/blue"
-                            seekarc:clockwise="true"
-                            seekarc:max="15000"
-                            seekarc:progress="5000"
-                            seekarc:progressColor="@color/red"
-                            seekarc:rotation="180"
-                            seekarc:roundEdges="true"
-                            seekarc:startAngle="30"
-                            seekarc:sweepAngle="300"
-                            seekarc:thumb="@drawable/selector_seekarc_thumb"
-                            seekarc:touchInside="true" />
-
-                        <TextView
-                            android:id="@+id/tempo_seekarc_progress_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="2.14"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/sp_20" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:text="@string/tempo"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/sp_12" />
-                    </RelativeLayout>
-                </LinearLayout>
-            </RelativeLayout>
-        </RelativeLayout>
-    </LinearLayout>
-
-    <!-- 禁止操作 -->
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_gravity="bottom"
+    android:clickable="true"
+    android:orientation="vertical" >
 
     <View
-        android:id="@+id/dissableClick_view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#b7b7b7" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/input_group"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="20dp" />
+        android:background="#f5f5f5"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:paddingBottom="@dimen/dp_6"
+        android:paddingTop="@dimen/dp_6" >
 
-</RelativeLayout>
+        <View
+            android:id="@+id/attach_record_view"
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:background="@drawable/selector_btn_reply_voice" />
+
+        <View
+            android:id="@+id/tips_record_view"
+            android:layout_width="@dimen/dp_10"
+            android:layout_height="@dimen/dp_10"
+            android:layout_alignRight="@id/attach_record_view"
+            android:layout_alignTop="@id/attach_record_view"
+            android:background="@drawable/icon_newmsg" />
+
+        <View
+            android:id="@+id/attach_photo_view"
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:layout_toRightOf="@id/attach_record_view"
+            android:background="@drawable/selector_btn_reply_media" />
+
+        <View
+            android:id="@+id/tips_photo_view"
+            android:layout_width="@dimen/dp_10"
+            android:layout_height="@dimen/dp_10"
+            android:layout_alignRight="@id/attach_photo_view"
+            android:layout_alignTop="@id/attach_photo_view"
+            android:background="@drawable/icon_newmsg" />
+
+        <EditText
+            android:id="@+id/message_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:layout_marginRight="@dimen/dp_8"
+            android:layout_toLeftOf="@+id/submit_view"
+            android:layout_toRightOf="@id/attach_photo_view"
+            android:background="@drawable/shape_edit_corner"
+            android:gravity="center_vertical"
+            android:hint="\@Lisa"
+            android:maxLines="5"
+            android:minHeight="@dimen/dp_32"
+            android:padding="@dimen/dp_8"
+            android:singleLine="false"
+            android:text=""
+            android:textColor="@color/fc_dft"
+            android:textColorHint="@color/fc_hint"
+            android:textSize="@dimen/sp_15" />
+
+        <Button
+            android:id="@id/submit_view"
+            android:layout_width="@dimen/dp_44"
+            android:layout_height="@dimen/dp_32"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_8"
+            android:background="@drawable/selector_forumsuit_submit_bg"
+            android:enabled="false"
+            android:text="@string/inputsuit_submit"
+            android:textColor="@drawable/selector_forumsuit_submit_txt"
+            android:textSize="@dimen/sp_14" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#b7b7b7" />
+
+    <!-- 附件 -->
+
+    <RelativeLayout
+        android:id="@+id/attach_group"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="#d9d9d9" >
+
+        <LinearLayout
+            android:id="@+id/photo_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:clipChildren="false"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <RelativeLayout
+                android:id="@+id/photo_operate_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_12" >
+
+                <View
+                    android:id="@+id/photo_album_view"
+                    android:layout_width="@dimen/dp_57"
+                    android:layout_height="@dimen/dp_57"
+                    android:background="@drawable/selector_btn_reply_album" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/photo_album_view"
+                    android:layout_alignRight="@id/photo_album_view"
+                    android:layout_below="@id/photo_album_view"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:gravity="center"
+                    android:text="@string/inputsuit_photo_album"
+                    android:textColor="@color/fc_sub"
+                    android:textSize="@dimen/sp_12" />
+
+                <View
+                    android:id="@+id/photo_camera_view"
+                    android:layout_width="@dimen/dp_57"
+                    android:layout_height="@dimen/dp_57"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:layout_toRightOf="@id/photo_album_view"
+                    android:background="@drawable/selector_btn_reply_shot" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/photo_camera_view"
+                    android:layout_alignRight="@id/photo_camera_view"
+                    android:layout_below="@id/photo_camera_view"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:gravity="center"
+                    android:text="@string/inputsuit_photo_camera"
+                    android:textColor="@color/fc_sub"
+                    android:textSize="@dimen/sp_12" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/photo_show_group"
+                android:layout_width="@dimen/dp_76"
+                android:layout_height="@dimen/dp_88"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_12"
+                android:clipChildren="false" >
+
+                <ImageView
+                    android:id="@+id/photo_image"
+                    android:layout_width="@dimen/dp_64"
+                    android:layout_height="@dimen/dp_64"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@null"
+                    android:scaleType="centerCrop" />
+
+                <Button
+                    android:id="@+id/photo_delete_view"
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/selector_btn_delete" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/voice_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/tom_radiobtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/inputsuit_voice_tom" />
+
+                <RadioButton
+                    android:id="@+id/wang_radiobtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/inputsuit_voice_wang" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/radioGroup"
+                android:layout_centerInParent="true"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:weightSum="3" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" >
+
+                    <lib.widget.seekarc.SeekArc
+                        android:id="@+id/pitch_seekarc"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/dp_32"
+                        seekarc:arcColor="@color/blue"
+                        seekarc:clockwise="true"
+                        seekarc:max="3000"
+                        seekarc:progress="1000"
+                        seekarc:progressColor="@color/red"
+                        seekarc:rotation="180"
+                        seekarc:roundEdges="true"
+                        seekarc:startAngle="30"
+                        seekarc:sweepAngle="300"
+                        seekarc:thumb="@drawable/selector_seekarc_thumb"
+                        seekarc:touchInside="true" />
+
+                    <TextView
+                        android:id="@+id/pitch_seekarc_progress_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="2.14"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/sp_20" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/pitch"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/sp_12" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" >
+
+                    <com.link.bianmi.widget.RecorderView
+                        android:id="@+id/recorder_suit"
+                        android:layout_width="66dp"
+                        android:layout_height="66dp"
+                        android:layout_centerInParent="true"
+                        android:gravity="center" />
+
+                    <com.link.bianmi.widget.PlayerView
+                        android:id="@+id/player_suit"
+                        android:layout_width="66dp"
+                        android:layout_height="66dp"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:visibility="gone" />
+
+                    <!-- 录音时长 -->
+
+                    <TextView
+                        android:id="@+id/record_duration_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/recorder_suit"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:paddingBottom="@dimen/dp_2"
+                        android:text="97&apos;&apos;"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/sp_12" />
+
+                    <!-- 重录 -->
+
+                    <Button
+                        android:id="@+id/rerecording_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dp_24"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/selector_btn_normal_48"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:paddingRight="@dimen/dp_5"
+                        android:text="@string/rerecording"
+                        android:textColor="@color/fc_dft"
+                        android:textSize="@dimen/sp_12" />
+                    <!-- 操作提示:点击录音、点击结束 -->
+
+                    <TextView
+                        android:id="@+id/record_tip_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:paddingBottom="@dimen/dp_2"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/sp_12" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" >
+
+                    <lib.widget.seekarc.SeekArc
+                        android:id="@+id/tempo_seekarc"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/dp_32"
+                        seekarc:arcColor="@color/blue"
+                        seekarc:clockwise="true"
+                        seekarc:max="15000"
+                        seekarc:progress="5000"
+                        seekarc:progressColor="@color/red"
+                        seekarc:rotation="180"
+                        seekarc:roundEdges="true"
+                        seekarc:startAngle="30"
+                        seekarc:sweepAngle="300"
+                        seekarc:thumb="@drawable/selector_seekarc_thumb"
+                        seekarc:touchInside="true" />
+
+                    <TextView
+                        android:id="@+id/tempo_seekarc_progress_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="2.14"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/sp_20" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/tempo"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/sp_12" />
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

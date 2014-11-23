@@ -21,7 +21,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -115,8 +114,6 @@ public class InputSuit extends LinearLayout {
 
 	private Context mContext;
 
-	/** 禁止操作 **/
-	private View mDissableTouchView;
 	private SeekArc mPitchSeekArc;// 音调SeekArc
 	private SeekArc mTempoSeekArc;// 音速SeekArc
 	private TextView mPitchProgressText;
@@ -153,10 +150,6 @@ public class InputSuit extends LinearLayout {
 		mPhotoDeleteView = findViewById(R.id.photo_delete_view);
 		mPhotoDeleteView.setOnClickListener(deletePhotoListener);
 		mRecordGroup = findViewById(R.id.voice_group);
-
-		mDissableTouchView = findViewById(R.id.dissableClick_view);
-		mDissableTouchView.setVisibility(View.GONE);
-		mDissableTouchView.setOnTouchListener(dissableTouchListener);
 
 		mRecordDurationText = (TextView) findViewById(R.id.record_duration_textview);
 
@@ -380,7 +373,6 @@ public class InputSuit extends LinearLayout {
 				mRecordGroup.setVisibility(View.GONE);
 				mAttachView.setVisibility(View.GONE);
 
-				mDissableTouchView.setVisibility(View.VISIBLE);
 			} else {
 				if (mPhotoGroup.getVisibility() != View.VISIBLE)
 					mAttachView.setVisibility(View.GONE);
@@ -537,19 +529,6 @@ public class InputSuit extends LinearLayout {
 			mPhotoOperateGroup.setVisibility(View.VISIBLE);
 			mPhotoShowGroup.setVisibility(View.GONE);
 			mTipPhoto.setVisibility(View.GONE);
-		}
-	};
-
-	private OnTouchListener dissableTouchListener = new OnTouchListener() {
-
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-				mDissableTouchView.setVisibility(View.GONE);
-				hideSoftInput();
-			}
-
-			return false;
 		}
 	};
 
@@ -802,6 +781,8 @@ public class InputSuit extends LinearLayout {
 	/** 关闭展开 **/
 	public void close() {
 		mAttachView.setVisibility(View.GONE);
+		mRecordGroup.setVisibility(View.GONE);
+		mPhotoGroup.setVisibility(View.GONE);
 	}
 
 	/** 初始化数据 **/

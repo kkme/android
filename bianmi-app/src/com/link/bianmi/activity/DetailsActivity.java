@@ -114,6 +114,13 @@ public class DetailsActivity extends BaseFragmentActivity {
 		// 输入套件
 		mInputSuit = (InputSuit) findViewById(R.id.input_suit);
 		mInputSuit.init(this, null, mInputListener);
+		mRListView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				mInputSuit.close();
+			}
+		});
 
 		fetchNew();
 	}
