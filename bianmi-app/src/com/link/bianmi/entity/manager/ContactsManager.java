@@ -42,6 +42,8 @@ public class ContactsManager {
 			Status_ status = null;
 			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 			NameValuePair useridParam = new BasicNameValuePair("userid", userid);
+			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
+					.getToken()));
 			NameValuePair contactsParam = new BasicNameValuePair("contacts",
 					contacts);
 			params.add(useridParam);

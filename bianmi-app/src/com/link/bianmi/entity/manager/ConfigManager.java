@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 import org.json.JSONObject;
 
 import com.link.bianmi.SysConfig;
+import com.link.bianmi.UserConfig;
 import com.link.bianmi.asynctask.BaseAsyncTask;
 import com.link.bianmi.asynctask.TaskParams;
 import com.link.bianmi.asynctask.TaskResult;
@@ -26,7 +27,9 @@ public class ConfigManager {
 			Result<Config> result = null;
 
 			Response response = HttpClient.doGet(SysConfig.getInstance()
-					.getConfigUrl());
+					.getConfigUrl()
+					+ "token="
+					+ UserConfig.getInstance().getToken());
 			if (response == null)
 				return null;
 

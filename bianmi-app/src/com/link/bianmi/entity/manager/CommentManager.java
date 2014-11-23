@@ -44,8 +44,10 @@ public class CommentManager {
 				return null;
 			Result<Comment> result = null;
 			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("secretid", comment.secretid));
 			params.add(new BasicNameValuePair("userid", comment.userid));
+			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
+					.getToken()));
+			params.add(new BasicNameValuePair("secretid", comment.secretid));
 			params.add(new BasicNameValuePair("content", comment.content));
 			params.add(new BasicNameValuePair("audio_url", comment.audioUrl));
 			params.add(new BasicNameValuePair("audio_length", String
@@ -76,6 +78,8 @@ public class CommentManager {
 
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("userid", userid));
+			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
+					.getToken()));
 			params.add(new BasicNameValuePair("secretid", secretid));
 			params.add(new BasicNameValuePair("lastid", lastid));
 			params.add(new BasicNameValuePair("batch", String.valueOf(BATCH)));
@@ -110,6 +114,8 @@ public class CommentManager {
 			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("userid", UserConfig
 					.getInstance().getUserId()));
+			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
+					.getToken()));
 			params.add(new BasicNameValuePair("commentid", secretId));
 			params.add(new BasicNameValuePair("isliked", String
 					.valueOf(isLiked)));

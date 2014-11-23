@@ -169,6 +169,8 @@ public class HomeActivity extends BaseFragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_add) {
 			launchActivity(PublishActivity.class);
+		} else if (item.getItemId() == R.id.action_notice) {
+			launchActivity(NoticeActivity.class);
 		} else if (item.getItemId() == R.id.action_more) {
 			showMoreOptionMenu(findViewById(R.id.action_more));
 		}

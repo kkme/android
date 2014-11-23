@@ -50,18 +50,6 @@ public class UserConfig {
 		return mPref.getString("bianmi.user.token", null);
 	}
 
-	/** 设置sessionId **/
-	public void setSessionId(String sessionId) {
-		SharedPreferences.Editor editor = mPref.edit();
-		editor.putString("bianmi.user.sessionid", sessionId);
-		editor.commit();
-	}
-
-	/** 获取sessionId **/
-	public String getSessionId() {
-		return mPref.getString("bianmi.user.sessionid", null);
-	}
-
 	/** 设置phone **/
 	public void setPhone(String phone) {
 		SharedPreferences.Editor editor = mPref.edit();

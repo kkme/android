@@ -144,6 +144,8 @@ public class SecretManager {
 			Result<Secret> result = null;
 			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("userid", secret.userId));
+			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
+					.getToken()));
 			params.add(new BasicNameValuePair("content", secret.content));
 			params.add(new BasicNameValuePair("image_url", secret.imageUrl));
 			params.add(new BasicNameValuePair("audio_url", secret.audioUrl));
@@ -180,9 +182,9 @@ public class SecretManager {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("userid", UserConfig
 					.getInstance().getUserId()));
-			params.add(new BasicNameValuePair("lastid", lastid));
 			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
 					.getToken()));
+			params.add(new BasicNameValuePair("lastid", lastid));
 			params.add(new BasicNameValuePair("batch", String.valueOf(BATCH)));
 			String url = null;
 			switch (taskType) {
@@ -232,6 +234,8 @@ public class SecretManager {
 			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("userid", UserConfig
 					.getInstance().getUserId()));
+			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
+					.getToken()));
 			params.add(new BasicNameValuePair("secretid", secretId));
 			params.add(new BasicNameValuePair("isliked", String
 					.valueOf(isLiked)));

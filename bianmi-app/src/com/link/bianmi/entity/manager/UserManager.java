@@ -82,9 +82,10 @@ public class UserManager {
 		public static Status_ signOut() {
 			Status_ status = new Status_();
 
-			Response response = HttpClient.doGet(String.format("%s?userid=%s",
-					SysConfig.getInstance().getSignOutUrl(), UserConfig
-							.getInstance().getUserId()));
+			Response response = HttpClient.doGet(String.format(
+					"%s?userid=%s&token=%s", SysConfig.getInstance()
+							.getSignOutUrl(), UserConfig.getInstance()
+							.getUserId(), UserConfig.getInstance().getToken()));
 			if (response != null) {
 				try {
 					// 解析Status

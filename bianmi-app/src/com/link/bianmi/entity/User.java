@@ -8,6 +8,6 @@ public class User implements Serializable {
 
 	public String phone;// 手机号
 	public String id;// 用户ID
-	public String sessionId;// 会话id
+	public String token;// 会话id
 
 }

@@ -83,9 +83,9 @@ public class SignInActivity extends BaseFragmentActivity {
 									mLoadingMenuItem.setVisible(false);
 									// 保存userId
 									UserConfig.getInstance().setUserId(user.id);
-									// 保存sessionId
-									UserConfig.getInstance().setSessionId(
-											user.sessionId);
+									// 保存token
+									UserConfig.getInstance().setToken(
+											user.token);
 									// 进入主界面
 									launchActivity(HomeActivity.class);
 									ActivitysManager.removeAllActivity();
