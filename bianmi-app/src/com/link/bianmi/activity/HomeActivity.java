@@ -28,8 +28,11 @@ import android.widget.TextView;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
+import com.link.bianmi.asynctask.listener.OnTaskOverListener;
+import com.link.bianmi.entity.Reminder;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.ConfigManager;
+import com.link.bianmi.entity.manager.ReminderManager;
 import com.link.bianmi.fragment.FriendFragment;
 import com.link.bianmi.fragment.HotFragment;
 import com.link.bianmi.fragment.ImageFragment;
@@ -51,6 +54,8 @@ public class HomeActivity extends BaseFragmentActivity {
 	private ListPopupWindow mMenuWindow;
 	private MenuAdapter mMenuAdapter;
 	private ArrayList<Fragment> mFragments;
+	private Reminder mReminder;
+	private final int REQUEST_CODE_REMINDER = 1111;// 查看提醒
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +113,8 @@ public class HomeActivity extends BaseFragmentActivity {
 			}
 		});
 
-		initSysConfig();
+		executeGetSysConfigTask();
+		executeGetReminderTask();
 	}
 
 	@Override
@@ -125,8 +131,18 @@ public class HomeActivity extends BaseFragmentActivity {
 		super.onDestroy();
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_CODE_REMINDER) {
+			mReminder = null;
+			mReminderItem.setIcon(R.drawable.ic_action_reminder);
+		}
+	}
+
 	private MenuItem mMoreItem;
 	private MenuItem mLoadingItem;
+	private MenuItem mReminderItem;
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
@@ -134,7 +150,7 @@ public class HomeActivity extends BaseFragmentActivity {
 
 			menu.findItem(R.id.action_add)
 					.setVisible(!mImageFragment.canBack());
-			menu.findItem(R.id.action_notice).setVisible(
+			menu.findItem(R.id.action_reminder).setVisible(
 					!mImageFragment.canBack());
 			if (mLoadingItem.isVisible()) {
 				mMoreItem.setVisible(false);
@@ -153,6 +169,13 @@ public class HomeActivity extends BaseFragmentActivity {
 		inflater.inflate(R.menu.home, menu);
 		mMoreItem = menu.findItem(R.id.action_more);
 		mLoadingItem = menu.findItem(R.id.action_loading);
+		mReminderItem = menu.findItem(R.id.action_reminder);
+		if (mReminder == null) {
+			mReminder = new Reminder();
+		}
+		mReminderItem
+				.setIcon(mReminder.hasReminder ? R.drawable.ic_action_reminder_has
+						: R.drawable.ic_action_reminder);
 		mLoadingItem.setVisible(false);
 		mMoreItem.setVisible(true);
 		if (!mFragmentsLoaded) {
@@ -169,8 +192,9 @@ public class HomeActivity extends BaseFragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_add) {
 			launchActivity(PublishActivity.class);
-		} else if (item.getItemId() == R.id.action_notice) {
-			launchActivity(NoticeActivity.class);
+		} else if (item.getItemId() == R.id.action_reminder) {
+			launchActivityForResult(ReminderActivity.class,
+					REQUEST_CODE_REMINDER);
 		} else if (item.getItemId() == R.id.action_more) {
 			showMoreOptionMenu(findViewById(R.id.action_more));
 		}
@@ -205,14 +229,7 @@ public class HomeActivity extends BaseFragmentActivity {
 		}
 	}
 
-	// ----------------------------------自定义方法-----------------------------
-	/**
-	 * 初始化系统配置
-	 */
-	private void initSysConfig() {
-		ConfigManager.Task.getConfig();
-	}
-
+	// ------------------------------Private------------------------------
 	private void showMoreOptionMenu(View view) {
 		if (mMenuWindow != null) {
 			mMenuWindow.dismiss();
@@ -252,8 +269,6 @@ public class HomeActivity extends BaseFragmentActivity {
 		mMenuWindow.show();
 		mMenuWindow.getListView().setDividerHeight(1);
 	}
-
-	// ---------------------------内部类--------------------------------
 
 	private class MenuAdapter extends BaseAdapter {
 
@@ -342,7 +357,7 @@ public class HomeActivity extends BaseFragmentActivity {
 
 	}
 
-	// ---------------------------------外部接口-------------------------------
+	// ------------------------------Public------------------------------
 
 	public View getViewPagerTab() {
 		return mViewPagerTab;
@@ -417,4 +432,34 @@ public class HomeActivity extends BaseFragmentActivity {
 
 	}
 
+	// ------------------------------Task------------------------------
+	/**
+	 * 初始化系统配置
+	 */
+	private void executeGetSysConfigTask() {
+		ConfigManager.Task.getConfig();
+	}
+
+	/**
+	 * 获取提醒的Task
+	 */
+	private void executeGetReminderTask() {
+		ReminderManager.Task.getReminder(new OnTaskOverListener<Reminder>() {
+
+			@Override
+			public void onSuccess(Reminder t) {
+				mReminder = t;
+				if (t != null && mReminderItem != null) {
+					mReminderItem
+							.setIcon(mReminder.hasReminder ? R.drawable.ic_action_reminder_has
+									: R.drawable.ic_action_reminder);
+				}
+			}
+
+			@Override
+			public void onFailure(int code, String msg) {
+
+			}
+		});
+	}
 }

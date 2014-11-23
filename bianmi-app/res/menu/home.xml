@@ -8,11 +8,11 @@
         android:showAsAction="always"
         android:title="@string/publish_secret"/>
     <item
-        android:id="@+id/action_notice"
-        android:icon="@drawable/ic_action_notice"
+        android:id="@+id/action_reminder"
+        android:icon="@drawable/ic_action_reminder"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="@string/look_notices"/>
+        android:title="@string/look_reminder"/>
     <item
         android:id="@+id/action_more"
         android:icon="@drawable/ic_action_more"

@@ -99,7 +99,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <!-- 通知 -->
         <activity
-            android:name="com.link.bianmi.activity.NoticeActivity"
+            android:name="com.link.bianmi.activity.ReminderActivity"
             android:theme="@style/Theme.ActionBar.NoLogo" />
         <!-- 秘密详情 -->
         <activity

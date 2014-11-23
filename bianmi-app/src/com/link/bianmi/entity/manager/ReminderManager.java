@@ -10,38 +10,42 @@ import com.link.bianmi.asynctask.BaseAsyncTask;
 import com.link.bianmi.asynctask.TaskParams;
 import com.link.bianmi.asynctask.TaskResult;
 import com.link.bianmi.asynctask.TaskResult.TaskStatus;
-import com.link.bianmi.entity.Config;
+import com.link.bianmi.asynctask.listener.ITaskOverListener;
+import com.link.bianmi.asynctask.listener.OnTaskOverListener;
+import com.link.bianmi.entity.Reminder;
 import com.link.bianmi.entity.Result;
 import com.link.bianmi.entity.Status_;
-import com.link.bianmi.entity.builder.ConfigBuilder;
+import com.link.bianmi.entity.builder.ReminderBuilder;
 import com.link.bianmi.entity.builder.StatusBuilder;
 import com.link.bianmi.http.HttpClient;
 import com.link.bianmi.http.Response;
 import com.link.bianmi.http.ResponseException;
 
-public class ConfigManager {
+public class ReminderManager {
 
 	private static class API {
 
-		public static Result<Config> getConfig() {
-			Result<Config> result = null;
+		public static Result<Reminder> getReminder() {
+			Result<Reminder> result = null;
 
-			Response response = HttpClient.doGet(String.format("%s?token=%s",
-					SysConfig.getInstance().getConfigUrl(), UserConfig
-							.getInstance().getToken()));
+			Response response = HttpClient.doGet(String.format(
+					"%s?userid=%s&token=%s", SysConfig.getInstance()
+							.getReminderUrl(), UserConfig.getInstance()
+							.getUserId(), UserConfig.getInstance().getToken()));
 			if (response == null)
 				return null;
 
 			try {
 				// 解析Result
 				JSONObject jsonObj = response.asJSONObject();
-				result = new Result<Config>();
+				result = new Result<Reminder>();
 				result.status = StatusBuilder.getInstance()
 						.buildEntity(jsonObj);
 				// 返回数据成功
 				if (result.status != null && result.status.code == Status_.OK) {
 					// 继续解析其他对象
-					result.t = ConfigBuilder.getInstance().buildEntity(jsonObj);
+					result.t = ReminderBuilder.getInstance().buildEntity(
+							jsonObj);
 				}
 			} catch (ResponseException e) {
 				e.printStackTrace();
@@ -49,19 +53,26 @@ public class ConfigManager {
 
 			return result;
 		}
+
 	}
 
 	public static class Task {
-		/** 获取服务端下发的配置 **/
-		public static void getConfig() {
-			ConfigTask configTask = new ConfigTask();
+		/**
+		 * 获取提醒
+		 * 
+		 * @param listener
+		 */
+		public static void getReminder(OnTaskOverListener<Reminder> listener) {
+			ReminderTask configTask = new ReminderTask(listener);
 			configTask.executeOnExecutor(Executors.newCachedThreadPool());
 		}
 	}
 
-	private static class ConfigTask extends BaseAsyncTask {
+	private static class ReminderTask extends BaseAsyncTask {
+		ITaskOverListener<?> listener;
 
-		public ConfigTask() {
+		public ReminderTask(ITaskOverListener<?> listener) {
+			this.listener = listener;
 		}
 
 		@Override
@@ -73,11 +84,11 @@ public class ConfigManager {
 		protected TaskResult<?> doInBackground(TaskParams... params) {
 			TaskResult<?> taskResult = null;
 
-			Result<Config> result = API.getConfig();
+			Result<Reminder> result = API.getReminder();
 
 			if (result != null && result.status != null
 					&& result.status.code == Status_.OK) {
-				taskResult = new TaskResult<Config>(TaskStatus.OK, result.t);
+				taskResult = new TaskResult<Reminder>(TaskStatus.OK, result.t);
 			} else if (result != null && result.status != null) {
 				taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
 						result.status);
@@ -90,13 +101,13 @@ public class ConfigManager {
 			return taskResult;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		protected void onPostExecute(TaskResult<?> taskResult) {
 			super.onPostExecute(taskResult);
 			if (taskResult.getStatus() == TaskStatus.OK) {
-				Config config = (Config) taskResult.getEntity();
-				SysConfig.getInstance().setShowAd(config.showAd);
-				SysConfig.getInstance().setShowAd(config.smsAccess);
+				Reminder reminder = (Reminder) taskResult.getEntity();
+				((OnTaskOverListener<Reminder>) listener).onSuccess(reminder);
 			}
 		}
 	}

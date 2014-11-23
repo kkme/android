@@ -15,7 +15,7 @@
     <string name="friend">朋友</string>
     <string name="nearby">附近</string>
     <string name="publish_secret">发秘密</string>
-    <string name="look_notices">瞧提醒</string>
+    <string name="look_reminder">瞧提醒</string>
     <string name="look_more">看更多</string>
     <string name="add_friend">添加朋友</string>
     <string name="recommend">推荐</string>
@@ -27,7 +27,7 @@
     <string name="abandon_input">放弃输入</string>
 
     <!-- 提醒 -->
-    <string name="notice">提醒</string>
+    <string name="reminder">提醒</string>
 
     <!-- 秘密详情 -->
     <string name="details_action_title">秘密详情</string>
