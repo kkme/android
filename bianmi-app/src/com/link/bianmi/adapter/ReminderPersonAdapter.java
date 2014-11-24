@@ -7,9 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.link.bianmi.R;
 import com.link.bianmi.entity.Reminder;
+import com.link.bianmi.imageloader.ImageLoader;
+import com.link.bianmi.utility.ViewHolder;
 
 /**
  * "我的提醒"列表 适配器
@@ -43,7 +47,28 @@ public class ReminderPersonAdapter extends BaseAdapter {
 		if (convertView == null)
 			convertView = LayoutInflater.from(mContext).inflate(
 					R.layout.reminder_person_listview_item, null);
-		return null;
+
+		ImageView imageView = ViewHolder.get(convertView, R.id.imageview);
+		TextView titleTextView = ViewHolder.get(convertView,
+				R.id.title_textview);
+		TextView contentTextView = ViewHolder.get(convertView,
+				R.id.content_textview);
+		TextView likesTextView = ViewHolder.get(convertView,
+				R.id.likes_textview);
+		TextView commentsTextView = ViewHolder.get(convertView,
+				R.id.comments_textview);
+		if (mDataList == null || mDataList.size() <= 0)
+			return null;
+		Reminder.Person personReminder = mDataList.get(position);
+		if (personReminder != null) {
+			ImageLoader.displayImage(imageView, personReminder.imageUrl,
+					R.drawable.ic_launcher, true);
+			titleTextView.setText(personReminder.title);
+			contentTextView.setText(personReminder.content);
+			likesTextView.setText(String.valueOf(personReminder.likes));
+			commentsTextView.setText(String.valueOf(personReminder.comments));
+		}
+		return convertView;
 	}
 
 	public void refresh(List<Reminder.Person> dataList) {

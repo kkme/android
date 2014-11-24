@@ -67,6 +67,10 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/upload_contacts.php");
 		mProperties.setProperty("bianmi.url.reminder.debug",
 				"http://192.168.1.101/bianmi/reminder.php");
+		mProperties.setProperty("bianmi.url.reminder.system.debug",
+				"http://192.168.1.101/bianmi/system_reminders.php");
+		mProperties.setProperty("bianmi.url.reminder.person.debug",
+				"http://192.168.1.101/bianmi/person_reminders.php");
 		// ---------------release
 		mProperties.setProperty("bianmi.dbname.release", "bianmi_v1");
 		mProperties.setProperty("bianmi.url.base.release",
@@ -101,6 +105,10 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/upload_contacts.php");
 		mProperties.setProperty("bianmi.url.reminder.release",
 				"http://192.168.1.101/bianmi/reminder.php");
+		mProperties.setProperty("bianmi.url.reminder.system.release",
+				"http://192.168.1.101/bianmi/system_reminders.php");
+		mProperties.setProperty("bianmi.url.reminder.person.release",
+				"http://192.168.1.101/bianmi/person_reminders.php");
 		// 七牛
 		mProperties.setProperty("qiniu.bucketname.attach", "bianmi"); // 七牛
 																		// Bucket
@@ -274,6 +282,30 @@ public class SysConfig {
 			return mProperties.getProperty("bianmi.url.reminder.debug");
 		} else {
 			return mProperties.getProperty("bianmi.url.reminder.release");
+		}
+	}
+
+	/**
+	 * 获取系统提醒的url
+	 */
+	public String getReminderSystemUrl() {
+		if (isDebug()) {
+			return mProperties.getProperty("bianmi.url.reminder.system.debug");
+		} else {
+			return mProperties
+					.getProperty("bianmi.url.reminder.system.release");
+		}
+	}
+
+	/**
+	 * 获取我的提醒的url
+	 */
+	public String getReminderPersonUrl() {
+		if (isDebug()) {
+			return mProperties.getProperty("bianmi.url.reminder.person.debug");
+		} else {
+			return mProperties
+					.getProperty("bianmi.url.reminder.person.release");
 		}
 	}
 

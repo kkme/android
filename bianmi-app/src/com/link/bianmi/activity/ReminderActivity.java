@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -30,6 +31,7 @@ public class ReminderActivity extends BaseFragmentActivity {
 	public ViewPager mViewPager;
 	private ViewPagerTabBar mViewPagerTab;
 	private ArrayList<Fragment> mFragments;
+	private boolean mFragmentsLoaded = false;
 
 	private MenuItem mLoadingItem;
 
@@ -67,7 +69,14 @@ public class ReminderActivity extends BaseFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.loading, menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.loading, menu);
+		if (!mFragmentsLoaded) {
+			for (int i = 0; i < mFragments.size(); i++) {
+				mFragments.get(i).onCreateOptionsMenu(menu, inflater);
+			}
+			mFragmentsLoaded = true;
+		}
 		return true;
 	}
 

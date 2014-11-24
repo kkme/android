@@ -87,6 +87,7 @@ public class WelcomeActivity extends BaseFragmentActivity {
 				UserConfig.getInstance().setIsGuest(true);
 				UserConfig.getInstance()
 						.setUserId(UUID.randomUUID().toString());
+				UserConfig.getInstance().setToken(UUID.randomUUID().toString());
 				launchActivity(HomeActivity.class);
 				finish();
 			}

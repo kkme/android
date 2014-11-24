@@ -2,7 +2,6 @@ package com.link.bianmi.fragment;
 
 import java.util.List;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -12,25 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 
 import com.link.bianmi.R;
-import com.link.bianmi.SysConfig;
-import com.link.bianmi.activity.DetailsActivity;
 import com.link.bianmi.activity.ReminderActivity;
 import com.link.bianmi.adapter.CardsAnimationAdapter;
-import com.link.bianmi.adapter.SecretAdapter;
+import com.link.bianmi.adapter.ReminderSystemAdapter;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
-import com.link.bianmi.db.SecretDB;
-import com.link.bianmi.entity.Secret;
-import com.link.bianmi.entity.manager.ContactsManager;
-import com.link.bianmi.entity.manager.SecretManager;
+import com.link.bianmi.entity.ListResult;
+import com.link.bianmi.entity.Reminder;
+import com.link.bianmi.entity.manager.ReminderManager;
 import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.utility.Tools;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.ActivateListener;
 import com.link.bianmi.widget.RListView.TouchDirectionState;
-import com.link.bianmi.widget.SuperToast;
 
 /**
  * 系统通知
@@ -45,13 +39,11 @@ public class ReminderSystemFragment extends BaseFragment {
 	// 列表
 	private RListView mRListView;
 	// 列表适配器
-	private SecretAdapter mAdapter;
+	private ReminderSystemAdapter mAdapter;
 	// 当前页中最后一条内容的ID
 	private String mLastId = "";
-	// 列表的页数
-	private int mPageSize = 1;
 
-	private List<Secret> mSecretsList;
+	private List<Reminder.System> mDataList;
 
 	private ReminderActivity mParentActivity;
 
@@ -60,13 +52,10 @@ public class ReminderSystemFragment extends BaseFragment {
 		super.onCreate(savedInstanceState);
 		mParentActivity = (ReminderActivity) getActivity();
 		mRootView = LayoutInflater.from(mContext).inflate(
-				R.layout.fragment_secrets, null);
-
-		final View bannerGroup = mRootView.findViewById(R.id.banner_group);
-		bannerGroup.setVisibility(View.GONE);
+				R.layout.fragment_rlistview, null);
 
 		mRListView = (RListView) mRootView.findViewById(R.id.rlistview);
-		mAdapter = new SecretAdapter(mContext, null, getTaskType());
+		mAdapter = new ReminderSystemAdapter(mContext);
 		final CardsAnimationAdapter adapter = new CardsAnimationAdapter(
 				mAdapter);
 		adapter.setAbsListView(mRListView);
@@ -99,12 +88,6 @@ public class ReminderSystemFragment extends BaseFragment {
 				mRListView.animate().translationY(-Tools.dip2px(mContext, 40));
 				// 刷新列表
 				fetchNew();
-				if (SysConfig.getInstance().showAd()) {
-					bannerGroup.setVisibility(View.VISIBLE);
-				} else {
-					bannerGroup.setVisibility(View.GONE);
-				}
-
 			}
 
 			@Override
@@ -129,7 +112,6 @@ public class ReminderSystemFragment extends BaseFragment {
 
 				mParentActivity.getViewPagerTab().animate().translationY(0);
 				mRListView.animate().translationY(0);
-				bannerGroup.setVisibility(View.GONE);
 			}
 
 			@Override
@@ -162,41 +144,8 @@ public class ReminderSystemFragment extends BaseFragment {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View convertView,
 					int position, long arg3) {
-				final ImageView imageView = (ImageView) convertView
-						.findViewById(R.id.picture_imageview);
-				if (imageView.getDrawable() == null
-						|| imageView.getDrawable().getIntrinsicWidth() == 0) {
-					SuperToast.makeText(mContext, "Please wait...",
-							SuperToast.LENGTH_SHORT).show();
-					return;
-				}
-				Object item = arg0.getItemAtPosition(position);
-				if (item instanceof Cursor) {
-					Secret secret = SecretDB.getInstance().buildEntity(
-							(Cursor) item);
-					if (secret != null) {
-						launchActivity(DetailsActivity.class, "secret", secret);
-					}
-				}
-
 			}
 		});
-
-		// 上传联系人
-		ContactsManager.Task.uploadContacts(getActivity(),
-				new OnTaskOverListener<Object>() {
-					@Override
-					public void onSuccess(Object t) {
-						SuperToast.makeText(mParentActivity, "上传联系人成功",
-								SuperToast.LENGTH_SHORT).show();
-					}
-
-					@Override
-					public void onFailure(int code, String msg) {
-						SuperToast.makeText(mParentActivity, "上传联系人失败" + msg,
-								SuperToast.LENGTH_SHORT).show();
-					}
-				});
 
 	}
 
@@ -215,75 +164,38 @@ public class ReminderSystemFragment extends BaseFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		mParentActivity.startLoading();
-		loadCache();
-		updateCache();
+		fetchNew();
 
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
-	// --------------------------protected----------------
-	protected SecretManager.TaskType getTaskType() {
-		return null;
-	}
-
-	protected boolean isFirstFragment() {
-
-		return false;
-
-	}
-
-	// -------------------------private--------------------
-
-	/**
-	 * 从缓存中加载数据初始化界面
-	 */
-	private void loadCache() {
-		refreshRListView(SecretManager.DB.fetch(mPageSize, getTaskType()),
-				false, -1);
-
-	}
-
-	/**
-	 * 更新缓存，具体是否需要更新在后台根据时间戳判断
-	 */
-	private void updateCache() {
-		fetchNew();
-	}
+	// -------------------------Private--------------------
 
 	/**
 	 * 拉取最新
 	 */
 	private void fetchNew() {
 		mLastId = "";
-		mPageSize = 1;
-		executeGetSecretsTask(mLastId, mPageSize);
+		executeGetSystemRemindersTask(mLastId);
 	}
 
 	/**
 	 * 加载更多
 	 */
 	private void loadMore() {
-		if (mSecretsList != null && mSecretsList.size() > 0) {
-			mLastId = mSecretsList.get(mSecretsList.size() - 1).resourceId;
-			mPageSize++;
-			executeGetSecretsTask(mLastId, mPageSize);
+		if (mDataList != null && mDataList.size() > 0) {
+			mLastId = mDataList.get(mDataList.size() - 1).id;
+			executeGetSystemRemindersTask(mLastId);
 		}
 	}
 
 	/**
 	 * 刷新RListView
 	 * 
-	 * @param cursor
-	 *            游标
 	 * @param hasMore
 	 *            是否还有更多
 	 */
-	private void refreshRListView(Cursor cursor, boolean hasMore, long beginTime) {
-		if (cursor != null) {
-			mAdapter.changeCursor(cursor);
-			mAdapter.notifyDataSetChanged();
-		}
-
+	private void refreshRListView(boolean hasMore, long beginTime) {
 		mRListView.setFootVisiable(hasMore);
 		mRListView.setEnableFooter(hasMore);
 		long endTime = System.currentTimeMillis();
@@ -296,14 +208,30 @@ public class ReminderSystemFragment extends BaseFragment {
 	}
 
 	/**
-	 * 执行获取秘密列表数据的异步任务
+	 * 系统通知
 	 * 
 	 * @param lastId
 	 *            当前页最后一条内容的id
 	 * @param pageSize
 	 *            页数
 	 */
-	private void executeGetSecretsTask(final String lastId, final int pageSize) {
+	private void executeGetSystemRemindersTask(final String lastId) {
+		final long beginTime = System.currentTimeMillis();
+		ReminderManager.Task.getSystemReminders(lastId,
+				new OnTaskOverListener<ListResult<Reminder.System>>() {
+					@Override
+					public void onSuccess(ListResult<Reminder.System> t) {
+						if (t != null) {
+							mAdapter.refresh(t.list);
+							refreshRListView(t.hasMore, beginTime);
+						}
+					}
+
+					@Override
+					public void onFailure(int code, String msg) {
+
+					}
+				});
 	}
 
 }

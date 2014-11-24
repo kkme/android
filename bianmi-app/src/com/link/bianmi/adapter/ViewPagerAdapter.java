@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.ViewGroup;
 
-import com.link.bianmi.fragment.SecretFragment;
+import com.link.bianmi.fragment.base.BaseFragment;
 
 /**
  * ViewPager适配器
@@ -32,8 +32,8 @@ public class ViewPagerAdapter extends
 	}
 
 	@Override
-	public SecretFragment getItem(int position) {
-		return (SecretFragment) mFragments.get(position);
+	public BaseFragment getItem(int position) {
+		return (BaseFragment) mFragments.get(position);
 	}
 
 	@Override
