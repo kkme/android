@@ -1,31 +1,37 @@
 package com.link.bianmi.activity;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
-import com.link.bianmi.adapter.ReminderAdapter;
-import com.link.bianmi.entity.Comment;
-import com.link.bianmi.widget.RListView;
-import com.link.bianmi.widget.RListView.ActivateListener;
-import com.link.bianmi.widget.RListView.TouchDirectionState;
+import com.link.bianmi.adapter.ViewPagerAdapter;
+import com.link.bianmi.fragment.ReminderPersonFragment;
+import com.link.bianmi.fragment.ReminderSystemFragment;
+import com.link.bianmi.widget.ViewPagerTabBar;
 
 /**
- * 通知
+ * 提醒：我的、系统
  * 
  * @author pangfq
  * @date 2014-11-23 上午11:17:45
  */
 public class ReminderActivity extends BaseFragmentActivity {
 
-	private RListView mRListView;
-	private ReminderAdapter mAdapter;
-	private List<Comment> mCommentsList;
+	public ViewPager mViewPager;
+	private ViewPagerTabBar mViewPagerTab;
+	private ArrayList<Fragment> mFragments;
+
+	private MenuItem mLoadingItem;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,59 +43,21 @@ public class ReminderActivity extends BaseFragmentActivity {
 
 		setContentView(R.layout.activity_reminder);
 
-		// 正文内容、评论列表
-		mRListView = (RListView) findViewById(R.id.rlistview);
-		mRListView.setActivateListener(new ActivateListener() {
-			@Override
-			public void onTouchDirection(TouchDirectionState state) {
-			}
+		mViewPager = (ViewPager) findViewById(R.id.viewpager);
+		mViewPagerTab = (ViewPagerTabBar) findViewById(R.id.viewpagertab);
+		mFragments = new ArrayList<Fragment>();
+		String fragmentTitles[];
 
-			@Override
-			public void onScrollUpDownChanged(int delta, int scrollPosition,
-					boolean exact) {
-			}
+		mFragments.add(new ReminderPersonFragment());
+		mFragments.add(new ReminderSystemFragment());
+		fragmentTitles = new String[] { getString(R.string.person_reminder),
+				getString(R.string.system_reminder) };
+		mViewPager.setOffscreenPageLimit(mFragments.size());
+		mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),
+				mFragments, fragmentTitles));
 
-			@Override
-			public void onMovedIndex(int index) {
-			}
+		mViewPagerTab.setViewPager(mViewPager);
 
-			@Override
-			public void onHeadTouchActivate(boolean activate) {
-			}
-
-			@Override
-			public void onHeadStop() {
-			}
-
-			@Override
-			public void onHeadActivate() {
-				fetchNew();
-			}
-
-			@Override
-			public void onFootTouchActivate(boolean activate) {
-			}
-
-			@Override
-			public void onFootStop() {
-			}
-
-			@Override
-			public void onFootActivate() {
-				// 菊花至少转0.8秒
-				new Handler().postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						loadMore();
-						mRListView.stopFootActiving();
-					}
-				}, 800);
-			}
-		});
-		mAdapter = new ReminderAdapter(this);
-		mRListView.setAdapter(mAdapter);
-
-		fetchNew();
 	}
 
 	@Override
@@ -112,53 +80,55 @@ public class ReminderActivity extends BaseFragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	// -----------------------------自定义---------------------------
-
-	/**
-	 * 拉取最新
-	 */
-	private void fetchNew() {
-		executeGetCommentsTask("");
+	// ------------------------------Public------------------------------
+	public View getViewPagerTab() {
+		return mViewPagerTab;
 	}
 
 	/**
-	 * 加载更多
-	 */
-	private void loadMore() {
-		if (mCommentsList != null && mCommentsList.size() > 0) {
-			executeGetCommentsTask(mCommentsList.get(mCommentsList.size() - 1).resourceId);
-		}
-	}
-
-	private void refreshRListView(List<Comment> comments, boolean hasMore,
-			long beginTime) {
-		if (comments != null && comments.size() > 0) {
-			if (mCommentsList == null) {
-				mCommentsList = comments;
-			} else {
-				mCommentsList.addAll(comments);
-			}
-			mAdapter.refresh(mCommentsList);
-		}
-		mRListView.setFootVisiable(hasMore);
-		mRListView.setEnableFooter(hasMore);
-		long endTime = System.currentTimeMillis();
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				mRListView.stopHeadActiving();
-			}
-		}, endTime - beginTime > 1500 ? 0 : 1500 - (endTime - beginTime));
-	}
-
-	// --------------------------Task-------------------------------
-	/**
-	 * 执行获取评论列表任务
+	 * 结束加载
 	 * 
-	 * @param commentid
-	 * @param lastid
+	 * @param isStopAtOnce
+	 *            true 立即结束
 	 */
-	private void executeGetCommentsTask(final String lastid) {
+	public void finishLoaded(boolean isStopAtOnce) {
+
+		if (mLoadingItem == null)
+			return;
+
+		if (isStopAtOnce) {
+			mLoadingItem.getActionView().clearAnimation();
+			mLoadingItem.setVisible(false);
+			return;
+		}
+		AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
+		anim.setDuration(1000);
+		anim.setFillAfter(true);
+		anim.setAnimationListener(new AnimationListener() {
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				finishLoaded(true);
+			}
+		});
+		mLoadingItem.getActionView().setAnimation(anim);
 	}
 
+	/**
+	 * 开始加载
+	 */
+	public void startLoading() {
+		if (mLoadingItem == null)
+			return;
+		mLoadingItem.setVisible(true);
+
+	}
 }

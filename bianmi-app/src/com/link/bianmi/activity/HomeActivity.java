@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,6 +27,7 @@ import android.widget.TextView;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
+import com.link.bianmi.adapter.ViewPagerAdapter;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.Reminder;
 import com.link.bianmi.entity.Secret;
@@ -37,7 +37,6 @@ import com.link.bianmi.fragment.FriendFragment;
 import com.link.bianmi.fragment.HotFragment;
 import com.link.bianmi.fragment.ImageFragment;
 import com.link.bianmi.fragment.NearbyFragment;
-import com.link.bianmi.fragment.SecretFragment;
 import com.link.bianmi.utility.UmengSocialClient;
 import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.ViewPagerTabBar;
@@ -310,51 +309,6 @@ public class HomeActivity extends BaseFragmentActivity {
 			name.setCompoundDrawables(drawable, null, null, null);
 			return convertView;
 		}
-	}
-
-	private class ViewPagerAdapter extends
-			android.support.v4.app.FragmentPagerAdapter {
-		String[] titles;
-		ArrayList<Fragment> mFragments;
-
-		// boolean[] initPages;// 页面是否已经初始化
-
-		public ViewPagerAdapter(FragmentManager fm,
-				ArrayList<Fragment> mFragments, String[] titles) {
-			super(fm);
-			this.mFragments = mFragments;
-			this.titles = titles;
-			// if (mFragments != null) {
-			// initPages = new boolean[mFragments.size()];
-			// }
-		}
-
-		@Override
-		public SecretFragment getItem(int position) {
-			return (SecretFragment) mFragments.get(position);
-		}
-
-		@Override
-		public void setPrimaryItem(ViewGroup container, int position,
-				Object object) {
-
-			// if (position > 0 && !initPages[position]) {
-			// ((BaseFragment) mFragments.get(position)).onFirstLoad();
-			// initPages[position] = true;
-			// }
-
-		}
-
-		@Override
-		public int getCount() {
-			return mFragments.size();
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			return titles[position];
-		}
-
 	}
 
 	// ------------------------------Public------------------------------

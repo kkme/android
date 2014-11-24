@@ -28,6 +28,8 @@
 
     <!-- 提醒 -->
     <string name="reminder">提醒</string>
+    <string name="person_reminder">我的</string>
+    <string name="system_reminder">系统</string>
 
     <!-- 秘密详情 -->
     <string name="details_action_title">秘密详情</string>

@@ -2,17 +2,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <!-- 通知列表 -->
-
-    <com.link.bianmi.widget.RListView
-        android:id="@+id/rlistview"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="48dp"
-        android:cacheColorHint="@android:color/transparent"
-        android:clipToPadding="false"
-        android:divider="@android:color/transparent"
-        android:fitsSystemWindows="true"
-        android:listSelector="@android:color/transparent" />
+        android:clipToPadding="false" />
+
+    <com.link.bianmi.widget.ViewPagerTabBar
+        android:id="@+id/viewpagertab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:background="@android:color/white" >
+    </com.link.bianmi.widget.ViewPagerTabBar>
 
 </RelativeLayout>

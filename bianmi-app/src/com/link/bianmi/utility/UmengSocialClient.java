@@ -93,8 +93,8 @@ public class UmengSocialClient {
 	 * @return
 	 */
 	private static void addQQQZonePlatform() {
-		String appId = "100424468";
-		String appKey = "c7394704798a158208a74ab60104f0ba";
+		String appId = "1103523557";
+		String appKey = "7SxettN2m8FA2beG";
 		// 添加QQ支持, 并且设置QQ分享内容的target url
 		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(mActivity, appId,
 				appKey);
