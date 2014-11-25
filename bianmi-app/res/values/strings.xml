@@ -73,6 +73,12 @@
     <string name="settings_forgot_password">忘记密码？</string>
     <string name="current_version">版本:V%1$s</string>
     <string name="faq">常见问题</string>
+    <string name="chack_update">检查更新</string>
+    <string name="signout">退出登录</string>
+    <string name="clear_privacy">清除痕迹</string>
+    <string name="clear_privacy_tip">清除痕迹，将清除你之前发表的所有信息！</string>
+    <string name="continue_to_clear">继续清除</string>
+    <string name="clear_privacy_ok">已清除</string>
     <!-- 输入控件 -->
     <string name="inputsuit_submit">发表</string>
     <string name="inputsuit_photo_album">照片</string>

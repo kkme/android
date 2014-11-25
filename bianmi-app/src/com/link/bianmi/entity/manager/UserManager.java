@@ -30,6 +30,7 @@ public class UserManager {
 		TYPE_SIGNUP, // 注册
 		TYPE_SIGNIN, // 登录
 		TYPE_SIGNOUT, // 登出
+		TYPE_CLEAR_PRIVACY, // 清除痕迹
 	}
 
 	private static class API {
@@ -99,6 +100,26 @@ public class UserManager {
 			return status;
 		}
 
+		// 清除痕迹
+		public static Status_ clearPrivacy() {
+			Status_ status = new Status_();
+
+			Response response = HttpClient.doGet(String.format(
+					"%s?userid=%s&token=%s", SysConfig.getInstance()
+							.getClearPrivacyUrl(), UserConfig.getInstance()
+							.getUserId(), UserConfig.getInstance().getToken()));
+			if (response != null) {
+				try {
+					// 解析Status
+					JSONObject jsonObj = response.asJSONObject();
+					status = StatusBuilder.getInstance().buildEntity(jsonObj);
+				} catch (ResponseException e) {
+					e.printStackTrace();
+				}
+
+			}
+			return status;
+		}
 	}
 
 	public static class Task {
@@ -131,6 +152,15 @@ public class UserManager {
 			UserTask userTask = new UserTask(TaskType.TYPE_SIGNUP, listener);
 			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
+		}
+
+		/**
+		 * 清除痕迹
+		 */
+		public static void clearPrivacy(OnTaskOverListener<Status_> listener) {
+			UserTask userTask = new UserTask(TaskType.TYPE_CLEAR_PRIVACY,
+					listener);
+			userTask.executeOnExecutor(Executors.newCachedThreadPool());
 		}
 	}
 
@@ -206,6 +236,17 @@ public class UserManager {
 					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
 							status);
 				}
+				// 清除痕迹
+			} else if (taskType == TaskType.TYPE_CLEAR_PRIVACY) {
+
+				Status_ status = API.clearPrivacy();
+				// 返回数据成功
+				if (status != null && status.code == Status_.OK) {
+					taskResult = new TaskResult<Status_>(TaskStatus.OK);
+				} else {
+					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
+							status);
+				}
 			}
 
 			return taskResult;
@@ -239,6 +280,14 @@ public class UserManager {
 				if (taskResult.getStatus() == TaskStatus.OK) {
 					((OnTaskOverListener<User>) listener)
 							.onSuccess((User) taskResult.getEntity());
+				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
+					Status_ result = (Status_) taskResult.getEntity();
+					listener.onFailure(result.code, result.msg);
+				}
+				// 清除痕迹
+			} else if (taskType == TaskType.TYPE_CLEAR_PRIVACY) {
+				if (taskResult.getStatus() == TaskStatus.OK) {
+					listener.onSuccess(null);
 				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
 					Status_ result = (Status_) taskResult.getEntity();
 					listener.onFailure(result.code, result.msg);

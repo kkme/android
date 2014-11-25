@@ -166,7 +166,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 		mInputSuit.onActivityResult(requestCode, resultCode, data);
 	}
 
-	// -----------------------------自定义---------------------------
+	// -------------------------------Private-------------------------------
 
 	/**
 	 * 拉取最新

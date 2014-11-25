@@ -1,6 +1,8 @@
 package com.link.bianmi.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +18,7 @@ import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
+import com.link.bianmi.entity.Status_;
 import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.unit.ninelock.NineLockActivity;
 import com.link.bianmi.unit.ninelock.NineLockSettingsActivity;
@@ -97,6 +100,64 @@ public class SettingsActivity extends BaseFragmentActivity {
 		mVersionText.setText(String.format(getString(R.string.current_version),
 				Tools.getVersionName(SettingsActivity.this)));
 
+		// 清楚痕迹
+		findViewById(R.id.settings_item_clear_group).setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								SettingsActivity.this);
+						final AlertDialog dialog = builder
+								.setTitle(getString(R.string.clear_privacy_tip))
+								.setPositiveButton(
+										getString(R.string.continue_to_clear),
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												// 继续清除
+												UserManager.Task
+														.clearPrivacy(new OnTaskOverListener<Status_>() {
+															@Override
+															public void onSuccess(
+																	Status_ t) {
+																SuperToast
+																		.makeText(
+																				SettingsActivity.this,
+																				t.msg,
+																				SuperToast.LENGTH_SHORT)
+																		.show();
+															}
+
+															@Override
+															public void onFailure(
+																	int code,
+																	String msg) {
+																SuperToast
+																		.makeText(
+																				SettingsActivity.this,
+																				msg,
+																				SuperToast.LENGTH_SHORT)
+																		.show();
+															}
+														});
+											}
+										})
+								.setNegativeButton(getString(R.string.cancel),
+										new DialogInterface.OnClickListener() {
+
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												// 取消
+												dialog.dismiss();
+											}
+										}).create();
+						dialog.show();
+					}
+				});
 		// 退出登录
 		findViewById(R.id.settings_item_exit_group).setOnClickListener(
 				new OnClickListener() {
@@ -152,7 +213,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 		return true;
 	}
 
-	// -------------------------------自定义方法---------------------------
+	// ------------------------------Private------------------------------
 	private void changeSwitchButtonState() {
 		if (UserConfig.getInstance().getLockPassKey().isEmpty()) {
 			mPassSwitchBtn.setVisibility(View.GONE);
@@ -201,4 +262,5 @@ public class SettingsActivity extends BaseFragmentActivity {
 		});
 		UmengUpdateAgent.update(this);
 	}
+
 }

@@ -71,6 +71,8 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/system_reminders.php");
 		mProperties.setProperty("bianmi.url.reminder.person.debug",
 				"http://192.168.1.101/bianmi/person_reminders.php");
+		mProperties.setProperty("bianmi.url.user.clear.debug",
+				"http://192.168.1.101/bianmi/clear_privacy.php");
 		// ---------------release
 		mProperties.setProperty("bianmi.dbname.release", "bianmi_v1");
 		mProperties.setProperty("bianmi.url.base.release",
@@ -109,6 +111,8 @@ public class SysConfig {
 				"http://192.168.1.101/bianmi/system_reminders.php");
 		mProperties.setProperty("bianmi.url.reminder.person.release",
 				"http://192.168.1.101/bianmi/person_reminders.php");
+		mProperties.setProperty("bianmi.url.user.clear.release",
+				"http://192.168.1.101/bianmi/clear_privacy.php");
 		// 七牛
 		mProperties.setProperty("qiniu.bucketname.attach", "bianmi"); // 七牛
 																		// Bucket
@@ -374,6 +378,17 @@ public class SysConfig {
 		} else {
 			return mProperties
 					.getProperty("bianmi.url.contacts.upload.release");
+		}
+	}
+
+	/**
+	 * 清除痕迹URL
+	 */
+	public String getClearPrivacyUrl() {
+		if (isDebug()) {
+			return mProperties.getProperty("bianmi.url.user.clear.debug");
+		} else {
+			return mProperties.getProperty("bianmi.url.user.clear.release");
 		}
 	}
 
