@@ -6,11 +6,11 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.sso.QZoneSsoHandler;
-import com.umeng.socialize.sso.RenrenSsoHandler;
 import com.umeng.socialize.sso.SinaSsoHandler;
-import com.umeng.socialize.sso.TencentWBSsoHandler;
 import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
+import com.umeng.socialize.weixin.media.CircleShareContent;
+import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
 public class UmengSocialClient {
 	public static final String DESCRIPTOR = "com.umeng.share";
@@ -51,12 +51,12 @@ public class UmengSocialClient {
 		// 添加新浪SSO授权
 		mController.getConfig().setSsoHandler(new SinaSsoHandler());
 		// 添加腾讯微博SSO授权
-		mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
-		// 添加人人网SSO授权
-		RenrenSsoHandler renrenSsoHandler = new RenrenSsoHandler(mActivity,
-				"201874", "28401c0964f04a72a14c812d6132fcef",
-				"3bf66e42db1e4fa9829b955cc300b737");
-		mController.getConfig().setSsoHandler(renrenSsoHandler);
+		// mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
+		// // 添加人人网SSO授权
+		// RenrenSsoHandler renrenSsoHandler = new RenrenSsoHandler(mActivity,
+		// "201874", "28401c0964f04a72a14c812d6132fcef",
+		// "3bf66e42db1e4fa9829b955cc300b737");
+		// mController.getConfig().setSsoHandler(renrenSsoHandler);
 
 		// 添加QQ、QZone平台
 		addQQQZonePlatform();
@@ -72,12 +72,30 @@ public class UmengSocialClient {
 	private static void addWXPlatform() {
 		// 注意：在微信授权的时候，必须传递appSecret
 		// wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
-		String appId = "wx967daebe835fbeac";
-		String appSecret = "5bb696d9ccd75a38c8a0bfe0675559b3";
+		String appId = "wx614cc943a3fafcb5";
+		String appSecret = "8828223ec371b21a8e74412892e61d75";
 		// 添加微信平台
 		UMWXHandler wxHandler = new UMWXHandler(mActivity, appId, appSecret);
 		wxHandler.addToSocialSDK();
-
+		// 设置微信好友分享内容
+		WeiXinShareContent weixinContent = new WeiXinShareContent();
+		// 设置分享文字
+		weixinContent.setShareContent("并不是所有的秘密都叫变秘！");
+		// 设置title
+		weixinContent.setTitle("点我，点我，点我");
+		// 设置分享内容跳转URL
+		weixinContent.setTargetUrl("http://www.baidu.com");
+		// 设置分享图片
+		// weixinContent.setShareImage(localImage);
+		mController.setShareMedia(weixinContent);
+		// 设置微信朋友圈分享内容
+		CircleShareContent circleMedia = new CircleShareContent();
+		circleMedia.setShareContent("并不是所有的秘密都叫变秘！");
+		// 设置朋友圈title
+		circleMedia.setTitle("点我，点我，点我");
+		// circleMedia.setShareImage(localImage);
+		circleMedia.setTargetUrl("http://www.baidu.com");
+		mController.setShareMedia(circleMedia);
 		// 支持微信朋友圈
 		UMWXHandler wxCircleHandler = new UMWXHandler(mActivity, appId,
 				appSecret);
