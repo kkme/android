@@ -17,6 +17,7 @@ import com.link.bianmi.BianmiApplication;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
+import com.link.bianmi.asynctask.listener.OnSimpleTaskOverListener;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.Status_;
 import com.link.bianmi.entity.manager.UserManager;
@@ -118,26 +119,14 @@ public class SettingsActivity extends BaseFragmentActivity {
 													int which) {
 												// 继续清除
 												UserManager.Task
-														.clearPrivacy(new OnTaskOverListener<Status_>() {
+														.clearPrivacy(new OnSimpleTaskOverListener() {
 															@Override
-															public void onSuccess(
-																	Status_ t) {
+															public void onResult(
+																	Status_ status) {
 																SuperToast
 																		.makeText(
 																				SettingsActivity.this,
-																				t.msg,
-																				SuperToast.LENGTH_SHORT)
-																		.show();
-															}
-
-															@Override
-															public void onFailure(
-																	int code,
-																	String msg) {
-																SuperToast
-																		.makeText(
-																				SettingsActivity.this,
-																				msg,
+																				status.msg,
 																				SuperToast.LENGTH_SHORT)
 																		.show();
 															}
@@ -169,8 +158,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 									@Override
 									public void onFailure(int code, String msg) {
 										SuperToast.makeText(
-												SettingsActivity.this,
-												"退出失败" + msg,
+												SettingsActivity.this, msg,
 												SuperToast.LENGTH_SHORT).show();
 										mLoadingItem.setVisible(false);
 									}

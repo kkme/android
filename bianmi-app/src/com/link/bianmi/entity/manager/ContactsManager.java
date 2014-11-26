@@ -20,7 +20,6 @@ import com.link.bianmi.asynctask.TaskParams;
 import com.link.bianmi.asynctask.TaskResult;
 import com.link.bianmi.asynctask.TaskResult.TaskStatus;
 import com.link.bianmi.asynctask.listener.ITaskOverListener;
-import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.Status_;
 import com.link.bianmi.entity.builder.StatusBuilder;
 import com.link.bianmi.http.HttpClient;
@@ -68,7 +67,7 @@ public class ContactsManager {
 	public static class Task {
 		/** 上传联系人 **/
 		public static void uploadContacts(Context context,
-				OnTaskOverListener<?> listener) {
+				ITaskOverListener<Status_> listener) {
 			TaskParams taskParams = new TaskParams();
 			taskParams.put("userid", UserConfig.getInstance().getUserId());
 			taskParams.put("contacts", DB.getContactsJSON(context));
@@ -114,9 +113,9 @@ public class ContactsManager {
 	}
 
 	private static class ContactsTask extends BaseAsyncTask {
-		ITaskOverListener<?> listener;
+		ITaskOverListener<Status_> listener;
 
-		public ContactsTask(ITaskOverListener<?> listener) {
+		public ContactsTask(ITaskOverListener<Status_> listener) {
 			this.listener = listener;
 		}
 

@@ -14,6 +14,7 @@ import com.link.bianmi.asynctask.TaskParams;
 import com.link.bianmi.asynctask.TaskResult;
 import com.link.bianmi.asynctask.TaskResult.TaskStatus;
 import com.link.bianmi.asynctask.listener.ITaskOverListener;
+import com.link.bianmi.asynctask.listener.OnSimpleTaskOverListener;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.Result;
 import com.link.bianmi.entity.Status_;
@@ -157,7 +158,7 @@ public class UserManager {
 		/**
 		 * 清除痕迹
 		 */
-		public static void clearPrivacy(OnTaskOverListener<Status_> listener) {
+		public static void clearPrivacy(OnSimpleTaskOverListener listener) {
 			UserTask userTask = new UserTask(TaskType.TYPE_CLEAR_PRIVACY,
 					listener);
 			userTask.executeOnExecutor(Executors.newCachedThreadPool());
