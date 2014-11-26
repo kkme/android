@@ -57,7 +57,6 @@ public class ReminderActivity extends BaseFragmentActivity {
 		mViewPager.setOffscreenPageLimit(mFragments.size());
 		mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),
 				mFragments, fragmentTitles));
-
 		mViewPagerTab.setViewPager(mViewPager);
 
 	}

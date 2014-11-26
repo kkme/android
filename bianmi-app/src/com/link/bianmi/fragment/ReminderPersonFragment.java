@@ -22,9 +22,11 @@ import com.link.bianmi.entity.Reminder;
 import com.link.bianmi.entity.manager.ReminderManager;
 import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.utility.Tools;
+import com.link.bianmi.widget.NoDataView;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.ActivateListener;
 import com.link.bianmi.widget.RListView.TouchDirectionState;
+import com.link.bianmi.widget.SuperToast;
 
 /**
  * 我的提醒
@@ -46,6 +48,8 @@ public class ReminderPersonFragment extends BaseFragment {
 	private List<Reminder.Person> mDataList;
 
 	private ReminderActivity mParentActivity;
+	// 无数据
+	private NoDataView mNoDataView = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -140,12 +144,14 @@ public class ReminderPersonFragment extends BaseFragment {
 		});
 
 		mRListView.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View convertView,
 					int position, long arg3) {
 			}
 		});
+
+		mNoDataView = (NoDataView) mRootView.findViewById(R.id.nodata_view);
+		mNoDataView.show(R.string.nodata_tip_reminder_person);
 
 	}
 
@@ -224,12 +230,14 @@ public class ReminderPersonFragment extends BaseFragment {
 						if (t != null) {
 							mAdapter.refresh(t.list);
 							refreshRListView(t.hasMore, beginTime);
+							mNoDataView.dismiss();
 						}
 					}
 
 					@Override
 					public void onFailure(int code, String msg) {
-
+						SuperToast.makeText(mParentActivity, msg,
+								SuperToast.LENGTH_SHORT).show();
 					}
 				});
 	}

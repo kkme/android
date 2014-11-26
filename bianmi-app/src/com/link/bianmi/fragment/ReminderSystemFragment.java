@@ -22,6 +22,7 @@ import com.link.bianmi.entity.Reminder;
 import com.link.bianmi.entity.manager.ReminderManager;
 import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.utility.Tools;
+import com.link.bianmi.widget.NoDataView;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.ActivateListener;
 import com.link.bianmi.widget.RListView.TouchDirectionState;
@@ -146,6 +147,10 @@ public class ReminderSystemFragment extends BaseFragment {
 					int position, long arg3) {
 			}
 		});
+
+		NoDataView noDataView = (NoDataView) mRootView
+				.findViewById(R.id.nodata_view);
+		noDataView.show(R.string.nodata_tip_reminder_system);
 
 	}
 

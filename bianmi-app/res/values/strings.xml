@@ -19,6 +19,10 @@
     <string name="look_more">看更多</string>
     <string name="add_friend">添加朋友</string>
     <string name="recommend">推荐</string>
+    <!-- 秘密列表 -->
+    <string name="nodata_tip_secrets_hot">还没有热门秘密</string>
+    <string name="nodata_tip_secrets_friends">还没有朋友圈秘密</string>
+    <string name="nodata_tip_secrets_nearby">还没有附近秘密</string>
     <!-- 发表秘密 -->
     <string name="publish_secret_title">发表秘密</string>
     <string name="add_edit_hint">匿名发表秘密</string>
@@ -30,6 +34,8 @@
     <string name="reminder">提醒</string>
     <string name="person_reminder">我的</string>
     <string name="system_reminder">系统</string>
+    <string name="nodata_tip_reminder_person">没有我的提醒</string>
+    <string name="nodata_tip_reminder_system">没有系统提醒</string>
 
     <!-- 秘密详情 -->
     <string name="details_action_title">秘密详情</string>

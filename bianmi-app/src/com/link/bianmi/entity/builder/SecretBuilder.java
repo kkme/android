@@ -9,7 +9,8 @@ import org.json.JSONObject;
 import com.link.bianmi.entity.ListResult;
 import com.link.bianmi.entity.Secret;
 
-public class SecretBuilder implements BaseEntityBuilder<ListResult<Secret>> {
+public class SecretBuilder implements BaseEntityBuilder<Secret>,
+		BaseEntitysBuilder<Secret> {
 
 	private static SecretBuilder mInstance = null;
 
@@ -26,7 +27,29 @@ public class SecretBuilder implements BaseEntityBuilder<ListResult<Secret>> {
 	}
 
 	@Override
-	public ListResult<Secret> buildEntity(JSONObject jsonObj) {
+	public Secret buildEntity(JSONObject jsonObj) {
+		Secret secret = null;
+		try {
+			if (jsonObj != null && jsonObj.has("secret")) {
+				JSONObject secretJson = jsonObj.getJSONObject("secret");
+				secret = new Secret();
+				secret.resourceId = secretJson.getString("id");
+				secret.content = secretJson.getString("content");
+				secret.imageUrl = secretJson.getString("image_url");
+				secret.audioUrl = secretJson.getString("audio_url");
+				secret.audioLength = secretJson.getInt("audio_length");
+				secret.likes = secretJson.getInt("likes");
+				secret.comments = secretJson.getInt("comments");
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return secret;
+	}
+
+	@Override
+	public ListResult<Secret> buildEntitys(JSONObject jsonObj) {
 		ListResult<Secret> listResult = new ListResult<Secret>();
 		listResult.list = new ArrayList<Secret>();
 		try {

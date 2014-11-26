@@ -26,6 +26,7 @@ import com.link.bianmi.entity.Comment;
 import com.link.bianmi.entity.ListResult;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.CommentManager;
+import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.widget.InputSuit;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.ActivateListener;
@@ -173,6 +174,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 	 */
 	private void fetchNew() {
 		executeGetCommentsTask("");
+		executeSecretDetailsTask();
 	}
 
 	/**
@@ -184,15 +186,15 @@ public class DetailsActivity extends BaseFragmentActivity {
 		}
 	}
 
-	private void refreshRListView(List<Comment> comments, boolean hasMore,
-			long beginTime) {
+	private void refreshRListView(List<Comment> comments, Secret secret,
+			boolean hasMore, long beginTime) {
 		if (comments != null && comments.size() > 0) {
 			if (mCommentsList == null) {
 				mCommentsList = comments;
 			} else {
 				mCommentsList.addAll(comments);
 			}
-			mAdapter.refresh(mCommentsList);
+			mAdapter.refresh(mCommentsList, secret);
 		}
 		mRListView.setFootVisiable(hasMore);
 		mRListView.setEnableFooter(hasMore);
@@ -298,7 +300,6 @@ public class DetailsActivity extends BaseFragmentActivity {
 		mMenuWindow.getListView().setDividerHeight(1);
 	}
 
-	// --------------------------内部类--------------------------
 	private class MenuAdapter extends BaseAdapter {
 
 		@Override
@@ -340,6 +341,42 @@ public class DetailsActivity extends BaseFragmentActivity {
 
 	// --------------------------Task-------------------------------
 	/**
+	 * 执行获取秘密详情的任务
+	 */
+	private void executeSecretDetailsTask() {
+		if (mSecretId == null || mSecretId.isEmpty())
+			return;
+		SecretManager.Task.details(mSecretId, new OnTaskOverListener<Secret>() {
+			@Override
+			public void onSuccess(Secret t) {
+				mAdapter.refresh(null, t);
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						mRListView.stopHeadActiving();
+						mLoadingItem.setVisible(false);
+						mMoreItem.setVisible(true);
+					}
+				}, 1000);
+			}
+
+			@Override
+			public void onFailure(int code, String msg) {
+				SuperToast.makeText(DetailsActivity.this, msg,
+						SuperToast.LENGTH_SHORT).show();
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						mRListView.stopHeadActiving();
+						mLoadingItem.setVisible(false);
+						mMoreItem.setVisible(true);
+					}
+				}, 1000);
+			}
+		});
+	}
+
+	/**
 	 * 执行获取评论列表任务
 	 * 
 	 * @param commentid
@@ -358,7 +395,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 						if (lastid.isEmpty() && mCommentsList != null) {
 							mCommentsList.clear();
 						}
-						refreshRListView(t.list, t.hasMore, beginTime);
+						refreshRListView(t.list, null, t.hasMore, beginTime);
 					}
 
 					@Override

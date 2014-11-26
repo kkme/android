@@ -39,7 +39,8 @@ public class SecretManager {
 		GET_FRIENDS, // 朋友圈秘密
 		GET_NEARBY, // 附近秘密
 		PUBLISH, // 发表秘密
-		LIKE // 秘密点赞
+		LIKE, // 秘密点赞
+		DETAILS, // 秘密详情
 	}
 
 	/** 单页数量 **/
@@ -215,7 +216,7 @@ public class SecretManager {
 							jsonObj);
 					if (result.status != null
 							&& result.status.code == Status_.OK) {
-						result.t = SecretBuilder.getInstance().buildEntity(
+						result.t = SecretBuilder.getInstance().buildEntitys(
 								jsonObj);
 					}
 				} catch (ResponseException e) {
@@ -253,6 +254,38 @@ public class SecretManager {
 					if (result.status != null
 							&& result.status.code == Status_.OK) {
 						result.t = isLiked;
+					}
+				} catch (ResponseException e) {
+					e.printStackTrace();
+				}
+			}
+			return result;
+		}
+
+		private static Result<Secret> details(String secretId) {
+			if (secretId == null)
+				return null;
+			Result<Secret> result = null;
+			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("userid", UserConfig
+					.getInstance().getUserId()));
+			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
+					.getToken()));
+			params.add(new BasicNameValuePair("secretid", secretId));
+
+			Response response = HttpClient.doPost(params, SysConfig
+					.getInstance().getLikeUrl());
+			if (response != null) {
+				try {
+					// 解析Status
+					JSONObject jsonObj = response.asJSONObject();
+					result = new Result<Secret>();
+					result.status = StatusBuilder.getInstance().buildEntity(
+							jsonObj);
+					if (result.status != null
+							&& result.status.code == Status_.OK) {
+						result.t = SecretBuilder.getInstance().buildEntity(
+								jsonObj);
 					}
 				} catch (ResponseException e) {
 					e.printStackTrace();
@@ -307,6 +340,18 @@ public class SecretManager {
 			taskParams.put("secretid", secretId);
 			taskParams.put("isliked", isLiked);
 			SecretTask likeTask = new SecretTask(TaskType.LIKE, listener);
+			likeTask.executeOnExecutor(Executors.newCachedThreadPool(),
+					taskParams);
+		}
+
+		/**
+		 * 秘密详情
+		 */
+		public static void details(String secretId,
+				OnTaskOverListener<Secret> listener) {
+			TaskParams taskParams = new TaskParams();
+			taskParams.put("secretid", secretId);
+			SecretTask likeTask = new SecretTask(TaskType.DETAILS, listener);
 			likeTask.executeOnExecutor(Executors.newCachedThreadPool(),
 					taskParams);
 		}
@@ -389,6 +434,24 @@ public class SecretManager {
 				}
 
 				break;
+			case DETAILS:
+				secretId = (String) params[0].get("secretid");
+				Result<Secret> resultSecret = API.details(secretId);
+				if (resultSecret != null && resultSecret.status != null
+						&& resultSecret.status.code == Status_.OK) {
+					taskResult = new TaskResult<Secret>(TaskStatus.OK,
+							resultSecret.t);
+				} else if (resultSecret != null && resultSecret.status != null) {
+					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
+							resultSecret.status);
+				} else {
+					resultStatus = new Status_();
+					resultStatus.msg = "操作失败!";
+					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
+							resultStatus);
+				}
+
+				break;
 			default:
 				break;
 			}
@@ -432,6 +495,16 @@ public class SecretManager {
 					Status_ result = (Status_) taskResult.getEntity();
 					((OnTaskOverListener<Boolean>) listener).onFailure(
 							result.code, result.msg);
+				}
+				break;
+			case DETAILS:
+				if (taskResult.getStatus() == TaskStatus.OK) {
+					((OnTaskOverListener<Secret>) listener)
+							.onSuccess((Secret) taskResult.getEntity());
+				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
+					Status_ result = (Status_) taskResult.getEntity();
+					((OnTaskOverListener<ListResult<Secret>>) listener)
+							.onFailure(result.code, result.msg);
 				}
 				break;
 			default:

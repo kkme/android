@@ -30,6 +30,7 @@ import com.link.bianmi.entity.manager.ContactsManager;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.utility.Tools;
+import com.link.bianmi.widget.NoDataView;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.ActivateListener;
 import com.link.bianmi.widget.RListView.TouchDirectionState;
@@ -41,7 +42,7 @@ import com.link.bianmi.widget.SuperToast;
  * @author pangfq
  * @date 2014-10-7 下午8:39:43
  */
-public class SecretFragment extends BaseFragment {
+public abstract class SecretFragment extends BaseFragment {
 
 	// 根视图
 	private View mRootView;
@@ -57,6 +58,8 @@ public class SecretFragment extends BaseFragment {
 	private List<Secret> mSecretsList;
 
 	private HomeActivity mParentActivity;
+	// 无数据
+	private NoDataView mNoDataView = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -156,7 +159,6 @@ public class SecretFragment extends BaseFragment {
 						tabview.setTranslationY(tran_y);
 					}
 				}
-
 			}
 		});
 
@@ -195,6 +197,9 @@ public class SecretFragment extends BaseFragment {
 					}
 				});
 
+		mNoDataView = (NoDataView) mRootView.findViewById(R.id.nodata_view);
+		mNoDataView.show(getNoDataString());
+
 	}
 
 	@Override
@@ -218,18 +223,19 @@ public class SecretFragment extends BaseFragment {
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
-	// --------------------------protected----------------
-	protected SecretManager.TaskType getTaskType() {
-		return null;
-	}
+	// ------------------------------Abstract------------------------------
+	abstract SecretManager.TaskType getTaskType();
 
+	abstract String getNoDataString();
+
+	// ------------------------------Protected------------------------------
 	protected boolean isFirstFragment() {
 
 		return false;
 
 	}
 
-	// -------------------------private--------------------
+	// ------------------------------Private------------------------------
 
 	/**
 	 * 从缓存中加载数据初始化界面
@@ -276,6 +282,7 @@ public class SecretFragment extends BaseFragment {
 	 *            是否还有更多
 	 */
 	private void refreshRListView(Cursor cursor, boolean hasMore, long beginTime) {
+
 		if (cursor != null) {
 			mAdapter.changeCursor(cursor);
 			mAdapter.notifyDataSetChanged();
@@ -321,9 +328,13 @@ public class SecretFragment extends BaseFragment {
 							refreshRListView(SecretManager.DB.fetch(pageSize,
 									getTaskType()), listResult.hasMore,
 									beginTime);
+						} else if (listResult != null
+								&& listResult.list != null
+								&& listResult.list.size() <= 0) {
+							mNoDataView.dismiss();
 						}
-						mParentActivity.finishLoaded(false);
 
+						mParentActivity.finishLoaded(false);
 					}
 
 					@Override
@@ -332,6 +343,7 @@ public class SecretFragment extends BaseFragment {
 						mParentActivity.finishLoaded(true);
 						SuperToast.makeText(mContext, msg,
 								SuperToast.LENGTH_SHORT).show();
+						// mNoDataView.dismiss();
 					}
 				}, getTaskType());
 	}

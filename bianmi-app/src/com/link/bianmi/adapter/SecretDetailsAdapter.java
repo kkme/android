@@ -96,7 +96,10 @@ public class SecretDetailsAdapter extends BaseAdapter {
 	}
 
 	/** 评论列表 **/
-	private void bindCommentView(View convertView, final Comment comment, final int position) {
+	private void bindCommentView(View convertView, final Comment comment,
+			final int position) {
+		if (comment == null)
+			return;
 		// 头像
 		ImageView avatarImage = ViewHolder.get(convertView,
 				R.id.avatar_imageview);
@@ -146,6 +149,8 @@ public class SecretDetailsAdapter extends BaseAdapter {
 
 	/** 秘密正文 **/
 	private void bindSecretView(View convertView, Secret secret) {
+		if (secret == null)
+			return;
 		// 内容
 		TextView contentText = ViewHolder.get(convertView,
 				R.id.content_textview);
@@ -186,8 +191,9 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		}
 	}
 
-	public void refresh(List<Comment> commentsList) {
+	public void refresh(List<Comment> commentsList, Secret secret) {
 		this.mCommentsList = commentsList;
+		this.mSecret = secret;
 		this.notifyDataSetChanged();
 	}
 }
