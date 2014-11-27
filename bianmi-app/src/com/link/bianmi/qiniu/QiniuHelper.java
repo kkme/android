@@ -2,7 +2,7 @@ package com.link.bianmi.qiniu;
 
 import org.json.JSONException;
 
-import com.link.bianmi.BianmiApplication;
+import com.link.bianmi.MyApplication;
 import com.link.bianmi.SysConfig;
 import com.link.bianmi.http.CallerParam;
 import com.link.bianmi.http.HttpClient;
@@ -30,7 +30,7 @@ public class QiniuHelper {
 		/** 七牛私有资源上传token **/
 		public static String getUpLoadToken(String bucketName)
 				throws HttpException, JSONException {
-			if (BianmiApplication.getInstance().isNetworkDown())
+			if (MyApplication.getInstance().isNetworkDown())
 				throw new NetInValidException();
 
 			// CallerParam param = new CallerParam();

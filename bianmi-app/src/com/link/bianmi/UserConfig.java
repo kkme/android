@@ -17,7 +17,7 @@ public class UserConfig {
 
 	public static UserConfig getInstance() {
 		if (null == mInstance) {
-			mInstance = new UserConfig(BianmiApplication.getInstance());
+			mInstance = new UserConfig(MyApplication.getInstance());
 		}
 		return mInstance;
 	}

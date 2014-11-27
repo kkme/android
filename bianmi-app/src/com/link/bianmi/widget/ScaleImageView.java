@@ -12,7 +12,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.link.bianmi.widget.blur.BlurView;
+import com.link.bianmi.widget.BlurView;
 import com.link.bianmi.widget.photoview.PhotoViewAttacher;
 
 public class ScaleImageView extends TopCropImageView{

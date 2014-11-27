@@ -15,9 +15,9 @@ import com.baidu.location.LocationClientOption.LocationMode;
 import com.link.bianmi.utils.NetWorkHelper;
 import com.link.bianmi.utils.NetWorkHelper.NetWorkType;
 
-public class BianmiApplication extends Application {
+public class MyApplication extends Application {
 
-	private static BianmiApplication instance;
+	private static MyApplication instance;
 
 	private NetWorkType mNetwork = NetWorkType.NET_INVALID; // 网络情况
 
@@ -26,7 +26,7 @@ public class BianmiApplication extends Application {
 	public LocationClient mLocationClient;
 	public MyLocationListener mMyLocationListener;
 
-	public static BianmiApplication getInstance() {
+	public static MyApplication getInstance() {
 		return instance;
 	}
 
@@ -63,7 +63,7 @@ public class BianmiApplication extends Application {
 		BroadcastReceiver netReceiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
-				mNetwork = NetWorkHelper.getNetWorkType(BianmiApplication
+				mNetwork = NetWorkHelper.getNetWorkType(MyApplication
 						.getInstance());// 检测当前网络
 				if (mNetwork != NetWorkType.NET_INVALID) {
 					// SyncManager.syncData();

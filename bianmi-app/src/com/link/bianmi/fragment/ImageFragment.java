@@ -20,7 +20,7 @@ import com.link.bianmi.activity.HomeActivity;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.widget.ScaleImageView;
 import com.link.bianmi.widget.ScaleImageView.ImageViewListener;
-import com.link.bianmi.widget.blur.BlurView;
+import com.link.bianmi.widget.BlurView;
 import com.link.bianmi.widget.imageviewex.ImageViewEx;
 
 public class ImageFragment extends Fragment {

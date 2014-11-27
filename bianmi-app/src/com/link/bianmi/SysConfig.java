@@ -21,7 +21,7 @@ public class SysConfig {
 
 	public static SysConfig getInstance() {
 		if (mInstance == null) {
-			mInstance = new SysConfig(BianmiApplication.getInstance());
+			mInstance = new SysConfig(MyApplication.getInstance());
 		}
 		return mInstance;
 	}
@@ -124,7 +124,7 @@ public class SysConfig {
 	public String getRootPath() {
 		String bianmiPath = getSDPath();
 		if (TextUtils.isEmpty(bianmiPath)) {
-			bianmiPath = BianmiApplication.getInstance().getFilesDir()
+			bianmiPath = MyApplication.getInstance().getFilesDir()
 					.getPath()
 					+ File.separator + "BianMi";
 		} else {

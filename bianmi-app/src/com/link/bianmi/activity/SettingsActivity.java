@@ -13,7 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
-import com.link.bianmi.BianmiApplication;
+import com.link.bianmi.MyApplication;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
@@ -166,7 +166,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 									@Override
 									public void onSuccess(Object t) {
 										mLoadingItem.setVisible(false);
-										BianmiApplication.getInstance()
+										MyApplication.getInstance()
 												.signOut();
 										launchActivity(WelcomeActivity.class);
 										ActivitysManager.removeAllActivity();

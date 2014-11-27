@@ -10,7 +10,7 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
-import com.link.bianmi.BianmiApplication;
+import com.link.bianmi.MyApplication;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 
@@ -23,7 +23,7 @@ import com.link.bianmi.UserConfig;
  */
 public class ContextHelper {
 	
-	private static Context mContent=BianmiApplication.getInstance().getApplicationContext();
+	private static Context mContent=MyApplication.getInstance().getApplicationContext();
 	/**
 	 * 获取操作系统版本
 	 * @return

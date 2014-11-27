@@ -11,7 +11,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import com.link.bianmi.BianmiApplication;
+import com.link.bianmi.MyApplication;
 import com.link.bianmi.utils.NetWorkHelper.NetWorkType;
 import com.qiniu.auth.Authorizer;
 import com.qiniu.io.IO;
@@ -65,7 +65,7 @@ public class QiniuClient {
 	public void doUpload(final Uri uri, final String key,
 			final String bucketName, final boolean cover, boolean onlyWifi,
 			String token) {
-		if (BianmiApplication.getInstance().getNetwork() == NetWorkType.NET_INVALID) {
+		if (MyApplication.getInstance().getNetwork() == NetWorkType.NET_INVALID) {
 			if (mListener != null) {
 				mListener.onFailure(new Exception("NO NETWORK"));
 			}
@@ -73,7 +73,7 @@ public class QiniuClient {
 		}
 
 		if (onlyWifi
-				&& BianmiApplication.getInstance().getNetwork() != NetWorkType.NET_WIFI) {// 仅在WIFI上传
+				&& MyApplication.getInstance().getNetwork() != NetWorkType.NET_WIFI) {// 仅在WIFI上传
 			if (mListener != null) {
 				mListener.onFailure(new Exception("NO WIFI"));
 			}
@@ -173,7 +173,7 @@ public class QiniuClient {
 		extra.params.put("x:arg", "value");
 		Authorizer auth = new Authorizer();
 		auth.setUploadToken(token);
-		IO.putFile(BianmiApplication.getInstance(), auth, key, uri, extra,
+		IO.putFile(MyApplication.getInstance(), auth, key, uri, extra,
 				new CallBack() {
 
 					@Override

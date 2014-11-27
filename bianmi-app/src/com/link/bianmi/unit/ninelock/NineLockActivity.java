@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.link.bianmi.BianmiApplication;
+import com.link.bianmi.MyApplication;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.ActivitysManager;
@@ -69,7 +69,7 @@ public class NineLockActivity extends BaseFragmentActivity implements
 												UserConfig.getInstance()
 														.setLockPassKey("");
 												// 跳转登录页面
-												BianmiApplication.getInstance()
+												MyApplication.getInstance()
 														.signOut();
 												launchActivity(WelcomeActivity.class);
 												ActivitysManager
