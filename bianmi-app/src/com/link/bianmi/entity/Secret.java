@@ -7,7 +7,7 @@ public class Secret implements Serializable {
 	private static final long serialVersionUID = -8612795583682429650L;
 
 	public String id;
-	public String resourceId = "";
+	public String resourceId;
 	public String userId = "";
 	public String from = "";// 1、朋友：朋友，朋友的朋友 2、热门：地点 3、附近：距离
 	public String content = "";// 内容
@@ -23,5 +23,6 @@ public class Secret implements Serializable {
 	public double longitude;// 经度
 	public double latitude;// 纬度
 	public int type;// 类型：1--->热门 2--->朋友圈 3--->附近
+	public String city;// 城市
 
 }

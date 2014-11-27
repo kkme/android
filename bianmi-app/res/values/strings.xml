@@ -9,6 +9,7 @@
     <string name="welcome_tip_next">滑动有惊喜></string>
     <string name="welcome_guest">游客进入</string>
     <string name="cancel">取消</string>
+    <string name="default_city">深圳</string>
 
     <!-- 主界面 -->
     <string name="hot">热门</string>

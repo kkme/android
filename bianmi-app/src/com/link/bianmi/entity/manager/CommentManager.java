@@ -1,7 +1,6 @@
 package com.link.bianmi.entity.manager;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executors;
 
 import org.apache.http.NameValuePair;
@@ -52,8 +51,6 @@ public class CommentManager {
 			params.add(new BasicNameValuePair("audio_url", comment.audioUrl));
 			params.add(new BasicNameValuePair("audio_length", String
 					.valueOf(comment.audioLength)));
-			params.add(new BasicNameValuePair("created_time", String
-					.valueOf(comment.createdTime)));
 
 			Response response = HttpClient.doPost(params, SysConfig
 					.getInstance().getPublishCommentUrl());
@@ -76,15 +73,11 @@ public class CommentManager {
 				String secretid, String lastid) {
 			Result<ListResult<Comment>> result = null;
 
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("userid", userid));
-			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
-					.getToken()));
-			params.add(new BasicNameValuePair("secretid", secretid));
-			params.add(new BasicNameValuePair("lastid", lastid));
-			params.add(new BasicNameValuePair("batch", String.valueOf(BATCH)));
-			Response response = HttpClient.doPost(params, SysConfig
-					.getInstance().getCommentsUrl());
+			Response response = HttpClient.doGet(String.format(
+					"%s?userid=%s&token=%s&secretid=%s&lastid=%s&batch=%d",
+					SysConfig.getInstance().getCommentsUrl(), userid,
+					UserConfig.getInstance().getToken(), secretid, lastid,
+					BATCH));
 
 			if (response != null) {
 				try {

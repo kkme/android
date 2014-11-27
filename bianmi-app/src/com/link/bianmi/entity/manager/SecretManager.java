@@ -156,8 +156,7 @@ public class SecretManager {
 					.valueOf(secret.longitude)));
 			params.add(new BasicNameValuePair("latitude", String
 					.valueOf(secret.latitude)));
-			params.add(new BasicNameValuePair("created_time", String
-					.valueOf(secret.createdTime)));
+			params.add(new BasicNameValuePair("city", secret.city));
 
 			Response response = HttpClient.doPost(params, SysConfig
 					.getInstance().getPublishSecretUrl());
@@ -179,14 +178,6 @@ public class SecretManager {
 		private static Result<ListResult<Secret>> getSecrets(String lastid,
 				TaskType taskType) {
 			Result<ListResult<Secret>> result = null;
-
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("userid", UserConfig
-					.getInstance().getUserId()));
-			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
-					.getToken()));
-			params.add(new BasicNameValuePair("lastid", lastid));
-			params.add(new BasicNameValuePair("batch", String.valueOf(BATCH)));
 			String url = null;
 			switch (taskType) {
 			case GET_HOTS:
@@ -204,8 +195,10 @@ public class SecretManager {
 
 			if (url == null)
 				return null;
-
-			Response response = HttpClient.doPost(params, url);
+			Response response = HttpClient.doGet(String.format(
+					"%s?userid=%s&token=%s&lastid=%s&batch=%d", url, UserConfig
+							.getInstance().getUserId(), UserConfig
+							.getInstance().getToken(), lastid, BATCH));
 
 			if (response != null) {
 				try {
@@ -266,15 +259,13 @@ public class SecretManager {
 			if (secretId == null)
 				return null;
 			Result<Secret> result = null;
-			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("userid", UserConfig
-					.getInstance().getUserId()));
-			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
-					.getToken()));
-			params.add(new BasicNameValuePair("secretid", secretId));
 
-			Response response = HttpClient.doPost(params, SysConfig
-					.getInstance().getLikeUrl());
+			Response response = HttpClient.doGet(String.format(
+					"%s?userid=%s&token=%s&secretid=%s", SysConfig
+							.getInstance().getLikeUrl(), UserConfig
+							.getInstance().getUserId(), UserConfig
+							.getInstance().getToken(), secretId));
+
 			if (response != null) {
 				try {
 					// 解析Status

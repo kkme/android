@@ -14,6 +14,7 @@ public class UserConfig {
 
 	private SharedPreferences mPref;
 	private static UserConfig mInstance = null;
+	private Context mContext;
 
 	public static UserConfig getInstance() {
 		if (null == mInstance) {
@@ -23,6 +24,7 @@ public class UserConfig {
 	}
 
 	private UserConfig(Context context) {
+		mContext = context;
 		mPref = PreferenceManager.getDefaultSharedPreferences(context);
 	}
 
@@ -146,4 +148,16 @@ public class UserConfig {
 		return mPref.getFloat("bianmi.user.location.latitude", 113.85987f);
 	}
 
+	/** 保存定位城市 **/
+	public void setCity(String city) {
+		SharedPreferences.Editor editor = mPref.edit();
+		editor.putString("bianmi.user.location.city", city);
+		editor.commit();
+	}
+
+	/** 获取定位城市 **/
+	public String getCity() {
+		return mPref.getString("bianmi.user.location.city",
+				mContext.getString(R.string.default_city));
+	}
 }

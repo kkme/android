@@ -1,10 +1,7 @@
 package com.link.bianmi.entity.manager;
 
-import java.util.ArrayList;
 import java.util.concurrent.Executors;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import com.link.bianmi.SysConfig;
@@ -71,21 +68,12 @@ public class ReminderManager {
 		public static Result<ListResult<Reminder.Person>> getPersonReminders(
 				String lastid) {
 			Result<ListResult<Reminder.Person>> result = null;
-			ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
-			NameValuePair param1 = new BasicNameValuePair("token", UserConfig
-					.getInstance().getToken());
-			NameValuePair param2 = new BasicNameValuePair("userid", UserConfig
-					.getInstance().getUserId());
-			NameValuePair param3 = new BasicNameValuePair("lastid", lastid);
-			NameValuePair param4 = new BasicNameValuePair("batch",
-					String.valueOf(BATCH_NUM));
-			requestParams.add(param1);
-			requestParams.add(param2);
-			requestParams.add(param3);
-			requestParams.add(param4);
 
-			Response response = HttpClient.doPost(requestParams, SysConfig
-					.getInstance().getReminderPersonUrl());
+			Response response = HttpClient.doGet(String.format(
+					"%s?userid=%s&token=%s&lastid=%s&batch=%d", SysConfig
+							.getInstance().getReminderPersonUrl(), UserConfig
+							.getInstance().getUserId(), UserConfig
+							.getInstance().getToken(), lastid, BATCH_NUM));
 			if (response == null)
 				return null;
 
@@ -109,18 +97,12 @@ public class ReminderManager {
 		public static Result<ListResult<Reminder.System>> getSystemReminders(
 				String lastid) {
 			Result<ListResult<Reminder.System>> result = null;
-			ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
-			NameValuePair param1 = new BasicNameValuePair("token", UserConfig
-					.getInstance().getToken());
-			NameValuePair param2 = new BasicNameValuePair("lastid", lastid);
-			NameValuePair param3 = new BasicNameValuePair("batch",
-					String.valueOf(BATCH_NUM));
-			requestParams.add(param1);
-			requestParams.add(param2);
-			requestParams.add(param3);
 
-			Response response = HttpClient.doPost(requestParams, SysConfig
-					.getInstance().getReminderSystemUrl());
+			Response response = HttpClient.doGet(String.format(
+					"%s?token=%s&lastid=%s&batch=%d", SysConfig.getInstance()
+							.getReminderSystemUrl(), UserConfig.getInstance()
+							.getToken(), lastid, BATCH_NUM));
+
 			if (response == null)
 				return null;
 

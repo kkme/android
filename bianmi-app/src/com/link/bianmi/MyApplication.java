@@ -104,7 +104,7 @@ public class MyApplication extends Application {
 					(float) location.getLongitude());
 			UserConfig.getInstance()
 					.setLatitude((float) location.getLatitude());
-			// Log.e("bianmi_baidu_addr", location.getAddrStr());
+			UserConfig.getInstance().setCity(location.getCity());
 		}
 
 	}

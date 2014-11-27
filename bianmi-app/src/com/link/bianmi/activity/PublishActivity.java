@@ -225,7 +225,7 @@ public class PublishActivity extends BaseFragmentActivity {
 			secret.imageUrl = photoUrl;
 			secret.longitude = UserConfig.getInstance().getLongitude();
 			secret.latitude = UserConfig.getInstance().getLatitude();
-			secret.createdTime = System.currentTimeMillis();
+			secret.city = UserConfig.getInstance().getCity();
 
 			SecretManager.Task.publishSecret(secret,
 					new OnTaskOverListener<Secret>() {

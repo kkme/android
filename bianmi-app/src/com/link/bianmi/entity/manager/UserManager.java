@@ -1,10 +1,7 @@
 package com.link.bianmi.entity.manager;
 
-import java.util.ArrayList;
 import java.util.concurrent.Executors;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import com.link.bianmi.SysConfig;
@@ -36,16 +33,11 @@ public class UserManager {
 
 	private static class API {
 
-		public static Result<User> signInOrUp(String phone, String pwdmd5,
+		public static Result<User> signInOrUp(String phonemd5, String pwdmd5,
 				String url) {
 			Result<User> result = null;
-			ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
-			NameValuePair phoneParam = new BasicNameValuePair("phone", phone);
-			NameValuePair pwdmd5Param = new BasicNameValuePair("pwdmd5", pwdmd5);
-			requestParams.add(phoneParam);
-			requestParams.add(pwdmd5Param);
-
-			Response response = HttpClient.doPost(requestParams, url);
+			Response response = HttpClient.doGet(String.format(
+					"%s?phone_md5=%s&pwd_md5=%s", url, phonemd5, pwdmd5));
 			try {
 				// 解析Result
 				if (response != null) {
