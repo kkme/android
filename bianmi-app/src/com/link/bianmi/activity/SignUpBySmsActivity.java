@@ -180,7 +180,6 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 					AlertDialog.Builder builder = new AlertDialog.Builder(
 							SignUpBySmsActivity.this);
 					final AlertDialog dialog = builder
-							.setTitle(getString(R.string.sms_dialog_title))
 							.setMessage(
 									String.format(
 											getString(R.string.sms_dialog_msg),
