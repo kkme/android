@@ -25,7 +25,7 @@ import com.link.bianmi.entity.builder.StatusBuilder;
 import com.link.bianmi.http.HttpClient;
 import com.link.bianmi.http.Response;
 import com.link.bianmi.http.ResponseException;
-import com.link.bianmi.utility.SecurityUtils;
+import com.link.bianmi.utils.SecurityUtils;
 
 /**
  * 联系人管理类

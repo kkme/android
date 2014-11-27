@@ -9,7 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.link.bianmi.utility.Tools;
+import com.link.bianmi.utils.Tools;
 
 public class BlurView extends View{
 	

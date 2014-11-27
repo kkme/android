@@ -37,7 +37,7 @@ import com.link.bianmi.fragment.FriendFragment;
 import com.link.bianmi.fragment.HotFragment;
 import com.link.bianmi.fragment.ImageFragment;
 import com.link.bianmi.fragment.NearbyFragment;
-import com.link.bianmi.utility.UmengSocialClient;
+import com.link.bianmi.utils.UmengSocialClient;
 import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.ViewPagerTabBar;
 import com.tencent.android.tpush.XGPushConfig;

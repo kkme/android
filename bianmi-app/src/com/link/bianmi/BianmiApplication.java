@@ -12,8 +12,8 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
-import com.link.bianmi.utility.NetWorkHelper;
-import com.link.bianmi.utility.NetWorkHelper.NetWorkType;
+import com.link.bianmi.utils.NetWorkHelper;
+import com.link.bianmi.utils.NetWorkHelper.NetWorkType;
 
 public class BianmiApplication extends Application {
 

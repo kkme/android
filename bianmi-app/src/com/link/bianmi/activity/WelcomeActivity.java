@@ -21,7 +21,7 @@ import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
-import com.link.bianmi.utility.Tools;
+import com.link.bianmi.utils.Tools;
 
 /**
  * 首次进入的欢迎界面

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.link.bianmi.utility;
+package com.link.bianmi.utils;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;

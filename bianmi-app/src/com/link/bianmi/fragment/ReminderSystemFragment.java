@@ -21,7 +21,7 @@ import com.link.bianmi.entity.ListResult;
 import com.link.bianmi.entity.Reminder;
 import com.link.bianmi.entity.manager.ReminderManager;
 import com.link.bianmi.fragment.base.BaseFragment;
-import com.link.bianmi.utility.Tools;
+import com.link.bianmi.utils.Tools;
 import com.link.bianmi.widget.NoDataView;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.ActivateListener;

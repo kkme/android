@@ -16,8 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
-import com.link.bianmi.utility.NetworkUtil;
-import com.link.bianmi.utility.Tools;
+import com.link.bianmi.utils.NetworkUtil;
+import com.link.bianmi.utils.Tools;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 /**

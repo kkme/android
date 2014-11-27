@@ -29,7 +29,7 @@ import com.link.bianmi.entity.Status_;
 import com.link.bianmi.entity.manager.ContactsManager;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.fragment.base.BaseFragment;
-import com.link.bianmi.utility.Tools;
+import com.link.bianmi.utils.Tools;
 import com.link.bianmi.widget.NoDataView;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.ActivateListener;

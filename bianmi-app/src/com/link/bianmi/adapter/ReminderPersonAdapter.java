@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.link.bianmi.R;
 import com.link.bianmi.entity.Reminder;
 import com.link.bianmi.imageloader.ImageLoader;
-import com.link.bianmi.utility.ViewHolder;
+import com.link.bianmi.utils.ViewHolder;
 
 /**
  * "我的提醒"列表 适配器

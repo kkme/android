@@ -1,4 +1,4 @@
-package com.link.bianmi.utility;
+package com.link.bianmi.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

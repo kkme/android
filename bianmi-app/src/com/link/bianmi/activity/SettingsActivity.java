@@ -23,7 +23,7 @@ import com.link.bianmi.entity.Status_;
 import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.unit.ninelock.NineLockActivity;
 import com.link.bianmi.unit.ninelock.NineLockSettingsActivity;
-import com.link.bianmi.utility.Tools;
+import com.link.bianmi.utils.Tools;
 import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.SwitchButton;
 import com.umeng.update.UmengUpdateAgent;

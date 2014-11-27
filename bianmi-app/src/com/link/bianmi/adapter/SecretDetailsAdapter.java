@@ -18,7 +18,7 @@ import com.link.bianmi.entity.Comment;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.CommentManager;
 import com.link.bianmi.imageloader.ImageLoader;
-import com.link.bianmi.utility.ViewHolder;
+import com.link.bianmi.utils.ViewHolder;
 import com.link.bianmi.widget.AudioButton;
 import com.link.bianmi.widget.SuperToast;
 

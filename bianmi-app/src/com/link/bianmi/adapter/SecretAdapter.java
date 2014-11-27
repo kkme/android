@@ -18,7 +18,7 @@ import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.entity.manager.SecretManager.TaskType;
 import com.link.bianmi.imageloader.ImageLoader;
-import com.link.bianmi.utility.ViewHolder;
+import com.link.bianmi.utils.ViewHolder;
 import com.link.bianmi.widget.AudioButton;
 import com.link.bianmi.widget.SuperToast;
 

@@ -1,4 +1,4 @@
-package com.link.bianmi.utility;
+package com.link.bianmi.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

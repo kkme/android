@@ -12,8 +12,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
-import com.link.bianmi.utility.IPlayer;
-import com.link.bianmi.utility.Player;
+import com.link.bianmi.utils.IPlayer;
+import com.link.bianmi.utils.Player;
 
 /**
  * 根据传入时间自动调整宽度的组件*

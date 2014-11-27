@@ -11,7 +11,7 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
-import com.link.bianmi.utility.ViewHolder;
+import com.link.bianmi.utils.ViewHolder;
 
 public class SortAdapter extends BaseAdapter implements SectionIndexer {
 	private List<Country> list = null;

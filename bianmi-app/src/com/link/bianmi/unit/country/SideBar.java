@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
-import com.link.bianmi.utility.Tools;
+import com.link.bianmi.utils.Tools;
 
 public class SideBar extends View {
 	public static String[] b = { "A", "B", "C", "D", "E", "F", "G", "H", "I",

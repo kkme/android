@@ -1,4 +1,4 @@
-package com.link.bianmi.utility;
+package com.link.bianmi.utils;
 
 public interface IntEnum {
     int toInt();

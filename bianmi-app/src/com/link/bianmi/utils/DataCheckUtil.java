@@ -1,4 +1,4 @@
-package com.link.bianmi.utility;
+package com.link.bianmi.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

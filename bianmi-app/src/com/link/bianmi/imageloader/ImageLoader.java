@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import com.link.bianmi.BianmiApplication;
 import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
-import com.link.bianmi.utility.ImageHelper;
+import com.link.bianmi.utils.ImageHelper;
 
 /** 头像加载器 **/
 public class ImageLoader{

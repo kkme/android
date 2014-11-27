@@ -37,12 +37,12 @@ import com.link.bianmi.SysConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.qiniu.QiniuClient;
-import com.link.bianmi.utility.CameraCrop;
-import com.link.bianmi.utility.ContextHelper;
-import com.link.bianmi.utility.ConvertHelper;
-import com.link.bianmi.utility.FileHelper;
-import com.link.bianmi.utility.ImageHelper;
-import com.link.bianmi.utility.SoundTouchClient;
+import com.link.bianmi.utils.CameraCrop;
+import com.link.bianmi.utils.ContextHelper;
+import com.link.bianmi.utils.ConvertHelper;
+import com.link.bianmi.utils.FileHelper;
+import com.link.bianmi.utils.ImageHelper;
+import com.link.bianmi.utils.SoundTouchClient;
 
 /**
  * 

@@ -12,7 +12,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.link.bianmi.BianmiApplication;
-import com.link.bianmi.utility.NetWorkHelper.NetWorkType;
+import com.link.bianmi.utils.NetWorkHelper.NetWorkType;
 import com.qiniu.auth.Authorizer;
 import com.qiniu.io.IO;
 import com.qiniu.rs.CallBack;
