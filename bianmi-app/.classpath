@@ -7,5 +7,9 @@
 	<classpathentry kind="src" path="/bianmi-lib-seekarc"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/bianmi-lib-smssdk"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/bianmi-lib-socialsdk"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/bianmi-lib-soundtouch"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/bianmi-lib-xgpush"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
