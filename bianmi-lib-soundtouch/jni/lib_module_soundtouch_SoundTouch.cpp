@@ -1,11 +1,11 @@
-#include "lib_module_soundtouch_NativeSoundTouch.h"
+#include "lib_module_soundtouch_SoundTouch.h"
 #include "log.h"
 #include "soundtouch/SoundTouch.h"
 
 static soundtouch::SoundTouch* getTouch(JNIEnv *env, jobject obj) {
 
 	jclass cls = env->GetObjectClass(obj);
-	jfieldID fid = env->GetFieldID(cls, "nativeSoundTouch", "J");
+	jfieldID fid = env->GetFieldID(cls, "SoundTouch", "J");
 	soundtouch::SoundTouch* soundTouch =
 			(soundtouch::SoundTouch*) (env->GetLongField(obj, fid));
 
@@ -13,11 +13,11 @@ static soundtouch::SoundTouch* getTouch(JNIEnv *env, jobject obj) {
 }
 
 /*
- * Class:     lib_module_soundtouch_NativeSoundTouch
+ * Class:     lib_module_soundtouch_SoundTouch
  * Method:    soundTouchCreate
  * Signature: ()J
  */
-jlong Java_lib_module_soundtouch_NativeSoundTouch_soundTouchCreate(JNIEnv *,
+jlong Java_lib_module_soundtouch_SoundTouch_soundTouchCreate(JNIEnv *,
 		jobject) {
 
 	soundtouch::SoundTouch* soundTouch = new soundtouch::SoundTouch();
@@ -39,11 +39,11 @@ jlong Java_lib_module_soundtouch_NativeSoundTouch_soundTouchCreate(JNIEnv *,
 }
 
 /*
- * Class:     lib_module_soundtouch_NativeSoundTouch
+ * Class:     lib_module_soundtouch_SoundTouch
  * Method:    soundTouchDestory
  * Signature: ()V
  */
-void Java_lib_module_soundtouch_NativeSoundTouch_soundTouchDestory(JNIEnv *env,
+void Java_lib_module_soundtouch_SoundTouch_soundTouchDestory(JNIEnv *env,
 		jobject obj) {
 
 	soundtouch::SoundTouch* soundTouch = getTouch(env, obj);
@@ -52,11 +52,11 @@ void Java_lib_module_soundtouch_NativeSoundTouch_soundTouchDestory(JNIEnv *env,
 }
 
 /*
- * Class:     lib_module_soundtouch_NativeSoundTouch
+ * Class:     lib_module_soundtouch_SoundTouch
  * Method:    soundTouchgethVersion
  * Signature: ()Ljava/lang/String;
  */
-jstring Java_lib_module_soundtouch_NativeSoundTouch_soundTouchgethVersion(
+jstring Java_lib_module_soundtouch_SoundTouch_soundTouchgethVersion(
 		JNIEnv *env, jobject obj) {
 
 	const char *verStr;
@@ -69,11 +69,11 @@ jstring Java_lib_module_soundtouch_NativeSoundTouch_soundTouchgethVersion(
 }
 
 /*
- * Class:     lib_module_soundtouch_NativeSoundTouch
+ * Class:     lib_module_soundtouch_SoundTouch
  * Method:    setPitchSemiTones
  * Signature: (D)V
  */
-void Java_lib_module_soundtouch_NativeSoundTouch_setPitchSemiTones(JNIEnv *env,
+void Java_lib_module_soundtouch_SoundTouch_setPitchSemiTones(JNIEnv *env,
 		jobject obj, jfloat jpitch) {
 
 	soundtouch::SoundTouch* soundTouch = getTouch(env, obj);
@@ -83,11 +83,11 @@ void Java_lib_module_soundtouch_NativeSoundTouch_setPitchSemiTones(JNIEnv *env,
 }
 
 /*
- * Class:     lib_module_soundtouch_NativeSoundTouch
+ * Class:     lib_module_soundtouch_SoundTouch
  * Method:    setTempoChange
  * Signature: (F)V
  */
-void Java_lib_module_soundtouch_NativeSoundTouch_setTempoChange(JNIEnv *env,
+void Java_lib_module_soundtouch_SoundTouch_setTempoChange(JNIEnv *env,
 		jobject obj, jfloat jtempo) {
 
 	soundtouch::SoundTouch* soundTouch = getTouch(env, obj);
@@ -98,11 +98,11 @@ void Java_lib_module_soundtouch_NativeSoundTouch_setTempoChange(JNIEnv *env,
 }
 
 /*
- * Class:     lib_module_soundtouch_NativeSoundTouch
+ * Class:     lib_module_soundtouch_SoundTouch
  * Method:    shiftingPitch
  * Signature: ([BII)V
  */
-void Java_lib_module_soundtouch_NativeSoundTouch_shiftingPitch(JNIEnv *env,
+void Java_lib_module_soundtouch_SoundTouch_shiftingPitch(JNIEnv *env,
 		jobject obj, jbyteArray jarray, jint offset, jint length) {
 
 	soundtouch::SoundTouch* soundTouch = getTouch(env, obj);
@@ -123,11 +123,11 @@ void Java_lib_module_soundtouch_NativeSoundTouch_shiftingPitch(JNIEnv *env,
 }
 
 /*
- * Class:     lib_module_soundtouch_NativeSoundTouch
+ * Class:     lib_module_soundtouch_SoundTouch
  * Method:    receiveSamples
  * Signature: ([BI)I
  */
-jint Java_lib_module_soundtouch_NativeSoundTouch_receiveSamples(JNIEnv *env,
+jint Java_lib_module_soundtouch_SoundTouch_receiveSamples(JNIEnv *env,
 		jobject obj, jbyteArray jarray, jint jLenght) {
 
 	int receiveSamples = 0;
@@ -150,11 +150,11 @@ jint Java_lib_module_soundtouch_NativeSoundTouch_receiveSamples(JNIEnv *env,
 }
 
 /*
- * Class:     lib_module_soundtouch_NativeSoundTouch
+ * Class:     lib_module_soundtouch_SoundTouch
  * Method:    soundTouchFlushLastSamples
  * Signature: ()V
  */
-void Java_lib_module_soundtouch_NativeSoundTouch_soundTouchFlushLastSamples(
+void Java_lib_module_soundtouch_SoundTouch_soundTouchFlushLastSamples(
 		JNIEnv *env, jobject obj) {
 
 	soundtouch::SoundTouch* soundTouch = getTouch(env, obj);

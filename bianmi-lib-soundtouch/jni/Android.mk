@@ -6,7 +6,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := soundtouch
 
 LOCAL_SRC_FILES := \
-    lib_module_soundtouch_NativeSoundTouch.cpp \
+    lib_module_soundtouch_SoundTouch.cpp \
 	soundtouch/AAFilter.cpp \
 	soundtouch/BPMDetect.cpp \
 	soundtouch/cpu_detect_x86.cpp \

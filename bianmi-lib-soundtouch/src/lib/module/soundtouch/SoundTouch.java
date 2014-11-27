@@ -1,23 +1,23 @@
 package lib.module.soundtouch;
 
-public final class NativeSoundTouch {
+public final class SoundTouch {
 	static {
 		System.loadLibrary("soundtouch");
 	}
-	private static NativeSoundTouch instance = null;
+	private static SoundTouch instance = null;
 
-	private long nativeSoundTouch;
+	private long SoundTouch;
 
-	public synchronized static NativeSoundTouch getSoundTouch() {
+	public synchronized static SoundTouch getSoundTouch() {
 		if (null == instance) {
-			instance = new NativeSoundTouch();
+			instance = new SoundTouch();
 		}
 
 		return instance;
 	}
 
-	private NativeSoundTouch() {
-		nativeSoundTouch = soundTouchCreate();
+	private SoundTouch() {
+		SoundTouch = soundTouchCreate();
 	}
 
 	public native long soundTouchCreate();

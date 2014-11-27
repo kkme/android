@@ -3,7 +3,7 @@ package com.link.bianmi.widget;
 import java.io.File;
 import java.util.UUID;
 
-import lib.module.soundtouch.NativeSoundTouch;
+import lib.module.soundtouch.SoundTouch;
 import lib.widget.seekarc.SeekArc;
 import lib.widget.seekarc.SeekArc.OnSeekArcChangeListener;
 import android.app.Activity;
@@ -161,7 +161,7 @@ public class InputSuit extends LinearLayout {
 			@Override
 			public void onStopTrackingTouch(SeekArc seekArc) {
 				float pitch = (seekArc.getProgress() - 1000) / 100.0f;
-				NativeSoundTouch.getSoundTouch().setPitchSemiTones(pitch);
+				SoundTouch.getSoundTouch().setPitchSemiTones(pitch);
 			}
 
 			@Override
@@ -172,7 +172,7 @@ public class InputSuit extends LinearLayout {
 			public void onProgressChanged(SeekArc seekArc, int progress,
 					boolean fromUser) {
 				float pitch = (progress - 1000) / 100.0f;
-				NativeSoundTouch.getSoundTouch().setPitchSemiTones(pitch);
+				SoundTouch.getSoundTouch().setPitchSemiTones(pitch);
 				mPitchProgressText.setText(String.valueOf(pitch));
 			}
 		});
@@ -182,7 +182,7 @@ public class InputSuit extends LinearLayout {
 			@Override
 			public void onStopTrackingTouch(SeekArc seekArc) {
 				float tempo = (seekArc.getProgress() - 5000) / 100.0f;
-				NativeSoundTouch.getSoundTouch().setTempoChange(tempo);
+				SoundTouch.getSoundTouch().setTempoChange(tempo);
 			}
 
 			@Override
@@ -193,7 +193,7 @@ public class InputSuit extends LinearLayout {
 			public void onProgressChanged(SeekArc seekArc, int progress,
 					boolean fromUser) {
 				float tempo = (progress - 5000) / 100.0f;
-				NativeSoundTouch.getSoundTouch().setTempoChange(tempo);
+				SoundTouch.getSoundTouch().setTempoChange(tempo);
 				mTempoProgressText.setText(String.valueOf(tempo + "%"));
 			}
 		});

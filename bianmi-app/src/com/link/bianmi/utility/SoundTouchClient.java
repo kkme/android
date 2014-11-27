@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import lib.module.soundtouch.NativeSoundTouch;
+import lib.module.soundtouch.SoundTouch;
 import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -135,11 +135,11 @@ public class SoundTouchClient {
 
 					Log.d(TAG, "input ST amr size :" + inputSamples);
 
-					NativeSoundTouch.getSoundTouch().shiftingPitch(
+					SoundTouch.getSoundTouch().shiftingPitch(
 							recorderBuffer, 0, len);
 
 					do {
-						receiveSTSamples = NativeSoundTouch.getSoundTouch()
+						receiveSTSamples = SoundTouch.getSoundTouch()
 								.receiveSamples(recorderBuffer,
 										recorderBuffer.length);
 
@@ -161,10 +161,10 @@ public class SoundTouchClient {
 			}
 
 			// receive the remainder of the speech data
-			NativeSoundTouch.getSoundTouch().soundTouchFlushLastSamples();
+			SoundTouch.getSoundTouch().soundTouchFlushLastSamples();
 
 			do {
-				receiveSTSamples = NativeSoundTouch.getSoundTouch()
+				receiveSTSamples = SoundTouch.getSoundTouch()
 						.receiveSamples(recorderBuffer, recorderBuffer.length);
 
 				Log.d(TAG, "receive remainder ST samples:" + receiveSTSamples);
