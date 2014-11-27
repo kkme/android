@@ -1,4 +1,4 @@
-package com.link.bianmi.widget.imageviewex;
+package lib.widget.imageviewex;
 
 /**
  * Enum that contains image alignments for ImageViewEx.

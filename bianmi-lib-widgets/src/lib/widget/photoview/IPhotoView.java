@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.link.bianmi.widget.photoview;
+package lib.widget.photoview;
 
 import android.graphics.RectF;
 import android.view.View;

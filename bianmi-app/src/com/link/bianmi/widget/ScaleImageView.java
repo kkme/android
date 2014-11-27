@@ -1,5 +1,6 @@
 package com.link.bianmi.widget;
 
+import lib.widget.photoview.PhotoViewAttacher;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
@@ -13,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.link.bianmi.widget.BlurView;
-import com.link.bianmi.widget.photoview.PhotoViewAttacher;
 
 public class ScaleImageView extends TopCropImageView{
 	PhotoViewAttacher mPhotoViewAttacher;

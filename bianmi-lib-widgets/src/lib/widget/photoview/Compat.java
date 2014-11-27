@@ -1,4 +1,4 @@
-package com.link.bianmi.widget.photoview;
+package lib.widget.photoview;
 
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;

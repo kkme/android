@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.link.bianmi.widget.photoview;
+package lib.widget.photoview;
 
-import com.link.bianmi.widget.photoview.PhotoViewAttacher.OnMatrixChangedListener;
-import com.link.bianmi.widget.photoview.PhotoViewAttacher.OnPhotoTapListener;
-import com.link.bianmi.widget.photoview.PhotoViewAttacher.OnViewTapListener;
-
+import lib.widget.photoview.PhotoViewAttacher.OnMatrixChangedListener;
+import lib.widget.photoview.PhotoViewAttacher.OnPhotoTapListener;
+import lib.widget.photoview.PhotoViewAttacher.OnViewTapListener;
 import android.content.Context;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;

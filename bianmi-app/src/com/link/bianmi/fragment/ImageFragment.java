@@ -1,5 +1,6 @@
 package com.link.bianmi.fragment;
 
+import lib.widget.imageviewex.ImageViewEx;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
@@ -21,7 +22,6 @@ import com.link.bianmi.entity.Secret;
 import com.link.bianmi.widget.ScaleImageView;
 import com.link.bianmi.widget.ScaleImageView.ImageViewListener;
 import com.link.bianmi.widget.BlurView;
-import com.link.bianmi.widget.imageviewex.ImageViewEx;
 
 public class ImageFragment extends Fragment {
 

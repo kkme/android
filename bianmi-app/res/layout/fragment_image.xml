@@ -36,7 +36,7 @@
             ProgressWheel:textSize="14sp"
             android:visibility="gone" />
 
-        <com.link.bianmi.widget.imageviewex.ImageViewEx
+        <lib.widget.imageviewex.ImageViewEx
             android:id="@+id/fragment_image_imageViewex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

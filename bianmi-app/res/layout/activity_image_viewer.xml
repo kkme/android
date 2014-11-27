@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".ImageViewerActivity" >
 
-    <com.link.bianmi.widget.imageviewex.ImageViewEx
+    <lib.widget.imageviewex.ImageViewEx
         android:id="@+id/imageviewer_imageViewEx1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,7 +13,7 @@
         android:visibility="gone"
         android:adjustViewBounds="true" />
 
-    <com.link.bianmi.widget.photoview.PhotoView
+    <lib.widget.photoview.PhotoView
         android:id="@+id/imageviewer_photoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,4 +1,4 @@
-package com.link.bianmi.widget.photoview;
+package lib.widget.photoview;
 
 /*******************************************************************************
  * Copyright 2011, 2012 Chris Banes.

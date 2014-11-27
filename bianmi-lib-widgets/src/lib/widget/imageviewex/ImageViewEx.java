@@ -1,8 +1,9 @@
-package com.link.bianmi.widget.imageviewex;
+package lib.widget.imageviewex;
 
 import java.io.InputStream;
 import java.lang.reflect.Method;
 
+import lib.widget.R;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -24,8 +25,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-
-import com.link.bianmi.R;
 
 
 /**
