@@ -39,7 +39,6 @@ public class HttpClient {
 	private synchronized static DefaultHttpClient getHttpClient() {
 		if (mClient == null) {
 			final HttpParams httpParams = new BasicHttpParams();
-
 			SchemeRegistry schemeRegistry = new SchemeRegistry();
 			schemeRegistry.register(new Scheme("http", PlainSocketFactory
 					.getSocketFactory(), 80));

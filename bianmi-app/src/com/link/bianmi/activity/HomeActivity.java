@@ -135,7 +135,7 @@ public class HomeActivity extends BaseFragmentActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_CODE_REMINDER) {
 			mReminder = null;
-			mReminderItem.setIcon(R.drawable.ic_action_reminder);
+			mReminderItem.setIcon(R.drawable.ab_ic_reminder);
 		}
 	}
 
@@ -173,8 +173,8 @@ public class HomeActivity extends BaseFragmentActivity {
 			mReminder = new Reminder();
 		}
 		mReminderItem
-				.setIcon(mReminder.hasReminder ? R.drawable.ic_action_reminder_has
-						: R.drawable.ic_action_reminder);
+				.setIcon(mReminder.hasReminder ? R.drawable.ab_ic_reminder_has
+						: R.drawable.ab_ic_reminder);
 		mLoadingItem.setVisible(false);
 		mMoreItem.setVisible(true);
 		if (!mFragmentsLoaded) {
@@ -247,11 +247,9 @@ public class HomeActivity extends BaseFragmentActivity {
 					int position, long id) {
 				switch (position) {
 				case 0:
-					break;
-				case 1:
 					UmengSocialClient.showShareDialog(HomeActivity.this);
 					break;
-				case 2:
+				case 1:
 					launchActivityForResult(SettingsActivity.class, 6666);
 					break;
 				default:
@@ -273,7 +271,7 @@ public class HomeActivity extends BaseFragmentActivity {
 
 		@Override
 		public int getCount() {
-			return 3;
+			return 2;
 		}
 
 		@Override
@@ -291,17 +289,14 @@ public class HomeActivity extends BaseFragmentActivity {
 			convertView = LayoutInflater.from(parent.getContext()).inflate(
 					R.layout.popup_menu_item, null);
 			TextView name = (TextView) convertView.findViewById(R.id.tv_name);
-			int iconResId = R.drawable.ic_action_add;
+			int iconResId = R.drawable.ab_menu_ic_share;
 
 			if (position == 0) {
-				name.setText(R.string.add_friend);
-				iconResId = R.drawable.ic_action_add;
+				name.setText(R.string.invite_friends);
+				iconResId = R.drawable.ab_menu_ic_share;
 			} else if (position == 1) {
-				name.setText(R.string.recommend);
-				iconResId = R.drawable.ic_action_add;
-			} else if (position == 2) {
 				name.setText(R.string.settings);
-				iconResId = R.drawable.ic_settings;
+				iconResId = R.drawable.ab_menu_ic_settings;
 			}
 			Drawable drawable = getResources().getDrawable(iconResId);
 			drawable.setBounds(0, 0, drawable.getMinimumWidth(),
@@ -405,8 +400,8 @@ public class HomeActivity extends BaseFragmentActivity {
 				mReminder = t;
 				if (t != null && mReminderItem != null) {
 					mReminderItem
-							.setIcon(mReminder.hasReminder ? R.drawable.ic_action_reminder_has
-									: R.drawable.ic_action_reminder);
+							.setIcon(mReminder.hasReminder ? R.drawable.ab_ic_reminder_has
+									: R.drawable.ab_ic_reminder);
 				}
 			}
 

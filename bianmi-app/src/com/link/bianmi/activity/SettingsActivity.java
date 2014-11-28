@@ -117,6 +117,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 											public void onClick(
 													DialogInterface dialog,
 													int which) {
+												mLoadingItem.setVisible(true);
 												// 继续清除
 												UserManager.Task
 														.clearPrivacy(new OnSimpleTaskOverListener() {
@@ -129,6 +130,8 @@ public class SettingsActivity extends BaseFragmentActivity {
 																				status.msg,
 																				SuperToast.LENGTH_SHORT)
 																		.show();
+																mLoadingItem
+																		.setVisible(false);
 															}
 														});
 											}
@@ -166,8 +169,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 									@Override
 									public void onSuccess(Object t) {
 										mLoadingItem.setVisible(false);
-										MyApplication.getInstance()
-												.signOut();
+										MyApplication.getInstance().signOut();
 										launchActivity(WelcomeActivity.class);
 										ActivitysManager.removeAllActivity();
 									}

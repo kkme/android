@@ -2,21 +2,21 @@
 
     <item
         android:id="@+id/fragment_image_action_save"
-        android:icon="@drawable/ic_action_liked"
+        android:icon="@drawable/ab_ic_liked"
         android:orderInCategory="27"
         android:showAsAction="always"
         android:title="@string/app_name"
         android:visible="false"/>
     <item
         android:id="@+id/fragment_image_action_weblink"
-        android:icon="@drawable/ic_action_liked"
+        android:icon="@drawable/ab_ic_liked"
         android:orderInCategory="28"
         android:showAsAction="always"
         android:title="@string/app_name"
         android:visible="false"/>
     <item
         android:id="@+id/fragment_image_action_share"
-        android:icon="@drawable/ic_action_liked"
+        android:icon="@drawable/ab_ic_liked"
         android:orderInCategory="29"
         android:showAsAction="always"
         android:title="@string/app_name"

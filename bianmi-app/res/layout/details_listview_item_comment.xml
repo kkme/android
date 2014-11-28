@@ -44,7 +44,7 @@
             android:id="@+id/floor_time_likes_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableRight="@drawable/ic_action_like"
+            android:drawableRight="@drawable/ab_ic_like"
             android:gravity="center_vertical"
             android:text="@string/details_comments_list_item"
             android:textSize="12sp" />
@@ -58,6 +58,6 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:contentDescription="@null"
-        android:src="@drawable/ic_action_like" />
+        android:src="@drawable/ab_ic_like" />
 
 </RelativeLayout>

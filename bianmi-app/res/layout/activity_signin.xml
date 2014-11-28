@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/selector_input"
-        android:hint="@string/phone_num"
+        android:hint="@string/phonenum"
         android:inputType="phone"
         android:padding="@dimen/dp_10"
         android:textSize="@dimen/main_edittext_size" />

@@ -20,6 +20,7 @@
     <string name="look_more">看更多</string>
     <string name="add_friend">添加朋友</string>
     <string name="recommend">推荐</string>
+    <string name="invite_friends">邀请好友</string>
     <!-- 秘密列表 -->
     <string name="nodata_tip_secrets_hot">还没有热门秘密</string>
     <string name="nodata_tip_secrets_friends">还没有朋友圈秘密</string>
@@ -35,13 +36,12 @@
     <string name="reminder">提醒</string>
     <string name="person_reminder">我的</string>
     <string name="system_reminder">系统</string>
-    <string name="nodata_tip_reminder_person">没有我的提醒</string>
-    <string name="nodata_tip_reminder_system">没有系统提醒</string>
+    <string name="nodata_tip_reminder_person">还没有我的提醒</string>
+    <string name="nodata_tip_reminder_system">还没有系统提醒</string>
 
     <!-- 秘密详情 -->
     <string name="details_action_title">秘密详情</string>
     <string name="like">点赞</string>
-    <string name="follow">关注</string>
     <string name="share">分享</string>
     <string name="details_comments_list_item">%1$d楼.%2$d前.%3$d</string>
 
@@ -53,13 +53,13 @@
     <string name="choose_countrycode">选择国家和地区代码</string>
     <string name="please_input_keyword">请输入关键字</string>
     <string name="sms_code">验证码</string>
-    <string name="sms_dialog_msg">我们将发送【短信验证码】到这个手机号：%1$s</string>
+    <string name="sms_dialog_msg">将发送【短信验证码】到这个手机号：%1$s</string>
     <string name="country_or_area">国家或地区</string>
     <string name="default_country_name">中国</string>
     <string name="default_country_code">+86</string>
     <string name="dont_receive_sms_verify_code">收不到验证码？</string>
     <string name="resend_sms_verify_code">重新获取验证码</string>
-    <string name="phone_num">手机号</string>
+    <string name="phonenum">手机号</string>
     <string name="password">密码</string>
 
     <!-- 拍照 -->
@@ -82,7 +82,7 @@
     <string name="chack_update">检查更新</string>
     <string name="signout">退出登录</string>
     <string name="clear_privacy">清除痕迹</string>
-    <string name="clear_privacy_tip">清除痕迹，将清除你之前发表的所有信息！</string>
+    <string name="clear_privacy_tip">将清除你之前发表的所有信息！</string>
     <string name="continue_to_clear">继续清除</string>
     <string name="clear_privacy_ok">已清除</string>
     <!-- 输入控件 -->

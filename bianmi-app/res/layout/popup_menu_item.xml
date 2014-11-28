@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/list_item_background"
-    android:drawableLeft="@drawable/ic_action_like"
+    android:drawableLeft="@drawable/ab_ic_like"
     android:gravity="center_vertical"
     android:padding="@dimen/dp_8"
     android:textColor="@color/main_black"

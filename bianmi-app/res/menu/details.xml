@@ -3,16 +3,16 @@
 
     <item
         android:id="@+id/action_like"
-        android:icon="@drawable/ic_action_like"
+        android:icon="@drawable/ab_ic_like"
         android:orderInCategory="99"
         android:showAsAction="always"
         android:title="@string/like"/>
     <item
-        android:id="@+id/action_more"
-        android:icon="@drawable/ic_action_more"
+        android:id="@+id/action_share"
+        android:icon="@drawable/ab_menu_ic_share"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="@string/look_more"/>
+        android:title="@string/share"/>
     <item
         android:id="@+id/action_loading"
         android:actionLayout="@layout/actionbar_loading_layout"

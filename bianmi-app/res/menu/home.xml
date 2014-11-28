@@ -3,19 +3,19 @@
 
     <item
         android:id="@+id/action_add"
-        android:icon="@drawable/ic_action_add"
+        android:icon="@drawable/ab_ic_add"
         android:orderInCategory="99"
         android:showAsAction="always"
         android:title="@string/publish_secret"/>
     <item
         android:id="@+id/action_reminder"
-        android:icon="@drawable/ic_action_reminder"
+        android:icon="@drawable/ab_ic_reminder"
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="@string/look_reminder"/>
     <item
         android:id="@+id/action_more"
-        android:icon="@drawable/ic_action_more"
+        android:icon="@drawable/ab_ic_more"
         android:orderInCategory="101"
         android:showAsAction="always"
         android:title="@string/look_more"/>

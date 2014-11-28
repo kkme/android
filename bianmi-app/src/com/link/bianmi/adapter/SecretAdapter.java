@@ -135,10 +135,10 @@ public class SecretAdapter extends CursorAdapter {
 
 	private void likeOrDislike(TextView likesText, boolean isliked) {
 		Drawable leftDrawable = mContext.getResources().getDrawable(
-				R.drawable.ic_action_like);
+				R.drawable.ab_ic_like);
 		if (isliked) {
 			leftDrawable = mContext.getResources().getDrawable(
-					R.drawable.ic_action_liked);
+					R.drawable.ab_ic_liked);
 
 		}
 

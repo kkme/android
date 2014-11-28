@@ -185,9 +185,9 @@ public class SecretDetailsAdapter extends BaseAdapter {
 
 	private void likeOrDislike(ImageView imageView, boolean isliked) {
 		if (isliked) {
-			imageView.setImageResource(R.drawable.ic_action_liked);
+			imageView.setImageResource(R.drawable.ab_ic_liked);
 		} else {
-			imageView.setImageResource(R.drawable.ic_action_like);
+			imageView.setImageResource(R.drawable.ab_ic_like);
 		}
 	}
 
