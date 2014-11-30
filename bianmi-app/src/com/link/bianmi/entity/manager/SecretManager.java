@@ -181,13 +181,18 @@ public class SecretManager {
 			String url = null;
 			switch (taskType) {
 			case GET_HOTS:
-				url = SysConfig.getInstance().getHotSecretsUrl();
+				url = String.format("%s?lastid=%s&batch=%d", SysConfig
+						.getInstance().getHotSecretsUrl(), lastid, BATCH);
 				break;
 			case GET_FRIENDS:
-				url = SysConfig.getInstance().getFriendSecretsUrl();
+				url = String.format("%s?userid=%s&token=%s&lastid=%s&batch=%d",
+						SysConfig.getInstance().getFriendSecretsUrl(),
+						UserConfig.getInstance().getUserId(), UserConfig
+								.getInstance().getToken(), lastid, BATCH);
 				break;
 			case GET_NEARBY:
-				url = SysConfig.getInstance().getNearbySecretsUrl();
+				url = String.format("%s?lastid=%s&batch=%d", SysConfig
+						.getInstance().getNearbySecretsUrl(), lastid, BATCH);
 				break;
 			default:
 				break;
@@ -195,10 +200,7 @@ public class SecretManager {
 
 			if (url == null)
 				return null;
-			Response response = HttpClient.doGet(String.format(
-					"%s?userid=%s&token=%s&lastid=%s&batch=%d", url, UserConfig
-							.getInstance().getUserId(), UserConfig
-							.getInstance().getToken(), lastid, BATCH));
+			Response response = HttpClient.doGet(url);
 
 			if (response != null) {
 				try {

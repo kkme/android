@@ -5,7 +5,6 @@ import java.util.concurrent.Executors;
 import org.json.JSONObject;
 
 import com.link.bianmi.SysConfig;
-import com.link.bianmi.UserConfig;
 import com.link.bianmi.asynctask.BaseAsyncTask;
 import com.link.bianmi.asynctask.TaskParams;
 import com.link.bianmi.asynctask.TaskResult;
@@ -26,9 +25,8 @@ public class ConfigManager {
 		public static Result<Config> getConfig() {
 			Result<Config> result = null;
 
-			Response response = HttpClient.doGet(String.format("%s?token=%s",
-					SysConfig.getInstance().getConfigUrl(), UserConfig
-							.getInstance().getToken()));
+			Response response = HttpClient.doGet(SysConfig.getInstance()
+					.getConfigUrl());
 			if (response == null)
 				return null;
 
@@ -96,7 +94,7 @@ public class ConfigManager {
 			if (taskResult.getStatus() == TaskStatus.OK) {
 				Config config = (Config) taskResult.getEntity();
 				SysConfig.getInstance().setShowAd(config.showAd);
-				SysConfig.getInstance().setShowAd(config.smsAccess);
+				SysConfig.getInstance().setSmsAccess(config.smsAccess);
 			}
 		}
 	}

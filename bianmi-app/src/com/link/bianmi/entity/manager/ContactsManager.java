@@ -87,15 +87,14 @@ public class ContactsManager {
 		static String getContactsJSON(Context context) {
 			Cursor cursor = context.getContentResolver().query(
 					Phone.CONTENT_URI, null, null, null, null);
-			String phoneNum;
+			String phone;
 			JSONObject contactsObj = new JSONObject();
 			JSONArray contactsArr = new JSONArray();
 			while (cursor.moveToNext()) {
-				phoneNum = cursor
-						.getString(cursor.getColumnIndex(Phone.NUMBER));
+				phone = cursor.getString(cursor.getColumnIndex(Phone.NUMBER));
 				JSONObject contactObj = new JSONObject();
 				try {
-					contactObj.put("phone", SecurityUtils.getMD5Str(phoneNum));
+					contactObj.put("phone", SecurityUtils.getMD5Str(phone));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

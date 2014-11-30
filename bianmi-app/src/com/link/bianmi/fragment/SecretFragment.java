@@ -282,6 +282,15 @@ public abstract class SecretFragment extends BaseFragment {
 	 *            是否还有更多
 	 */
 	private void refreshRListView(Cursor cursor, boolean hasMore, long beginTime) {
+		// 还没有秘密
+		if (cursor == null || cursor.getCount() <= 0) {
+			mAdapter.changeCursor(null);
+			mAdapter.notifyDataSetChanged();
+			mNoDataView.show(getNoDataString());
+			return;
+		}
+
+		mNoDataView.dismiss();
 
 		if (cursor != null) {
 			mAdapter.changeCursor(cursor);
@@ -321,19 +330,15 @@ public abstract class SecretFragment extends BaseFragment {
 
 						// 刷新列表
 						if (listResult != null && listResult.list != null
-								&& listResult.list.size() > 0) {
+								&& listResult.list.size() >= 0) {
 							mSecretsList = listResult.list;
 							SecretManager.DB.addSecrets(listResult.list,
 									getTaskType());
 							refreshRListView(SecretManager.DB.fetch(pageSize,
 									getTaskType()), listResult.hasMore,
 									beginTime);
-						} else if (listResult != null
-								&& listResult.list != null
-								&& listResult.list.size() <= 0) {
-							mNoDataView.dismiss();
 						}
-
+						mRListView.stopHeadActiving();
 						mParentActivity.finishLoaded(false);
 					}
 

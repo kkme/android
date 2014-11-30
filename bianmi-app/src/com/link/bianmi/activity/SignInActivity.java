@@ -36,8 +36,8 @@ public class SignInActivity extends BaseFragmentActivity {
 
 		setContentView(R.layout.activity_signin);
 
-		final EditText phonenumEdit = (EditText) findViewById(R.id.phonenum_edittext);
-		final EditText passwordEdit = (EditText) findViewById(R.id.password_edittext);
+		final EditText phoneEdit = (EditText) findViewById(R.id.phone_edittext);
+		final EditText pwdEdit = (EditText) findViewById(R.id.pwd_edittext);
 		Button signInButton = (Button) findViewById(R.id.signin_button);
 
 		// 点击登录
@@ -45,25 +45,23 @@ public class SignInActivity extends BaseFragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				final String phonenum = phonenumEdit.getText().toString();
-				final String password = passwordEdit.getText().toString();
+				final String phone = phoneEdit.getText().toString();
+				final String pwd = pwdEdit.getText().toString();
 
 				// 校验登录数据合法性
-				if (DataCheckUtil.checkSignInUpData(SignInActivity.this,
-						phonenum, password)) {
+				if (DataCheckUtil.checkSignInUpData(SignInActivity.this, phone,
+						pwd)) {
 					mLoadingMenuItem.setVisible(true);
 					// 数据合法，则进行联网登录
-					UserManager.Task.signIn(phonenum,
-							SecurityUtils.getMD5Str(password),
+					UserManager.Task.signIn(SecurityUtils.getMD5Str(phone),
+							SecurityUtils.getMD5Str(pwd),
 							new OnTaskOverListener<User>() {
 
 								@Override
 								public void onFailure(int code, String msg) {
 									mLoadingMenuItem.setVisible(false);
 									SuperToast.makeText(
-											getApplicationContext(),
-											"SignIn Error!" + "code:" + code
-													+ ",msg:" + msg,
+											getApplicationContext(), msg,
 											SuperToast.LENGTH_SHORT).show();
 								}
 
@@ -72,11 +70,11 @@ public class SignInActivity extends BaseFragmentActivity {
 									// 保存登录帐号和密码
 									try {
 										UserConfig.getInstance().setPhone(
-												SecurityUtils.encryptDES(
-														phonenum, "bianmi_k"));
+												SecurityUtils.encryptDES(phone,
+														"bianmi_k"));
 										UserConfig.getInstance().setPwd(
-												SecurityUtils.encryptDES(
-														password, "bianmi_k"));
+												SecurityUtils.encryptDES(pwd,
+														"bianmi_k"));
 									} catch (Exception e) {
 										e.printStackTrace();
 									}

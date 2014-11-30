@@ -55,11 +55,13 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 	private View mSmsGroup = null;
 	private View mSmsCodeView = null;
 
-	private ClearEditText mPhonenumEdit = null;
-	private ClearEditText mPasswordEdit = null;
+	private ClearEditText mPhoneEdit = null;
+	private ClearEditText mPwdEdit = null;
 	private ClearEditText mSmsVerifyCodeEdit = null;
 
 	private CheckBox mSwitchPwdCheckbox = null;
+
+	private View mSwitchPwdCheckboxGroup = null;
 
 	private SMSReceiver mSMSReceiver;
 
@@ -75,16 +77,16 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 
 		mCountryNameText = (TextView) findViewById(R.id.country_name_textview);
 		mCountryCodeText = (TextView) findViewById(R.id.country_code_textview);
-		mPhonenumEdit = (ClearEditText) findViewById(R.id.phonenum_edittext);
-		mPasswordEdit = (ClearEditText) findViewById(R.id.password_edittext);
+		mPhoneEdit = (ClearEditText) findViewById(R.id.phone_edittext);
+		mPwdEdit = (ClearEditText) findViewById(R.id.pwd_edittext);
 		mSmsVerifyCodeEdit = (ClearEditText) findViewById(R.id.smscode_edittext);
 		mSmsGroup = findViewById(R.id.sms_group);
 		mSmsCodeView = findViewById(R.id.smscode_textview);
 		mSmsGroup.setVisibility(View.INVISIBLE);
 		final Button signUpButton = (Button) findViewById(R.id.signup_button);
 
-		mPhonenumEdit.setOnFocusListener(this);
-		mPasswordEdit.setOnFocusListener(this);
+		mPhoneEdit.setOnFocusListener(this);
+		mPwdEdit.setOnFocusListener(this);
 		mSmsVerifyCodeEdit.setOnFocusListener(this);
 
 		initSDK();
@@ -109,16 +111,15 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 							boolean isChecked) {
 						if (isChecked) {
 							// 明文
-							mPasswordEdit
-									.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+							mPwdEdit.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 						} else {
 							// 暗文
-							mPasswordEdit
-									.setInputType(InputType.TYPE_CLASS_TEXT
-											| InputType.TYPE_TEXT_VARIATION_PASSWORD);
+							mPwdEdit.setInputType(InputType.TYPE_CLASS_TEXT
+									| InputType.TYPE_TEXT_VARIATION_PASSWORD);
 						}
 					}
 				});
+		mSwitchPwdCheckboxGroup = findViewById(R.id.checkbox_group);
 
 		// 收不到验证码
 		final View resendSMSView = findViewById(R.id.resend_sms_textview);
@@ -142,9 +143,8 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 										mLoadingItem.setVisible(true);
 										SMSSDK.getVerificationCode(
 												mCountryCodeText.getText()
-														.toString(),
-												mPhonenumEdit.getText()
-														.toString());
+														.toString(), mPhoneEdit
+														.getText().toString());
 									}
 								})
 						.setNegativeButton(getString(R.string.no),
@@ -167,13 +167,11 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 			public void onClick(View v) {
 				final String code = mCountryCodeText.getText().toString()
 						.substring(1).trim();
-				final String phonenum = mPhonenumEdit.getText().toString()
-						.trim();
-				final String password = mPasswordEdit.getText().toString()
-						.trim();
+				final String phonenum = mPhoneEdit.getText().toString().trim();
+				final String pwd = mPwdEdit.getText().toString().trim();
 				// 检测数据的完整性
 				if (!DataCheckUtil.checkSignInUpData(SignUpBySmsActivity.this,
-						phonenum, password))
+						phonenum, pwd))
 					return;
 				// 注册按钮，点击提示发送验证码
 				if (signUpButton.getText().equals(getString(R.string.signup))) {
@@ -320,20 +318,24 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 		Object data = msg.obj;
 		if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
 			// 获取验证码
-			SuperToast.makeText(getApplicationContext(), "获取验证码",
-					SuperToast.LENGTH_SHORT).show();
+			SuperToast
+					.makeText(getApplicationContext(),
+							getString(R.string.sms_has_sended),
+							SuperToast.LENGTH_SHORT).show();
 			mSmsGroup.setVisibility(View.VISIBLE);
 		} else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
 			// 提交验证码
-			SuperToast.makeText(getApplicationContext(), "提交验证码",
-					SuperToast.LENGTH_SHORT).show();
+			// SuperToast.makeText(getApplicationContext(), "提交验证码",
+			// SuperToast.LENGTH_SHORT).show();
 			if (result == SMSSDK.RESULT_COMPLETE) {
-				SuperToast.makeText(getApplicationContext(), "验证成功",
+				SuperToast.makeText(getApplicationContext(),
+						getString(R.string.sms_verify_success),
 						SuperToast.LENGTH_SHORT).show();
 				finishSignUp();
 			} else {
 				((Throwable) data).printStackTrace();
-				SuperToast.makeText(getApplicationContext(), "验证失败",
+				SuperToast.makeText(getApplicationContext(),
+						getString(R.string.sms_verify_failed),
 						SuperToast.LENGTH_SHORT).show();
 				mLoadingItem.setVisible(false);
 			}
@@ -345,16 +347,16 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 	 * 完成注册
 	 */
 	private void finishSignUp() {
-		final String phonenumnum = mPhonenumEdit.getText().toString();
-		String password = mPasswordEdit.getText().toString();
+		final String phone = mPhoneEdit.getText().toString();
+		String pwd = mPwdEdit.getText().toString();
 
 		// 校验注册数据合法性
-		if (DataCheckUtil.checkSignInUpData(SignUpBySmsActivity.this,
-				phonenumnum, password)) {
+		if (DataCheckUtil.checkSignInUpData(SignUpBySmsActivity.this, phone,
+				pwd)) {
 			mLoadingItem.setVisible(true);
 			// 数据合法，则跳转登录
-			UserManager.Task.signUp(phonenumnum,
-					SecurityUtils.getMD5Str(password),
+			UserManager.Task.signUp(SecurityUtils.getMD5Str(phone),
+					SecurityUtils.getMD5Str(pwd),
 					new OnTaskOverListener<User>() {
 
 						@Override
@@ -380,11 +382,11 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 
 	@Override
 	public void onFocusChange(View v, boolean hasFocus) {
-		if (v.equals(mPhonenumEdit)) {
+		if (v.equals(mPhoneEdit)) {
 			changeClearEditTextBackground(mCountryCodeText, hasFocus,
 					R.drawable.input_bg_normal, R.drawable.input_bg_focus);
-		} else if (v.equals(mPasswordEdit)) {
-			changeClearEditTextBackground(mSwitchPwdCheckbox, hasFocus,
+		} else if (v.equals(mPwdEdit)) {
+			changeClearEditTextBackground(mSwitchPwdCheckboxGroup, hasFocus,
 					R.drawable.input_bg_special_normal,
 					R.drawable.input_bg_special_focus);
 		} else if (v.equals(mSmsVerifyCodeEdit)) {

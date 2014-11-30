@@ -57,7 +57,7 @@ public class NineLockActivity extends BaseFragmentActivity implements
 								NineLockActivity.this);
 						final AlertDialog dialog = builder
 								.setTitle(
-										getString(R.string.forget_ninelock_password_dialog_tip))
+										getString(R.string.forget_ninelock_pwd_dialog_tip))
 								.setPositiveButton(
 										getString(R.string.signin_again),
 										new DialogInterface.OnClickListener() {
@@ -130,7 +130,7 @@ public class NineLockActivity extends BaseFragmentActivity implements
 			finishActivityWithResult(RESULT_OK);
 		} else {
 			nineLockView.setDisplayMode(DisplayMode.Wrong);
-			SuperToast.makeText(this, R.string.ninelock_password_error,
+			SuperToast.makeText(this, R.string.ninelock_pwd_error,
 					SuperToast.LENGTH_LONG).show();
 		}
 	}

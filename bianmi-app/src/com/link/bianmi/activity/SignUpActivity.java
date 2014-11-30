@@ -34,6 +34,7 @@ public class SignUpActivity extends BaseFragmentActivity implements
 
 	private ClearEditText mPwdEdit = null;
 	private CheckBox mSwitchPwdCheckbox = null;
+	private View mSwitchPwdCheckboxGroup = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +46,8 @@ public class SignUpActivity extends BaseFragmentActivity implements
 
 		setContentView(R.layout.activity_signup);
 
-		final ClearEditText phonenumEdit = (ClearEditText) findViewById(R.id.phonenum_edittext);
-		mPwdEdit = (ClearEditText) findViewById(R.id.password_edittext);
+		final ClearEditText phoneEdit = (ClearEditText) findViewById(R.id.phone_edittext);
+		mPwdEdit = (ClearEditText) findViewById(R.id.pwd_edittext);
 		Button signUpButton = (Button) findViewById(R.id.signup_button);
 
 		mPwdEdit.setOnFocusListener(this);
@@ -68,21 +69,22 @@ public class SignUpActivity extends BaseFragmentActivity implements
 						}
 					}
 				});
+		mSwitchPwdCheckboxGroup = findViewById(R.id.checkbox_group);
 
 		// 点击注册
 		signUpButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				final String phonenum = phonenumEdit.getText().toString();
+				final String phone = phoneEdit.getText().toString();
 				String password = mPwdEdit.getText().toString();
 
 				// 校验注册数据合法性
-				if (DataCheckUtil.checkSignInUpData(SignUpActivity.this,
-						phonenum, password)) {
+				if (DataCheckUtil.checkSignInUpData(SignUpActivity.this, phone,
+						password)) {
 					mLoadingMenuItem.setVisible(true);
 					// 数据合法，则跳转登录
-					UserManager.Task.signUp(phonenum,
+					UserManager.Task.signUp(SecurityUtils.getMD5Str(phone),
 							SecurityUtils.getMD5Str(password),
 							new OnTaskOverListener<User>() {
 
@@ -90,8 +92,7 @@ public class SignUpActivity extends BaseFragmentActivity implements
 								public void onFailure(int code, String msg) {
 									mLoadingMenuItem.setVisible(false);
 									SuperToast.makeText(
-											getApplicationContext(),
-											"SignUp Error!",
+											getApplicationContext(), msg,
 											SuperToast.LENGTH_SHORT).show();
 								}
 
@@ -124,11 +125,11 @@ public class SignUpActivity extends BaseFragmentActivity implements
 	public void onFocusChange(View v, boolean hasFocus) {
 		if (v.equals(mPwdEdit)) {
 			if (hasFocus) {
-				mSwitchPwdCheckbox
-						.setBackgroundResource(R.drawable.input_bg_focus);
+				mSwitchPwdCheckboxGroup
+						.setBackgroundResource(R.drawable.input_bg_special_focus);
 			} else {
-				mSwitchPwdCheckbox
-						.setBackgroundResource(R.drawable.input_bg_normal);
+				mSwitchPwdCheckboxGroup
+						.setBackgroundResource(R.drawable.input_bg_special_normal);
 			}
 		}
 	}

@@ -33,8 +33,8 @@ public class UserManager {
 
 	private static class API {
 
-		public static Result<User> signInOrUp(String phonemd5, String pwdmd5,
-				String url) {
+		public static Result<User> signInOrUp(String phonemd5,
+				String pwdmd5, String url) {
 			Result<User> result = null;
 			Response response = HttpClient.doGet(String.format(
 					"%s?phone_md5=%s&pwd_md5=%s", url, phonemd5, pwdmd5));
@@ -61,14 +61,14 @@ public class UserManager {
 		}
 
 		// 登录
-		public static Result<User> signIn(String phone, String pwdmd5) {
-			return signInOrUp(phone, pwdmd5, SysConfig.getInstance()
+		public static Result<User> signIn(String phonemd5, String pwdmd5) {
+			return signInOrUp(phonemd5, pwdmd5, SysConfig.getInstance()
 					.getSignInUrl());
 		}
 
 		// 注册
-		public static Result<User> signUp(String phone, String pwdmd5) {
-			return signInOrUp(phone, pwdmd5, SysConfig.getInstance()
+		public static Result<User> signUp(String phonemd5, String pwdmd5) {
+			return signInOrUp(phonemd5, pwdmd5, SysConfig.getInstance()
 					.getSignUpUrl());
 		}
 
@@ -118,10 +118,10 @@ public class UserManager {
 	public static class Task {
 
 		/** 登录 **/
-		public static void signIn(String phone, String pwdmd5,
+		public static void signIn(String phonemd5, String pwdmd5,
 				OnTaskOverListener<User> listener) {
 			TaskParams taskParams = new TaskParams();
-			taskParams.put("phone", phone);
+			taskParams.put("phonemd5", phonemd5);
 			taskParams.put("pwdmd5", pwdmd5);
 			UserTask userTask = new UserTask(TaskType.TYPE_SIGNIN, listener);
 			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
@@ -137,10 +137,10 @@ public class UserManager {
 		}
 
 		/** 注册 **/
-		public static void signUp(String phone, String pwdmd5,
+		public static void signUp(String phonemd5, String pwdmd5,
 				OnTaskOverListener<User> listener) {
 			TaskParams taskParams = new TaskParams();
-			taskParams.put("phone", phone);
+			taskParams.put("phonemd5", phonemd5);
 			taskParams.put("pwdmd5", pwdmd5);
 			UserTask userTask = new UserTask(TaskType.TYPE_SIGNUP, listener);
 			userTask.executeOnExecutor(Executors.newCachedThreadPool(),
@@ -183,9 +183,9 @@ public class UserManager {
 					TaskStatus.FAILED, resultStatus);
 			// 登录
 			if (taskType == TaskType.TYPE_SIGNIN) {
-				String phone = params[0].getString("phone");
+				String phonemd5 = params[0].getString("phonemd5");
 				String pwdmd5 = params[0].getString("pwdmd5");
-				Result<User> result = API.signIn(phone, pwdmd5);
+				Result<User> result = API.signIn(phonemd5, pwdmd5);
 				if (result != null && result.status != null
 						&& result.status.code == Status_.OK) {
 					taskResult = new TaskResult<User>(TaskStatus.OK, result.t);
@@ -213,9 +213,9 @@ public class UserManager {
 
 				// 注册
 			} else if (taskType == TaskType.TYPE_SIGNUP) {
-				String phone = params[0].getString("phone");
+				String phonemd5 = params[0].getString("phonemd5");
 				String pwdmd5 = params[0].getString("pwdmd5");
-				Result<User> result = API.signUp(phone, pwdmd5);
+				Result<User> result = API.signUp(phonemd5, pwdmd5);
 				// 返回数据成功
 				if (result != null && result.status != null
 						&& result.status.code == Status_.OK) {

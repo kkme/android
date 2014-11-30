@@ -21,6 +21,7 @@ import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
+import com.link.bianmi.entity.manager.ConfigManager;
 import com.link.bianmi.utils.Tools;
 
 /**
@@ -113,6 +114,8 @@ public class WelcomeActivity extends BaseFragmentActivity {
 				return mViewPager.dispatchTouchEvent(event);
 			}
 		});
+
+		executeGetSysConfigTask();
 	}
 
 	private PagerAdapter mPageAdapter = new PagerAdapter() {
@@ -264,4 +267,12 @@ public class WelcomeActivity extends BaseFragmentActivity {
 		public void onPageScrollStateChanged(int arg0) {
 		}
 	};
+
+	// -----------------------------Task-----------------------------
+	/**
+	 * 初始化系统配置
+	 */
+	private void executeGetSysConfigTask() {
+		ConfigManager.Task.getConfig();
+	}
 }

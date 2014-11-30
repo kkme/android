@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/settings_password" />
+            android:text="@string/settings_pwd" />
 
         <com.link.bianmi.widget.SwitchButton
             android:id="@+id/settings_item_password_switchbutton"
