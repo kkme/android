@@ -114,13 +114,13 @@
     <string name="inputsuit_click_start_record">点击录音</string>
     <string name="inputsuit_click_stop_record">点击结束</string>
 
-    <!-- 九宫格密码锁屏 -->
+    <!-- 九宫格密码锁 -->
     <string name="try_again">重试</string>
     <string name="signin_again">重新登录</string>
     <string name="forget_ninelock_pwd_dialog_tip">忘记手势密码，需要重新登录！</string>
     <string name="goon">继续</string>
     <string name="confirm">确认</string>
-    <string name="lockpattern_recording_incorrect_too_short">"至少连接4个点，请重试"</string>
+    <string name="lockpattern_recording_incorrect_too_short">"至少连接4个点"</string>
     <string name="ninelock_pwd_error">"手势密码错误！"</string>
     <string name="forget_ninelock_pwd">忘记手势密码？</string>
     <string name="restart_at_once">立即重启</string>

@@ -88,14 +88,6 @@ public class MyApplication extends Application {
 		return mNetwork == NetWorkType.NET_INVALID;
 	}
 
-	/**
-	 * 退出登录
-	 */
-	public void signOut() {
-		UserConfig.getInstance().setUserId("");
-		UserConfig.getInstance().setIsGuest(false);
-	}
-
 	public class MyLocationListener implements BDLocationListener {
 
 		@Override

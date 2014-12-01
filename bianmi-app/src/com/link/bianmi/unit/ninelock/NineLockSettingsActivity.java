@@ -31,9 +31,9 @@ import com.link.bianmi.widget.SuperToast;
 public class NineLockSettingsActivity extends BaseFragmentActivity implements
 		NineLockView.OnPatternListener, View.OnClickListener {
 
-	private NineLockView lockPatternView;
-	private Button leftButton;
-	private Button rightButton;
+	private NineLockView mLockPatternView;
+	private Button mLeftButton;
+	private Button mRightButton;
 
 	private static final int STEP_1 = 1; // 开始
 	private static final int STEP_2 = 2; // 第一次设置手势完成
@@ -41,11 +41,11 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 	private static final int STEP_4 = 4; // 第二次设置手势完成
 	// private static final int SETP_5 = 4; // 按确认按钮
 
-	private int step;
+	private int mStep;
 
-	private List<Cell> choosePattern;
+	private List<Cell> mChoosePattern;
 
-	private boolean confirm = false;
+	private boolean mConfirm = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,50 +56,50 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		setContentView(R.layout.activity_ninelock_setting);
-		lockPatternView = (NineLockView) findViewById(R.id.lock_pattern);
-		lockPatternView.setOnPatternListener(this);
-		leftButton = (Button) findViewById(R.id.left_btn);
-		rightButton = (Button) findViewById(R.id.right_btn);
+		mLockPatternView = (NineLockView) findViewById(R.id.lock_pattern);
+		mLockPatternView.setOnPatternListener(this);
+		mLeftButton = (Button) findViewById(R.id.left_btn);
+		mRightButton = (Button) findViewById(R.id.right_btn);
 
-		step = STEP_1;
+		mStep = STEP_1;
 		updateView();
 	}
 
 	private void updateView() {
-		switch (step) {
+		switch (mStep) {
 		case STEP_1:
-			leftButton.setText(R.string.cancel);
-			rightButton.setText("");
-			rightButton.setEnabled(false);
-			choosePattern = null;
-			confirm = false;
-			lockPatternView.clearPattern();
-			lockPatternView.enableInput();
+			mLeftButton.setText(R.string.cancel);
+			mRightButton.setText("");
+			mRightButton.setEnabled(false);
+			mChoosePattern = null;
+			mConfirm = false;
+			mLockPatternView.clearPattern();
+			mLockPatternView.enableInput();
 			break;
 		case STEP_2:
-			leftButton.setText(R.string.try_again);
-			rightButton.setText(R.string.goon);
-			rightButton.setEnabled(true);
-			lockPatternView.disableInput();
+			mLeftButton.setText(R.string.try_again);
+			mRightButton.setText(R.string.goon);
+			mRightButton.setEnabled(true);
+			mLockPatternView.disableInput();
 			break;
 		case STEP_3:
-			leftButton.setText(R.string.cancel);
-			rightButton.setText("");
-			rightButton.setEnabled(false);
-			lockPatternView.clearPattern();
-			lockPatternView.enableInput();
+			mLeftButton.setText(R.string.cancel);
+			mRightButton.setText("");
+			mRightButton.setEnabled(false);
+			mLockPatternView.clearPattern();
+			mLockPatternView.enableInput();
 			break;
 		case STEP_4:
-			leftButton.setText(R.string.cancel);
-			if (confirm) {
-				rightButton.setText(R.string.confirm);
-				rightButton.setEnabled(true);
-				lockPatternView.disableInput();
+			mLeftButton.setText(R.string.cancel);
+			if (mConfirm) {
+				mRightButton.setText(R.string.mConfirm);
+				mRightButton.setEnabled(true);
+				mLockPatternView.disableInput();
 			} else {
-				rightButton.setText("");
-				lockPatternView.setDisplayMode(DisplayMode.Wrong);
-				lockPatternView.enableInput();
-				rightButton.setEnabled(false);
+				mRightButton.setText("");
+				mLockPatternView.setDisplayMode(DisplayMode.Wrong);
+				mLockPatternView.enableInput();
+				mRightButton.setEnabled(false);
 			}
 
 			break;
@@ -114,22 +114,22 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 
 		switch (v.getId()) {
 		case R.id.left_btn:
-			if (step == STEP_1 || step == STEP_3 || step == STEP_4) {
+			if (mStep == STEP_1 || mStep == STEP_3 || mStep == STEP_4) {
 				finish();
-			} else if (step == STEP_2) {
-				step = STEP_1;
+			} else if (mStep == STEP_2) {
+				mStep = STEP_1;
 				updateView();
 			}
 			break;
 
 		case R.id.right_btn:
-			if (step == STEP_2) {
-				step = STEP_3;
+			if (mStep == STEP_2) {
+				mStep = STEP_3;
 				updateView();
-			} else if (step == STEP_4) {
+			} else if (mStep == STEP_4) {
 				// 保存手势密码
 				UserConfig.getInstance().setLockPassKey(
-						NineLockView.patternToString(choosePattern));
+						NineLockView.patternToString(mChoosePattern));
 				// 开启手势密码
 				UserConfig.getInstance().setLockPassStartStatus(true);
 				// 是否重新启动
@@ -193,24 +193,24 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 			SuperToast.makeText(this,
 					R.string.lockpattern_recording_incorrect_too_short,
 					SuperToast.LENGTH_LONG).show();
-			lockPatternView.setDisplayMode(DisplayMode.Wrong);
+			mLockPatternView.setDisplayMode(DisplayMode.Wrong);
 			return;
 		}
 
-		if (choosePattern == null) {
-			choosePattern = new ArrayList<Cell>(pattern);
-			step = STEP_2;
+		if (mChoosePattern == null) {
+			mChoosePattern = new ArrayList<Cell>(pattern);
+			mStep = STEP_2;
 			updateView();
 			return;
 		}
 
-		if (choosePattern.equals(pattern)) {
-			confirm = true;
+		if (mChoosePattern.equals(pattern)) {
+			mConfirm = true;
 		} else {
-			confirm = false;
+			mConfirm = false;
 		}
 
-		step = STEP_4;
+		mStep = STEP_4;
 		updateView();
 
 	}

@@ -36,6 +36,20 @@ public class UserConfig {
 				&& !UserConfig.getInstance().getToken().isEmpty();
 	}
 
+	/**
+	 * 退出登录
+	 */
+	public void signOut() {
+		setUserId("");
+		setToken("");
+		setPhone("");
+		setPwd("");
+		setVirtualDeviceId("");
+		setIsGuest(false);
+		setLockPassKey("");
+		setLockPassStartStatus(false);
+	}
+
 	/** 设置userId **/
 	public void setUserId(String userId) {
 		SharedPreferences.Editor editor = mPref.edit();

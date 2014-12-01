@@ -13,7 +13,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
-import com.link.bianmi.MyApplication;
 import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
@@ -176,7 +175,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 					@Override
 					public void onSuccess(Object t) {
 						mLoadingItem.setVisible(false);
-						MyApplication.getInstance().signOut();
+						UserConfig.getInstance().signOut();
 						launchActivity(WelcomeActivity.class);
 						ActivitysManager.removeAllActivity();
 					}
