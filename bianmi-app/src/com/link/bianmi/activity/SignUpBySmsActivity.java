@@ -370,8 +370,11 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 						@Override
 						public void onSuccess(User user) {
 							mLoadingItem.setVisible(false);
+							UserConfig.getInstance().reset();
 							// 保存userId
 							UserConfig.getInstance().setUserId(user.id);
+							// 保存token
+							UserConfig.getInstance().setToken(user.token);
 							// 进入主界面
 							launchActivity(HomeActivity.class);
 							ActivitysManager.removeAllActivity();

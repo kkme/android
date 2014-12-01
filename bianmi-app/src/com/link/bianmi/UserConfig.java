@@ -40,6 +40,13 @@ public class UserConfig {
 	 * 退出登录
 	 */
 	public void signOut() {
+		reset();
+	}
+
+	/**
+	 * 重置
+	 */
+	public void reset() {
 		setUserId("");
 		setToken("");
 		setPhone("");
@@ -48,6 +55,7 @@ public class UserConfig {
 		setIsGuest(false);
 		setLockPassKey("");
 		setLockPassStartStatus(false);
+
 	}
 
 	/** 设置userId **/

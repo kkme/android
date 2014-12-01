@@ -29,8 +29,7 @@ public class UserBuilder implements BaseEntityBuilder<User> {
 				JSONObject userJson = jsonObj.getJSONObject("user");
 				user = new User();
 				user.id = userJson.getString("userid");
-				user.token = jsonObj.getString("token");
-				user.phone = jsonObj.getString("phone");
+				user.token = userJson.getString("token");
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

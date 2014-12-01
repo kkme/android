@@ -99,11 +99,15 @@ public class SignUpActivity extends BaseFragmentActivity implements
 								@Override
 								public void onSuccess(User user) {
 									mLoadingMenuItem.setVisible(false);
+									UserConfig.getInstance().reset();
 									// 保存userId
 									UserConfig.getInstance().setUserId(user.id);
+									// 保存token
+									UserConfig.getInstance().setToken(
+											user.token);
+									ActivitysManager.removeAllActivity();
 									// 进入主界面
 									launchActivity(HomeActivity.class);
-									ActivitysManager.removeAllActivity();
 								}
 							});
 				}

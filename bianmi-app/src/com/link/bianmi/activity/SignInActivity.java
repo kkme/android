@@ -67,6 +67,7 @@ public class SignInActivity extends BaseFragmentActivity {
 
 								@Override
 								public void onSuccess(User user) {
+									UserConfig.getInstance().reset();
 									// 保存登录帐号和密码
 									try {
 										UserConfig.getInstance().setPhone(

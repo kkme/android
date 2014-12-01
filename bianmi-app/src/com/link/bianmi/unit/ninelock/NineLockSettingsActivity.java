@@ -92,7 +92,7 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 		case STEP_4:
 			mLeftButton.setText(R.string.cancel);
 			if (mConfirm) {
-				mRightButton.setText(R.string.mConfirm);
+				mRightButton.setText(R.string.confirm);
 				mRightButton.setEnabled(true);
 				mLockPatternView.disableInput();
 			} else {

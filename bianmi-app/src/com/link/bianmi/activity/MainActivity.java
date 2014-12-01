@@ -22,6 +22,9 @@ public class MainActivity extends BaseFragmentActivity {
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
+				boolean a = (UserConfig.getInstance().getToken() == null || TextUtils
+						.isEmpty(UserConfig.getInstance().getToken()));
+				boolean b = !UserConfig.getInstance().getIsGuest();
 				// 没有登录，跳转欢迎页面
 				if ((UserConfig.getInstance().getToken() == null || TextUtils
 						.isEmpty(UserConfig.getInstance().getToken()))

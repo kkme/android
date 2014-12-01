@@ -119,7 +119,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						SettingsActivity.this);
 				final AlertDialog dialog = builder
-						.setTitle(getString(R.string.clear_privacy_tip))
+						.setMessage(getString(R.string.clear_privacy_tip))
 						.setPositiveButton(
 								getString(R.string.continue_to_clear),
 								new DialogInterface.OnClickListener() {
