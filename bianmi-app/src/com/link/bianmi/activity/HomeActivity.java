@@ -2,7 +2,9 @@ package com.link.bianmi.activity;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
+import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.adapter.ViewPagerAdapter;
@@ -80,23 +83,14 @@ public class HomeActivity extends BaseFragmentActivity {
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
 		mViewPagerTab = (ViewPagerTabBar) findViewById(R.id.viewpagertab);
 		mFragments = new ArrayList<Fragment>();
-		String fragmentTitles[];
 
-		if (UserConfig.getInstance().getIsGuest()) {
-			mFragments.add(new HotFragment());
-			mFragments.add(new NearbyFragment());
-			fragmentTitles = new String[] {
-					this.getResources().getString(R.string.hot),
-					this.getResources().getString(R.string.nearby) };
-		} else {
-			mFragments.add(new HotFragment());
-			mFragments.add(new FriendFragment());
-			mFragments.add(new NearbyFragment());
-			fragmentTitles = new String[] {
-					this.getResources().getString(R.string.hot),
-					this.getResources().getString(R.string.friend),
-					this.getResources().getString(R.string.nearby) };
-		}
+		mFragments.add(new HotFragment());
+		mFragments.add(new FriendFragment());
+		mFragments.add(new NearbyFragment());
+		String fragmentTitles[] = new String[] {
+				this.getResources().getString(R.string.hot),
+				this.getResources().getString(R.string.friend),
+				this.getResources().getString(R.string.nearby) };
 		mViewPager.setOffscreenPageLimit(mFragments.size());
 		mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),
 				mFragments, fragmentTitles));
@@ -190,10 +184,18 @@ public class HomeActivity extends BaseFragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_add) {
-			launchActivity(PublishActivity.class);
+			if (UserConfig.getInstance().getIsGuest()) {
+				showGuestTipDialog(getString(R.string.guest_action_publis_msg));
+			} else {
+				launchActivity(PublishActivity.class);
+			}
 		} else if (item.getItemId() == R.id.action_reminder) {
-			launchActivityForResult(ReminderActivity.class,
-					REQUEST_CODE_REMINDER);
+			if (UserConfig.getInstance().getIsGuest()) {
+				showGuestTipDialog(getString(R.string.guest_action_reminder_msg));
+			} else {
+				launchActivityForResult(ReminderActivity.class,
+						REQUEST_CODE_REMINDER);
+			}
 		} else if (item.getItemId() == R.id.action_more) {
 			showMoreOptionMenu(findViewById(R.id.action_more));
 		}
@@ -229,6 +231,10 @@ public class HomeActivity extends BaseFragmentActivity {
 	}
 
 	// ------------------------------Private------------------------------
+
+	/**
+	 * 更多菜单
+	 */
 	private void showMoreOptionMenu(View view) {
 		if (mMenuWindow != null) {
 			mMenuWindow.dismiss();
@@ -307,6 +313,29 @@ public class HomeActivity extends BaseFragmentActivity {
 	}
 
 	// ------------------------------Public------------------------------
+	/**
+	 * 游客提醒对话框
+	 */
+	public void showGuestTipDialog(String msg) {
+		if (msg == null || msg.isEmpty())
+			return;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final AlertDialog dialog = builder
+				.setMessage(msg)
+				.setPositiveButton(getString(R.string.guest_go_signup),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								if (SysConfig.getInstance().smsAccess()) {
+									launchActivity(SignUpBySmsActivity.class);
+								} else {
+									launchActivity(SignUpActivity.class);
+								}
+							}
+						}).create();
+		dialog.show();
+	}
 
 	public View getViewPagerTab() {
 		return mViewPagerTab;

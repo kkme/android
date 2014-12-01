@@ -125,15 +125,15 @@ public class DetailsActivity extends BaseFragmentActivity {
 	}
 
 	private MenuItem mLoadingItem;
-	private MenuItem mMoreItem;
+	private MenuItem mShareItem;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.details, menu);
-		mMoreItem = menu.findItem(R.id.action_more);
+		mShareItem = menu.findItem(R.id.action_share);
 		mLoadingItem = menu.findItem(R.id.action_loading);
 		mLoadingItem.setVisible(true);
-		mMoreItem.setVisible(false);
+		mShareItem.setVisible(false);
 		return true;
 	}
 
@@ -193,7 +193,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 			public void run() {
 				mRListView.stopHeadActiving();
 				mLoadingItem.setVisible(false);
-				mMoreItem.setVisible(true);
+				mShareItem.setVisible(true);
 			}
 		}, endTime - beginTime > 1500 ? 0 : 1500 - (endTime - beginTime));
 	}
@@ -203,7 +203,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 		public void onSubmit(String photoPath, String recordPath,
 				int recordLen, String message, String userName, String UserId) {
 			mLoadingItem.setVisible(true);
-			mMoreItem.setVisible(false);
+			mShareItem.setVisible(false);
 			mInputSuit.startUpload();
 		}
 
@@ -236,7 +236,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 							SuperToast.makeText(DetailsActivity.this, "发表成功!",
 									SuperToast.LENGTH_SHORT).show();
 							mLoadingItem.setVisible(false);
-							mMoreItem.setVisible(true);
+							mShareItem.setVisible(true);
 							mInputSuit.reset();
 							fetchNew();
 						}
@@ -246,7 +246,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 							SuperToast.makeText(DetailsActivity.this, "发表失败!",
 									SuperToast.LENGTH_SHORT).show();
 							mLoadingItem.setVisible(false);
-							mMoreItem.setVisible(true);
+							mShareItem.setVisible(true);
 						}
 					});
 
@@ -269,7 +269,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 					public void run() {
 						mRListView.stopHeadActiving();
 						mLoadingItem.setVisible(false);
-						mMoreItem.setVisible(true);
+						mShareItem.setVisible(true);
 					}
 				}, 1000);
 			}
@@ -283,7 +283,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 					public void run() {
 						mRListView.stopHeadActiving();
 						mLoadingItem.setVisible(false);
-						mMoreItem.setVisible(true);
+						mShareItem.setVisible(true);
 					}
 				}, 1000);
 			}
@@ -321,7 +321,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 							public void run() {
 								mRListView.stopHeadActiving();
 								mLoadingItem.setVisible(false);
-								mMoreItem.setVisible(true);
+								mShareItem.setVisible(true);
 							}
 						}, 1000);
 					}

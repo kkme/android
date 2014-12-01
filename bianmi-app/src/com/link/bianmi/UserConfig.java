@@ -28,6 +28,14 @@ public class UserConfig {
 		mPref = PreferenceManager.getDefaultSharedPreferences(context);
 	}
 
+	/**
+	 * 是否已登录
+	 */
+	public boolean hasSignined() {
+		return UserConfig.getInstance().getToken() != null
+				&& !UserConfig.getInstance().getToken().isEmpty();
+	}
+
 	/** 设置userId **/
 	public void setUserId(String userId) {
 		SharedPreferences.Editor editor = mPref.edit();

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -16,8 +17,11 @@ import android.widget.ImageView;
 
 import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
+import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.DetailsActivity;
 import com.link.bianmi.activity.HomeActivity;
+import com.link.bianmi.activity.SignUpActivity;
+import com.link.bianmi.activity.SignUpBySmsActivity;
 import com.link.bianmi.adapter.CardsAnimationAdapter;
 import com.link.bianmi.adapter.SecretAdapter;
 import com.link.bianmi.asynctask.listener.OnSimpleTaskOverListener;
@@ -28,6 +32,7 @@ import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.Status_;
 import com.link.bianmi.entity.manager.ContactsManager;
 import com.link.bianmi.entity.manager.SecretManager;
+import com.link.bianmi.entity.manager.SecretManager.TaskType;
 import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.utils.Tools;
 import com.link.bianmi.widget.NoDataView;
@@ -65,6 +70,24 @@ public abstract class SecretFragment extends BaseFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mParentActivity = (HomeActivity) getActivity();
+		if (getTaskType() == TaskType.GET_FRIENDS
+				&& UserConfig.getInstance().getIsGuest()) {
+			mRootView = LayoutInflater.from(mContext).inflate(
+					R.layout.guest_secrets_layout, null);
+			// 快去注册吧
+			mRootView.findViewById(R.id.signup_button).setOnClickListener(
+					new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							if (SysConfig.getInstance().smsAccess()) {
+								launchActivity(SignUpBySmsActivity.class);
+							} else {
+								launchActivity(SignUpActivity.class);
+							}
+						}
+					});
+			return;
+		}
 		mRootView = LayoutInflater.from(mContext).inflate(
 				R.layout.fragment_secrets, null);
 
@@ -167,6 +190,12 @@ public abstract class SecretFragment extends BaseFragment {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View convertView,
 					int position, long arg3) {
+
+				if (UserConfig.getInstance().getIsGuest()) {
+					mParentActivity
+							.showGuestTipDialog(getString(R.string.guest_action_comments_msg));
+					return;
+				}
 				final ImageView imageView = (ImageView) convertView
 						.findViewById(R.id.picture_imageview);
 				if (imageView.getDrawable() == null
@@ -187,15 +216,17 @@ public abstract class SecretFragment extends BaseFragment {
 			}
 		});
 
-		// 上传联系人
-		ContactsManager.Task.uploadContacts(getActivity(),
-				new OnSimpleTaskOverListener() {
-					@Override
-					public void onResult(Status_ status) {
-						SuperToast.makeText(mParentActivity, status.msg,
-								SuperToast.LENGTH_SHORT).show();
-					}
-				});
+		if (UserConfig.getInstance().hasSignined()) {
+			// 上传联系人
+			ContactsManager.Task.uploadContacts(getActivity(),
+					new OnSimpleTaskOverListener() {
+						@Override
+						public void onResult(Status_ status) {
+							SuperToast.makeText(mParentActivity, status.msg,
+									SuperToast.LENGTH_SHORT).show();
+						}
+					});
+		}
 
 		mNoDataView = (NoDataView) mRootView.findViewById(R.id.nodata_view);
 		mNoDataView.show(getNoDataString());
@@ -216,6 +247,10 @@ public abstract class SecretFragment extends BaseFragment {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		if (getTaskType() == TaskType.GET_FRIENDS
+				&& UserConfig.getInstance().getIsGuest())
+			return;
+
 		mParentActivity.startLoading();
 		loadCache();
 		updateCache();

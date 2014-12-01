@@ -19,4 +19,5 @@ public class HotFragment extends SecretFragment {
 	String getNoDataString() {
 		return getString(R.string.nodata_tip_secrets_hot);
 	}
+
 }

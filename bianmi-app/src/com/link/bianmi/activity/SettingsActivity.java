@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.link.bianmi.MyApplication;
 import com.link.bianmi.R;
+import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.asynctask.listener.OnSimpleTaskOverListener;
@@ -24,6 +25,7 @@ import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.unit.ninelock.NineLockActivity;
 import com.link.bianmi.unit.ninelock.NineLockSettingsActivity;
 import com.link.bianmi.utils.Tools;
+import com.link.bianmi.utils.UmengSocialClient;
 import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.SwitchButton;
 import com.umeng.update.UmengUpdateAgent;
@@ -88,6 +90,15 @@ public class SettingsActivity extends BaseFragmentActivity {
 				launchActivity(WebActivity.class);
 			}
 		});
+		// 邀请好友
+		findViewById(R.id.invite_friends_group).setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						UmengSocialClient
+								.showShareDialog(SettingsActivity.this);
+					}
+				});
 		// 检查更新
 		findViewById(R.id.update_group).setOnClickListener(
 				new OnClickListener() {
@@ -102,80 +113,98 @@ public class SettingsActivity extends BaseFragmentActivity {
 				Tools.getVersionName(SettingsActivity.this)));
 
 		// 清楚痕迹
-		findViewById(R.id.settings_item_clear_group).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								SettingsActivity.this);
-						final AlertDialog dialog = builder
-								.setTitle(getString(R.string.clear_privacy_tip))
-								.setPositiveButton(
-										getString(R.string.continue_to_clear),
-										new DialogInterface.OnClickListener() {
-											@Override
-											public void onClick(
-													DialogInterface dialog,
-													int which) {
-												mLoadingItem.setVisible(true);
-												// 继续清除
-												UserManager.Task
-														.clearPrivacy(new OnSimpleTaskOverListener() {
-															@Override
-															public void onResult(
-																	Status_ status) {
-																SuperToast
-																		.makeText(
-																				SettingsActivity.this,
-																				status.msg,
-																				SuperToast.LENGTH_SHORT)
-																		.show();
-																mLoadingItem
-																		.setVisible(false);
-															}
-														});
-											}
-										})
-								.setNegativeButton(getString(R.string.cancel),
-										new DialogInterface.OnClickListener() {
+		View clearGroup = findViewById(R.id.settings_item_clear_group);
+		clearGroup.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						SettingsActivity.this);
+				final AlertDialog dialog = builder
+						.setTitle(getString(R.string.clear_privacy_tip))
+						.setPositiveButton(
+								getString(R.string.continue_to_clear),
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										mLoadingItem.setVisible(true);
+										// 继续清除
+										UserManager.Task
+												.clearPrivacy(new OnSimpleTaskOverListener() {
+													@Override
+													public void onResult(
+															Status_ status) {
+														SuperToast
+																.makeText(
+																		SettingsActivity.this,
+																		status.msg,
+																		SuperToast.LENGTH_SHORT)
+																.show();
+														mLoadingItem
+																.setVisible(false);
+													}
+												});
+									}
+								})
+						.setNegativeButton(getString(R.string.cancel),
+								new DialogInterface.OnClickListener() {
 
-											@Override
-											public void onClick(
-													DialogInterface dialog,
-													int which) {
-												// 取消
-												dialog.dismiss();
-											}
-										}).create();
-						dialog.show();
-					}
-				});
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										// 取消
+										dialog.dismiss();
+									}
+								}).create();
+				dialog.show();
+			}
+		});
 		// 退出登录
-		findViewById(R.id.settings_item_exit_group).setOnClickListener(
-				new OnClickListener() {
+		View exitGroup = findViewById(R.id.settings_item_exit_group);
+		exitGroup.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mLoadingItem.setVisible(true);
+				UserManager.Task.signOut(new OnTaskOverListener<Object>() {
 					@Override
-					public void onClick(View v) {
-						mLoadingItem.setVisible(true);
-						UserManager.Task
-								.signOut(new OnTaskOverListener<Object>() {
-									@Override
-									public void onFailure(int code, String msg) {
-										SuperToast.makeText(
-												SettingsActivity.this, msg,
-												SuperToast.LENGTH_SHORT).show();
-										mLoadingItem.setVisible(false);
-									}
+					public void onFailure(int code, String msg) {
+						SuperToast.makeText(SettingsActivity.this, msg,
+								SuperToast.LENGTH_SHORT).show();
+						mLoadingItem.setVisible(false);
+					}
 
-									@Override
-									public void onSuccess(Object t) {
-										mLoadingItem.setVisible(false);
-										MyApplication.getInstance().signOut();
-										launchActivity(WelcomeActivity.class);
-										ActivitysManager.removeAllActivity();
-									}
-								});
+					@Override
+					public void onSuccess(Object t) {
+						mLoadingItem.setVisible(false);
+						MyApplication.getInstance().signOut();
+						launchActivity(WelcomeActivity.class);
+						ActivitysManager.removeAllActivity();
 					}
 				});
+			}
+		});
+
+		// 游客
+		View guestGroup = findViewById(R.id.settings_item_guest_group);
+		guestGroup.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (SysConfig.getInstance().smsAccess()) {
+					launchActivity(SignUpBySmsActivity.class);
+				} else {
+					launchActivity(SignUpActivity.class);
+				}
+			}
+		});
+		if (UserConfig.getInstance().getIsGuest()) {
+			clearGroup.setVisibility(View.GONE);
+			exitGroup.setVisibility(View.GONE);
+			guestGroup.setVisibility(View.VISIBLE);
+		} else {
+			clearGroup.setVisibility(View.VISIBLE);
+			exitGroup.setVisibility(View.VISIBLE);
+			guestGroup.setVisibility(View.GONE);
+		}
 	}
 
 	private final int REQUEST_CODE_SETPASS = 1111;// 设置手势密码

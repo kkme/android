@@ -136,8 +136,8 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						NineLockSettingsActivity.this);
 				final AlertDialog dialog = builder
-						.setTitle(getString(R.string.if_restart))
-						.setPositiveButton(getString(R.string.yes),
+						.setMessage(getString(R.string.if_restart))
+						.setPositiveButton(getString(R.string.restart_at_once),
 								new OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialog,
@@ -154,7 +154,7 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 												}, 500);
 									}
 								})
-						.setNegativeButton(getString(R.string.no),
+						.setNegativeButton(getString(R.string.cancel),
 								new OnClickListener() {
 
 									@Override

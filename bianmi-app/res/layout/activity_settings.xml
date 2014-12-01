@@ -27,6 +27,7 @@
     <include layout="@layout/divider" />
 
     <RelativeLayout
+        android:id="@+id/invite_friends_group"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:background="@drawable/selector_actionbar_menu" >
@@ -35,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="邀请好友" />
+            android:text="@string/invite_friends" />
     </RelativeLayout>
 
     <include layout="@layout/divider" />
@@ -114,6 +115,23 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:text="@string/signout" />
+    </RelativeLayout>
+
+    <!-- 立即注册 -->
+
+    <RelativeLayout
+        android:id="@+id/settings_item_guest_group"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@drawable/selector_actionbar_menu" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/guest_go_signup_settings"
+            android:textColor="@color/font_highlight"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <include layout="@layout/divider" />

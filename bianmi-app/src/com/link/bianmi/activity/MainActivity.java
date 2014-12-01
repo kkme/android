@@ -20,13 +20,12 @@ public class MainActivity extends BaseFragmentActivity {
 		contentView.setBackgroundResource(R.drawable.bg_splash);
 		setContentView(contentView);
 		new Handler().postDelayed(new Runnable() {
-
 			@Override
 			public void run() {
 				// 没有登录，跳转欢迎页面
-				if (UserConfig.getInstance().getUserId() == null
-						|| TextUtils.isEmpty(UserConfig.getInstance()
-								.getUserId())) {
+				if ((UserConfig.getInstance().getToken() == null || TextUtils
+						.isEmpty(UserConfig.getInstance().getToken()))
+						&& !UserConfig.getInstance().getIsGuest()) {
 					launchActivity(WelcomeActivity.class);
 					finish();
 					return;

@@ -1,7 +1,5 @@
 package com.link.bianmi.activity;
 
-import java.util.UUID;
-
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -86,9 +84,6 @@ public class WelcomeActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				UserConfig.getInstance().setIsGuest(true);
-				UserConfig.getInstance()
-						.setUserId(UUID.randomUUID().toString());
-				UserConfig.getInstance().setToken(UUID.randomUUID().toString());
 				launchActivity(HomeActivity.class);
 				finish();
 			}
