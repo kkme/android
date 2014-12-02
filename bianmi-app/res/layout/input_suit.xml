@@ -59,24 +59,24 @@
             android:id="@+id/message_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/submit_view"
             android:layout_marginLeft="@dimen/dp_8"
             android:layout_marginRight="@dimen/dp_8"
             android:layout_toLeftOf="@+id/submit_view"
             android:layout_toRightOf="@id/attach_photo_view"
-            android:background="@drawable/shape_edit_corner"
+            android:background="@drawable/selector_input"
             android:gravity="center_vertical"
-            android:hint="\@Lisa"
+            android:hint="@string/publish_comments_without_name"
             android:maxLines="5"
             android:minHeight="@dimen/dp_32"
             android:padding="@dimen/dp_8"
             android:singleLine="false"
-            android:text=""
             android:textColor="@color/fc_dft"
             android:textColorHint="@color/fc_hint"
             android:textSize="@dimen/sp_15" />
 
         <Button
-            android:id="@id/submit_view"
+            android:id="@+id/submit_view"
             android:layout_width="@dimen/dp_44"
             android:layout_height="@dimen/dp_32"
             android:layout_alignParentRight="true"
@@ -119,9 +119,9 @@
 
                 <View
                     android:id="@+id/photo_album_view"
-                    android:layout_width="@dimen/dp_57"
-                    android:layout_height="@dimen/dp_57"
-                    android:background="@drawable/selector_btn_reply_album" />
+                    android:layout_width="@dimen/dp_56"
+                    android:layout_height="@dimen/dp_56"
+                    android:background="@drawable/btn_reply_album" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -137,11 +137,11 @@
 
                 <View
                     android:id="@+id/photo_camera_view"
-                    android:layout_width="@dimen/dp_57"
-                    android:layout_height="@dimen/dp_57"
+                    android:layout_width="@dimen/dp_56"
+                    android:layout_height="@dimen/dp_56"
                     android:layout_marginLeft="@dimen/dp_8"
                     android:layout_toRightOf="@id/photo_album_view"
-                    android:background="@drawable/selector_btn_reply_shot" />
+                    android:background="@drawable/btn_reply_shot" />
 
                 <TextView
                     android:layout_width="wrap_content"

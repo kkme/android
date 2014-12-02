@@ -1,7 +1,6 @@
 package com.link.bianmi.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +9,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.InputMethodManager;
+import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 
 import com.link.bianmi.R;
@@ -47,25 +47,21 @@ public class PublishActivity extends BaseFragmentActivity {
 
 		mContentEdit = (EditText) findViewById(R.id.content_edittext);
 		mContentEdit.addTextChangedListener(mTextWatcher);
-		new Handler().postDelayed(new Runnable() {
+		mContentEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
-			public void run() {
-				// 弹出软键盘
-				InputMethodManager inputManager = (InputMethodManager) mContentEdit
-						.getContext().getSystemService(
-								Context.INPUT_METHOD_SERVICE);
-				inputManager.showSoftInput(mContentEdit, 0);
+			public void onFocusChange(View arg0, boolean arg1) {
+				if (arg1) {
+					mInputSuit.close();
+				}
 			}
-		}, 500);
+		});
 	}
 
-	private MenuItem mSendItem;
 	private MenuItem mLoadingItem;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.publish, menu);
-		mSendItem = menu.getItem(0);
 		mLoadingItem = menu.getItem(1);
 		return true;
 	}
@@ -76,7 +72,6 @@ public class PublishActivity extends BaseFragmentActivity {
 			// 如果正在提交，则取消提交
 			if (mLoadingItem.isVisible()) {
 				mLoadingItem.setVisible(false);
-				mSendItem.setVisible(true);
 				return false;
 			}
 
@@ -91,10 +86,8 @@ public class PublishActivity extends BaseFragmentActivity {
 
 			finish();
 			return true;
-		} else if (item.getItemId() == R.id.action_send) {
-			item.setVisible(false);
-			mLoadingItem.setVisible(true);
-			mInputSuit.startUpload();
+		} else if (item.getItemId() == R.id.action_faq) {
+			showFAQDialog();
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -110,7 +103,6 @@ public class PublishActivity extends BaseFragmentActivity {
 		// 如果正在提交，则取消提交
 		if (mLoadingItem.isVisible()) {
 			mLoadingItem.setVisible(false);
-			mSendItem.setVisible(true);
 			return;
 		}
 
@@ -134,7 +126,7 @@ public class PublishActivity extends BaseFragmentActivity {
 	private void showConfirmAbandonInputDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		final AlertDialog dialog = builder
-				.setTitle(this.getString(R.string.confirm_abandon_input))
+				.setMessage(this.getString(R.string.confirm_abandon_input))
 				.setPositiveButton(this.getString(R.string.abandon_input),
 						new DialogInterface.OnClickListener() {
 							@Override
@@ -191,11 +183,29 @@ public class PublishActivity extends BaseFragmentActivity {
 			}
 		}
 
-		boolean currentStatus = mSendItem.isEnabled();
-		if (enable != currentStatus) {
-			mSendItem.setEnabled(enable);
-		}
+		// boolean currentStatus = mFAQItem.isEnabled();
+		// if (enable != currentStatus) {
+		// mFAQItem.setEnabled(enable);
+		// }
 
+	}
+
+	/**
+	 * FAQ对话框
+	 */
+	private void showFAQDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final AlertDialog dialog = builder
+				.setMessage(getString(R.string.publish_faq))
+				.setPositiveButton(getString(R.string.ok_boring),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						}).create();
+		dialog.show();
 	}
 
 	private InputSuit.Listener mInputListener = new InputSuit.Listener() {
@@ -235,7 +245,6 @@ public class PublishActivity extends BaseFragmentActivity {
 							SuperToast.makeText(PublishActivity.this, "发表成功!",
 									SuperToast.LENGTH_SHORT).show();
 							mLoadingItem.setVisible(false);
-							mSendItem.setVisible(true);
 							new Handler().postDelayed(new Runnable() {
 								@Override
 								public void run() {
@@ -249,7 +258,6 @@ public class PublishActivity extends BaseFragmentActivity {
 							SuperToast.makeText(PublishActivity.this, "发表失败!",
 									SuperToast.LENGTH_SHORT).show();
 							mLoadingItem.setVisible(false);
-							mSendItem.setVisible(true);
 						}
 					});
 

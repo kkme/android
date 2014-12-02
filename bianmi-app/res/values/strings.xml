@@ -34,10 +34,12 @@
     <string name="nodata_tip_secrets_nearby">还没有附近秘密</string>
     <!-- 发表秘密 -->
     <string name="publish_secret_title">发表秘密</string>
-    <string name="add_edit_hint">匿名发表秘密</string>
+    <string name="publish_edit_hint">匿名发表秘密</string>
     <string name="publish_new_secret">发表新秘密</string>
     <string name="confirm_abandon_input">确定放弃当前输入吗？</string>
     <string name="abandon_input">放弃输入</string>
+    <string name="publish_faq">酱发秘密靠谱吗？\n\n放心吧，你的朋友只知道是他们认识的某个人发的，但无法知道具体是谁！</string>
+    <string name="ok_boring">知道了，真烦</string>
 
     <!-- 提醒 -->
     <string name="reminder">提醒</string>
@@ -51,6 +53,7 @@
     <string name="like">点赞</string>
     <string name="share">分享</string>
     <string name="details_comments_list_item">%1$d楼.%2$d前.%3$d</string>
+    <string name="publish_comments_without_name">匿名发表评论</string>
 
     <!-- 登录 -->
     <string name="signin">登录</string>

@@ -7,16 +7,23 @@
         android:id="@+id/content_edittext"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/input_suit"
+        android:layout_centerInParent="true"
+        android:background="@drawable/publish_default_bg"
         android:gravity="center"
-        android:hint="匿名发表秘密" />
+        android:hint="@string/publish_edit_hint"
+        android:paddingLeft="@dimen/dp_30"
+        android:paddingRight="@dimen/dp_30"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        android:textSize="@dimen/sp_24" />
 
     <!-- 输入套件 -->
 
     <com.link.bianmi.widget.InputSuit
         android:id="@+id/input_suit"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         myattr:is_attach="true" />
 

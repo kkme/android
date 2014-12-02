@@ -119,6 +119,8 @@ public class InputSuit extends LinearLayout {
 	private TextView mPitchProgressText;
 	private TextView mTempoProgressText;
 
+	private boolean mIsAttah = false;
+
 	public InputSuit(Context context) {
 		super(context, null);
 	}
@@ -263,19 +265,19 @@ public class InputSuit extends LinearLayout {
 		});
 
 		mRecordTipText = (TextView) findViewById(R.id.record_tip_textview);
-
+		reset();
 		if (attrs != null) {
 			TypedArray a = context.obtainStyledAttributes(attrs,
 					R.styleable.InputSuit);
-			boolean isAttah = a.getBoolean(R.styleable.InputSuit_is_attach,
-					false);
-			if (isAttah) {
+			mIsAttah = a.getBoolean(R.styleable.InputSuit_is_attach, false);
+			if (mIsAttah) {
 				mMessageEdit.setVisibility(View.GONE);
-				mSubmitBtn.setVisibility(View.GONE);
+				mRecordGroup.setVisibility(View.VISIBLE);
+				mPhotoGroup.setVisibility(View.GONE);
+				mAttachView.setVisibility(View.VISIBLE);
 			}
 			a.recycle();
 		}
-		reset();
 	}
 
 	// ----------------------------------------Private-------------------------------------------
@@ -434,7 +436,7 @@ public class InputSuit extends LinearLayout {
 	private OnClickListener attachRecordListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			if (mRecordGroup.getVisibility() == View.VISIBLE) {
+			if (mRecordGroup.getVisibility() == View.VISIBLE && !mIsAttah) {
 				mRecordGroup.setVisibility(View.GONE);
 				mPhotoGroup.setVisibility(View.GONE);
 				mAttachView.setVisibility(View.GONE);
@@ -452,7 +454,7 @@ public class InputSuit extends LinearLayout {
 		@Override
 		public void onClick(View v) {
 
-			if (mPhotoGroup.getVisibility() == View.VISIBLE) {
+			if (mPhotoGroup.getVisibility() == View.VISIBLE && !mIsAttah) {
 				mPhotoGroup.setVisibility(View.GONE);
 				mRecordGroup.setVisibility(View.GONE);
 				mAttachView.setVisibility(View.GONE);
