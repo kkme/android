@@ -74,7 +74,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/ad_recommendation" />
+            android:text="@string/ad_recommendation"
+            android:textColor="@color/main_red" />
     </RelativeLayout>
 
     <include layout="@layout/divider" />
