@@ -68,7 +68,7 @@ public class HomeActivity extends BaseFragmentActivity {
 		UmengUpdateAgent.setUpdateUIStyle(UpdateStatus.STYLE_NOTIFICATION);
 		UmengUpdateAgent.update(this);
 
-		// 开启信鸽Push
+		// 初始化Push
 		XGPushConfig.enableDebug(this, true);
 		Context context = getApplicationContext();
 		XGPushManager.registerPush(context);

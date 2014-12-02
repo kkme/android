@@ -45,7 +45,6 @@ public class ReminderPersonBuilder implements
 
 						Reminder.Person perReminder = new Reminder.Person();
 						perReminder.secretid = jsonArrObj.getString("secretid");
-						perReminder.title = jsonArrObj.getString("title");
 						perReminder.content = jsonArrObj.getString("content");
 						perReminder.likes = jsonArrObj.getInt("likes");
 						perReminder.comments = jsonArrObj.getInt("comments");

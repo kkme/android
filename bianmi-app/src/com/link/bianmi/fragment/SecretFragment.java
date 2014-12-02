@@ -91,9 +91,6 @@ public abstract class SecretFragment extends BaseFragment {
 		mRootView = LayoutInflater.from(mContext).inflate(
 				R.layout.fragment_secrets, null);
 
-		final View bannerGroup = mRootView.findViewById(R.id.banner_group);
-		bannerGroup.setVisibility(View.GONE);
-
 		mRListView = (RListView) mRootView.findViewById(R.id.rlistview);
 		mAdapter = new SecretAdapter(mContext, null, getTaskType());
 		final CardsAnimationAdapter adapter = new CardsAnimationAdapter(
@@ -128,12 +125,6 @@ public abstract class SecretFragment extends BaseFragment {
 				mRListView.animate().translationY(-Tools.dip2px(mContext, 40));
 				// 刷新列表
 				fetchNew();
-				if (SysConfig.getInstance().showAd()) {
-					bannerGroup.setVisibility(View.VISIBLE);
-				} else {
-					bannerGroup.setVisibility(View.GONE);
-				}
-
 			}
 
 			@Override
@@ -158,7 +149,6 @@ public abstract class SecretFragment extends BaseFragment {
 
 				mParentActivity.getViewPagerTab().animate().translationY(0);
 				mRListView.animate().translationY(0);
-				bannerGroup.setVisibility(View.GONE);
 			}
 
 			@Override

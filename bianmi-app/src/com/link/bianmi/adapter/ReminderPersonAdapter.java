@@ -49,8 +49,6 @@ public class ReminderPersonAdapter extends BaseAdapter {
 					R.layout.reminder_person_listview_item, null);
 
 		ImageView imageView = ViewHolder.get(convertView, R.id.imageview);
-		TextView titleTextView = ViewHolder.get(convertView,
-				R.id.title_textview);
 		TextView contentTextView = ViewHolder.get(convertView,
 				R.id.content_textview);
 		TextView likesTextView = ViewHolder.get(convertView,
@@ -63,7 +61,6 @@ public class ReminderPersonAdapter extends BaseAdapter {
 		if (personReminder != null) {
 			ImageLoader.displayImage(imageView, personReminder.imageUrl,
 					R.drawable.ic_launcher, true);
-			titleTextView.setText(personReminder.title);
 			contentTextView.setText(personReminder.content);
 			likesTextView.setText(String.valueOf(personReminder.likes));
 			commentsTextView.setText(String.valueOf(personReminder.comments));

@@ -23,7 +23,6 @@ public class Reminder implements Serializable {
 
 		public String id = "";// 唯一标识一条我的通知
 		public String secretid = "";// 秘密ID
-		public String title = "";// 秘密标题
 		public String content = "";// 秘密内容
 		public int likes;// 赞数
 		public int comments;// 评论数

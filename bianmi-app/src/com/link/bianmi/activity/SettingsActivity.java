@@ -1,5 +1,7 @@
 package com.link.bianmi.activity;
 
+import net.youmi.android.AdManager;
+import net.youmi.android.diy.DiyManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -82,6 +84,21 @@ public class SettingsActivity extends BaseFragmentActivity {
 						}
 					}
 				});
+		// 精品推荐
+		AdManager.getInstance(this).init("89eba374087fbb60",
+				"9d3ea5e812d946d1", true);
+		View adGroup = findViewById(R.id.ad_group);
+		adGroup.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DiyManager.showRecommendWall(SettingsActivity.this);
+			}
+		});
+		if (SysConfig.getInstance().showAd()) {
+			adGroup.setVisibility(View.VISIBLE);
+		} else {
+			adGroup.setVisibility(View.GONE);
+		}
 		// 常见问题
 		findViewById(R.id.faq_group).setOnClickListener(new OnClickListener() {
 			@Override
