@@ -29,7 +29,7 @@ public class NineLockActivity extends BaseFragmentActivity implements
 	private List<Cell> lockPattern;
 	private NineLockView nineLockView;
 
-	private boolean mCloseLock = false;
+	private int mActionType = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +41,10 @@ public class NineLockActivity extends BaseFragmentActivity implements
 		nineLockView = (NineLockView) findViewById(R.id.ninelockview);
 		nineLockView.setOnPatternListener(this);
 
-		mCloseLock = false;
+		mActionType = 0;
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
-			mCloseLock = bundle.getBoolean("close_lock");
+			mActionType = bundle.getInt("close_lock");
 		}
 
 		// 忘记手势密码
@@ -94,7 +94,7 @@ public class NineLockActivity extends BaseFragmentActivity implements
 	@Override
 	public void onBackPressed() {
 
-		if (!mCloseLock) {
+		if (mActionType == 0) {
 			finish();
 			ActivitysManager.removeAllActivity();
 			return;
@@ -118,14 +118,16 @@ public class NineLockActivity extends BaseFragmentActivity implements
 
 	@Override
 	public void onPatternDetected(List<Cell> pattern) {
-		// 退出应用
-		if (pattern.equals(lockPattern) && !mCloseLock) {
+		// 退出锁屏，跳转主页
+		if (pattern.equals(lockPattern) && mActionType == 0) {
 			finish();
-			// UserConfig.getInstance().setLockPassSuccess(true);
 			launchActivity(HomeActivity.class);
 			// 关闭锁屏密码
-		} else if (pattern.equals(lockPattern) && mCloseLock) {
+		} else if (pattern.equals(lockPattern) && mActionType == 1) {
 			UserConfig.getInstance().setLockPassStartStatus(false);
+			finishActivityWithResult(RESULT_OK);
+			// 修改秘密
+		} else if (pattern.equals(lockPattern) && mActionType == 2) {
 			finishActivityWithResult(RESULT_OK);
 		} else {
 			nineLockView.setDisplayMode(DisplayMode.Wrong);

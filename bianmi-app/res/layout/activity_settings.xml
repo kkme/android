@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -16,12 +17,15 @@
             android:layout_centerVertical="true"
             android:text="@string/settings_pwd" />
 
-        <com.link.bianmi.widget.SwitchButton
+        <com.gc.materialdesign.views.Switch
             android:id="@+id/settings_item_password_switchbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            materialdesign:check="false"
+            materialdesign:checkedColor="@color/main_green"
+            materialdesign:uncheckedColor="#1E88E5" />
     </RelativeLayout>
 
     <include layout="@layout/divider" />

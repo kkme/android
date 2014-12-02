@@ -11,10 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
+import com.gc.materialdesign.views.Switch;
+import com.gc.materialdesign.views.Switch.OnSwitchChangeListener;
 import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
@@ -28,7 +28,6 @@ import com.link.bianmi.unit.ninelock.NineLockSettingsActivity;
 import com.link.bianmi.utils.Tools;
 import com.link.bianmi.utils.UmengSocialClient;
 import com.link.bianmi.widget.SuperToast;
-import com.link.bianmi.widget.SwitchButton;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
@@ -37,7 +36,7 @@ import com.umeng.update.UpdateStatus;
 public class SettingsActivity extends BaseFragmentActivity {
 
 	// 设置密码开关
-	private SwitchButton mPassSwitchBtn = null;
+	private Switch mPassSwitchBtn = null;
 	private TextView mVersionText = null;
 
 	@Override
@@ -53,40 +52,41 @@ public class SettingsActivity extends BaseFragmentActivity {
 				new OnClickListener() {
 					@Override
 					public void onClick(View arg0) {
-						launchActivityForResult(NineLockSettingsActivity.class,
-								REQUEST_CODE_SETPASS);
-					}
-				});
-		// 设置密码开关
-		mPassSwitchBtn = (SwitchButton) findViewById(R.id.settings_item_password_switchbutton);
-		changeSwitchButtonState();
-		mPassSwitchBtn
-				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView,
-							boolean isChecked) {
-						// 开启手势锁屏
-						if (isChecked
-								&& !UserConfig.getInstance().getLockPassKey()
-										.isEmpty()) {
-							UserConfig.getInstance().setLockPassStartStatus(
-									true);
-							return;
-						}
-						// 关闭手势锁屏
-						if (!isChecked
+						if (mPassSwitchBtn.isChecked()
 								&& !UserConfig.getInstance().getLockPassKey()
 										.isEmpty()) {
 							Bundle bundle = new Bundle();
-							bundle.putBoolean("close_lock", true);
+							bundle.putInt("close_lock", 2);
 							launchActivityForResult(NineLockActivity.class,
-									bundle, REQUEST_CODE_CLOSELOCK);
+									bundle, REQUEST_CODE_UPDATEPASS);
 						}
 					}
 				});
+		// 设置密码开关
+		mPassSwitchBtn = (Switch) findViewById(R.id.settings_item_password_switchbutton);
+		changeSwitchState();
+		mPassSwitchBtn.setOnSwitchChangeListener(new OnSwitchChangeListener() {
+			@Override
+			public void onCheckedChanged(boolean isChecked) {
+				// 开启手势锁屏
+				if (isChecked
+						&& !UserConfig.getInstance().getLockPassKey().isEmpty()) {
+					UserConfig.getInstance().setLockPassStartStatus(true);
+					return;
+				}
+				// 关闭手势锁屏
+				if (!isChecked
+						&& !UserConfig.getInstance().getLockPassKey().isEmpty()) {
+					Bundle bundle = new Bundle();
+					bundle.putInt("close_lock", 1);
+					launchActivityForResult(NineLockActivity.class, bundle,
+							REQUEST_CODE_CLOSELOCK);
+				}
+			}
+		});
 		// 精品推荐
 		AdManager.getInstance(this).init("89eba374087fbb60",
-				"9d3ea5e812d946d1", true);
+				"9d3ea5e812d946d1", false);
 		View adGroup = findViewById(R.id.ad_group);
 		adGroup.setOnClickListener(new OnClickListener() {
 			@Override
@@ -94,7 +94,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 				DiyManager.showRecommendWall(SettingsActivity.this);
 			}
 		});
-		if (SysConfig.getInstance().showAd()) {
+		if (!SysConfig.getInstance().showAd()) {
 			adGroup.setVisibility(View.VISIBLE);
 		} else {
 			adGroup.setVisibility(View.GONE);
@@ -225,16 +225,20 @@ public class SettingsActivity extends BaseFragmentActivity {
 
 	private final int REQUEST_CODE_SETPASS = 1111;// 设置手势密码
 	private final int REQUEST_CODE_CLOSELOCK = 2222;// 关闭手势密码
+	private final int REQUEST_CODE_UPDATEPASS = 3333;// 修改手势密码
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		if ((requestCode == REQUEST_CODE_SETPASS || requestCode == REQUEST_CODE_CLOSELOCK)
 				&& resultCode == Activity.RESULT_OK)
-			changeSwitchButtonState();
+			changeSwitchState();
 		else if (requestCode == REQUEST_CODE_CLOSELOCK
 				&& resultCode != Activity.RESULT_OK) {
 			mPassSwitchBtn.setChecked(true);
+		} else if (requestCode == REQUEST_CODE_UPDATEPASS
+				&& resultCode == Activity.RESULT_OK) {
+			launchActivity(NineLockSettingsActivity.class);
 		}
 	}
 
@@ -249,7 +253,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 	}
 
 	// ------------------------------Private------------------------------
-	private void changeSwitchButtonState() {
+	private void changeSwitchState() {
 		if (UserConfig.getInstance().getLockPassKey().isEmpty()) {
 			mPassSwitchBtn.setVisibility(View.GONE);
 			return;

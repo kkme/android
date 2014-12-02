@@ -101,7 +101,7 @@
     </declare-styleable>
     <!-- RoundProgressBar 环形进度条控件 -->
     <declare-styleable name="RoundProgressBar">
-        <attr name="maxProgress" format="integer" />
+        <attr name="max_progress" format="integer" />
         <attr name="rb_defaultvalue" format="integer" /> <!-- 默认值 -->
         <attr name="fill" format="boolean" /> <!-- 是否填充圆形区域 -->
         <attr name="paint_width" format="dimension" /> <!-- 画笔宽度，填充模式下无效，会被重置为0 -->

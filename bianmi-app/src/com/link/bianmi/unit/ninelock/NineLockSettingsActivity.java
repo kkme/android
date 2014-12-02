@@ -156,11 +156,17 @@ public class NineLockSettingsActivity extends BaseFragmentActivity implements
 								})
 						.setNegativeButton(getString(R.string.cancel),
 								new OnClickListener() {
-
 									@Override
 									public void onClick(DialogInterface dialog,
 											int which) {
 										dialog.dismiss();
+										new Handler().postDelayed(
+												new Runnable() {
+													@Override
+													public void run() {
+														finishActivityWithResult(RESULT_OK);
+													}
+												}, 300);
 									}
 								}).create();
 				dialog.show();
