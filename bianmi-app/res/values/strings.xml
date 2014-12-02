@@ -108,6 +108,7 @@
     <string name="inputsuit_record_empty">录音时间太短</string>
     <string name="inputsuit_rerecord_tip">重录将删除刚才的录音</string>
     <string name="rerecording">重录</string>
+    <string name="continue_to_rerecording">继续重录</string>
     <string name="inputsuit_voice_wang">老王</string>
     <string name="inputsuit_voice_tom">汤姆</string>
     <string name="pitch">音调</string>

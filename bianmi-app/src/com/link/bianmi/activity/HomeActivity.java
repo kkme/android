@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -295,19 +294,12 @@ public class HomeActivity extends BaseFragmentActivity {
 			convertView = LayoutInflater.from(parent.getContext()).inflate(
 					R.layout.popup_menu_item, null);
 			TextView name = (TextView) convertView.findViewById(R.id.tv_name);
-			int iconResId = R.drawable.ab_menu_ic_share;
 
 			if (position == 0) {
 				name.setText(R.string.invite_friends);
-				iconResId = R.drawable.ab_menu_ic_share;
 			} else if (position == 1) {
 				name.setText(R.string.settings);
-				iconResId = R.drawable.ab_menu_ic_settings;
 			}
-			Drawable drawable = getResources().getDrawable(iconResId);
-			drawable.setBounds(0, 0, drawable.getMinimumWidth(),
-					drawable.getMinimumHeight());
-			name.setCompoundDrawables(drawable, null, null, null);
 			return convertView;
 		}
 	}

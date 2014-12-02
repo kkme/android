@@ -57,9 +57,14 @@ public class SettingsActivity extends BaseFragmentActivity {
 										.isEmpty()) {
 							Bundle bundle = new Bundle();
 							bundle.putInt("close_lock", 2);
-							launchActivityForResult(NineLockActivity.class,
-									bundle, REQUEST_CODE_UPDATEPASS);
+							launchActivityForResult(
+									NineLockSettingsActivity.class, bundle,
+									REQUEST_CODE_UPDATEPASS);
+
+							return;
 						}
+						launchActivityForResult(NineLockSettingsActivity.class,
+								REQUEST_CODE_SETPASS);
 					}
 				});
 		// 设置密码开关

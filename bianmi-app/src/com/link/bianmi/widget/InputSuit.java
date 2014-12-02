@@ -646,8 +646,10 @@ public class InputSuit extends LinearLayout {
 	private void showConfirmRerecordingDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
 		final AlertDialog dialog = builder
-				.setTitle(mActivity.getString(R.string.inputsuit_rerecord_tip))
-				.setPositiveButton(mActivity.getString(R.string.rerecording),
+				.setMessage(
+						mActivity.getString(R.string.inputsuit_rerecord_tip))
+				.setPositiveButton(
+						mActivity.getString(R.string.continue_to_rerecording),
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog,

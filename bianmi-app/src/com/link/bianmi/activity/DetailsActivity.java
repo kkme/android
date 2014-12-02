@@ -145,7 +145,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 		} else if (item.getItemId() == R.id.action_like) {
 			item.setIcon(R.drawable.ab_ic_liked);
 		} else if (item.getItemId() == R.id.action_share) {
-			UmengSocialClient.showShareDialog(getParent());
+			UmengSocialClient.showShareDialog(this);
 		}
 		return super.onOptionsItemSelected(item);
 	}

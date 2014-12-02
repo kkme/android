@@ -15,7 +15,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/settings_pwd" />
+            android:text="@string/settings_pwd"
+            android:textSize="@dimen/sp_16" />
 
         <com.gc.materialdesign.views.Switch
             android:id="@+id/settings_item_password_switchbutton"
@@ -40,7 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/invite_friends" />
+            android:text="@string/invite_friends"
+            android:textSize="@dimen/sp_16" />
     </RelativeLayout>
 
     <include layout="@layout/divider" />
@@ -57,7 +59,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/faq" />
+            android:text="@string/faq"
+            android:textSize="@dimen/sp_16" />
     </RelativeLayout>
 
     <include layout="@layout/divider" />
@@ -75,7 +78,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:text="@string/ad_recommendation"
-            android:textColor="@color/main_red" />
+            android:textColor="@color/main_red"
+            android:textSize="@dimen/sp_16" />
     </RelativeLayout>
 
     <include layout="@layout/divider" />
@@ -92,7 +96,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/chack_update" />
+            android:text="@string/chack_update"
+            android:textSize="@dimen/sp_16" />
 
         <TextView
             android:id="@+id/version_textview"
@@ -120,7 +125,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/clear_privacy" />
+            android:text="@string/clear_privacy"
+            android:textSize="@dimen/sp_16" />
     </RelativeLayout>
 
     <include layout="@layout/divider" />
@@ -136,7 +142,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/signout" />
+            android:text="@string/signout"
+            android:textSize="@dimen/sp_16" />
     </RelativeLayout>
 
     <!-- 立即注册 -->
@@ -153,6 +160,7 @@
             android:layout_centerVertical="true"
             android:text="@string/guest_go_signup_settings"
             android:textColor="@color/font_highlight"
+            android:textSize="@dimen/sp_16"
             android:textStyle="bold" />
     </RelativeLayout>
 
