@@ -6,7 +6,7 @@
 	<classpathentry kind="src" path="/bianmi-lib-qiniu"/>
 	<classpathentry kind="src" path="/bianmi-lib-widgets"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/bianmi-lib-smssdk"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/bianmi-lib-socialsdk"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/bianmi-lib-umeng-share"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/bianmi-lib-soundtouch"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/bianmi-lib-xgpush"/>
 	<classpathentry kind="src" path="src"/>
