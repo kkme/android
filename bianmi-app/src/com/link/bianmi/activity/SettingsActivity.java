@@ -52,14 +52,13 @@ public class SettingsActivity extends BaseFragmentActivity {
 				new OnClickListener() {
 					@Override
 					public void onClick(View arg0) {
-						if (mPassSwitchBtn.isChecked()
-								&& !UserConfig.getInstance().getLockPassKey()
-										.isEmpty()) {
+						// 之前已经设置过密码
+						if (!UserConfig.getInstance().getLockPassKey()
+								.isEmpty()) {
 							Bundle bundle = new Bundle();
 							bundle.putInt("close_lock", 2);
-							launchActivityForResult(
-									NineLockSettingsActivity.class, bundle,
-									REQUEST_CODE_UPDATEPASS);
+							launchActivityForResult(NineLockActivity.class,
+									bundle, REQUEST_CODE_UPDATEPASS);
 
 							return;
 						}
@@ -185,6 +184,13 @@ public class SettingsActivity extends BaseFragmentActivity {
 		exitGroup.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				// 退出游客登录
+				if (UserConfig.getInstance().getIsGuest()) {
+					UserConfig.getInstance().signOut();
+					launchActivity(WelcomeActivity.class);
+					ActivitysManager.removeAllActivity();
+					return;
+				}
 				mLoadingItem.setVisible(true);
 				UserManager.Task.signOut(new OnTaskOverListener<Object>() {
 					@Override
@@ -205,7 +211,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 			}
 		});
 
-		// 游客
+		// 游客:立即注册
 		View guestGroup = findViewById(R.id.settings_item_guest_group);
 		guestGroup.setOnClickListener(new OnClickListener() {
 			@Override
@@ -219,11 +225,9 @@ public class SettingsActivity extends BaseFragmentActivity {
 		});
 		if (UserConfig.getInstance().getIsGuest()) {
 			clearGroup.setVisibility(View.GONE);
-			exitGroup.setVisibility(View.GONE);
 			guestGroup.setVisibility(View.VISIBLE);
 		} else {
 			clearGroup.setVisibility(View.VISIBLE);
-			exitGroup.setVisibility(View.VISIBLE);
 			guestGroup.setVisibility(View.GONE);
 		}
 	}

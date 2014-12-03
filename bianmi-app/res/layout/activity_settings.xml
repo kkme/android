@@ -146,6 +146,7 @@
             android:textSize="@dimen/sp_16" />
     </RelativeLayout>
 
+    <include layout="@layout/divider" />
     <!-- 立即注册 -->
 
     <RelativeLayout
