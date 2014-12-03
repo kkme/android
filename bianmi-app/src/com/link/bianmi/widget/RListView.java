@@ -21,7 +21,7 @@ import com.link.bianmi.utils.Tools;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 /**
- * 下拉刷新，下拉加载更多的ListView
+ * 下拉刷新，上拉加载更多的ListView
  * 
  */
 public class RListView extends ListView implements OnScrollListener {

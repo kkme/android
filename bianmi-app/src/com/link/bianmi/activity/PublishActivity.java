@@ -9,8 +9,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 
 import com.link.bianmi.R;
@@ -47,14 +45,6 @@ public class PublishActivity extends BaseFragmentActivity {
 
 		mContentEdit = (EditText) findViewById(R.id.content_edittext);
 		mContentEdit.addTextChangedListener(mTextWatcher);
-		mContentEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View arg0, boolean arg1) {
-				if (arg1) {
-					mInputSuit.close();
-				}
-			}
-		});
 	}
 
 	private MenuItem mLoadingItem;
