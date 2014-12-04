@@ -21,6 +21,8 @@ public class NoDataView extends RelativeLayout {
 
 	private Context mContext;
 
+	private String mTip;
+
 	public NoDataView(Context context) {
 
 		this(context, null);
@@ -34,6 +36,13 @@ public class NoDataView extends RelativeLayout {
 				this, true);
 
 		mTipText = (TextView) view.findViewById(R.id.tip_textview);
+		mTipText.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (mListener != null)
+					mListener.onClick();
+			}
+		});
 	}
 
 	// ---------------------Public------------------------------
@@ -56,10 +65,36 @@ public class NoDataView extends RelativeLayout {
 		show(mContext.getString(tipResId));
 	}
 
+	public void show() {
+		if (mTip != null && !mTip.isEmpty()) {
+			mTipText.setVisibility(View.VISIBLE);
+			mTipText.setText(mTip);
+
+		}
+	}
+
+	public void setTip(String tip) {
+		mTip = tip;
+	}
+
+	public void setTip(int tipResId) {
+		setTip(mContext.getString(tipResId));
+	}
+
 	/**
 	 * 消失
 	 */
 	public void dismiss() {
 		this.setVisibility(View.GONE);
+	}
+
+	private OnListener mListener;
+
+	public interface OnListener {
+		void onClick();
+	}
+
+	public void setOnListener(OnListener listener) {
+		mListener = listener;
 	}
 }

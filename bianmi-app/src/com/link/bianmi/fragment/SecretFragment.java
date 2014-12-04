@@ -62,9 +62,9 @@ public abstract class SecretFragment extends BaseFragment {
 
 	private List<Secret> mSecretsList;
 
-	private HomeActivity mParentActivity;
+	protected HomeActivity mParentActivity;
 	// 无数据
-	private NoDataView mNoDataView = null;
+	protected NoDataView mNoDataView = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -219,7 +219,7 @@ public abstract class SecretFragment extends BaseFragment {
 		}
 
 		mNoDataView = (NoDataView) mRootView.findViewById(R.id.nodata_view);
-		mNoDataView.show(getNoDataString());
+		mNoDataView.show();
 
 	}
 
@@ -250,8 +250,6 @@ public abstract class SecretFragment extends BaseFragment {
 
 	// ------------------------------Abstract------------------------------
 	abstract SecretManager.TaskType getTaskType();
-
-	abstract String getNoDataString();
 
 	// ------------------------------Protected------------------------------
 	protected boolean isFirstFragment() {
@@ -311,7 +309,7 @@ public abstract class SecretFragment extends BaseFragment {
 		if (cursor == null || cursor.getCount() <= 0) {
 			mAdapter.changeCursor(null);
 			mAdapter.notifyDataSetChanged();
-			mNoDataView.show(getNoDataString());
+			mNoDataView.show();
 			return;
 		}
 

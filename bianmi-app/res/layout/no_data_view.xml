@@ -9,11 +9,12 @@
         android:id="@+id/tip_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:shadowColor="#ffffff"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="1"
         android:textColor="@color/main_black"
-        android:textSize="@dimen/dp_24" />
+        android:textSize="@dimen/sp_20" />
 
 </RelativeLayout>

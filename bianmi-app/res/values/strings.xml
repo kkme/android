@@ -7,14 +7,14 @@
     <string name="no_network">木有网络</string>
     <string name="no_more_to_load">木有啦</string>
     <string name="welcome_tip_next">滑动有惊喜></string>
-    <string name="welcome_guest">游客进入</string>
+    <string name="welcome_guest">进去看看再说</string>
     <string name="cancel">取消</string>
     <string name="default_city">深圳</string>
 
     <!-- 主界面 -->
-    <string name="hot">热门</string>
-    <string name="friend">朋友</string>
-    <string name="nearby">附近</string>
+    <string name="hot">大街</string>
+    <string name="friend">朋友圈</string>
+    <string name="nearby">身边</string>
     <string name="publish_secret">发秘密</string>
     <string name="look_reminder">瞧提醒</string>
     <string name="look_more">看更多</string>
@@ -26,19 +26,19 @@
     <string name="guest_action_comments_msg">要先注册，才能查看变变们的【评论】哦！</string>
     <string name="guest_go_signup">去注册吧，骚年</string>
     <string name="guest_go_signup_settings">立即注册</string>
-    <string name="guest_friends_tip">想听自己小伙伴，\n秘密的变声录音吗？</string>
+    <string name="guest_friends_tip">想听自己朋友圈，\n那帮家伙的【变声】秘密吗？</string>
     <string name="guest_friends_signup">那就赶紧去注册吧</string>
     <!-- 秘密列表 -->
-    <string name="nodata_tip_secrets_hot">还没有热门秘密</string>
-    <string name="nodata_tip_secrets_friends">还没有朋友圈秘密</string>
-    <string name="nodata_tip_secrets_nearby">还没有附近秘密</string>
+    <string name="nodata_tip_secrets_hot">咦，来早了！\n人们还没出门，再等等吧！</string>
+    <string name="nodata_tip_secrets_friends">还没有朋友圈秘密，\n快去邀请小伙伴们吧！</string>
+    <string name="nodata_tip_secrets_nearby">这边还没发过秘密，\n嘿嘿，要不咱就来一发先！</string>
     <!-- 发表秘密 -->
     <string name="publish_secret_title">发表秘密</string>
     <string name="publish_edit_hint">匿名发表秘密</string>
     <string name="publish_new_secret">发表新秘密</string>
     <string name="confirm_abandon_input">确定放弃当前输入吗？</string>
     <string name="abandon_input">放弃输入</string>
-    <string name="publish_faq">酱发秘密靠谱吗？\n\n放心吧，你的朋友只知道是他们认识的某个人发的，但无法知道具体是谁！</string>
+    <string name="publish_faq">酱发秘密靠谱吗？\n\n放心吧，你的朋友们只知道是他们认识的某个人发的，但无法知道具体是谁！</string>
     <string name="ok_boring">知道了，真烦</string>
 
     <!-- 提醒 -->
