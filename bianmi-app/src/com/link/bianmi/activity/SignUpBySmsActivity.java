@@ -34,6 +34,7 @@ import com.link.bianmi.unit.country.Country;
 import com.link.bianmi.unit.country.CountryActivity;
 import com.link.bianmi.utils.DataCheckUtil;
 import com.link.bianmi.utils.SecurityUtils;
+import com.link.bianmi.utils.SoftInputUtils;
 import com.link.bianmi.widget.ClearEditText;
 import com.link.bianmi.widget.ClearEditText.OnFocusListener;
 import com.link.bianmi.widget.SuperToast;
@@ -167,11 +168,11 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 			public void onClick(View v) {
 				final String code = mCountryCodeText.getText().toString()
 						.substring(1).trim();
-				final String phonenum = mPhoneEdit.getText().toString().trim();
+				final String phone = mPhoneEdit.getText().toString().trim();
 				final String pwd = mPwdEdit.getText().toString().trim();
 				// 检测数据的完整性
 				if (!DataCheckUtil.checkSignInUpData(SignUpBySmsActivity.this,
-						phonenum, pwd))
+						phone, pwd))
 					return;
 				// 注册按钮，点击提示发送验证码
 				if (signUpButton.getText().equals(getString(R.string.signup))) {
@@ -181,7 +182,7 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 							.setMessage(
 									String.format(
 											getString(R.string.sms_dialog_msg),
-											phonenum))
+											phone))
 							.setPositiveButton(getString(R.string.yes),
 									new Dialog.OnClickListener() {
 										@Override
@@ -190,7 +191,7 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 												int which) {
 											// 发送短信验证码
 											SMSSDK.getVerificationCode(code,
-													phonenum);
+													phone);
 											mLoadingItem.setVisible(true);
 											resendSMSView
 													.setVisibility(View.VISIBLE);
@@ -210,7 +211,7 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 					// 完成注册按钮
 				} else if (signUpButton.getText().equals(
 						getString(R.string.signup_finish))) {
-					SMSSDK.submitVerificationCode(code, phonenum,
+					SMSSDK.submitVerificationCode(code, phone,
 							mSmsVerifyCodeEdit.getText().toString());
 				}
 			}
@@ -226,9 +227,15 @@ public class SignUpBySmsActivity extends BaseFragmentActivity implements
 				mSmsVerifyCodeEdit.setText(verifyCode);
 				signUpButton.setText(getString(R.string.signup_finish));
 				mSmsVerifyCodeEdit.requestFocus();
+				SMSSDK.submitVerificationCode(mCountryCodeText.getText()
+						.toString().substring(1).trim(), mPhoneEdit.getText()
+						.toString().trim(), mSmsVerifyCodeEdit.getText()
+						.toString());
 			}
 		});
 		registerReceiver(mSMSReceiver, filter);
+
+		SoftInputUtils.popupSoftInput(mPhoneEdit);
 
 	}
 

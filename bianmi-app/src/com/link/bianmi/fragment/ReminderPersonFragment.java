@@ -129,7 +129,7 @@ public class ReminderPersonFragment extends BaseFragment {
 			public void onScrollUpDownChanged(int delta, int scrollPosition,
 					boolean exact) {
 
-				if (exact) {
+				if (exact && tabview != null) {
 					float tran_y = tabview.getTranslationY() + delta;
 					if (tran_y >= 0) {
 						tabview.setTranslationY(0);

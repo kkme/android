@@ -19,6 +19,7 @@ import com.link.bianmi.entity.User;
 import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.utils.DataCheckUtil;
 import com.link.bianmi.utils.SecurityUtils;
+import com.link.bianmi.utils.SoftInputUtils;
 import com.link.bianmi.widget.ClearEditText;
 import com.link.bianmi.widget.ClearEditText.OnFocusListener;
 import com.link.bianmi.widget.SuperToast;
@@ -114,6 +115,7 @@ public class SignUpActivity extends BaseFragmentActivity implements
 			}
 		});
 
+		SoftInputUtils.popupSoftInput(phoneEdit);
 	}
 
 	private MenuItem mLoadingMenuItem;
