@@ -8,6 +8,7 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
@@ -33,7 +34,7 @@ public class WelcomeActivity extends BaseFragmentActivity {
 	private View mSignUpBtn;
 	private View mSignInBtn;
 	private View mGuestBtn;
-	private View mTipBtn;
+	private View mSlideImage;
 
 	private ViewPager mViewPager;
 	private View mViewPagerContainer;
@@ -45,11 +46,18 @@ public class WelcomeActivity extends BaseFragmentActivity {
 		setContentView(R.layout.activity_welcome);
 
 		// 提示：滑动有惊喜
-		mTipBtn = findViewById(R.id.tip_button);
-		mTipBtn.setOnClickListener(new OnClickListener() {
+		mSlideImage = findViewById(R.id.slide_imageview);
+		mSlideImage.setOnTouchListener(new OnTouchListener() {
 			@Override
-			public void onClick(View arg0) {
-				mViewPager.setCurrentItem(1);
+			public boolean onTouch(View v, MotionEvent event) {
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_UP:
+					mViewPager.setCurrentItem(1);
+					break;
+				default:
+					break;
+				}
+				return false;
 			}
 		});
 
@@ -157,7 +165,7 @@ public class WelcomeActivity extends BaseFragmentActivity {
 			if (arg0 == 0) {
 				mSignUpBtn.clearAnimation();
 				mSignInBtn.clearAnimation();
-				mTipBtn.clearAnimation();
+				mSlideImage.clearAnimation();
 				AlphaAnimation alphaAnim = new AlphaAnimation(1, 0);
 				alphaAnim.setDuration(200);
 				alphaAnim.setAnimationListener(new AnimationListener() {
@@ -173,8 +181,8 @@ public class WelcomeActivity extends BaseFragmentActivity {
 					public void onAnimationEnd(Animation animation) {
 						AlphaAnimation alphaAnim = new AlphaAnimation(0, 1);
 						alphaAnim.setDuration(400);
-						mTipBtn.setVisibility(View.VISIBLE);
-						mTipBtn.startAnimation(alphaAnim);
+						mSlideImage.setVisibility(View.VISIBLE);
+						mSlideImage.startAnimation(alphaAnim);
 					}
 				});
 				mSignInBtn.setVisibility(View.GONE);
@@ -188,7 +196,7 @@ public class WelcomeActivity extends BaseFragmentActivity {
 				mSignUpBtn.clearAnimation();
 				mSignInBtn.clearAnimation();
 				mGuestBtn.clearAnimation();
-				mTipBtn.clearAnimation();
+				mSlideImage.clearAnimation();
 				AlphaAnimation alphaAnim = new AlphaAnimation(1, 0);
 				alphaAnim.setDuration(200);
 				alphaAnim.setAnimationListener(new AnimationListener() {
@@ -211,8 +219,8 @@ public class WelcomeActivity extends BaseFragmentActivity {
 					}
 				});
 				if (mLastPage == 0) {
-					mTipBtn.setVisibility(View.GONE);
-					mTipBtn.startAnimation(alphaAnim);
+					mSlideImage.setVisibility(View.GONE);
+					mSlideImage.startAnimation(alphaAnim);
 				} else if (mLastPage == 2) {
 					mGuestBtn.setVisibility(View.GONE);
 					mGuestBtn.startAnimation(alphaAnim);

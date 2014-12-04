@@ -2,6 +2,7 @@ package com.link.bianmi.adapter;
 
 import java.util.List;
 
+import net.tsz.afinal.FinalBitmap;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 
 import com.link.bianmi.R;
 import com.link.bianmi.entity.Reminder;
-import com.link.bianmi.imageloader.ImageLoader;
 import com.link.bianmi.utils.ViewHolder;
 
 /**
@@ -22,9 +22,12 @@ public class ReminderPersonAdapter extends BaseAdapter {
 	private List<Reminder.Person> mDataList;
 
 	private Context mContext;
+	private FinalBitmap mFBitmap;
 
 	public ReminderPersonAdapter(Context context) {
 		mContext = context;
+		mFBitmap = FinalBitmap.create(context);
+		mFBitmap.configLoadingImage(R.drawable.ic_launcher);
 	}
 
 	@Override
@@ -59,8 +62,7 @@ public class ReminderPersonAdapter extends BaseAdapter {
 			return null;
 		Reminder.Person personReminder = mDataList.get(position);
 		if (personReminder != null) {
-			ImageLoader.displayImage(imageView, personReminder.imageUrl,
-					R.drawable.ic_launcher, true);
+			mFBitmap.display(imageView, personReminder.imageUrl);
 			contentTextView.setText(personReminder.content);
 			likesTextView.setText(String.valueOf(personReminder.likes));
 			commentsTextView.setText(String.valueOf(personReminder.comments));
