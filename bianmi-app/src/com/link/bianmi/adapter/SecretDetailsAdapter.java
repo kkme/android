@@ -3,6 +3,7 @@ package com.link.bianmi.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.tsz.afinal.FinalBitmap;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,6 @@ import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.Comment;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.CommentManager;
-import com.link.bianmi.imageloader.ImageLoader;
 import com.link.bianmi.utils.ViewHolder;
 import com.link.bianmi.widget.AudioButton;
 import com.link.bianmi.widget.SuperToast;
@@ -32,10 +32,14 @@ public class SecretDetailsAdapter extends BaseAdapter {
 	private Secret mSecret;
 	private List<Comment> mCommentsList;
 
+	private FinalBitmap mFBitmap;
+
 	public SecretDetailsAdapter(Context context, Secret secret) {
 		mContext = context;
 		mSecret = secret;
 		mCommentsList = new ArrayList<Comment>();
+		mFBitmap = FinalBitmap.create(context);
+		mFBitmap.configLoadingImage(R.drawable.ic_launcher);
 	}
 
 	@Override
@@ -103,8 +107,7 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		// 头像
 		ImageView avatarImage = ViewHolder.get(convertView,
 				R.id.avatar_imageview);
-		ImageLoader.displayImage(avatarImage, comment.avatarUrl,
-				R.drawable.ic_comment_avatar, false);
+		mFBitmap.display(avatarImage, comment.avatarUrl);
 		// 内容
 		TextView contentText = ViewHolder.get(convertView,
 				R.id.content_textview);
@@ -169,8 +172,7 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		// 图片
 		ImageView pictureImage = ViewHolder.get(convertView,
 				R.id.picture_imageview);
-		ImageLoader.displayImage(pictureImage, secret.imageUrl,
-				R.drawable.ic_launcher, false);
+		mFBitmap.display(pictureImage, secret.imageUrl);
 		// 来自哪里
 		TextView whereText = ViewHolder.get(convertView,
 				R.id.wherefrom_textview);

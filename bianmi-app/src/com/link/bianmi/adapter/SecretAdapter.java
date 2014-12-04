@@ -1,5 +1,6 @@
 package com.link.bianmi.adapter;
 
+import net.tsz.afinal.FinalBitmap;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -17,7 +18,6 @@ import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.entity.manager.SecretManager.TaskType;
-import com.link.bianmi.imageloader.ImageLoader;
 import com.link.bianmi.utils.ViewHolder;
 import com.link.bianmi.widget.AudioButton;
 import com.link.bianmi.widget.SuperToast;
@@ -28,11 +28,15 @@ public class SecretAdapter extends CursorAdapter {
 	private IndexHolder mIndexHolder;
 	private TaskType mTaskType;
 
+	private FinalBitmap mFBitmap;
+
 	@SuppressWarnings("deprecation")
 	public SecretAdapter(Context context, Cursor c, TaskType taskType) {
 		super(context, c);
 		mContext = context;
 		mTaskType = taskType;
+		mFBitmap = FinalBitmap.create(context);
+		mFBitmap.configLoadingImage(R.drawable.ic_launcher);
 	}
 
 	@Override
@@ -74,9 +78,8 @@ public class SecretAdapter extends CursorAdapter {
 		commentsText.setText(String.valueOf(mIndexHolder.commentsIndex));
 		final ImageView pictureImage = ViewHolder.get(view,
 				R.id.picture_imageview);
-		ImageLoader.displayImage(pictureImage,
-				cursor.getString(mIndexHolder.imageUrlIndex),
-				R.drawable.ic_launcher, false);
+		mFBitmap.display(pictureImage,
+				cursor.getString(mIndexHolder.imageUrlIndex));
 
 		AudioButton audioBtn = ViewHolder.get(view, R.id.audio_button);
 		audioBtn.setAudioFile(cursor.getString(mIndexHolder.audioUrlIndex),
