@@ -81,7 +81,6 @@ public class ConfigManager {
 						result.status);
 			} else {
 				Status_ status = new Status_();
-				status.msg = "获取数据失败！";
 				taskResult = new TaskResult<Status_>(TaskStatus.FAILED, status);
 			}
 

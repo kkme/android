@@ -29,7 +29,6 @@ import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.entity.ListResult;
 import com.link.bianmi.entity.Secret;
-import com.link.bianmi.entity.Status_;
 import com.link.bianmi.entity.manager.ContactsManager;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.entity.manager.SecretManager.TaskType;
@@ -211,8 +210,8 @@ public abstract class SecretFragment extends BaseFragment {
 			ContactsManager.Task.uploadContacts(getActivity(),
 					new OnSimpleTaskOverListener() {
 						@Override
-						public void onResult(Status_ status) {
-							SuperToast.makeText(mParentActivity, status.msg,
+						public void onResult(int code, String msg) {
+							SuperToast.makeText(mParentActivity, msg,
 									SuperToast.LENGTH_SHORT).show();
 						}
 					});

@@ -33,8 +33,8 @@ public class UserManager {
 
 	private static class API {
 
-		public static Result<User> signInOrUp(String phonemd5,
-				String pwdmd5, String url) {
+		public static Result<User> signInOrUp(String phonemd5, String pwdmd5,
+				String url) {
 			Result<User> result = null;
 			Response response = HttpClient.doGet(String.format(
 					"%s?phone_md5=%s&pwd_md5=%s", url, phonemd5, pwdmd5));
@@ -95,8 +95,7 @@ public class UserManager {
 
 		// 清除痕迹
 		public static Status_ clearPrivacy() {
-			Status_ status = new Status_();
-
+			Status_ status = null;
 			Response response = HttpClient.doGet(String.format(
 					"%s?userid=%s&token=%s", SysConfig.getInstance()
 							.getClearPrivacyUrl(), UserConfig.getInstance()
@@ -109,7 +108,6 @@ public class UserManager {
 				} catch (ResponseException e) {
 					e.printStackTrace();
 				}
-
 			}
 			return status;
 		}
@@ -194,7 +192,6 @@ public class UserManager {
 							result.status);
 				} else {
 					Status_ status = new Status_();
-					status.msg = "获取数据失败！";
 					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
 							status);
 				}
@@ -225,21 +222,13 @@ public class UserManager {
 							result.status);
 				} else {
 					Status_ status = new Status_();
-					status.msg = "获取数据失败！";
 					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
 							status);
 				}
 				// 清除痕迹
 			} else if (taskType == TaskType.TYPE_CLEAR_PRIVACY) {
-
-				Status_ status = API.clearPrivacy();
-				// 返回数据成功
-				if (status != null && status.code == Status_.OK) {
-					taskResult = new TaskResult<Status_>(TaskStatus.OK);
-				} else {
-					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
-							status);
-				}
+				taskResult = new TaskResult<Status_>(TaskStatus.OK,
+						API.clearPrivacy());
 			}
 
 			return taskResult;
@@ -249,7 +238,7 @@ public class UserManager {
 		@Override
 		protected void onPostExecute(TaskResult<?> taskResult) {
 			super.onPostExecute(taskResult);
-
+			Status_ status = null;
 			// 登录
 			if (taskType == TaskType.TYPE_SIGNIN) {
 				if (taskResult.getStatus() == TaskStatus.OK) {
@@ -279,12 +268,10 @@ public class UserManager {
 				}
 				// 清除痕迹
 			} else if (taskType == TaskType.TYPE_CLEAR_PRIVACY) {
-				if (taskResult.getStatus() == TaskStatus.OK) {
-					listener.onSuccess(null);
-				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
-					Status_ result = (Status_) taskResult.getEntity();
-					listener.onFailure(result.code, result.msg);
-				}
+				status = (Status_) taskResult.getEntity();
+				if (status == null)
+					status = new Status_();
+				listener.onResult(status.code, status.msg);
 			}
 		}
 	}

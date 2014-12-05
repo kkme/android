@@ -10,6 +10,7 @@
     <string name="welcome_guest">进去看看再说</string>
     <string name="cancel">取消</string>
     <string name="default_city">深圳</string>
+    <string name="default_failed_tip">操作失败！</string>
 
     <!-- 主界面 -->
     <string name="hot">大街</string>

@@ -1,12 +1,10 @@
 package com.link.bianmi.asynctask.listener;
 
-import com.link.bianmi.entity.Status_;
-
 public abstract class OnSimpleTaskOverListener implements
-		ITaskOverListener<Status_> {
-	public abstract void onResult(Status_ status);
+		ITaskOverListener<Object> {
+	public abstract void onResult(int code, String msg);
 
-	public void onSuccess(Status_ t) {
+	public void onSuccess(Object t) {
 
 	}
 

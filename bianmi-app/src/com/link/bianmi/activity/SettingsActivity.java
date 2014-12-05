@@ -21,7 +21,6 @@ import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.asynctask.listener.OnSimpleTaskOverListener;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
-import com.link.bianmi.entity.Status_;
 import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.unit.ninelock.NineLockActivity;
 import com.link.bianmi.unit.ninelock.NineLockSettingsActivity;
@@ -151,13 +150,14 @@ public class SettingsActivity extends BaseFragmentActivity {
 										// 继续清除
 										UserManager.Task
 												.clearPrivacy(new OnSimpleTaskOverListener() {
+
 													@Override
 													public void onResult(
-															Status_ status) {
+															int code, String msg) {
 														SuperToast
 																.makeText(
 																		SettingsActivity.this,
-																		status.msg,
+																		msg,
 																		SuperToast.LENGTH_SHORT)
 																.show();
 														mLoadingItem

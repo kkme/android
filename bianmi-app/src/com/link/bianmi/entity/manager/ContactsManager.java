@@ -67,7 +67,7 @@ public class ContactsManager {
 	public static class Task {
 		/** 上传联系人 **/
 		public static void uploadContacts(Context context,
-				ITaskOverListener<Status_> listener) {
+				ITaskOverListener<?> listener) {
 			TaskParams taskParams = new TaskParams();
 			taskParams.put("userid", UserConfig.getInstance().getUserId());
 			taskParams.put("contacts", DB.getContactsJSON(context));
@@ -112,9 +112,9 @@ public class ContactsManager {
 	}
 
 	private static class ContactsTask extends BaseAsyncTask {
-		ITaskOverListener<Status_> listener;
+		ITaskOverListener<?> listener;
 
-		public ContactsTask(ITaskOverListener<Status_> listener) {
+		public ContactsTask(ITaskOverListener<?> listener) {
 			this.listener = listener;
 		}
 

@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import com.link.bianmi.entity.Status_;
 
 public class StatusBuilder implements BaseEntityBuilder<Status_> {
-	
+
 	private static StatusBuilder mInstance = null;
 
 	private StatusBuilder() {

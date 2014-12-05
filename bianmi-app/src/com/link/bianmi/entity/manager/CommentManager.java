@@ -14,6 +14,7 @@ import com.link.bianmi.asynctask.TaskParams;
 import com.link.bianmi.asynctask.TaskResult;
 import com.link.bianmi.asynctask.TaskResult.TaskStatus;
 import com.link.bianmi.asynctask.listener.ITaskOverListener;
+import com.link.bianmi.asynctask.listener.OnSimpleTaskOverListener;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.Comment;
 import com.link.bianmi.entity.ListResult;
@@ -38,10 +39,10 @@ public class CommentManager {
 
 	public static class API {
 
-		private static Result<Comment> publishComment(Comment comment) {
+		private static Status_ publishComment(Comment comment) {
 			if (comment == null)
 				return null;
-			Result<Comment> result = null;
+			Status_ status = null;
 			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("userid", comment.userid));
 			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
@@ -58,15 +59,13 @@ public class CommentManager {
 				try {
 					// 解析Status
 					JSONObject jsonObj = response.asJSONObject();
-					result = new Result<Comment>();
-					result.status = StatusBuilder.getInstance().buildEntity(
-							jsonObj);
+					status = StatusBuilder.getInstance().buildEntity(jsonObj);
 				} catch (ResponseException e) {
 					e.printStackTrace();
 				}
 			}
 
-			return result;
+			return status;
 		}
 
 		private static Result<ListResult<Comment>> getComments(String userid,
@@ -139,7 +138,7 @@ public class CommentManager {
 
 	public static class Task {
 		public static void publishComment(Comment comment,
-				OnTaskOverListener<Comment> listener) {
+				OnSimpleTaskOverListener listener) {
 			TaskParams taskParams = new TaskParams();
 			taskParams.put("comment", comment);
 			CommentTask userTask = new CommentTask(TaskType.PUBLISH, listener);
@@ -189,24 +188,14 @@ public class CommentManager {
 		@Override
 		protected TaskResult<?> doInBackground(TaskParams... params) {
 			Status_ resultStatus = null;
-			TaskResult<?> taskResult = null;
+			TaskResult<?> taskResult = new TaskResult<Status_>(
+					TaskStatus.FAILED, resultStatus);
 			// 发表评论
 			if (taskType == TaskType.PUBLISH) {
+
 				Comment comment = (Comment) params[0].get("comment");
-				Result<Comment> result = API.publishComment(comment);
-				if (result != null && result.status != null
-						&& result.status.code == Status_.OK) {
-					taskResult = new TaskResult<Comment>(TaskStatus.OK,
-							result.t);
-				} else if (result != null && result.status != null) {
-					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
-							result.status);
-				} else {
-					resultStatus = new Status_();
-					resultStatus.msg = "获取数据失败!";
-					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
-							resultStatus);
-				}
+				taskResult = new TaskResult<Status_>(TaskStatus.OK,
+						API.publishComment(comment));
 
 				// 评论列表
 			} else if (taskType == TaskType.GET_COMMENTS) {
@@ -224,7 +213,6 @@ public class CommentManager {
 							result.status);
 				} else {
 					resultStatus = new Status_();
-					resultStatus.msg = "获取数据失败!";
 					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
 							resultStatus);
 				}
@@ -254,17 +242,13 @@ public class CommentManager {
 		@Override
 		protected void onPostExecute(TaskResult<?> taskResult) {
 			super.onPostExecute(taskResult);
-
+			Status_ status = null;
 			// 发表评论
 			if (taskType == TaskType.PUBLISH) {
-				if (taskResult.getStatus() == TaskStatus.OK) {
-					((OnTaskOverListener<Comment>) listener)
-							.onSuccess((Comment) taskResult.getEntity());
-				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
-					Status_ result = (Status_) taskResult.getEntity();
-					((OnTaskOverListener<Comment>) listener).onFailure(
-							result.code, result.msg);
-				}
+				status = (Status_) taskResult.getEntity();
+				if (status == null)
+					status = new Status_();
+				listener.onResult(status.code, status.msg);
 				// 评论列表
 			} else if (taskType == TaskType.GET_COMMENTS) {
 				if (taskResult.getStatus() == TaskStatus.OK) {

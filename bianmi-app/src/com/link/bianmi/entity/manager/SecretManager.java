@@ -19,6 +19,7 @@ import com.link.bianmi.asynctask.TaskParams;
 import com.link.bianmi.asynctask.TaskResult;
 import com.link.bianmi.asynctask.TaskResult.TaskStatus;
 import com.link.bianmi.asynctask.listener.ITaskOverListener;
+import com.link.bianmi.asynctask.listener.OnSimpleTaskOverListener;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.db.Database;
 import com.link.bianmi.db.SecretDB;
@@ -139,10 +140,10 @@ public class SecretManager {
 
 	private static class API {
 
-		private static Result<Secret> publishSecret(Secret secret) {
+		private static Status_ publishSecret(Secret secret) {
 			if (secret == null)
 				return null;
-			Result<Secret> result = null;
+			Status_ status = null;
 			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("userid", secret.userId));
 			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
@@ -164,15 +165,13 @@ public class SecretManager {
 				try {
 					// 解析Status
 					JSONObject jsonObj = response.asJSONObject();
-					result = new Result<Secret>();
-					result.status = StatusBuilder.getInstance().buildEntity(
-							jsonObj);
+					status = StatusBuilder.getInstance().buildEntity(jsonObj);
 				} catch (ResponseException e) {
 					e.printStackTrace();
 				}
 			}
 
-			return result;
+			return status;
 		}
 
 		private static Result<ListResult<Secret>> getSecrets(String lastid,
@@ -290,7 +289,7 @@ public class SecretManager {
 
 	public static class Task {
 		public static void publishSecret(Secret secret,
-				OnTaskOverListener<Secret> listener) {
+				OnSimpleTaskOverListener listener) {
 			TaskParams taskParams = new TaskParams();
 			taskParams.put("secret", secret);
 			SecretTask userTask = new SecretTask(TaskType.PUBLISH, listener);
@@ -373,19 +372,8 @@ public class SecretManager {
 			switch (taskType) {
 			case PUBLISH:
 				Secret secret = (Secret) params[0].get("secret");
-				Result<Secret> result = API.publishSecret(secret);
-				if (result != null && result.status != null
-						&& result.status.code == Status_.OK) {
-					taskResult = new TaskResult<Secret>(TaskStatus.OK, result.t);
-				} else if (result != null && result.status != null) {
-					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
-							result.status);
-				} else {
-					resultStatus = new Status_();
-					resultStatus.msg = "获取数据失败!";
-					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
-							resultStatus);
-				}
+				taskResult = new TaskResult<Status_>(TaskStatus.OK,
+						API.publishSecret(secret));
 				break;
 			case GET_HOTS:
 			case GET_FRIENDS:
@@ -402,7 +390,6 @@ public class SecretManager {
 							result1.status);
 				} else {
 					resultStatus = new Status_();
-					resultStatus.msg = "获取数据失败!";
 					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
 							resultStatus);
 				}
@@ -421,7 +408,6 @@ public class SecretManager {
 							result11.status);
 				} else {
 					resultStatus = new Status_();
-					resultStatus.msg = "操作失败!";
 					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
 							resultStatus);
 				}
@@ -439,7 +425,6 @@ public class SecretManager {
 							resultSecret.status);
 				} else {
 					resultStatus = new Status_();
-					resultStatus.msg = "操作失败!";
 					taskResult = new TaskResult<Status_>(TaskStatus.FAILED,
 							resultStatus);
 				}
@@ -455,17 +440,13 @@ public class SecretManager {
 		@Override
 		protected void onPostExecute(TaskResult<?> taskResult) {
 			super.onPostExecute(taskResult);
-
+			Status_ status = null;
 			switch (taskType) {
 			case PUBLISH:
-				if (taskResult.getStatus() == TaskStatus.OK) {
-					((OnTaskOverListener<Secret>) listener)
-							.onSuccess((Secret) taskResult.getEntity());
-				} else if (taskResult.getStatus() == TaskStatus.FAILED) {
-					Status_ result = (Status_) taskResult.getEntity();
-					((OnTaskOverListener<Secret>) listener).onFailure(
-							result.code, result.msg);
-				}
+				status = (Status_) taskResult.getEntity();
+				if (status == null)
+					status = new Status_();
+				listener.onResult(status.code, status.msg);
 				break;
 			case GET_HOTS:
 			case GET_FRIENDS:

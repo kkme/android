@@ -15,10 +15,12 @@ import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.adapter.SecretDetailsAdapter;
+import com.link.bianmi.asynctask.listener.OnSimpleTaskOverListener;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.Comment;
 import com.link.bianmi.entity.ListResult;
 import com.link.bianmi.entity.Secret;
+import com.link.bianmi.entity.Status_;
 import com.link.bianmi.entity.manager.CommentManager;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.utils.UmengSocialClient;
@@ -229,27 +231,23 @@ public class DetailsActivity extends BaseFragmentActivity {
 			comment.createdTime = System.currentTimeMillis();
 
 			CommentManager.Task.publishComment(comment,
-					new OnTaskOverListener<Comment>() {
-
+					new OnSimpleTaskOverListener() {
 						@Override
-						public void onSuccess(Comment t) {
-							SuperToast.makeText(DetailsActivity.this, "发表成功!",
+						public void onResult(int code, String msg) {
+							SuperToast.makeText(DetailsActivity.this, msg,
 									SuperToast.LENGTH_SHORT).show();
-							mLoadingItem.setVisible(false);
-							mShareItem.setVisible(true);
-							mInputSuit.reset();
-							fetchNew();
-						}
-
-						@Override
-						public void onFailure(int code, String msg) {
-							SuperToast.makeText(DetailsActivity.this, "发表失败!",
-									SuperToast.LENGTH_SHORT).show();
-							mLoadingItem.setVisible(false);
-							mShareItem.setVisible(true);
+							// 发表成功
+							if (code == Status_.OK) {
+								mLoadingItem.setVisible(false);
+								mShareItem.setVisible(true);
+								mInputSuit.reset();
+								fetchNew();
+							} else {
+								mLoadingItem.setVisible(false);
+								mShareItem.setVisible(true);
+							}
 						}
 					});
-
 		};
 	};
 

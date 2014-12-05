@@ -14,8 +14,9 @@ import android.widget.EditText;
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.activity.base.BaseFragmentActivity;
-import com.link.bianmi.asynctask.listener.OnTaskOverListener;
+import com.link.bianmi.asynctask.listener.OnSimpleTaskOverListener;
 import com.link.bianmi.entity.Secret;
+import com.link.bianmi.entity.Status_;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.widget.InputSuit;
 import com.link.bianmi.widget.SuperToast;
@@ -228,29 +229,24 @@ public class PublishActivity extends BaseFragmentActivity {
 			secret.city = UserConfig.getInstance().getCity();
 
 			SecretManager.Task.publishSecret(secret,
-					new OnTaskOverListener<Secret>() {
-
+					new OnSimpleTaskOverListener() {
 						@Override
-						public void onSuccess(Secret t) {
-							SuperToast.makeText(PublishActivity.this, "发表成功!",
+						public void onResult(int code, String msg) {
+							SuperToast.makeText(PublishActivity.this, msg,
 									SuperToast.LENGTH_SHORT).show();
-							mLoadingItem.setVisible(false);
-							new Handler().postDelayed(new Runnable() {
-								@Override
-								public void run() {
-									finish();
-								}
-							}, 500);
-						}
-
-						@Override
-						public void onFailure(int code, String msg) {
-							SuperToast.makeText(PublishActivity.this, "发表失败!",
-									SuperToast.LENGTH_SHORT).show();
-							mLoadingItem.setVisible(false);
+							if (code == Status_.OK) {
+								mLoadingItem.setVisible(false);
+								new Handler().postDelayed(new Runnable() {
+									@Override
+									public void run() {
+										finish();
+									}
+								}, 500);
+							} else {
+								mLoadingItem.setVisible(false);
+							}
 						}
 					});
-
 		};
 	};
 
