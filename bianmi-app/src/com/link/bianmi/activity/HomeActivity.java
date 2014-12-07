@@ -97,13 +97,8 @@ public class HomeActivity extends BaseFragmentActivity {
 		mViewPagerTab.setViewPager(mViewPager);
 		mImageFragment = (ImageFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.main_image_fragment);
-		mViewPagerTab.post(new Runnable() {
-			@Override
-			public void run() {
-				getSupportFragmentManager().beginTransaction()
-						.hide(mImageFragment).commit();
-			}
-		});
+		getSupportFragmentManager().beginTransaction().hide(mImageFragment)
+				.commit();
 
 		executeGetSysConfigTask();
 		executeGetReminderTask();
@@ -399,7 +394,6 @@ public class HomeActivity extends BaseFragmentActivity {
 			getSupportFragmentManager().beginTransaction().hide(mImageFragment)
 					.commit();
 		}
-
 	}
 
 	// ------------------------------Task------------------------------

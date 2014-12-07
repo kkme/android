@@ -92,6 +92,7 @@ public class InputSuit extends LinearLayout {
 	private View mTipRecord;
 	/** 提示：有图片文件 **/
 	private View mTipPhoto;
+	private View mPhotoView;
 	/** 回复内容 **/
 	private EditText mMessageEdit;
 	/** 提交 **/
@@ -119,7 +120,8 @@ public class InputSuit extends LinearLayout {
 	private TextView mPitchProgressText;
 	private TextView mTempoProgressText;
 
-	private boolean mIsAttah = false;
+	private boolean mShowEdit = true;
+	private boolean mShowPhoto = true;
 
 	public InputSuit(Context context) {
 		super(context, null);
@@ -133,8 +135,8 @@ public class InputSuit extends LinearLayout {
 		findViewById(R.id.attach_record_view).setOnClickListener(
 				attachRecordListener);
 		mTipRecord = findViewById(R.id.tips_record_view);
-		findViewById(R.id.attach_photo_view).setOnClickListener(
-				attachPhotoListener);
+		mPhotoView = findViewById(R.id.attach_photo_view);
+		mPhotoView.setOnClickListener(attachPhotoListener);
 		mTipPhoto = findViewById(R.id.tips_photo_view);
 		mAttachView = findViewById(R.id.attach_group);
 		mMessageEdit = (EditText) findViewById(R.id.message_edit);
@@ -269,12 +271,15 @@ public class InputSuit extends LinearLayout {
 		if (attrs != null) {
 			TypedArray a = context.obtainStyledAttributes(attrs,
 					R.styleable.InputSuit);
-			mIsAttah = a.getBoolean(R.styleable.InputSuit_is_attach, false);
-			if (mIsAttah) {
+			mShowEdit = a.getBoolean(R.styleable.InputSuit_show_edit, true);
+			mShowPhoto = a.getBoolean(R.styleable.InputSuit_show_photo, true);
+			if (!mShowEdit) {
 				mMessageEdit.setVisibility(View.GONE);
-				mRecordGroup.setVisibility(View.VISIBLE);
+			}
+
+			if (!mShowPhoto) {
 				mPhotoGroup.setVisibility(View.GONE);
-				mAttachView.setVisibility(View.VISIBLE);
+				mPhotoView.setVisibility(View.GONE);
 			}
 			a.recycle();
 		}
@@ -436,7 +441,8 @@ public class InputSuit extends LinearLayout {
 	private OnClickListener attachRecordListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			if (mRecordGroup.getVisibility() == View.VISIBLE && !mIsAttah) {
+			hideSoftInput();
+			if (mRecordGroup.getVisibility() == View.VISIBLE) {
 				mRecordGroup.setVisibility(View.GONE);
 				mPhotoGroup.setVisibility(View.GONE);
 				mAttachView.setVisibility(View.GONE);
@@ -444,7 +450,6 @@ public class InputSuit extends LinearLayout {
 				mRecordGroup.setVisibility(View.VISIBLE);
 				mPhotoGroup.setVisibility(View.GONE);
 				mAttachView.setVisibility(View.VISIBLE);
-				hideSoftInput();
 			}
 		}
 	};
@@ -453,8 +458,8 @@ public class InputSuit extends LinearLayout {
 	private OnClickListener attachPhotoListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-
-			if (mPhotoGroup.getVisibility() == View.VISIBLE && !mIsAttah) {
+			hideSoftInput();
+			if (mPhotoGroup.getVisibility() == View.VISIBLE) {
 				mPhotoGroup.setVisibility(View.GONE);
 				mRecordGroup.setVisibility(View.GONE);
 				mAttachView.setVisibility(View.GONE);
@@ -462,9 +467,7 @@ public class InputSuit extends LinearLayout {
 				mRecordGroup.setVisibility(View.GONE);
 				mPhotoGroup.setVisibility(View.VISIBLE);
 				mAttachView.setVisibility(View.VISIBLE);
-				hideSoftInput();
 			}
-
 		}
 	};
 
@@ -925,4 +928,12 @@ public class InputSuit extends LinearLayout {
 
 		uploadAttach();
 	}
+
+	public void setMessageEdit(EditText editText) {
+		if (editText != null) {
+			mMessageEdit = editText;
+			mMessageEdit.addTextChangedListener(textWatcher);
+		}
+	}
+
 }

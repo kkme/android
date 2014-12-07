@@ -41,19 +41,24 @@ public class PublishActivity extends BaseFragmentActivity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.activity_publish);
 
-		mInputSuit = (InputSuit) findViewById(R.id.input_suit);
-		mInputSuit.init(this, null, mInputListener);
-
 		mContentEdit = (EditText) findViewById(R.id.content_edittext);
 		mContentEdit.addTextChangedListener(mTextWatcher);
+
+		mInputSuit = (InputSuit) findViewById(R.id.input_suit);
+		mInputSuit.init(this, null, mInputListener);
+		mInputSuit.setMessageEdit(mContentEdit);
 	}
 
 	private MenuItem mLoadingItem;
+	private MenuItem mFAQItem;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.publish, menu);
-		mLoadingItem = menu.getItem(1);
+		mLoadingItem = menu.findItem(R.id.action_loading);
+		mFAQItem = menu.findItem(R.id.action_faq);
+		mFAQItem.setVisible(true);
+		mLoadingItem.setVisible(false);
 		return true;
 	}
 
@@ -62,6 +67,7 @@ public class PublishActivity extends BaseFragmentActivity {
 		if (item.getItemId() == android.R.id.home) {
 			// 如果正在提交，则取消提交
 			if (mLoadingItem.isVisible()) {
+				mFAQItem.setVisible(true);
 				mLoadingItem.setVisible(false);
 				return false;
 			}
@@ -93,6 +99,7 @@ public class PublishActivity extends BaseFragmentActivity {
 	public void onBackPressed() {
 		// 如果正在提交，则取消提交
 		if (mLoadingItem.isVisible()) {
+			mFAQItem.setVisible(true);
 			mLoadingItem.setVisible(false);
 			return;
 		}
@@ -203,6 +210,8 @@ public class PublishActivity extends BaseFragmentActivity {
 		@Override
 		public void onSubmit(String photoPath, String recordPath,
 				int recordLen, String message, String userName, String UserId) {
+			mLoadingItem.setVisible(true);
+			mFAQItem.setVisible(false);
 		}
 
 		@Override
@@ -235,16 +244,11 @@ public class PublishActivity extends BaseFragmentActivity {
 							SuperToast.makeText(PublishActivity.this, msg,
 									SuperToast.LENGTH_SHORT).show();
 							if (code == Status_.OK) {
-								mLoadingItem.setVisible(false);
-								new Handler().postDelayed(new Runnable() {
-									@Override
-									public void run() {
-										finish();
-									}
-								}, 500);
-							} else {
-								mLoadingItem.setVisible(false);
+								finish();
 							}
+							mFAQItem.setVisible(true);
+							mLoadingItem.setVisible(false);
+
 						}
 					});
 		};

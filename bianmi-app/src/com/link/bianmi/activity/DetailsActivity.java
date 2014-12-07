@@ -117,7 +117,6 @@ public class DetailsActivity extends BaseFragmentActivity {
 			}
 		});
 
-		fetchNew();
 	}
 
 	@Override
@@ -140,6 +139,8 @@ public class DetailsActivity extends BaseFragmentActivity {
 		mLoadingItem = menu.findItem(R.id.action_loading);
 		mLoadingItem.setVisible(true);
 		mShareItem.setVisible(false);
+
+		fetchNew();
 		return true;
 	}
 
@@ -220,8 +221,8 @@ public class DetailsActivity extends BaseFragmentActivity {
 			@Override
 			public void run() {
 				mRListView.stopHeadActiving();
-				mLoadingItem.setVisible(false);
 				mShareItem.setVisible(true);
+				mLoadingItem.setVisible(false);
 			}
 		}, endTime - beginTime > 1500 ? 0 : 1500 - (endTime - beginTime));
 	}
@@ -288,29 +289,19 @@ public class DetailsActivity extends BaseFragmentActivity {
 				new OnTaskOverListener<Secret>() {
 					@Override
 					public void onSuccess(Secret t) {
+						if (t == null)
+							return;
+						mSecret = t;
+						likeOrDislike(mSecret.isLiked);
 						mAdapter.refresh(null, t);
-						new Handler().postDelayed(new Runnable() {
-							@Override
-							public void run() {
-								mRListView.stopHeadActiving();
-								mLoadingItem.setVisible(false);
-								mShareItem.setVisible(true);
-							}
-						}, 1000);
+						mRListView.stopHeadActiving();
 					}
 
 					@Override
 					public void onFailure(int code, String msg) {
 						SuperToast.makeText(DetailsActivity.this, msg,
 								SuperToast.LENGTH_SHORT).show();
-						new Handler().postDelayed(new Runnable() {
-							@Override
-							public void run() {
-								mRListView.stopHeadActiving();
-								mLoadingItem.setVisible(false);
-								mShareItem.setVisible(true);
-							}
-						}, 1000);
+						mRListView.stopHeadActiving();
 					}
 				});
 	}
@@ -341,14 +332,9 @@ public class DetailsActivity extends BaseFragmentActivity {
 					public void onFailure(int code, String msg) {
 						SuperToast.makeText(DetailsActivity.this, msg,
 								SuperToast.LENGTH_SHORT).show();
-						new Handler().postDelayed(new Runnable() {
-							@Override
-							public void run() {
-								mRListView.stopHeadActiving();
-								mLoadingItem.setVisible(false);
-								mShareItem.setVisible(true);
-							}
-						}, 1000);
+						mRListView.stopHeadActiving();
+						mShareItem.setVisible(true);
+						mLoadingItem.setVisible(false);
 					}
 				});
 	}
