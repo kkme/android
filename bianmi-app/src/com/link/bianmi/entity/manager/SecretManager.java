@@ -263,7 +263,7 @@ public class SecretManager {
 
 			Response response = HttpClient.doGet(String.format(
 					"%s?userid=%s&token=%s&secretid=%s", SysConfig
-							.getInstance().getLikeUrl(), UserConfig
+							.getInstance().getSecretDetails(), UserConfig
 							.getInstance().getUserId(), UserConfig
 							.getInstance().getToken(), secretId));
 

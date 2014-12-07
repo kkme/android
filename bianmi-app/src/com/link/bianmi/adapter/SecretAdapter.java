@@ -93,14 +93,14 @@ public class SecretAdapter extends CursorAdapter {
 						SecretDB.getInstance().buildEntity(cursor));
 			}
 		});
+		final String resourceId = cursor
+				.getString(mIndexHolder.resourceIdIndex);
+		final boolean isLiked = cursor.getInt(mIndexHolder.isLikedIndex) > 0;
 		// 点赞
 		likesText.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				final String resourceId = cursor
-						.getString(mIndexHolder.resourceIdIndex);
-				SecretManager.Task.likeOrDislike(resourceId,
-						!(cursor.getInt(mIndexHolder.isLikedIndex) > 0),
+				SecretManager.Task.likeOrDislike(resourceId, !isLiked,
 						new OnTaskOverListener<Boolean>() {
 							@Override
 							public void onSuccess(Boolean t) {

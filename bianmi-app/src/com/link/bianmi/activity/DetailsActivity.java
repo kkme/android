@@ -36,7 +36,8 @@ public class DetailsActivity extends BaseFragmentActivity {
 	private RListView mRListView;
 	private SecretDetailsAdapter mAdapter;
 	private List<Comment> mCommentsList;
-	private String mSecretId;
+
+	private Secret mSecret;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +50,11 @@ public class DetailsActivity extends BaseFragmentActivity {
 
 		setContentView(R.layout.activity_details);
 
-		final Secret secret = (Secret) getIntent().getSerializableExtra(
-				"secret");
+		mSecret = (Secret) getIntent().getSerializableExtra("secret");
 
-		if (secret == null)
+		if (mSecret == null)
 			finish();
 
-		mSecretId = secret.resourceId;
 		// 正文内容、评论列表
 		mRListView = (RListView) findViewById(R.id.rlistview);
 		mRListView.setActivateListener(new ActivateListener() {
@@ -105,7 +104,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 				}, 800);
 			}
 		});
-		mAdapter = new SecretDetailsAdapter(this, secret);
+		mAdapter = new SecretDetailsAdapter(this, mSecret);
 		mRListView.setAdapter(mAdapter);
 		// 输入套件
 		mInputSuit = (InputSuit) findViewById(R.id.input_suit);
@@ -126,12 +125,17 @@ public class DetailsActivity extends BaseFragmentActivity {
 		super.onResume();
 	}
 
+	private MenuItem mLikeItem;
 	private MenuItem mLoadingItem;
 	private MenuItem mShareItem;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.details, menu);
+		mLikeItem = menu.findItem(R.id.action_like);
+		if (mSecret != null) {
+			likeOrDislike(mSecret.isLiked);
+		}
 		mShareItem = menu.findItem(R.id.action_share);
 		mLoadingItem = menu.findItem(R.id.action_loading);
 		mLoadingItem.setVisible(true);
@@ -145,7 +149,20 @@ public class DetailsActivity extends BaseFragmentActivity {
 			finish();
 			return true;
 		} else if (item.getItemId() == R.id.action_like) {
-			item.setIcon(R.drawable.ab_ic_liked);
+			SecretManager.Task.likeOrDislike(mSecret.resourceId,
+					!mSecret.isLiked, new OnTaskOverListener<Boolean>() {
+						@Override
+						public void onSuccess(Boolean t) {
+							likeOrDislike(t);
+							mSecret.isLiked = t;
+						}
+
+						@Override
+						public void onFailure(int code, String msg) {
+							SuperToast.makeText(DetailsActivity.this, msg,
+									SuperToast.LENGTH_SHORT).show();
+						}
+					});
 		} else if (item.getItemId() == R.id.action_share) {
 			UmengSocialClient.showShareDialog(this);
 		}
@@ -159,6 +176,15 @@ public class DetailsActivity extends BaseFragmentActivity {
 	}
 
 	// -------------------------------Private-------------------------------
+	private void likeOrDislike(boolean isliked) {
+		if (isliked) {
+			mLikeItem.setIcon(getResources()
+					.getDrawable(R.drawable.ab_ic_liked));
+		} else {
+			mLikeItem
+					.setIcon(getResources().getDrawable(R.drawable.ab_ic_like));
+		}
+	}
 
 	/**
 	 * 拉取最新
@@ -223,7 +249,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 					SuperToast.LENGTH_SHORT).show();
 
 			Comment comment = new Comment();
-			comment.secretid = mSecretId;
+			comment.secretid = mSecret.resourceId;
 			comment.userid = UserConfig.getInstance().getUserId();
 			comment.content = mInputSuit.getMessage();
 			comment.audioUrl = recordUrl;
@@ -256,36 +282,37 @@ public class DetailsActivity extends BaseFragmentActivity {
 	 * 执行获取秘密详情的任务
 	 */
 	private void executeSecretDetailsTask() {
-		if (mSecretId == null || mSecretId.isEmpty())
+		if (mSecret == null || mSecret.resourceId.isEmpty())
 			return;
-		SecretManager.Task.details(mSecretId, new OnTaskOverListener<Secret>() {
-			@Override
-			public void onSuccess(Secret t) {
-				mAdapter.refresh(null, t);
-				new Handler().postDelayed(new Runnable() {
+		SecretManager.Task.details(mSecret.resourceId,
+				new OnTaskOverListener<Secret>() {
 					@Override
-					public void run() {
-						mRListView.stopHeadActiving();
-						mLoadingItem.setVisible(false);
-						mShareItem.setVisible(true);
+					public void onSuccess(Secret t) {
+						mAdapter.refresh(null, t);
+						new Handler().postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								mRListView.stopHeadActiving();
+								mLoadingItem.setVisible(false);
+								mShareItem.setVisible(true);
+							}
+						}, 1000);
 					}
-				}, 1000);
-			}
 
-			@Override
-			public void onFailure(int code, String msg) {
-				SuperToast.makeText(DetailsActivity.this, msg,
-						SuperToast.LENGTH_SHORT).show();
-				new Handler().postDelayed(new Runnable() {
 					@Override
-					public void run() {
-						mRListView.stopHeadActiving();
-						mLoadingItem.setVisible(false);
-						mShareItem.setVisible(true);
+					public void onFailure(int code, String msg) {
+						SuperToast.makeText(DetailsActivity.this, msg,
+								SuperToast.LENGTH_SHORT).show();
+						new Handler().postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								mRListView.stopHeadActiving();
+								mLoadingItem.setVisible(false);
+								mShareItem.setVisible(true);
+							}
+						}, 1000);
 					}
-				}, 1000);
-			}
-		});
+				});
 	}
 
 	/**
@@ -296,9 +323,9 @@ public class DetailsActivity extends BaseFragmentActivity {
 	 */
 	private void executeGetCommentsTask(final String lastid) {
 		final long beginTime = System.currentTimeMillis();
-		if (mSecretId == null || mSecretId.isEmpty())
+		if (mSecret == null || mSecret.resourceId.isEmpty())
 			return;
-		CommentManager.Task.getComments(mSecretId, lastid,
+		CommentManager.Task.getComments(mSecret.resourceId, lastid,
 				new OnTaskOverListener<ListResult<Comment>>() {
 					@Override
 					public void onSuccess(ListResult<Comment> t) {
