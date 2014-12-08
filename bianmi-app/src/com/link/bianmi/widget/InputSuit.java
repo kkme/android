@@ -803,8 +803,7 @@ public class InputSuit extends LinearLayout {
 					String srcFilePath = ConvertHelper.uri2StrPath(mActivity,
 							uri);
 					Bitmap thumbnail = ImageHelper.getImageThumbnail(
-							srcFilePath, Tools.dip2px(mContext, 150),
-							Tools.dip2px(mContext, 150));
+							srcFilePath, 720, 500);
 					mPhotoImage.setImageBitmap(thumbnail); // 设置图片
 					setPhotoPath(srcFilePath);
 					mPhotoOperateGroup.setVisibility(View.GONE);

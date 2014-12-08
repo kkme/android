@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.Comment;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.CommentManager;
+import com.link.bianmi.utils.ContextUtil;
 import com.link.bianmi.utils.TimeUtil;
 import com.link.bianmi.utils.ViewHolder;
 import com.link.bianmi.widget.AudioButton;
@@ -185,6 +187,9 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		// 图片
 		ImageView pictureImage = ViewHolder.get(convertView,
 				R.id.picture_imageview);
+		LayoutParams params = pictureImage.getLayoutParams();
+		params.width = (int) ContextUtil.getScreenWidth();
+		params.height = (int) (ContextUtil.getScreenWidth() / 720 * 500);
 		mFBitmap.display(pictureImage, secret.imageUrl);
 		// 来自哪里
 		TextView whereText = ViewHolder.get(convertView,
