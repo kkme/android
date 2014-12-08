@@ -2,31 +2,34 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:minHeight="@dimen/dp_64"
+    android:paddingLeft="@dimen/dp_10"
+    android:paddingRight="@dimen/dp_10"
+    android:paddingTop="@dimen/dp_10" >
 
     <!-- 头像 -->
 
     <ImageView
         android:id="@+id/avatar_imageview"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentLeft="true"
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_48"
+        android:layout_alignTop="@+id/avatar_imageview"
         android:contentDescription="@null"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_comment_avatar" />
 
     <LinearLayout
+        android:id="@+id/text_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/dp_10"
         android:layout_toLeftOf="@+id/liked_imageview"
         android:layout_toRightOf="@+id/avatar_imageview"
-        android:orientation="vertical" >
-
-        <!-- 语音按钮 -->
-
-        <com.link.bianmi.widget.AudioButton
-            android:id="@+id/audio_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        android:minHeight="@dimen/dp_48"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp_5"
+        android:paddingRight="@dimen/dp_10" >
 
         <!-- 文字内容 -->
 
@@ -35,19 +38,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="评论内容评论内容评论内容评论内容评论内容评论内容"
-            android:textSize="16sp" />
+            android:text="评论内容论内容"
+            android:textSize="@dimen/sp_16" />
 
-        <!-- 所在楼层、评论时间 、赞数-->
+        <!-- 所在楼层、评论时间 、赞数 -->
 
         <TextView
             android:id="@+id/floor_time_likes_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableRight="@drawable/ab_ic_like"
+            android:layout_marginTop="@dimen/dp_5"
             android:gravity="center_vertical"
-            android:text="@string/details_comments_list_item"
-            android:textSize="12sp" />
+            android:text="@string/floor_time"
+            android:textSize="@dimen/sp_11" />
     </LinearLayout>
     <!-- 点赞 -->
 
@@ -59,5 +62,16 @@
         android:layout_centerVertical="true"
         android:contentDescription="@null"
         android:src="@drawable/ab_ic_like" />
+
+    <!-- 分割线 -->
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1px"
+        android:layout_alignLeft="@+id/text_group"
+        android:layout_alignRight="@+id/liked_imageview"
+        android:layout_below="@+id/text_group"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/divider_color" />
 
 </RelativeLayout>

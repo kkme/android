@@ -18,6 +18,7 @@ import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.Comment;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.CommentManager;
+import com.link.bianmi.utils.TimeUtil;
 import com.link.bianmi.utils.ViewHolder;
 import com.link.bianmi.widget.AudioButton;
 import com.link.bianmi.widget.SuperToast;
@@ -112,16 +113,28 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		TextView contentText = ViewHolder.get(convertView,
 				R.id.content_textview);
 		contentText.setText(comment.content);
-		// 楼层、时间、赞数
+		// 楼层、时间
 		TextView floorTimeLikesText = ViewHolder.get(convertView,
 				R.id.floor_time_likes_textview);
-		floorTimeLikesText.setText(String.format(
-				mContext.getString(R.string.details_comments_list_item), 1,
-				comment.createdTime, comment.likes));
+		if (comment.likes <= 0) {
+			floorTimeLikesText.setText(String.format(
+					mContext.getString(R.string.floor_time),
+					position,
+					TimeUtil.formatTimeAgo(mContext, System.currentTimeMillis()
+							- comment.createdTime)));
+			// 楼层、时间、赞数
+		} else {
+			floorTimeLikesText.setText(String.format(
+					mContext.getString(R.string.floor_time_likes),
+					position,
+					TimeUtil.formatTimeAgo(mContext, System.currentTimeMillis()
+							- comment.createdTime), comment.likes));
+		}
+
 		// 语音
-		AudioButton audioButton = ViewHolder
-				.get(convertView, R.id.audio_button);
-		audioButton.setAudioFile(comment.audioUrl, comment.audioLength);
+		// AudioButton audioButton = ViewHolder
+		// .get(convertView, R.id.audio_button);
+		// audioButton.setAudioFile(comment.audioUrl, comment.audioLength);
 		// 点赞
 		final ImageView likedImage = ViewHolder.get(convertView,
 				R.id.liked_imageview);

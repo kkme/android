@@ -58,8 +58,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 		mRListView = (RListView) findViewById(R.id.rlistview);
 		mRListView.setOnListener(new OnListener() {
 			@Override
-			public void onScroll(int delta, int scrollPosition,
-					boolean exact) {
+			public void onScroll(int delta, int scrollPosition, boolean exact) {
 			}
 
 			@Override
@@ -209,7 +208,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 	private InputSuit.Listener mInputListener = new InputSuit.Listener() {
 		@Override
 		public void onSubmit(String photoPath, String recordPath,
-				int recordLen, String message, String userName, String UserId) {
+				int recordLen, String message) {
 			mLoadingItem.setVisible(true);
 			mShareItem.setVisible(false);
 			mInputSuit.startUpload();

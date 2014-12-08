@@ -38,11 +38,12 @@ import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.qiniu.QiniuClient;
 import com.link.bianmi.utils.CameraCrop;
-import com.link.bianmi.utils.ContextHelper;
+import com.link.bianmi.utils.ContextUtil;
 import com.link.bianmi.utils.ConvertHelper;
 import com.link.bianmi.utils.FileHelper;
 import com.link.bianmi.utils.ImageHelper;
 import com.link.bianmi.utils.SoundTouchClient;
+import com.link.bianmi.utils.Tools;
 
 /**
  * 
@@ -66,11 +67,6 @@ public class InputSuit extends LinearLayout {
 	private String mRecordUrl = "";
 	/** 录音长度 **/
 	private int mRecordLen = 0;
-	/** 回复用户姓名 **/
-	private String mUserName = "";
-	/** 回复用户id **/
-	private String mUserId = "";
-
 	private Listener mListener;
 
 	private CameraCrop mCamera;
@@ -88,14 +84,14 @@ public class InputSuit extends LinearLayout {
 	private BaseFragmentActivity mActivity;
 	private BaseFragment mFragment;
 
-	/** 提示：有录音文件 **/
+	/** 小红点提示：有录音文件 **/
 	private View mTipRecord;
-	/** 提示：有图片文件 **/
+	/** 小红点提示：有图片文件 **/
 	private View mTipPhoto;
 	private View mPhotoView;
 	/** 回复内容 **/
 	private EditText mMessageEdit;
-	/** 提交 **/
+	/** 提交按钮 **/
 	private Button mSubmitBtn;
 	/** 选择图片组视图 **/
 	private View mPhotoGroup;
@@ -349,8 +345,6 @@ public class InputSuit extends LinearLayout {
 		setPhotoPath("");
 		setRecordPath("");
 		mRecordLen = 0;
-		mUserName = "";
-		mUserId = "";
 		mRecordPath = "";
 
 		mRecordDurationText.setText("0\"");
@@ -485,7 +479,7 @@ public class InputSuit extends LinearLayout {
 						if (mListener != null)
 							mListener.onSubmit(mPhotoPath, mRecordPath,
 									mRecordLen, mMessageEdit.getText()
-											.toString(), mUserName, mUserId);
+											.toString());
 						checkEnableSubmit();
 					} catch (Exception ex) {
 					}
@@ -584,7 +578,7 @@ public class InputSuit extends LinearLayout {
 			String filePathTemp = "";
 			if (needUploadPhoto) {
 
-				String fileName = String.valueOf(ContextHelper.getDeviceId()
+				String fileName = String.valueOf(ContextUtil.getDeviceId()
 						+ FileHelper.getFileName(mPhotoPath));
 				filePathTemp = SysConfig.getInstance().getPathTemp()
 						+ File.separator + fileName;
@@ -716,7 +710,7 @@ public class InputSuit extends LinearLayout {
 	public interface Listener {
 		/** 提交 **/
 		public void onSubmit(String photoPath, String recordPath,
-				int recordLen, String message, String userName, String UserId);
+				int recordLen, String message);
 
 		/**
 		 * 上传附件结果
@@ -743,18 +737,11 @@ public class InputSuit extends LinearLayout {
 		return result;
 	}
 
-	/** 获取用户id **/
-	public String getmUserId() {
-		return mUserId;
-	}
-
 	/** 清理数据 **/
 	public void reset() {
 		setPhotoPath("");
 		setRecordPath("");
 		mRecordLen = 0;
-		mUserName = "";
-		mUserId = "";
 
 		mRecordGroup.setVisibility(View.GONE);
 		mPhotoGroup.setVisibility(View.GONE);
@@ -816,7 +803,8 @@ public class InputSuit extends LinearLayout {
 					String srcFilePath = ConvertHelper.uri2StrPath(mActivity,
 							uri);
 					Bitmap thumbnail = ImageHelper.getImageThumbnail(
-							srcFilePath, 128, 128);
+							srcFilePath, Tools.dip2px(mContext, 150),
+							Tools.dip2px(mContext, 150));
 					mPhotoImage.setImageBitmap(thumbnail); // 设置图片
 					setPhotoPath(srcFilePath);
 					mPhotoOperateGroup.setVisibility(View.GONE);
@@ -833,36 +821,6 @@ public class InputSuit extends LinearLayout {
 			}
 		} catch (Exception ex) {
 
-		}
-	}
-
-	/**
-	 * 设置mention
-	 * 
-	 * @param userid
-	 *            用户id
-	 * @param name
-	 *            用户名称
-	 * @param showSoftInput
-	 *            是否显示键盘
-	 * **/
-	public void setMention(String name, String userId, boolean showSoftInput) {
-		String mentionUserName = "";
-		if (name != null && name.length() > 0) {
-			if (name.length() > 10)
-				name = name.substring(0, 10) + "...";
-			mentionUserName = "@" + name;
-		}
-		mMessageEdit.setHint(mentionUserName);
-		mUserName = name;
-		mUserId = userId;
-
-		if (showSoftInput) {
-			mMessageEdit.requestFocus();
-			InputMethodManager inputManager = (InputMethodManager) mMessageEdit
-					.getContext()
-					.getSystemService(Context.INPUT_METHOD_SERVICE);
-			inputManager.showSoftInput(mMessageEdit, 0);
 		}
 	}
 
@@ -886,16 +844,6 @@ public class InputSuit extends LinearLayout {
 		return mMessageEdit.getText().toString();
 	}
 
-	/** 回复用户姓名 **/
-	public String getUserName() {
-		return mUserName;
-	}
-
-	/** 回复用户id **/
-	public String getUserId() {
-		return mUserId;
-	}
-
 	/**
 	 * 清理数据
 	 */
@@ -909,7 +857,6 @@ public class InputSuit extends LinearLayout {
 
 	/** 开始上传附件 **/
 	public void startUpload() {
-
 		if (!TextUtils.isEmpty(mPhotoPath) && !(new File(mPhotoPath).exists())) {
 			mPhotoPath = "";
 		}
@@ -917,7 +864,6 @@ public class InputSuit extends LinearLayout {
 				&& !(new File(mRecordPath).exists())) {
 			mRecordPath = "";
 		}
-
 		/** 文件不存在上传成功 **/
 		if (TextUtils.isEmpty(mPhotoPath) && TextUtils.isEmpty(mRecordPath)) {
 			if (mListener != null) {
@@ -925,7 +871,6 @@ public class InputSuit extends LinearLayout {
 			}
 			return;
 		}
-
 		uploadAttach();
 	}
 

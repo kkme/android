@@ -158,16 +158,15 @@
 
             <RelativeLayout
                 android:id="@+id/photo_show_group"
-                android:layout_width="@dimen/dp_76"
-                android:layout_height="@dimen/dp_88"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/dp_12"
                 android:clipChildren="false" >
 
                 <ImageView
                     android:id="@+id/photo_image"
-                    android:layout_width="@dimen/dp_64"
-                    android:layout_height="@dimen/dp_64"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:contentDescription="@null"
                     android:scaleType="centerCrop" />
@@ -176,8 +175,8 @@
                     android:id="@+id/photo_delete_view"
                     android:layout_width="@dimen/dp_24"
                     android:layout_height="@dimen/dp_24"
+                    android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
                     android:background="@drawable/selector_btn_delete" />
             </RelativeLayout>
         </LinearLayout>

@@ -53,8 +53,15 @@
     <string name="details_action_title">秘密详情</string>
     <string name="like">点赞</string>
     <string name="share">分享</string>
-    <string name="details_comments_list_item">%1$d楼.%2$d前.%3$d</string>
+    <string name="floor_time_likes">%1$d楼.%2$s前.%3$d赞</string>
+    <string name="floor_time">%1$d楼.%2$s前</string>
     <string name="publish_comments_without_name">匿名发表评论</string>
+    <string name="second">秒</string>
+    <string name="minute">分钟</string>
+    <string name="hour">小时</string>
+    <string name="day">天</string>
+    <string name="month">个月</string>
+    <string name="year">年</string>
 
     <!-- 登录 -->
     <string name="signin">登录</string>

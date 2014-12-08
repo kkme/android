@@ -209,7 +209,7 @@ public class PublishActivity extends BaseFragmentActivity {
 	private InputSuit.Listener mInputListener = new InputSuit.Listener() {
 		@Override
 		public void onSubmit(String photoPath, String recordPath,
-				int recordLen, String message, String userName, String UserId) {
+				int recordLen, String message) {
 			mLoadingItem.setVisible(true);
 			mFAQItem.setVisible(false);
 		}

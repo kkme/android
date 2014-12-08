@@ -1,5 +1,7 @@
 package com.link.bianmi;
 
+import com.link.bianmi.entity.manager.SecretManager;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -55,6 +57,8 @@ public class UserConfig {
 		setIsGuest(false);
 		setLockPassKey("");
 		setLockPassStartStatus(false);
+		// 只删除朋友圈秘密
+		SecretManager.DB.cleanSecret(SecretManager.TaskType.GET_FRIENDS);
 
 	}
 
