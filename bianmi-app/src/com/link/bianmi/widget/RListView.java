@@ -76,7 +76,7 @@ public class RListView extends ListView implements OnScrollListener {
 	private boolean mIsButtom = false;
 
 	/** 触发监听 **/
-	private ActivateListener mActivateListener;
+	private OnListener mOnListener;
 
 	/** 允许最大Head拉动距离 **/
 	private int mHeadMaxOverscrollDistance;
@@ -126,7 +126,7 @@ public class RListView extends ListView implements OnScrollListener {
 	/** 当前是否触发foot状态 **/
 	boolean mIsActivingFoot = false;
 
-	// --------------------------重载系统方法----------------------------------------------------
+	// ------------------------------构造器------------------------------
 
 	public RListView(Context context) {
 		super(context);
@@ -147,12 +147,13 @@ public class RListView extends ListView implements OnScrollListener {
 		initClewListView();
 	}
 
+	// ------------------------------Override------------------------------
+
 	/***
 	 * touch 事件监听
 	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
-
 		if (mIsHeadAnimator || mIsFootAnimator) {
 			return super.onTouchEvent(ev);
 		}
@@ -218,9 +219,8 @@ public class RListView extends ListView implements OnScrollListener {
 		}
 		boolean exact = skipped == 0;
 		scrollPosition += -delta;
-		if (mActivateListener != null) {
-			mActivateListener.onScrollUpDownChanged(-delta, scrollPosition,
-					exact);
+		if (mOnListener != null) {
+			mOnListener.onScroll(-delta, scrollPosition, exact);
 		}
 		lastFirstVisibleItem = firstVisibleItem;
 		lastTop = top;
@@ -237,16 +237,11 @@ public class RListView extends ListView implements OnScrollListener {
 			mIsButtom = false;
 		}
 
-		// 移动Item位置改变
-		if (mActivateListener != null && mFirstItemIndex != firstVisibleItem) {
-			mActivateListener.onMovedIndex(firstVisibleItem);
-		}
-
 		mFirstItemIndex = firstVisibleItem;
 
 	}
 
-	// --------------------------自定义方法----------------------------------------------------
+	// ------------------------------Private------------------------------
 
 	// 初始化
 	private void initClewListView() {
@@ -291,11 +286,10 @@ public class RListView extends ListView implements OnScrollListener {
 	 * 
 	 * @param child
 	 */
-	@SuppressWarnings("deprecation")
 	private void measureView(View child) {
 		ViewGroup.LayoutParams p = child.getLayoutParams();
 		if (p == null) {
-			p = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
+			p = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 		}
 		int childWidthSpec = ViewGroup.getChildMeasureSpec(0, 0 + 0, p.width);
@@ -316,7 +310,7 @@ public class RListView extends ListView implements OnScrollListener {
 	 * 
 	 * @param event
 	 */
-	void doActionDown(MotionEvent ev) {
+	private void doActionDown(MotionEvent ev) {
 
 		mTouchEventY = ev.getY();
 		mIsHeadRecord = false;// 此时的touch事件完毕，要关闭。
@@ -329,19 +323,17 @@ public class RListView extends ListView implements OnScrollListener {
 	 * 
 	 * @param event
 	 */
-	void doActionMove(MotionEvent ev) {
+	private void doActionMove(MotionEvent ev) {
 		// touch 方向判断
 		float eventY = ev.getY();
-		if (mActivateListener != null
+		if (mOnListener != null
 				&& eventY - mTouchEventY > mTouchDirectionSensitivity
 				&& mTouchDirection != TouchDirectionState.Down) { // 下滑
 			mTouchDirection = TouchDirectionState.Down;
-			mActivateListener.onTouchDirection(mTouchDirection);
-		} else if (mActivateListener != null
+		} else if (mOnListener != null
 				&& eventY - mTouchEventY < -mTouchDirectionSensitivity
 				&& mTouchDirection != TouchDirectionState.Up) { // 上滑
 			mTouchDirection = TouchDirectionState.Up;
-			mActivateListener.onTouchDirection(mTouchDirection);
 		}
 
 		int moveY = ((int) ev.getY());
@@ -376,12 +368,8 @@ public class RListView extends ListView implements OnScrollListener {
 					// 检测是否改变触发状态
 					if (progress >= MAX_PROGRESS && !mHeadTouchActivate) {
 						mHeadTouchActivate = true;
-						if (mActivateListener != null)
-							mActivateListener.onHeadTouchActivate(true);
 					} else if (progress < MAX_PROGRESS && mHeadTouchActivate) {
 						mHeadTouchActivate = false;
-						if (mActivateListener != null)
-							mActivateListener.onHeadTouchActivate(false);
 					}
 
 					mHeadProgressWheel.setProgress(progress);
@@ -425,12 +413,8 @@ public class RListView extends ListView implements OnScrollListener {
 					// 检测是否改变触发状态
 					if (progress >= MAX_PROGRESS && !mFootTouchActivate) {
 						mFootTouchActivate = true;
-						if (mActivateListener != null)
-							mActivateListener.onFootTouchActivate(true);
 					} else if (progress < MAX_PROGRESS && mFootTouchActivate) {
 						mFootTouchActivate = false;
-						if (mActivateListener != null)
-							mActivateListener.onFootTouchActivate(false);
 					}
 
 					mFootProgressWheel.setProgress(progress);
@@ -448,7 +432,7 @@ public class RListView extends ListView implements OnScrollListener {
 	 * 
 	 * @param event
 	 */
-	public void doActionUp(MotionEvent event) {
+	private void doActionUp(MotionEvent event) {
 		if (!mIsActivingHead && mHeadView.getPaddingTop() != -mViewHeight) { // Head没有恢复到位
 			bounceHead();
 		} else if (mFootInfoView.getPaddingTop() != 0) { // Foot 没有恢复到位
@@ -456,31 +440,6 @@ public class RListView extends ListView implements OnScrollListener {
 		}
 
 		NetworkUtil.isNetworkAvailable(getContext());
-	}
-
-	/** 反弹参数 **/
-	class Bounce {
-		private int mTop;
-		private int mButtom;
-		private int mPrg;
-
-		Bounce(int top, int buttom, int prg) {
-			mTop = top;
-			mButtom = buttom;
-			mPrg = prg;
-		}
-
-		public int getTop() {
-			return mTop;
-		}
-
-		public int getButtom() {
-			return mButtom;
-		}
-
-		public int getPrg() {
-			return mPrg;
-		}
 	}
 
 	/** 反弹Header **/
@@ -558,8 +517,8 @@ public class RListView extends ListView implements OnScrollListener {
 				} else {
 					mHeadView.setPadding(0, -mViewHeight, 0, 0);
 				}
-				if (mIsActivingHead && mActivateListener != null)
-					mActivateListener.onHeadActivate();
+				if (mIsActivingHead && mOnListener != null)
+					mOnListener.onHeadLoading();
 			}
 
 			@Override
@@ -635,8 +594,8 @@ public class RListView extends ListView implements OnScrollListener {
 				if (mIsActivingFoot) {
 					startFootAnim();
 				}
-				if (mIsActivingFoot && mActivateListener != null)
-					mActivateListener.onFootActivate();
+				if (mIsActivingFoot && mOnListener != null)
+					mOnListener.onFootLoading();
 			}
 
 			@Override
@@ -648,9 +607,42 @@ public class RListView extends ListView implements OnScrollListener {
 		mFootAnimator.start();
 	}
 
-	// ----------------------------------------外部事件-----------------------
+	private void startFootAnim() {
+		startAnim(mFootProgressWheel);
+	}
+
+	private void stopFootAnim() {
+		stopAnim();
+	}
+
+	private void stopHeadAnim() {
+		stopAnim();
+	}
+
+	private void startHeadAnim() {
+		startAnim(mHeadProgressWheel);
+	}
+
+	private ObjectAnimator mObjectAnimator = null;
+
+	private void startAnim(View view) {
+
+		mObjectAnimator = ObjectAnimator.ofFloat(view, "rotationY", 0f, 360f);
+		mObjectAnimator.setDuration(1000);
+		mObjectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
+		mObjectAnimator.start();
+
+	}
+
+	private void stopAnim() {
+		if (mObjectAnimator != null) {
+			mObjectAnimator.end();
+		}
+	}
+
+	// ------------------------------Public------------------------------
 	/** 停止Foot的activing状态 **/
-	public void stopFootActiving() {
+	public void stopFootLoading() {
 		if (!mIsActivingFoot)
 			return;
 		if (mFootAnimator != null) {
@@ -664,11 +656,11 @@ public class RListView extends ListView implements OnScrollListener {
 
 		stopFootAnim();
 
-		mActivateListener.onFootStop();
+		mOnListener.onFootLoaded();
 	}
 
-	/** 停止head的activing状态 **/
-	public void stopHeadActiving() {
+	/** 停止head的加载状态 **/
+	public void stopHeadLoading() {
 		if (!mIsActivingHead)
 			return;
 		if (mHeadAnimator != null) {
@@ -720,7 +712,7 @@ public class RListView extends ListView implements OnScrollListener {
 
 		stopHeadAnim();
 
-		mActivateListener.onHeadStop();
+		mOnListener.onHeadLoaded();
 	}
 
 	/** 是否允许滑动Header **/
@@ -741,15 +733,6 @@ public class RListView extends ListView implements OnScrollListener {
 					MaxOverscrollDistance);
 		else
 			mFootMaxOverscrollDistance = 0;
-	}
-
-	/**
-	 * 设置移动监听事件
-	 * 
-	 * @param listener
-	 */
-	public void setActivateListener(ActivateListener listener) {
-		this.mActivateListener = listener;
 	}
 
 	/** 是否显示Head **/
@@ -787,86 +770,23 @@ public class RListView extends ListView implements OnScrollListener {
 		mFootTips.setText(tip);
 	}
 
-	/**
-	 * 设置滑动方向通知灵敏度距离
-	 * 
-	 * @param value
-	 *            单位DP
-	 */
-	public void setTouchDirectionSensitivity(int value) {
-		mTouchDirectionSensitivity = Tools.dip2px(mContext, value);
+	public void setOnListener(OnListener listener) {
+		this.mOnListener = listener;
 	}
 
-	/** 移动监听 **/
-	public interface ActivateListener {
-		/** Head拖动触发 **/
-		public void onHeadActivate();
+	public interface OnListener {
+		// 正在加载
+		public void onHeadLoading();
 
-		/** Foot拖动触发 **/
-		public void onFootActivate();
+		public void onFootLoading();
 
-		/** 移动位置改变改变触发 **/
-		public void onMovedIndex(int index);
+		// 加载完毕
+		public void onHeadLoaded();
 
-		/** 滑动方向改变 **/
-		public void onTouchDirection(TouchDirectionState state);
+		public void onFootLoaded();
 
-		/**
-		 * Foot拖动时触发状态改变
-		 * 
-		 * @param Activate
-		 *            true: 触发 false:不触发
-		 */
-		public void onFootTouchActivate(boolean activate);
+		public void onScroll(int delta, int scrollPosition, boolean exact);
 
-		/**
-		 * Head拖动触发状态改变
-		 * 
-		 * @param activate
-		 *            true: 触发 false:不触发
-		 */
-		public void onHeadTouchActivate(boolean activate);
-
-		public void onHeadStop();
-
-		public void onFootStop();
-
-		public void onScrollUpDownChanged(int delta, int scrollPosition,
-				boolean exact);
-
-	}
-
-	private void startFootAnim() {
-		startAnim(mFootProgressWheel);
-	}
-
-	private void stopFootAnim() {
-		stopAnim();
-	}
-
-	private void stopHeadAnim() {
-		stopAnim();
-	}
-
-	private void startHeadAnim() {
-		startAnim(mHeadProgressWheel);
-	}
-
-	private ObjectAnimator mObjectAnimator = null;
-
-	private void startAnim(View view) {
-
-		mObjectAnimator = ObjectAnimator.ofFloat(view, "rotationY", 0f, 360f);
-		mObjectAnimator.setDuration(1000);
-		mObjectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
-		mObjectAnimator.start();
-
-	}
-
-	private void stopAnim() {
-		if (mObjectAnimator != null) {
-			mObjectAnimator.end();
-		}
 	}
 
 }

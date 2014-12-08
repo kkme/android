@@ -24,7 +24,7 @@ import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.utils.Tools;
 import com.link.bianmi.widget.NoDataView;
 import com.link.bianmi.widget.RListView;
-import com.link.bianmi.widget.RListView.ActivateListener;
+import com.link.bianmi.widget.RListView.OnListener;
 import com.link.bianmi.widget.RListView.TouchDirectionState;
 import com.link.bianmi.widget.SuperToast;
 
@@ -68,25 +68,10 @@ public class ReminderPersonFragment extends BaseFragment {
 		final int max_tranY = Tools.dip2px(mContext, 40);
 		final View tabview = mParentActivity.getViewPagerTab();
 
-		mRListView.setActivateListener(new ActivateListener() {
+		mRListView.setOnListener(new OnListener() {
 
 			@Override
-			public void onTouchDirection(TouchDirectionState state) {
-
-			}
-
-			@Override
-			public void onMovedIndex(int index) {
-
-			}
-
-			@Override
-			public void onHeadTouchActivate(boolean activate) {
-
-			}
-
-			@Override
-			public void onHeadActivate() {
+			public void onHeadLoading() {
 				mParentActivity.getViewPagerTab().animate()
 						.translationY(-Tools.dip2px(mContext, 40));
 				mRListView.animate().translationY(-Tools.dip2px(mContext, 40));
@@ -95,38 +80,33 @@ public class ReminderPersonFragment extends BaseFragment {
 			}
 
 			@Override
-			public void onFootActivate() {
+			public void onFootLoading() {
 				// 菊花至少转0.8秒
 				new Handler().postDelayed(new Runnable() {
 					@Override
 					public void run() {
 						loadMore();
-						mRListView.stopFootActiving();
+						mRListView.stopFootLoading();
 					}
 				}, 800);
 			}
 
 			@Override
-			public void onFootTouchActivate(boolean activate) {
-
-			}
-
-			@Override
-			public void onHeadStop() {
+			public void onHeadLoaded() {
 
 				mParentActivity.getViewPagerTab().animate().translationY(0);
 				mRListView.animate().translationY(0);
 			}
 
 			@Override
-			public void onFootStop() {
+			public void onFootLoaded() {
 
 				adapter.setShouldAnimateFromPosition(mRListView
 						.getLastVisiblePosition());
 			}
 
 			@Override
-			public void onScrollUpDownChanged(int delta, int scrollPosition,
+			public void onScroll(int delta, int scrollPosition,
 					boolean exact) {
 
 				if (exact && tabview != null) {
@@ -208,7 +188,7 @@ public class ReminderPersonFragment extends BaseFragment {
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				mRListView.stopHeadActiving();
+				mRListView.stopHeadLoading();
 			}
 		}, endTime - beginTime > 1500 ? 0 : 1500 - (endTime - beginTime));
 	}

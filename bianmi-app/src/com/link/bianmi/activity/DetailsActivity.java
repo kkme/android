@@ -26,8 +26,7 @@ import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.utils.UmengSocialClient;
 import com.link.bianmi.widget.InputSuit;
 import com.link.bianmi.widget.RListView;
-import com.link.bianmi.widget.RListView.ActivateListener;
-import com.link.bianmi.widget.RListView.TouchDirectionState;
+import com.link.bianmi.widget.RListView.OnListener;
 import com.link.bianmi.widget.SuperToast;
 
 public class DetailsActivity extends BaseFragmentActivity {
@@ -57,49 +56,33 @@ public class DetailsActivity extends BaseFragmentActivity {
 
 		// 正文内容、评论列表
 		mRListView = (RListView) findViewById(R.id.rlistview);
-		mRListView.setActivateListener(new ActivateListener() {
+		mRListView.setOnListener(new OnListener() {
 			@Override
-			public void onTouchDirection(TouchDirectionState state) {
-			}
-
-			@Override
-			public void onScrollUpDownChanged(int delta, int scrollPosition,
+			public void onScroll(int delta, int scrollPosition,
 					boolean exact) {
 			}
 
 			@Override
-			public void onMovedIndex(int index) {
+			public void onHeadLoaded() {
 			}
 
 			@Override
-			public void onHeadTouchActivate(boolean activate) {
-			}
-
-			@Override
-			public void onHeadStop() {
-			}
-
-			@Override
-			public void onHeadActivate() {
+			public void onHeadLoading() {
 				fetchNew();
 			}
 
 			@Override
-			public void onFootTouchActivate(boolean activate) {
+			public void onFootLoaded() {
 			}
 
 			@Override
-			public void onFootStop() {
-			}
-
-			@Override
-			public void onFootActivate() {
+			public void onFootLoading() {
 				// 菊花至少转0.8秒
 				new Handler().postDelayed(new Runnable() {
 					@Override
 					public void run() {
 						loadMore();
-						mRListView.stopFootActiving();
+						mRListView.stopFootLoading();
 					}
 				}, 800);
 			}
@@ -116,12 +99,8 @@ public class DetailsActivity extends BaseFragmentActivity {
 				mInputSuit.close();
 			}
 		});
+		mRListView.setFootVisiable(false);
 
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
 	}
 
 	private MenuItem mLikeItem;
@@ -220,7 +199,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				mRListView.stopHeadActiving();
+				mRListView.stopHeadLoading();
 				mShareItem.setVisible(true);
 				mLoadingItem.setVisible(false);
 			}
@@ -294,14 +273,14 @@ public class DetailsActivity extends BaseFragmentActivity {
 						mSecret = t;
 						likeOrDislike(mSecret.isLiked);
 						mAdapter.refresh(null, t);
-						mRListView.stopHeadActiving();
+						mRListView.stopHeadLoading();
 					}
 
 					@Override
 					public void onFailure(int code, String msg) {
 						SuperToast.makeText(DetailsActivity.this, msg,
 								SuperToast.LENGTH_SHORT).show();
-						mRListView.stopHeadActiving();
+						mRListView.stopHeadLoading();
 					}
 				});
 	}
@@ -332,7 +311,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 					public void onFailure(int code, String msg) {
 						SuperToast.makeText(DetailsActivity.this, msg,
 								SuperToast.LENGTH_SHORT).show();
-						mRListView.stopHeadActiving();
+						mRListView.stopHeadLoading();
 						mShareItem.setVisible(true);
 						mLoadingItem.setVisible(false);
 					}
