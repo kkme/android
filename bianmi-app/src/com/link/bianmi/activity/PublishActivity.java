@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import com.link.bianmi.asynctask.listener.OnSimpleTaskOverListener;
 import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.Status_;
 import com.link.bianmi.entity.manager.SecretManager;
+import com.link.bianmi.utils.SoftInputUtils;
 import com.link.bianmi.widget.InputSuit;
 import com.link.bianmi.widget.SuperToast;
 
@@ -47,6 +49,8 @@ public class PublishActivity extends BaseFragmentActivity {
 		mInputSuit = (InputSuit) findViewById(R.id.input_suit);
 		mInputSuit.init(this, null, mInputListener);
 		mInputSuit.setMessageEdit(mContentEdit);
+
+		SoftInputUtils.popupSoftInput(mContentEdit);
 	}
 
 	private MenuItem mLoadingItem;
@@ -151,7 +155,9 @@ public class PublishActivity extends BaseFragmentActivity {
 		dialog.show();
 	}
 
-	/** 监听标题输入框的内容变化 **/
+	/**
+	 * 输入框的内容变化监听器
+	 */
 	private TextWatcher mTextWatcher = new TextWatcher() {
 		@Override
 		public void afterTextChanged(Editable s) {
@@ -171,21 +177,13 @@ public class PublishActivity extends BaseFragmentActivity {
 
 	/** 是否允许提交内容 **/
 	private void checkEnableSubmit() {
-
 		boolean enable = false;
-
 		// 文本内容长度大于0
 		if (!enable) {
 			if (mContentEdit.getText().toString().trim().length() > 0) {
 				enable = true;
 			}
 		}
-
-		// boolean currentStatus = mFAQItem.isEnabled();
-		// if (enable != currentStatus) {
-		// mFAQItem.setEnabled(enable);
-		// }
-
 	}
 
 	/**
@@ -212,6 +210,7 @@ public class PublishActivity extends BaseFragmentActivity {
 				int recordLen, String message) {
 			mLoadingItem.setVisible(true);
 			mFAQItem.setVisible(false);
+			mInputSuit.startUpload();
 		}
 
 		@Override
@@ -219,16 +218,18 @@ public class PublishActivity extends BaseFragmentActivity {
 				String recordUrl, int recordLength) {
 
 			if (!result) {
-				SuperToast.makeText(PublishActivity.this, "发表失败！",
+				Log.d("bianmi", "发表失败");
+				mFAQItem.setVisible(true);
+				mLoadingItem.setVisible(false);
+				SuperToast.makeText(PublishActivity.this,
+						getString(R.string.default_failed_tip),
 						SuperToast.LENGTH_SHORT).show();
 				return;
 			}
 
-			SuperToast.makeText(PublishActivity.this, "上传七牛成功！",
-					SuperToast.LENGTH_SHORT).show();
+			Log.d("bianmi", "上传七牛成功");
 
 			Secret secret = new Secret();
-			secret.userId = UserConfig.getInstance().getUserId();
 			secret.content = mContentEdit.getText().toString();
 			secret.audioUrl = recordUrl;
 			secret.audioLength = recordLength;
@@ -241,14 +242,12 @@ public class PublishActivity extends BaseFragmentActivity {
 					new OnSimpleTaskOverListener() {
 						@Override
 						public void onResult(int code, String msg) {
-							SuperToast.makeText(PublishActivity.this, msg,
-									SuperToast.LENGTH_SHORT).show();
-							if (code == Status_.OK) {
-								finish();
-							}
 							mFAQItem.setVisible(true);
 							mLoadingItem.setVisible(false);
-
+							SuperToast.makeText(PublishActivity.this, msg,
+									SuperToast.LENGTH_SHORT).show();
+							if (code == Status_.OK)
+								finish();
 						}
 					});
 		};

@@ -126,13 +126,13 @@ public class QiniuClient {
 
 				try {
 					if (!cover) { // 非覆盖上传
-						mTokenTemp = QiniuHelper.API.getUpLoadToken(bucketName);
+						mTokenTemp = QiniuManager.API.getUpLoadToken(bucketName);
 						BasicNameValuePair tokenPair = new BasicNameValuePair(
 								String.valueOf(new Date().getDate()),
 								mTokenTemp);
 						TokenMap.put(bucketName, tokenPair);
 					} else { // 覆盖上传
-						mTokenTemp = QiniuHelper.API.getUpLoadToken(bucketName);
+						mTokenTemp = QiniuManager.API.getUpLoadToken(bucketName);
 					}
 				} catch (Exception ex) {
 				} finally {
@@ -152,12 +152,12 @@ public class QiniuClient {
 		if (TextUtils.isEmpty(token)) { // 没有token，重api获取token
 			try {
 				if (!cover) { // 非覆盖上传
-					token = QiniuHelper.API.getUpLoadToken(bucketName);
+					token = QiniuManager.API.getUpLoadToken(bucketName);
 					BasicNameValuePair tokenPair = new BasicNameValuePair(
 							String.valueOf(new Date().getDate()), token);
 					TokenMap.put(bucketName, tokenPair);
 				} else { // 覆盖上传
-					token = QiniuHelper.API.getUpLoadToken(bucketName + ":"
+					token = QiniuManager.API.getUpLoadToken(bucketName + ":"
 							+ key);
 				}
 			} catch (Exception ex) {

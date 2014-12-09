@@ -46,7 +46,7 @@ public class SysConfig {
 		mProperties.setProperty("bianmi.url.signout.debug",
 				"http://121.40.88.136/bianmi/index.php/Index/Login/signout");
 		mProperties.setProperty("bianmi.url.secret.publish.debug",
-				"http://172.21.58.1/bianmi/add.php");
+				"http://172.21.58.1/bianmi/publish.php");
 		mProperties.setProperty("bianmi.url.secret.list.hot.debug",
 				"http://172.21.58.1/bianmi/secrets_hot.php");
 		mProperties.setProperty("bianmi.url.secret.list.friend.debug",
@@ -88,7 +88,7 @@ public class SysConfig {
 		mProperties.setProperty("bianmi.qiniu.uptoken",
 				"http://172.21.58.1/bianmi/token.php?type=uptoken");// 上传token
 		mProperties.setProperty("bianmi.url.secret.publish.release",
-				"http://172.21.58.1/bianmi/add.php");
+				"http://172.21.58.1/bianmi/publish.php");
 		mProperties.setProperty("bianmi.url.secret.list.hot.release",
 				"http://172.21.58.1/bianmi/secrets_hot.php");
 		mProperties.setProperty("bianmi.url.secret.list.friend.release",

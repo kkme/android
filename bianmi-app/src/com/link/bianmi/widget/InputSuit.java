@@ -43,11 +43,10 @@ import com.link.bianmi.utils.ConvertHelper;
 import com.link.bianmi.utils.FileHelper;
 import com.link.bianmi.utils.ImageHelper;
 import com.link.bianmi.utils.SoundTouchClient;
-import com.link.bianmi.utils.Tools;
 
 /**
  * 
- * 输入套件
+ * 自定义输入控件
  * 
  * @author pangfq
  * @date 2014年7月29日 上午8:56:29
@@ -138,7 +137,7 @@ public class InputSuit extends LinearLayout {
 		mMessageEdit = (EditText) findViewById(R.id.message_edit);
 		mMessageEdit.addTextChangedListener(textWatcher);
 		mMessageEdit.setOnFocusChangeListener(textFocuseListener);
-		mSubmitBtn = (Button) findViewById(R.id.submit_view);
+		mSubmitBtn = (Button) findViewById(R.id.submit_btn);
 		mSubmitBtn.setOnClickListener(submitListener);
 		mPhotoGroup = findViewById(R.id.photo_group);
 		mPhotoOperateGroup = findViewById(R.id.photo_operate_group);
@@ -156,6 +155,7 @@ public class InputSuit extends LinearLayout {
 		mPitchProgressText = (TextView) findViewById(R.id.pitch_seekarc_progress_textview);
 		mTempoProgressText = (TextView) findViewById(R.id.tempo_seekarc_progress_textview);
 		mPitchSeekArc = (SeekArc) findViewById(R.id.pitch_seekarc);
+		mPitchSeekArc.setMaxProgress(3000);
 		mPitchSeekArc.setOnSeekArcChangeListener(new OnSeekArcChangeListener() {
 
 			@Override
@@ -177,6 +177,7 @@ public class InputSuit extends LinearLayout {
 			}
 		});
 		mTempoSeekArc = (SeekArc) findViewById(R.id.tempo_seekarc);
+		mTempoSeekArc.setMaxProgress(15000);
 		mTempoSeekArc.setOnSeekArcChangeListener(new OnSeekArcChangeListener() {
 
 			@Override
@@ -321,7 +322,7 @@ public class InputSuit extends LinearLayout {
 		mRerecordingBtn.setVisibility(View.VISIBLE);
 		mRecordTipText.setVisibility(View.GONE);
 		if (mSTRecorder != null)
-			mRecordPath = mSTRecorder.stopRecorder();
+			setRecordPath(mSTRecorder.stopRecorder());
 		mCDTime.cancel();
 	}
 
@@ -345,8 +346,6 @@ public class InputSuit extends LinearLayout {
 		setPhotoPath("");
 		setRecordPath("");
 		mRecordLen = 0;
-		mRecordPath = "";
-
 		mRecordDurationText.setText("0\"");
 		mRecordTipText.setText(mContext
 				.getString(R.string.inputsuit_click_start_record));
@@ -418,8 +417,7 @@ public class InputSuit extends LinearLayout {
 			enable = true;
 		}
 
-		boolean currentStatus = mSubmitBtn.isEnabled();
-		if (enable != currentStatus) {
+		if (enable != mSubmitBtn.isEnabled()) {
 			mSubmitBtn.setEnabled(enable);
 		}
 	}
@@ -578,22 +576,21 @@ public class InputSuit extends LinearLayout {
 			String filePathTemp = "";
 			if (needUploadPhoto) {
 
+				// 将裁剪后的新图片，重命名后，输出到指定目录
 				String fileName = String.valueOf(ContextUtil.getDeviceId()
 						+ FileHelper.getFileName(mPhotoPath));
 				filePathTemp = SysConfig.getInstance().getPathTemp()
 						+ File.separator + fileName;
-				if (!new File(filePathTemp).exists()) { // 压缩图片
-					ImageHelper.createImageThumbnail(mActivity, mPhotoPath,
-							filePathTemp, 640, 80);
-				}
-
-				key = String.format("secret/image/%s_%s.%s", UUID.randomUUID()
+				ImageHelper
+						.saveImageToSD(mContext, filePathTemp, mTempBmp, 100);
+				// 文件名称：UUID + _ + 当前时间(long)
+				key = String.format("user/image/%s_%s.%s", UUID.randomUUID()
 						.toString().replace("-", ""),
 						System.currentTimeMillis(),
 						FileHelper.getExtensionName(mPhotoPath));
 				uploadType = UPLOAD_TYPE_PHOTO;
 			} else {
-				key = String.format("secret/audio/%s_%s.%s", UUID.randomUUID()
+				key = String.format("user/audio/%s_%s.%s", UUID.randomUUID()
 						.toString().replace("-", ""),
 						System.currentTimeMillis(),
 						FileHelper.getExtensionName(mRecordPath));
@@ -623,7 +620,7 @@ public class InputSuit extends LinearLayout {
 								key);
 					}
 					if (f_uploadFile.contains(SysConfig.getInstance()
-							.getPathTemp())) // lls文件夹中的文件可以删除
+							.getPathTemp())) // temp文件夹中的文件可以删除
 						FileHelper.delete(f_uploadFile);
 					uploadAttach();
 				}
@@ -802,9 +799,9 @@ public class InputSuit extends LinearLayout {
 
 					String srcFilePath = ConvertHelper.uri2StrPath(mActivity,
 							uri);
-					Bitmap thumbnail = ImageHelper.getImageThumbnail(
-							srcFilePath, 720, 500);
-					mPhotoImage.setImageBitmap(thumbnail); // 设置图片
+					mTempBmp = ImageHelper.getImageThumbnail(srcFilePath, 720,
+							500);
+					mPhotoImage.setImageBitmap(mTempBmp); // 设置图片
 					setPhotoPath(srcFilePath);
 					mPhotoOperateGroup.setVisibility(View.GONE);
 					mPhotoShowGroup.setVisibility(View.VISIBLE);
@@ -822,6 +819,8 @@ public class InputSuit extends LinearLayout {
 
 		}
 	}
+
+	private Bitmap mTempBmp;
 
 	/** 图片地址 **/
 	public String getPhotoPath() {

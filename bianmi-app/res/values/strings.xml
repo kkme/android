@@ -40,7 +40,7 @@
     <string name="confirm_abandon_input">确定放弃当前输入吗？</string>
     <string name="abandon_input">放弃输入</string>
     <string name="publish_faq">酱发秘密靠谱吗？\n\n放心吧，你的朋友们只知道是他们认识的某个人发的，但无法知道具体是谁！</string>
-    <string name="ok_boring">知道了，真烦</string>
+    <string name="ok_boring">恩，知道了</string>
 
     <!-- 提醒 -->
     <string name="reminder">提醒</string>

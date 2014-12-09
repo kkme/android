@@ -145,7 +145,8 @@ public class SecretManager {
 				return null;
 			Status_ status = null;
 			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("userid", secret.userId));
+			params.add(new BasicNameValuePair("userid", UserConfig
+					.getInstance().getUserId()));
 			params.add(new BasicNameValuePair("token", UserConfig.getInstance()
 					.getToken()));
 			params.add(new BasicNameValuePair("content", secret.content));
