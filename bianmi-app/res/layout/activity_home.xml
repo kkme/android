@@ -18,10 +18,12 @@
         android:background="@android:color/white" >
     </com.link.bianmi.widget.ViewPagerTabBar>
 
-    <fragment
-        android:id="@+id/main_image_fragment"
+    <!-- 图片放大,ViewStub支持懒加载 -->
+
+    <ViewStub
+        android:id="@+id/image_viewstub"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="com.link.bianmi.fragment.ImageFragment" />
+        android:layout="@layout/image_viewstub" />
 
 </FrameLayout>

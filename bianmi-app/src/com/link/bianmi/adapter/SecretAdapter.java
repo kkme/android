@@ -89,7 +89,7 @@ public class SecretAdapter extends CursorAdapter {
 
 			@Override
 			public void onClick(View arg0) {
-				((HomeActivity) mContext).showImageFragment(pictureImage, true,
+				((HomeActivity) mContext).showScaleView(pictureImage, true,
 						SecretDB.getInstance().buildEntity(cursor));
 			}
 		});

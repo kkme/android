@@ -2,6 +2,10 @@ package com.link.bianmi.activity;
 
 import java.util.ArrayList;
 
+import lib.widget.imageviewex.ImageViewEx;
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -37,9 +42,11 @@ import com.link.bianmi.entity.manager.ConfigManager;
 import com.link.bianmi.entity.manager.ReminderManager;
 import com.link.bianmi.fragment.FriendFragment;
 import com.link.bianmi.fragment.HotFragment;
-import com.link.bianmi.fragment.ImageFragment;
 import com.link.bianmi.fragment.NearbyFragment;
 import com.link.bianmi.utils.UmengSocialClient;
+import com.link.bianmi.widget.BlurView;
+import com.link.bianmi.widget.ScaleImageView;
+import com.link.bianmi.widget.ScaleImageView.ImageViewListener;
 import com.link.bianmi.widget.SuperToast;
 import com.link.bianmi.widget.ViewPagerTabBar;
 import com.tencent.android.tpush.XGPushConfig;
@@ -51,12 +58,21 @@ import com.umeng.update.UpdateStatus;
 public class HomeActivity extends BaseFragmentActivity {
 	public ViewPager mViewPager;
 	private ViewPagerTabBar mViewPagerTab;
-	private ImageFragment mImageFragment;
 	private ListPopupWindow mMenuWindow;
 	private MenuAdapter mMenuAdapter;
 	private ArrayList<Fragment> mFragments;
 	private Reminder mReminder;
 	private final int REQUEST_CODE_REMINDER = 1111;// 查看提醒
+
+	// 放大图片
+	private ViewStub mScaleViewStub;
+	private View mScaleRootView;
+	private ScaleImageView mScaleImageView;
+	private BlurView mScaleBlurView;
+	private ImageViewEx mScaleViewEx;
+	private TextView mScaleContentText;
+	private ObjectAnimator mScalseFadeInAnim, mScaleFadeOutAnim;
+	private boolean mScaleIsClose;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,10 +111,7 @@ public class HomeActivity extends BaseFragmentActivity {
 				mFragments, fragmentTitles));
 
 		mViewPagerTab.setViewPager(mViewPager);
-		mImageFragment = (ImageFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.main_image_fragment);
-		getSupportFragmentManager().beginTransaction().hide(mImageFragment)
-				.commit();
+		mScaleViewStub = (ViewStub) findViewById(R.id.image_viewstub);
 
 		executeGetSysConfigTask();
 		executeGetReminderTask();
@@ -133,17 +146,13 @@ public class HomeActivity extends BaseFragmentActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (mImageFragment != null) {
 
-			menu.findItem(R.id.action_add)
-					.setVisible(!mImageFragment.canBack());
-			menu.findItem(R.id.action_reminder).setVisible(
-					!mImageFragment.canBack());
-			if (mLoadingItem.isVisible()) {
-				mMoreItem.setVisible(false);
-			} else {
-				mMoreItem.setVisible(!mImageFragment.canBack());
-			}
+		menu.findItem(R.id.action_add).setVisible(true);
+		menu.findItem(R.id.action_reminder).setVisible(true);
+		if (mLoadingItem.isVisible()) {
+			mMoreItem.setVisible(false);
+		} else {
+			mMoreItem.setVisible(true);
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -206,9 +215,8 @@ public class HomeActivity extends BaseFragmentActivity {
 			return;
 		}
 
-		if (mImageFragment.canBack()) {
-			mImageFragment.goBack();
-
+		if (isScaleViewShow()) {
+			dismissScaleView();
 		} else {
 			long cur_time = System.currentTimeMillis();
 
@@ -220,7 +228,6 @@ public class HomeActivity extends BaseFragmentActivity {
 						R.string.press_back_again_to_exit,
 						SuperToast.LENGTH_SHORT).show();
 			}
-
 		}
 	}
 
@@ -297,6 +304,95 @@ public class HomeActivity extends BaseFragmentActivity {
 			}
 			return convertView;
 		}
+	}
+
+	private void inflateImageViewStub() {
+
+		mScaleRootView = mScaleViewStub.inflate();
+		mScaleRootView.setVisibility(View.GONE);
+		mScaleContentText = (TextView) mScaleRootView
+				.findViewById(R.id.fragment_image_title_textview);
+		((View) mScaleContentText.getParent()).setAlpha(0);
+		mScaleViewEx = (ImageViewEx) mScaleRootView
+				.findViewById(R.id.fragment_image_imageViewex);
+		mScaleViewEx.setFillDirection(ImageViewEx.FillDirection.HORIZONTAL);
+		mScaleBlurView = (BlurView) mScaleRootView
+				.findViewById(R.id.fragment_image_blurview);
+
+		mScaleImageView = (ScaleImageView) mScaleRootView
+				.findViewById(R.id.fragment_image_scaleimageview);
+		mScaleImageView.setBlurView(mScaleBlurView);
+
+		mScaleIsClose = false;
+		mScalseFadeInAnim = ObjectAnimator.ofFloat(
+				((View) mScaleContentText.getParent()), "alpha", 0f, 1f);
+		mScalseFadeInAnim.setDuration(ScaleImageView.anim_duration / 2);
+		mScalseFadeInAnim.setStartDelay(ScaleImageView.anim_duration / 2);
+		mScalseFadeInAnim.addListener(new AnimatorListener() {
+
+			@Override
+			public void onAnimationStart(Animator animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+
+			}
+
+			@Override
+			public void onAnimationCancel(Animator animation) {
+			}
+		});
+		mScaleFadeOutAnim = ObjectAnimator.ofFloat(
+				((View) mScaleContentText.getParent()), "alpha", 1f, 0f);
+		mScaleFadeOutAnim.setDuration(ScaleImageView.anim_duration / 2);
+		mScaleImageView.setImageViewListener(new ImageViewListener() {
+			@Override
+			public void onSingleTap() {
+				mScaleIsClose = true;
+				mScaleImageView.startCloseScaleAnimation();
+				mScaleFadeOutAnim.start();
+			}
+
+			@Override
+			public void onScaleEnd() {
+				if (mScaleIsClose) {
+					mScaleImageView.setImageDrawable(null);
+					mScaleRootView.setVisibility(View.GONE);
+					showScaleView(null, false, null);
+					supportInvalidateOptionsMenu();
+					mScaleIsClose = false;
+				} else {
+					mScaleImageView.setTopCrop(false);
+					mScaleImageView.initAttacher();
+				}
+			}
+		});
+
+	}
+
+	private boolean isScaleViewShow() {
+		return mScaleRootView.getVisibility() == View.VISIBLE;
+	}
+
+	private void dismissScaleView() {
+		if (!mScaleIsClose) {
+			mScaleIsClose = true;
+			mScaleImageView.startCloseScaleAnimation();
+		}
+	}
+
+	private void startScaleAnimation(ImageView smallImageView, Secret secret) {
+		mScaleContentText.setText(secret.content);
+		mScaleRootView.setVisibility(View.VISIBLE);
+		mScalseFadeInAnim.start();
+		mScaleBlurView.drawBlurOnce();
+		mScaleImageView.startScaleAnimation(smallImageView);
+		supportInvalidateOptionsMenu();
 	}
 
 	// ------------------------------Public------------------------------
@@ -378,21 +474,15 @@ public class HomeActivity extends BaseFragmentActivity {
 	}
 
 	/**
-	 * 放大图片
+	 * 显示图片缩放控件
 	 * 
-	 * @param smallImageView
-	 * @param show
-	 * @param item
 	 */
-	public void showImageFragment(ImageView smallImageView, boolean show,
+	public void showScaleView(ImageView smallImageView, boolean show,
 			Secret item) {
 		if (show) {
-			getSupportFragmentManager().beginTransaction().show(mImageFragment)
-					.commit();
-			mImageFragment.startScaleAnimation(smallImageView, item);
-		} else {
-			getSupportFragmentManager().beginTransaction().hide(mImageFragment)
-					.commit();
+			if (mScaleRootView == null)
+				inflateImageViewStub();
+			startScaleAnimation(smallImageView, item);
 		}
 	}
 
@@ -422,7 +512,6 @@ public class HomeActivity extends BaseFragmentActivity {
 
 			@Override
 			public void onFailure(int code, String msg) {
-
 			}
 		});
 	}
