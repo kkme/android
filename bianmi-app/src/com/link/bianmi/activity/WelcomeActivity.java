@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
-import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.entity.manager.ConfigManager;
 import com.link.bianmi.utils.Tools;
 

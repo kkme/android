@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.ViewGroup;
 
-import com.link.bianmi.fragment.base.BaseFragment;
+import com.link.bianmi.fragment.BaseFragment;
 
 /**
  * ViewPager适配器

@@ -18,7 +18,6 @@ import com.gc.materialdesign.views.Switch.OnSwitchChangeListener;
 import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
-import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.asynctask.listener.OnSimpleTaskOverListener;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.manager.UserManager;

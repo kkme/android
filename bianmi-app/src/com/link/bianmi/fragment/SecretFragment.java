@@ -32,7 +32,6 @@ import com.link.bianmi.entity.Secret;
 import com.link.bianmi.entity.manager.ContactsManager;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.entity.manager.SecretManager.TaskType;
-import com.link.bianmi.fragment.base.BaseFragment;
 import com.link.bianmi.utils.Tools;
 import com.link.bianmi.widget.NoDataView;
 import com.link.bianmi.widget.RListView;

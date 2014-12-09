@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.link.bianmi.R;
-import com.link.bianmi.activity.base.BaseFragmentActivity;
+import com.link.bianmi.activity.BaseFragmentActivity;
 import com.link.bianmi.unit.country.SideBar.OnTouchListener;
 
 public class CountryActivity extends BaseFragmentActivity {

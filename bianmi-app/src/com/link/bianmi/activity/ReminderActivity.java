@@ -14,7 +14,6 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 
 import com.link.bianmi.R;
-import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.adapter.ViewPagerAdapter;
 import com.link.bianmi.fragment.ReminderPersonFragment;
 import com.link.bianmi.fragment.ReminderSystemFragment;

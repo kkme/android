@@ -13,7 +13,6 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
-import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.adapter.SecretDetailsAdapter;
 import com.link.bianmi.asynctask.listener.OnSimpleTaskOverListener;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;

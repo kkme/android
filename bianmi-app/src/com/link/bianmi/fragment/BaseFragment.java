@@ -1,4 +1,4 @@
-package com.link.bianmi.fragment.base;
+package com.link.bianmi.fragment;
 
 import java.io.Serializable;
 
@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
-import com.link.bianmi.activity.base.BaseFragmentActivity;
+import com.link.bianmi.activity.BaseFragmentActivity;
 
 /** Fragment基础抽象类 **/
 public abstract class BaseFragment extends Fragment {

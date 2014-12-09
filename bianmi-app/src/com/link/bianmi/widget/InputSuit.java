@@ -34,8 +34,8 @@ import android.widget.TextView;
 
 import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
-import com.link.bianmi.activity.base.BaseFragmentActivity;
-import com.link.bianmi.fragment.base.BaseFragment;
+import com.link.bianmi.activity.BaseFragmentActivity;
+import com.link.bianmi.fragment.BaseFragment;
 import com.link.bianmi.qiniu.QiniuClient;
 import com.link.bianmi.utils.CameraCrop;
 import com.link.bianmi.utils.ContextUtil;

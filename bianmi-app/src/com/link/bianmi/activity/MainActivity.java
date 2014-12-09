@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
-import com.link.bianmi.activity.base.BaseFragmentActivity;
 import com.link.bianmi.unit.ninelock.NineLockActivity;
 
 public class MainActivity extends BaseFragmentActivity {
