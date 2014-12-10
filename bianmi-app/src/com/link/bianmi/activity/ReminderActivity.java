@@ -9,9 +9,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 
 import com.link.bianmi.R;
 import com.link.bianmi.adapter.ViewPagerAdapter;
@@ -38,7 +35,8 @@ public class ReminderActivity extends BaseFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// ActionBar
-		getActionBar().setTitle(getResources().getString(R.string.reminder));
+		getActionBar().setTitle(
+				getResources().getString(R.string.message_center));
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -69,6 +67,7 @@ public class ReminderActivity extends BaseFragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.loading, menu);
+		mLoadingItem = menu.findItem(R.id.action_loading);
 		if (!mFragmentsLoaded) {
 			for (int i = 0; i < mFragments.size(); i++) {
 				mFragments.get(i).onCreateOptionsMenu(menu, inflater);
@@ -92,41 +91,11 @@ public class ReminderActivity extends BaseFragmentActivity {
 		return mViewPagerTab;
 	}
 
-	/**
-	 * 结束加载
-	 * 
-	 * @param isStopAtOnce
-	 *            true 立即结束
-	 */
-	public void finishLoaded(boolean isStopAtOnce) {
-
+	public void finishLoading() {
 		if (mLoadingItem == null)
 			return;
+		mLoadingItem.setVisible(false);
 
-		if (isStopAtOnce) {
-			mLoadingItem.getActionView().clearAnimation();
-			mLoadingItem.setVisible(false);
-			return;
-		}
-		AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
-		anim.setDuration(1000);
-		anim.setFillAfter(true);
-		anim.setAnimationListener(new AnimationListener() {
-
-			@Override
-			public void onAnimationStart(Animation animation) {
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
-
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				finishLoaded(true);
-			}
-		});
-		mLoadingItem.getActionView().setAnimation(anim);
 	}
 
 	/**

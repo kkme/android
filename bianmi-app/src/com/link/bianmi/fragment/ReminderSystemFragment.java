@@ -1,5 +1,6 @@
 package com.link.bianmi.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
@@ -14,17 +15,19 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.link.bianmi.R;
 import com.link.bianmi.activity.ReminderActivity;
+import com.link.bianmi.activity.WebActivity;
 import com.link.bianmi.adapter.CardsAnimationAdapter;
 import com.link.bianmi.adapter.ReminderSystemAdapter;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.entity.ListResult;
 import com.link.bianmi.entity.Reminder;
+import com.link.bianmi.entity.WebUrl;
 import com.link.bianmi.entity.manager.ReminderManager;
 import com.link.bianmi.utils.Tools;
 import com.link.bianmi.widget.NoDataView;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.OnListener;
-import com.link.bianmi.widget.RListView.TouchDirectionState;
+import com.link.bianmi.widget.SuperToast;
 
 /**
  * 系统通知
@@ -40,12 +43,12 @@ public class ReminderSystemFragment extends BaseFragment {
 	private RListView mRListView;
 	// 列表适配器
 	private ReminderSystemAdapter mAdapter;
-	// 当前页中最后一条内容的ID
-	private String mLastId = "";
-
 	private List<Reminder.System> mDataList;
 
 	private ReminderActivity mParentActivity;
+
+	// 无数据
+	private NoDataView mNoDataView = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -96,14 +99,12 @@ public class ReminderSystemFragment extends BaseFragment {
 
 			@Override
 			public void onFootLoaded() {
-
 				adapter.setShouldAnimateFromPosition(mRListView
 						.getLastVisiblePosition());
 			}
 
 			@Override
-			public void onScroll(int delta, int scrollPosition,
-					boolean exact) {
+			public void onScroll(int delta, int scrollPosition, boolean exact) {
 
 				if (exact) {
 					float tran_y = tabview.getTranslationY() + delta;
@@ -120,17 +121,23 @@ public class ReminderSystemFragment extends BaseFragment {
 		});
 
 		mRListView.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View convertView,
 					int position, long arg3) {
+				Reminder.System item = (Reminder.System) arg0
+						.getItemAtPosition(position);
+				if (item != null) {
+					// 打开H5页面
+					WebUrl webUrl = new WebUrl();
+					webUrl.url = item.h5Url;
+					webUrl.title = getString(R.string.system_reminder);
+					launchActivity(WebActivity.class, "weburl", webUrl);
+				}
 			}
 		});
 
-		NoDataView noDataView = (NoDataView) mRootView
-				.findViewById(R.id.nodata_view);
-		noDataView.show(R.string.nodata_tip_reminder_system);
-
+		mNoDataView = (NoDataView) mRootView.findViewById(R.id.nodata_view);
+		mNoDataView.setTip(R.string.nodata_tip_reminder_system);
 	}
 
 	@Override
@@ -159,8 +166,7 @@ public class ReminderSystemFragment extends BaseFragment {
 	 * 拉取最新
 	 */
 	private void fetchNew() {
-		mLastId = "";
-		executeGetSystemRemindersTask(mLastId);
+		executeGetSystemRemindersTask("");
 	}
 
 	/**
@@ -168,8 +174,7 @@ public class ReminderSystemFragment extends BaseFragment {
 	 */
 	private void loadMore() {
 		if (mDataList != null && mDataList.size() > 0) {
-			mLastId = mDataList.get(mDataList.size() - 1).id;
-			executeGetSystemRemindersTask(mLastId);
+			executeGetSystemRemindersTask(mDataList.get(mDataList.size() - 1).id);
 		}
 	}
 
@@ -179,16 +184,10 @@ public class ReminderSystemFragment extends BaseFragment {
 	 * @param hasMore
 	 *            是否还有更多
 	 */
-	private void refreshRListView(boolean hasMore, long beginTime) {
+	private void refreshRListView(boolean hasMore) {
 		mRListView.setFootVisiable(hasMore);
 		mRListView.setEnableFooter(hasMore);
-		long endTime = System.currentTimeMillis();
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				mRListView.stopHeadLoading();
-			}
-		}, endTime - beginTime > 1500 ? 0 : 1500 - (endTime - beginTime));
+		mRListView.stopHeadLoading();
 	}
 
 	/**
@@ -200,20 +199,35 @@ public class ReminderSystemFragment extends BaseFragment {
 	 *            页数
 	 */
 	private void executeGetSystemRemindersTask(final String lastId) {
-		final long beginTime = System.currentTimeMillis();
 		ReminderManager.Task.getSystemReminders(lastId,
 				new OnTaskOverListener<ListResult<Reminder.System>>() {
 					@Override
 					public void onSuccess(ListResult<Reminder.System> t) {
 						if (t != null) {
-							mAdapter.refresh(t.list);
-							refreshRListView(t.hasMore, beginTime);
+							if (mDataList == null) {
+								mDataList = new ArrayList<Reminder.System>();
+							} else if (lastId == null || lastId.isEmpty()) {
+								mDataList.clear();
+							}
+							mDataList.addAll(t.list);
+							if (mDataList.size() <= 0) {
+								mNoDataView.show();
+							} else {
+								mNoDataView.dismiss();
+							}
+							mAdapter.refresh(mDataList);
+							refreshRListView(t.hasMore);
 						}
+
+						mParentActivity.finishLoading();
 					}
 
 					@Override
 					public void onFailure(int code, String msg) {
-
+						SuperToast.makeText(mParentActivity, msg,
+								SuperToast.LENGTH_SHORT).show();
+						refreshRListView(false);
+						mParentActivity.finishLoading();
 					}
 				});
 	}

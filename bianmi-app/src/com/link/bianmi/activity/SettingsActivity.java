@@ -20,6 +20,7 @@ import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.asynctask.listener.OnSimpleTaskOverListener;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
+import com.link.bianmi.entity.WebUrl;
 import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.unit.ninelock.NineLockActivity;
 import com.link.bianmi.unit.ninelock.NineLockSettingsActivity;
@@ -105,7 +106,10 @@ public class SettingsActivity extends BaseFragmentActivity {
 		findViewById(R.id.faq_group).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				launchActivity(WebActivity.class);
+				WebUrl webUrl = new WebUrl();
+				webUrl.title = getString(R.string.faq);
+				webUrl.url = "http://lightapp.baidu.com?appid=825829";
+				launchActivity(WebActivity.class, "weburl", webUrl);
 			}
 		});
 		// 邀请好友

@@ -36,7 +36,6 @@ import com.link.bianmi.utils.Tools;
 import com.link.bianmi.widget.NoDataView;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.OnListener;
-import com.link.bianmi.widget.RListView.TouchDirectionState;
 import com.link.bianmi.widget.SuperToast;
 
 /**

@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.link.bianmi.R;
+import com.link.bianmi.entity.WebUrl;
 
 public class WebActivity extends FragmentActivity {
 
@@ -20,7 +21,11 @@ public class WebActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		getActionBar().setTitle(R.string.faq);
+		WebUrl webUrl = (WebUrl) getIntent().getSerializableExtra("weburl");
+		if (webUrl == null || webUrl.url.isEmpty())
+			finish();
+
+		getActionBar().setTitle(webUrl.title);
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -29,7 +34,7 @@ public class WebActivity extends FragmentActivity {
 		mWebView = (WebView) findViewById(R.id.webview);
 
 		initWebViewSettings();
-		mWebView.loadUrl("http://lightapp.baidu.com?appid=825829");
+		mWebView.loadUrl(webUrl.url);
 
 	}
 

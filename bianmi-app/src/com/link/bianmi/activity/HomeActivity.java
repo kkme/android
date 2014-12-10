@@ -375,7 +375,10 @@ public class HomeActivity extends BaseFragmentActivity {
 	}
 
 	private boolean isScaleViewShow() {
-		return mScaleRootView.getVisibility() == View.VISIBLE;
+		if (mScaleRootView != null)
+			return mScaleRootView.getVisibility() == View.VISIBLE;
+		return false;
+
 	}
 
 	private void dismissScaleView() {

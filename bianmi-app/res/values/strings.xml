@@ -43,11 +43,13 @@
     <string name="ok_boring">恩，知道了</string>
 
     <!-- 提醒 -->
-    <string name="reminder">提醒</string>
-    <string name="person_reminder">我的</string>
-    <string name="system_reminder">系统</string>
+    <string name="message_center">消息中心</string>
+    <string name="person_reminder">我的提醒</string>
+    <string name="system_reminder">系统通知</string>
     <string name="nodata_tip_reminder_person">还没有我的提醒</string>
-    <string name="nodata_tip_reminder_system">还没有系统提醒</string>
+    <string name="nodata_tip_reminder_system">还没有系统通知</string>
+    <string name="likes">点赞·%1$d</string>
+    <string name="comments">评论·%1$d</string>
 
     <!-- 秘密详情 -->
     <string name="details_action_title">秘密详情</string>

@@ -64,8 +64,11 @@ public class ReminderPersonAdapter extends BaseAdapter {
 		if (personReminder != null) {
 			mFBitmap.display(imageView, personReminder.imageUrl);
 			contentTextView.setText(personReminder.content);
-			likesTextView.setText(String.valueOf(personReminder.likes));
-			commentsTextView.setText(String.valueOf(personReminder.comments));
+			likesTextView.setText(String.format(
+					mContext.getString(R.string.likes), personReminder.likes));
+			commentsTextView.setText(String.format(
+					mContext.getString(R.string.comments),
+					personReminder.comments));
 		}
 		return convertView;
 	}

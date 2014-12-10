@@ -1,5 +1,7 @@
 package com.link.bianmi.activity;
 
+import java.io.Serializable;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -47,6 +49,14 @@ public class BaseFragmentActivity extends FragmentActivity {
 		Intent intent = new Intent(this, cls);
 		intent.putExtras(bundle);
 		startActivityForResult(intent, requestCode);
+	}
+
+	protected void launchActivity(Class<?> cls, String key, Serializable value) {
+		Intent intent = new Intent(this, cls);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(key, value);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	protected void finishActivityWithResult(int resultCode) {

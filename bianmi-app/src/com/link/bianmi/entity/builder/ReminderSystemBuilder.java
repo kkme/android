@@ -44,6 +44,7 @@ public class ReminderSystemBuilder implements
 						JSONObject jsonArrObj = jsonArr.getJSONObject(i);
 
 						Reminder.System sysReminder = new Reminder.System();
+						sysReminder.id = jsonArrObj.getString("id");
 						sysReminder.title = jsonArrObj.getString("title");
 						sysReminder.subtitle = jsonArrObj.getString("subtitle");
 						sysReminder.imageUrl = jsonArrObj

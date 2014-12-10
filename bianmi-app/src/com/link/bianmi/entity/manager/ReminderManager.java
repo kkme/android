@@ -43,20 +43,20 @@ public class ReminderManager {
 					"%s?userid=%s&token=%s", SysConfig.getInstance()
 							.getReminderUrl(), UserConfig.getInstance()
 							.getUserId(), UserConfig.getInstance().getToken()));
-			if (response == null)
-				return null;
-
 			try {
-				// 解析Result
-				JSONObject jsonObj = response.asJSONObject();
-				result = new Result<Reminder>();
-				result.status = StatusBuilder.getInstance()
-						.buildEntity(jsonObj);
-				// 返回数据成功
-				if (result.status != null && result.status.code == Status_.OK) {
-					// 继续解析其他对象
-					result.t = ReminderBuilder.getInstance().buildEntity(
+				if (response != null) {
+					// 解析Result
+					JSONObject jsonObj = response.asJSONObject();
+					result = new Result<Reminder>();
+					result.status = StatusBuilder.getInstance().buildEntity(
 							jsonObj);
+					// 返回数据成功
+					if (result.status != null
+							&& result.status.code == Status_.OK) {
+						// 继续解析其他对象
+						result.t = ReminderBuilder.getInstance().buildEntity(
+								jsonObj);
+					}
 				}
 			} catch (ResponseException e) {
 				e.printStackTrace();
@@ -74,18 +74,18 @@ public class ReminderManager {
 							.getInstance().getReminderPersonUrl(), UserConfig
 							.getInstance().getUserId(), UserConfig
 							.getInstance().getToken(), lastid, BATCH_NUM));
-			if (response == null)
-				return null;
-
 			try {
-				// 解析Result
-				JSONObject jsonObj = response.asJSONObject();
-				result = new Result<ListResult<Reminder.Person>>();
-				result.status = StatusBuilder.getInstance()
-						.buildEntity(jsonObj);
-				if (result.status != null && result.status.code == Status_.OK) {
-					result.t = ReminderPersonBuilder.getInstance().buildEntity(
+				if (response != null) {
+					// 解析Result
+					JSONObject jsonObj = response.asJSONObject();
+					result = new Result<ListResult<Reminder.Person>>();
+					result.status = StatusBuilder.getInstance().buildEntity(
 							jsonObj);
+					if (result.status != null
+							&& result.status.code == Status_.OK) {
+						result.t = ReminderPersonBuilder.getInstance()
+								.buildEntity(jsonObj);
+					}
 				}
 			} catch (ResponseException e) {
 				e.printStackTrace();
@@ -102,21 +102,20 @@ public class ReminderManager {
 					"%s?token=%s&lastid=%s&batch=%d", SysConfig.getInstance()
 							.getReminderSystemUrl(), UserConfig.getInstance()
 							.getToken(), lastid, BATCH_NUM));
-
-			if (response == null)
-				return null;
-
 			try {
-				// 解析Result
-				JSONObject jsonObj = response.asJSONObject();
-				result = new Result<ListResult<Reminder.System>>();
-				result.status = StatusBuilder.getInstance()
-						.buildEntity(jsonObj);
-				// 返回数据成功
-				if (result.status != null && result.status.code == Status_.OK) {
-					// 继续解析其他对象
-					result.t = ReminderSystemBuilder.getInstance().buildEntity(
+				if (response != null) {
+					// 解析Result
+					JSONObject jsonObj = response.asJSONObject();
+					result = new Result<ListResult<Reminder.System>>();
+					result.status = StatusBuilder.getInstance().buildEntity(
 							jsonObj);
+					// 返回数据成功
+					if (result.status != null
+							&& result.status.code == Status_.OK) {
+						// 继续解析其他对象
+						result.t = ReminderSystemBuilder.getInstance()
+								.buildEntity(jsonObj);
+					}
 				}
 			} catch (ResponseException e) {
 				e.printStackTrace();
@@ -134,7 +133,8 @@ public class ReminderManager {
 		 * @param listener
 		 */
 		public static void getReminder(OnTaskOverListener<Reminder> listener) {
-			ReminderTask configTask = new ReminderTask(listener);
+			ReminderTask configTask = new ReminderTask(
+					TaskType.TYPE_HAS_REMINDER, listener);
 			configTask.executeOnExecutor(Executors.newCachedThreadPool());
 		}
 
@@ -174,10 +174,6 @@ public class ReminderManager {
 
 		TaskType taskType;
 		ITaskOverListener<?> listener;
-
-		public ReminderTask(ITaskOverListener<?> listener) {
-			this.listener = listener;
-		}
 
 		public ReminderTask(TaskType taskType, ITaskOverListener<?> listener) {
 			this.taskType = taskType;

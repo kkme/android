@@ -68,9 +68,9 @@ public class SysConfig {
 		mProperties.setProperty("bianmi.url.reminder.debug",
 				"http://172.21.58.1/bianmi/reminder.php");
 		mProperties.setProperty("bianmi.url.reminder.system.debug",
-				"http://172.21.58.1/bianmi/system_reminders.php");
+				"http://172.21.58.1/bianmi/reminders_system.php");
 		mProperties.setProperty("bianmi.url.reminder.person.debug",
-				"http://172.21.58.1/bianmi/person_reminders.php");
+				"http://172.21.58.1/bianmi/reminders_person.php");
 		mProperties.setProperty("bianmi.url.user.clear.debug",
 				"http://172.21.58.1/bianmi/clear_privacy.php");
 		mProperties.setProperty("bianmi.url.secret.details.debug",
@@ -110,9 +110,9 @@ public class SysConfig {
 		mProperties.setProperty("bianmi.url.reminder.release",
 				"http://172.21.58.1/bianmi/reminder.php");
 		mProperties.setProperty("bianmi.url.reminder.system.release",
-				"http://172.21.58.1/bianmi/system_reminders.php");
+				"http://172.21.58.1/bianmi/reminders_system.php");
 		mProperties.setProperty("bianmi.url.reminder.person.release",
-				"http://172.21.58.1/bianmi/person_reminders.php");
+				"http://172.21.58.1/bianmi/reminders_person.php");
 		mProperties.setProperty("bianmi.url.user.clear.release",
 				"http://172.21.58.1/bianmi/clear_privacy.php");
 		mProperties.setProperty("bianmi.url.secret.details.release",
