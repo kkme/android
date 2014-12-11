@@ -182,7 +182,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 	}
 
 	private void refreshRListView(List<Comment> comments, Secret secret,
-			boolean hasMore, long beginTime) {
+			boolean hasMore) {
 		if (comments != null && comments.size() > 0) {
 			if (mCommentsList == null) {
 				mCommentsList = comments;
@@ -193,15 +193,9 @@ public class DetailsActivity extends BaseFragmentActivity {
 		}
 		mRListView.setFootVisiable(hasMore);
 		mRListView.setEnableFooter(hasMore);
-		long endTime = System.currentTimeMillis();
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				mRListView.stopHeadLoading();
-				mShareItem.setVisible(true);
-				mLoadingItem.setVisible(false);
-			}
-		}, endTime - beginTime > 1500 ? 0 : 1500 - (endTime - beginTime));
+		mRListView.stopHeadLoading();
+		mShareItem.setVisible(true);
+		mLoadingItem.setVisible(false);
 	}
 
 	private InputSuit.Listener mInputListener = new InputSuit.Listener() {
@@ -290,7 +284,6 @@ public class DetailsActivity extends BaseFragmentActivity {
 	 * @param lastid
 	 */
 	private void executeGetCommentsTask(final String lastid) {
-		final long beginTime = System.currentTimeMillis();
 		if (mSecret == null || mSecret.resourceId.isEmpty())
 			return;
 		CommentManager.Task.getComments(mSecret.resourceId, lastid,
@@ -302,7 +295,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 						if (lastid.isEmpty() && mCommentsList != null) {
 							mCommentsList.clear();
 						}
-						refreshRListView(t.list, null, t.hasMore, beginTime);
+						refreshRListView(t.list, null, t.hasMore);
 					}
 
 					@Override

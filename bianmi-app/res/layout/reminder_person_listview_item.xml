@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:minHeight="@dimen/dp_96"
-    android:paddingBottom="@dimen/dp_2"
-    android:paddingTop="@dimen/dp_4" >
+    android:layout_height="@dimen/dp_120"
+    android:minHeight="@dimen/dp_120" >
 
     <ImageView
         android:id="@+id/imageview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/dp_120"
         android:layout_centerVertical="true"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
@@ -17,16 +15,19 @@
 
     <TextView
         android:id="@+id/content_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_120"
         android:layout_centerInParent="true"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="4"
         android:padding="@dimen/dp_15"
-        android:shadowColor="@color/main_green"
+        android:shadowColor="@color/fc_fff"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="1"
         android:text="这是内容"
-        android:textColor="@color/fc_fff"
+        android:textColor="@color/main_green"
         android:textSize="@dimen/sp_18" />
 
     <LinearLayout
@@ -34,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/dp_5"
         android:layout_marginRight="@dimen/dp_15"
         android:orientation="horizontal" >
 

@@ -62,7 +62,7 @@ public class SysConfig {
 		mProperties.setProperty("bianmi.url.comment.list.debug",
 				"http://172.21.58.1/bianmi/comments.php");
 		mProperties.setProperty("bianmi.url.comment.publish.debug",
-				"http://172.21.58.1/bianmi/add_comment.php");
+				"http://172.21.58.1/bianmi/publish_comment.php");
 		mProperties.setProperty("bianmi.url.contacts.upload.debug",
 				"http://172.21.58.1/bianmi/upload_contacts.php");
 		mProperties.setProperty("bianmi.url.reminder.debug",
@@ -104,7 +104,7 @@ public class SysConfig {
 		mProperties.setProperty("bianmi.url.comment.list.release",
 				"http://172.21.58.1/bianmi/comments.php");
 		mProperties.setProperty("bianmi.url.comment.publish.release",
-				"http://172.21.58.1/bianmi/add_comment.php");
+				"http://172.21.58.1/bianmi/publish_comment.php");
 		mProperties.setProperty("bianmi.url.contacts.upload.release",
 				"http://172.21.58.1/bianmi/upload_contacts.php");
 		mProperties.setProperty("bianmi.url.reminder.release",
