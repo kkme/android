@@ -8,29 +8,38 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.HttpClientParams;
+import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 
 public class HttpClient {
 
 	private final static int DEFAULT_SOCKET_TIMEOUT = 10 * 1000;// 连接超时时间
 
 	private static DefaultHttpClient mClient;
+
+	private static CookieStore localCookies = null;
+	private static HttpContext localContext;
 
 	public HttpClient() {
 		mClient = getHttpClient();
@@ -58,7 +67,12 @@ public class HttpClient {
 			HttpClientParams.setRedirecting(httpParams, false);
 			ClientConnectionManager cm = new ThreadSafeClientConnManager(
 					httpParams, schemeRegistry);
+
+			// 初始化Cookie
+			localCookies = new BasicCookieStore();
 			mClient = new DefaultHttpClient(cm, httpParams);
+			localContext = new BasicHttpContext();
+			localContext.setAttribute(ClientContext.COOKIE_STORE, localCookies);
 		}
 
 		return mClient;
@@ -72,7 +86,11 @@ public class HttpClient {
 			if (mClient == null) {
 				mClient = getHttpClient();
 			}
-			httpRes = mClient.execute(httpGet);
+			httpRes = mClient.execute(httpGet, localContext);
+			List<Cookie> respCookieList = localCookies.getCookies();
+			for (Cookie ck : respCookieList) {
+				System.out.println(ck);
+			}
 			res = new Response(httpRes);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -95,7 +113,11 @@ public class HttpClient {
 			}
 			httpEntity = new UrlEncodedFormEntity(params, HTTP.UTF_8);
 			httpPost.setEntity(httpEntity);
-			httpRes = mClient.execute(httpPost);
+			httpRes = mClient.execute(httpPost, localContext);
+			List<Cookie> respCookieList = localCookies.getCookies();
+			for (Cookie ck : respCookieList) {
+				System.out.println(ck);
+			}
 			res = new Response(httpRes);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
