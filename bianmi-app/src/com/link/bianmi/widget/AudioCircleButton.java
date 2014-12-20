@@ -15,8 +15,8 @@ import android.widget.RelativeLayout;
 
 import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
-import com.link.bianmi.utils.FileHelper;
 import com.link.bianmi.utils.AudioPlayer;
+import com.link.bianmi.utils.FileHelper;
 
 /**
  * 播放控件
@@ -24,7 +24,8 @@ import com.link.bianmi.utils.AudioPlayer;
  * @author pangfq
  * @date 2014年11月20日 上午11:14:45
  */
-public class AudioCircleButton extends RelativeLayout {
+public class AudioCircleButton extends RelativeLayout implements
+		AudioPlayer.OnListener {
 
 	private ImageButton mPlayBtn;
 	private RoundProgressBar mRoundBar;
@@ -54,6 +55,7 @@ public class AudioCircleButton extends RelativeLayout {
 		mPlayBtn = (ImageButton) findViewById(R.id.player_btn);
 		mRoundBar = (RoundProgressBar) findViewById(R.id.player_roundbar);
 		mAudioPlayer = new AudioPlayer(context);
+		mAudioPlayer.setOnListener(this);
 		final View loadingView = findViewById(R.id.loading_pb);
 		loadingView.setVisibility(View.GONE);
 
@@ -113,6 +115,7 @@ public class AudioCircleButton extends RelativeLayout {
 				case PLAYING:
 					mStatus = PlayStatus.STOP;
 					mPlayBtn.setBackgroundResource(R.drawable.btn_play);
+					mAudioPlayer.stop();
 					break;
 				}
 			}
@@ -176,10 +179,16 @@ public class AudioCircleButton extends RelativeLayout {
 		}, 200);
 	}
 
-	/**
-	 * 结束播放
-	 */
-	private void stopPlay() {
+	@Override
+	public void onStart() {
+	}
+
+	@Override
+	public void onPlaying(int maxProgress, int progress) {
+	}
+
+	@Override
+	public void onStop() {
 		stop();
 	}
 
