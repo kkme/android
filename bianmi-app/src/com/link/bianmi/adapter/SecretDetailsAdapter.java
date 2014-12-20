@@ -23,6 +23,7 @@ import com.link.bianmi.utils.ContextUtil;
 import com.link.bianmi.utils.TimeUtil;
 import com.link.bianmi.utils.ViewHolder;
 import com.link.bianmi.widget.AudioButton;
+import com.link.bianmi.widget.AudioCircleButton;
 import com.link.bianmi.widget.SuperToast;
 
 public class SecretDetailsAdapter extends BaseAdapter {
@@ -134,9 +135,9 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		}
 
 		// 语音
-		// AudioButton audioButton = ViewHolder
-		// .get(convertView, R.id.audio_button);
-		// audioButton.setAudioFile(comment.audioUrl, comment.audioLength);
+		AudioCircleButton audioBtn = ViewHolder.get(convertView,
+				R.id.avatar_audiocirclebutton);
+		audioBtn.setAudioUrl(comment.audioUrl);
 		// 点赞
 		final ImageView likedImage = ViewHolder.get(convertView,
 				R.id.liked_imageview);

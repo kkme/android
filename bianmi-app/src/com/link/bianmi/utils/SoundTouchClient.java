@@ -135,8 +135,8 @@ public class SoundTouchClient {
 
 					Log.d(TAG, "input ST amr size :" + inputSamples);
 
-					SoundTouch.getSoundTouch().shiftingPitch(
-							recorderBuffer, 0, len);
+					SoundTouch.getSoundTouch().shiftingPitch(recorderBuffer, 0,
+							len);
 
 					do {
 						receiveSTSamples = SoundTouch.getSoundTouch()
@@ -164,8 +164,8 @@ public class SoundTouchClient {
 			SoundTouch.getSoundTouch().soundTouchFlushLastSamples();
 
 			do {
-				receiveSTSamples = SoundTouch.getSoundTouch()
-						.receiveSamples(recorderBuffer, recorderBuffer.length);
+				receiveSTSamples = SoundTouch.getSoundTouch().receiveSamples(
+						recorderBuffer, recorderBuffer.length);
 
 				Log.d(TAG, "receive remainder ST samples:" + receiveSTSamples);
 

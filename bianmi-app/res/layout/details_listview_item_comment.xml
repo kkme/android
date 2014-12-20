@@ -7,16 +7,29 @@
     android:paddingRight="@dimen/dp_10"
     android:paddingTop="@dimen/dp_10" >
 
-    <!-- 头像 -->
-
-    <ImageView
-        android:id="@+id/avatar_imageview"
+    <RelativeLayout
+        android:id="@+id/avatar_group"
         android:layout_width="@dimen/dp_48"
-        android:layout_height="@dimen/dp_48"
-        android:layout_alignTop="@+id/avatar_imageview"
-        android:contentDescription="@null"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_comment_avatar" />
+        android:layout_height="@dimen/dp_48" >
+
+        <!-- 头像 -->
+
+        <com.link.bianmi.widget.RoundImageView
+            android:id="@+id/avatar_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/avatar_imageview"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_comment_avatar" />
+
+        <!-- 音频播放 -->
+
+        <com.link.bianmi.widget.AudioCircleButton
+            android:id="@+id/avatar_audiocirclebutton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/text_group"
@@ -25,7 +38,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_toLeftOf="@+id/liked_imageview"
-        android:layout_toRightOf="@+id/avatar_imageview"
+        android:layout_toRightOf="@+id/avatar_group"
         android:minHeight="@dimen/dp_48"
         android:orientation="vertical"
         android:paddingBottom="@dimen/dp_5"

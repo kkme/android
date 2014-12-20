@@ -30,7 +30,7 @@
     <string name="guest_friends_tip">想听自己朋友圈，\n那帮家伙的【变声】秘密吗？</string>
     <string name="guest_friends_signup">那就赶紧去注册吧</string>
     <!-- 秘密列表 -->
-    <string name="nodata_tip_secrets_hot">咦，来早了！\n人们还没出门，再等等吧！</string>
+    <string name="nodata_tip_secrets_hot">咦，大街上还没人哦！</string>
     <string name="nodata_tip_secrets_friends">还没有朋友圈秘密，\n快去邀请小伙伴们吧！</string>
     <string name="nodata_tip_secrets_nearby">这边还没发过秘密，\n嘿嘿，要不咱就来一发先！</string>
     <!-- 发表秘密 -->
@@ -128,7 +128,7 @@
     <string name="tempo">音速</string>
     <string name="inputsuit_click_start_record">点击录音</string>
     <string name="inputsuit_click_stop_record">点击结束</string>
-
+    <string name="audio_file_error">无法读取音频文件！</string>
     <!-- 九宫格密码锁 -->
     <string name="try_again">重试</string>
     <string name="signin_again">重新登录</string>

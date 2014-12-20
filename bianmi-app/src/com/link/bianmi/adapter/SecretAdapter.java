@@ -1,18 +1,25 @@
 package com.link.bianmi.adapter;
 
+import java.io.File;
+
 import net.tsz.afinal.FinalBitmap;
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.link.bianmi.R;
+import com.link.bianmi.SysConfig;
 import com.link.bianmi.activity.HomeActivity;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.db.SecretDB;
@@ -76,6 +83,32 @@ public class SecretAdapter extends CursorAdapter {
 		likeOrDislike(likesText, cursor.getInt(mIndexHolder.isLikedIndex) > 0);
 		TextView commentsText = ViewHolder.get(view, R.id.comments_textview);
 		commentsText.setText(String.valueOf(mIndexHolder.commentsIndex));
+		commentsText.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				FinalHttp fh = new FinalHttp();
+				fh.download(
+						"http://7kttv9.com1.z0.glb.clouddn.com/user/audio/41e021e98da4474a84879f54cbeb7721_1418278191016.amr", // 这里是下载的路径
+						SysConfig.getInstance().getRootPath()
+								+ "/temp/41e021e98da4474a84879f54cbeb7721_1418278191016.amr",// true:断点续传
+						// false:不断点续传（全新下载）
+						false, // 这是保存到本地的路径
+						new AjaxCallBack<File>() {
+							@Override
+							public void onLoading(long count, long current) {
+								Log.d("bianmi", "下载进度：" + current + "/" + count);
+								Toast.makeText(mContext, "current" + current,
+										Toast.LENGTH_SHORT).show();
+							}
+
+							public void onSuccess(File t) {
+								Log.d("bianmi", t == null ? "null" : t
+										.getAbsoluteFile().toString());
+							}
+
+						});
+			}
+		});
 		final ImageView pictureImage = ViewHolder.get(view,
 				R.id.picture_imageview);
 		mFBitmap.display(pictureImage,
