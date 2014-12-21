@@ -30,9 +30,9 @@ public class AudioCircleButton extends RelativeLayout implements
 	private ImageButton mPlayBtn;
 	private RoundProgressBar mRoundBar;
 
-	private String mAudioUrl;
-	private AudioPlayer mAudioPlayer;
+	private Context mContext;
 
+	private String mAudioUrl;
 	private int mMax;
 	private Handler mHandler = new Handler();
 
@@ -54,8 +54,7 @@ public class AudioCircleButton extends RelativeLayout implements
 		LayoutInflater.from(context).inflate(R.layout.player, this, true);
 		mPlayBtn = (ImageButton) findViewById(R.id.player_btn);
 		mRoundBar = (RoundProgressBar) findViewById(R.id.player_roundbar);
-		mAudioPlayer = new AudioPlayer(context);
-		mAudioPlayer.setOnListener(this);
+		AudioPlayer.getInstance(context).setOnListener(this);
 		final View loadingView = findViewById(R.id.loading_pb);
 		loadingView.setVisibility(View.GONE);
 
@@ -115,7 +114,7 @@ public class AudioCircleButton extends RelativeLayout implements
 				case PLAYING:
 					mStatus = PlayStatus.STOP;
 					mPlayBtn.setBackgroundResource(R.drawable.btn_play);
-					mAudioPlayer.stop();
+					AudioPlayer.getInstance(mContext).stop();
 					break;
 				}
 			}
@@ -171,10 +170,11 @@ public class AudioCircleButton extends RelativeLayout implements
 	 * 开始播放
 	 */
 	private void startPlay(final String audioPath) {
+		AudioPlayer.getInstance(mContext).stop();
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				mAudioPlayer.start(audioPath);
+				AudioPlayer.getInstance(mContext).start(audioPath);
 			}
 		}, 200);
 	}

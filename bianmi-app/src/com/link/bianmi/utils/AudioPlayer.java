@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import com.link.bianmi.R;
-
 import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -15,6 +13,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.link.bianmi.R;
 
 public class AudioPlayer {
 
@@ -47,9 +47,21 @@ public class AudioPlayer {
 
 				break;
 			}
-
 		}
 	};
+
+	private AudioPlayer(Context context) {
+		mContext = context;
+	}
+
+	private static AudioPlayer mInstance = null;
+
+	public static AudioPlayer getInstance(Context context) {
+		if (mInstance == null) {
+			mInstance = new AudioPlayer(context);
+		}
+		return mInstance;
+	}
 
 	class PlayThread extends Thread {
 
@@ -108,10 +120,6 @@ public class AudioPlayer {
 		}
 	}
 
-	public AudioPlayer(Context context) {
-		mContext = context;
-	}
-
 	public void start(String fileName) {
 
 		if (mThread != null && mThread.isAlive()) {
@@ -158,6 +166,7 @@ public class AudioPlayer {
 		mThread = null;
 		if (mAudioTrack != null) {
 			mAudioTrack.stop();
+			mAudioTrack.release();
 		}
 		if (mListener != null) {
 			mListener.onStop();
