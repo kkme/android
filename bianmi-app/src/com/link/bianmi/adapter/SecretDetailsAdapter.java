@@ -137,7 +137,7 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		// 语音
 		AudioCircleButton audioBtn = ViewHolder.get(convertView,
 				R.id.avatar_audiocirclebutton);
-		audioBtn.setAudioUrl(comment.audioUrl);
+		audioBtn.init(comment.audioUrl, comment.audioLength);
 		// 点赞
 		final ImageView likedImage = ViewHolder.get(convertView,
 				R.id.liked_imageview);

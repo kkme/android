@@ -40,83 +40,83 @@ public class SysConfig {
 				"http://infinigag-us.aws.af.cm");
 		mProperties.setProperty("bianmi.dbname.debug", "bianmi_d");
 		mProperties.setProperty("bianmi.url.signup.debug",
-				"http://172.27.35.1/bianmi/index.php/Index/Login/reg");
+				"http://172.21.58.1/bianmi/index.php/Index/Login/reg");
 		mProperties.setProperty("bianmi.url.signin.debug",
-				"http://172.27.35.1/bianmi/index.php/Index/Login/index");
+				"http://172.21.58.1/bianmi/index.php/Index/Login/index");
 		mProperties.setProperty("bianmi.url.signout.debug",
-				"http://172.27.35.1/bianmi/index.php/Index/Login/signout");
+				"http://172.21.58.1/bianmi/index.php/Index/Login/signout");
 		mProperties.setProperty("bianmi.url.secret.publish.debug",
-				"http://172.27.35.1/bianmi/publish.php");
+				"http://172.21.58.1/bianmi/publish.php");
 		mProperties.setProperty("bianmi.url.secret.list.hot.debug",
-				"http://172.27.35.1/bianmi/secrets_hot.php");
+				"http://172.21.58.1/bianmi/secrets_hot.php");
 		mProperties.setProperty("bianmi.url.secret.list.friend.debug",
-				"http://172.27.35.1/bianmi/secrets_friend.php");
+				"http://172.21.58.1/bianmi/secrets_friend.php");
 		mProperties.setProperty("bianmi.url.secret.list.nearby.debug",
-				"http://172.27.35.1/bianmi/secrets_nearby.php");
+				"http://172.21.58.1/bianmi/secrets_nearby.php");
 		mProperties.setProperty("bianmi.url.secret.like.debug",
-				"http://172.27.35.1/bianmi/like.php");
+				"http://172.21.58.1/bianmi/like.php");
 		mProperties.setProperty("bianmi.url.comment.like.debug",
-				"http://172.27.35.1/bianmi/comment_like.php");
+				"http://172.21.58.1/bianmi/comment_like.php");
 		mProperties.setProperty("bianmi.url.config.debug",
-				"http://172.27.35.1/bianmi/config.php");
+				"http://172.21.58.1/bianmi/config.php");
 		mProperties.setProperty("bianmi.url.comment.list.debug",
-				"http://172.27.35.1/bianmi/comments.php");
+				"http://172.21.58.1/bianmi/comments.php");
 		mProperties.setProperty("bianmi.url.comment.publish.debug",
-				"http://172.27.35.1/bianmi/publish_comment.php");
+				"http://172.21.58.1/bianmi/publish_comment.php");
 		mProperties.setProperty("bianmi.url.contacts.upload.debug",
-				"http://172.27.35.1/bianmi/upload_contacts.php");
+				"http://172.21.58.1/bianmi/upload_contacts.php");
 		mProperties.setProperty("bianmi.url.reminder.debug",
-				"http://172.27.35.1/bianmi/reminder.php");
+				"http://172.21.58.1/bianmi/reminder.php");
 		mProperties.setProperty("bianmi.url.reminder.system.debug",
-				"http://172.27.35.1/bianmi/reminders_system.php");
+				"http://172.21.58.1/bianmi/reminders_system.php");
 		mProperties.setProperty("bianmi.url.reminder.person.debug",
-				"http://172.27.35.1/bianmi/reminders_person.php");
+				"http://172.21.58.1/bianmi/reminders_person.php");
 		mProperties.setProperty("bianmi.url.user.clear.debug",
-				"http://172.27.35.1/bianmi/clear_privacy.php");
+				"http://172.21.58.1/bianmi/clear_privacy.php");
 		mProperties.setProperty("bianmi.url.secret.details.debug",
-				"http://172.27.35.1/bianmi/secret_details.php");
+				"http://172.21.58.1/bianmi/secret_details.php");
 		// ---------------release
 		mProperties.setProperty("bianmi.dbname.release", "bianmi_v1");
 		mProperties.setProperty("bianmi.url.base.release",
 				"http://infinigag-us.aws.af.cm"); // Base URL
 		mProperties.setProperty("bianmi.url.signup.release",
-				"http://172.27.35.1/bianmi/signup.php"); // 注册
+				"http://172.21.58.1/bianmi/signup.php"); // 注册
 		mProperties.setProperty("bianmi.url.signin.release",
-				"http://172.27.35.1/bianmi/signin.php"); // 登录
+				"http://172.21.58.1/bianmi/signin.php"); // 登录
 		mProperties.setProperty("bianmi.url.signout.release",
-				"http://172.27.35.1/bianmi/signout.php"); // 登出
+				"http://172.21.58.1/bianmi/signout.php"); // 登出
 		mProperties.setProperty("bianmi.qiniu.uptoken",
-				"http://172.27.35.1/bianmi/token.php?type=uptoken");// 上传token
+				"http://172.21.58.1/bianmi/token.php?type=uptoken");// 上传token
 		mProperties.setProperty("bianmi.url.secret.publish.release",
-				"http://172.27.35.1/bianmi/publish.php");
+				"http://172.21.58.1/bianmi/publish.php");
 		mProperties.setProperty("bianmi.url.secret.list.hot.release",
-				"http://172.27.35.1/bianmi/secrets_hot.php");
+				"http://172.21.58.1/bianmi/secrets_hot.php");
 		mProperties.setProperty("bianmi.url.secret.list.friend.release",
-				"http://172.27.35.1/bianmi/secrets_friend.php");
+				"http://172.21.58.1/bianmi/secrets_friend.php");
 		mProperties.setProperty("bianmi.url.secret.list.nearby.release",
-				"http://172.27.35.1/bianmi/secrets_nearby.php");
+				"http://172.21.58.1/bianmi/secrets_nearby.php");
 		mProperties.setProperty("bianmi.url.secret.like.release",
-				"http://172.27.35.1/bianmi/like.php");
+				"http://172.21.58.1/bianmi/like.php");
 		mProperties.setProperty("bianmi.url.comment.like.release",
-				"http://172.27.35.1/bianmi/comment_like.php");
+				"http://172.21.58.1/bianmi/comment_like.php");
 		mProperties.setProperty("bianmi.url.config.release",
-				"http://172.27.35.1/bianmi/config.php");
+				"http://172.21.58.1/bianmi/config.php");
 		mProperties.setProperty("bianmi.url.comment.list.release",
-				"http://172.27.35.1/bianmi/comments.php");
+				"http://172.21.58.1/bianmi/comments.php");
 		mProperties.setProperty("bianmi.url.comment.publish.release",
-				"http://172.27.35.1/bianmi/publish_comment.php");
+				"http://172.21.58.1/bianmi/publish_comment.php");
 		mProperties.setProperty("bianmi.url.contacts.upload.release",
-				"http://172.27.35.1/bianmi/upload_contacts.php");
+				"http://172.21.58.1/bianmi/upload_contacts.php");
 		mProperties.setProperty("bianmi.url.reminder.release",
-				"http://172.27.35.1/bianmi/reminder.php");
+				"http://172.21.58.1/bianmi/reminder.php");
 		mProperties.setProperty("bianmi.url.reminder.system.release",
-				"http://172.27.35.1/bianmi/reminders_system.php");
+				"http://172.21.58.1/bianmi/reminders_system.php");
 		mProperties.setProperty("bianmi.url.reminder.person.release",
-				"http://172.27.35.1/bianmi/reminders_person.php");
+				"http://172.21.58.1/bianmi/reminders_person.php");
 		mProperties.setProperty("bianmi.url.user.clear.release",
-				"http://172.27.35.1/bianmi/clear_privacy.php");
+				"http://172.21.58.1/bianmi/clear_privacy.php");
 		mProperties.setProperty("bianmi.url.secret.details.release",
-				"http://172.27.35.1/bianmi/secret_details.php");
+				"http://172.21.58.1/bianmi/secret_details.php");
 		// 七牛
 		mProperties.setProperty("qiniu.bucketname.attach", "bianmi"); // 七牛
 																		// Bucket

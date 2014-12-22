@@ -5,16 +5,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.link.bianmi.R;
 
 public class AudioPlayer {
 
@@ -28,12 +24,10 @@ public class AudioPlayer {
 
 	private boolean mIsStart = false;
 
-	private Context mContext;
-
 	private PlayThread mThread = null;
 
 	// 停止播放
-	private final int MSG_STOP = 2;
+	private final int MSG_STOP = 1111;
 
 	private Handler mHandler = new Handler() {
 		@Override
@@ -49,19 +43,6 @@ public class AudioPlayer {
 			}
 		}
 	};
-
-	private AudioPlayer(Context context) {
-		mContext = context;
-	}
-
-	private static AudioPlayer mInstance = null;
-
-	public static AudioPlayer getInstance(Context context) {
-		if (mInstance == null) {
-			mInstance = new AudioPlayer(context);
-		}
-		return mInstance;
-	}
 
 	class PlayThread extends Thread {
 
@@ -128,9 +109,7 @@ public class AudioPlayer {
 		}
 
 		if (!new File(fileName).exists() || !new File(fileName).isFile()) {
-			Toast.makeText(mContext,
-					mContext.getString(R.string.audio_file_error),
-					Toast.LENGTH_SHORT).show();
+			Log.w(TAG, "wrong file!");
 			if (mListener != null) {
 				mListener.onStop();
 			}
@@ -164,9 +143,9 @@ public class AudioPlayer {
 	public void stop() {
 		mIsStart = false;
 		mThread = null;
-		if (mAudioTrack != null) {
+		if (mAudioTrack != null
+				&& mAudioTrack.getPlayState() != AudioTrack.PLAYSTATE_STOPPED) {
 			mAudioTrack.stop();
-			mAudioTrack.release();
 		}
 		if (mListener != null) {
 			mListener.onStop();

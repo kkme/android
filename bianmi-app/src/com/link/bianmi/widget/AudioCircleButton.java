@@ -10,8 +10,8 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 
 import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
@@ -24,15 +24,13 @@ import com.link.bianmi.utils.FileHelper;
  * @author pangfq
  * @date 2014年11月20日 上午11:14:45
  */
-public class AudioCircleButton extends RelativeLayout implements
-		AudioPlayer.OnListener {
+public class AudioCircleButton extends FrameLayout {
 
 	private ImageButton mPlayBtn;
 	private RoundProgressBar mRoundBar;
 
-	private Context mContext;
-
 	private String mAudioUrl;
+	private int mAudioLen;
 	private int mMax;
 	private Handler mHandler = new Handler();
 
@@ -44,6 +42,8 @@ public class AudioCircleButton extends RelativeLayout implements
 		}
 	};
 
+	// ------------------------------Constructor------------------------------
+
 	public AudioCircleButton(Context context) {
 		this(context, null);
 	}
@@ -54,7 +54,6 @@ public class AudioCircleButton extends RelativeLayout implements
 		LayoutInflater.from(context).inflate(R.layout.player, this, true);
 		mPlayBtn = (ImageButton) findViewById(R.id.player_btn);
 		mRoundBar = (RoundProgressBar) findViewById(R.id.player_roundbar);
-		AudioPlayer.getInstance(context).setOnListener(this);
 		final View loadingView = findViewById(R.id.loading_pb);
 		loadingView.setVisibility(View.GONE);
 
@@ -89,7 +88,7 @@ public class AudioCircleButton extends RelativeLayout implements
 					if (file.exists() && file.isFile()) {
 						loadingView.setVisibility(View.GONE);
 						mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
-						startPlay(audioPath);
+						start(audioPath, mAudioLen);
 						return;
 					}
 					FinalHttp fh = new FinalHttp();
@@ -105,7 +104,7 @@ public class AudioCircleButton extends RelativeLayout implements
 								public void onSuccess(File t) {
 									loadingView.setVisibility(View.GONE);
 									mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
-									startPlay(audioPath);
+									start(audioPath, mAudioLen);
 								}
 
 							});
@@ -114,7 +113,7 @@ public class AudioCircleButton extends RelativeLayout implements
 				case PLAYING:
 					mStatus = PlayStatus.STOP;
 					mPlayBtn.setBackgroundResource(R.drawable.btn_play);
-					AudioPlayer.getInstance(mContext).stop();
+					AudioPlayerController.getInstance().stop();
 					break;
 				}
 			}
@@ -122,6 +121,51 @@ public class AudioCircleButton extends RelativeLayout implements
 
 	}
 
+	private static class AudioPlayerController {
+
+		private static AudioPlayerController sInstance = null;
+		private AudioPlayer mPlayer;
+		private AudioCircleButton mAudioBtn;
+
+		private AudioPlayerController() {
+			mPlayer = new AudioPlayer();
+			mPlayer.setOnListener(new AudioPlayer.OnListener() {
+				@Override
+				public void onStop() {
+					if (mAudioBtn != null)
+						mAudioBtn.stop();
+				}
+
+				@Override
+				public void onStart() {
+
+				}
+
+				@Override
+				public void onPlaying(int maxProgress, int progress) {
+
+				}
+			});
+		}
+
+		public static AudioPlayerController getInstance() {
+			if (sInstance == null) {
+				sInstance = new AudioPlayerController();
+			}
+			return sInstance;
+		}
+
+		public void start(String audioPath, AudioCircleButton audioBtn) {
+			mAudioBtn = audioBtn;
+			mPlayer.start(audioPath);
+		}
+
+		public void stop() {
+			mPlayer.stop();
+		}
+	}
+
+	// ------------------------------------------Private--------------------------------------
 	private PlayStatus mStatus;
 
 	/** 播放状态 **/
@@ -131,26 +175,34 @@ public class AudioCircleButton extends RelativeLayout implements
 		STOP, // 停止
 	}
 
-	// ------------------------------------------Public--------------------------------------
-
 	/** 重置 **/
-	public void reset() {
+	private void reset() {
 		mStatus = PlayStatus.INIT;
 		mRoundBar.setProgress(0);
 		mPlayBtn.setBackgroundResource(R.drawable.btn_play);
 	}
 
-	public void play(int max) {
+	private void start(final String audioPath, int max) {
 		if (mPlayBtn != null) {
 			mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
 			mStatus = PlayStatus.PLAYING;
 			mMax = max;
 			mRoundBar.setMax(mMax);
 			mHandler.post(mRunnable);
+
+			AudioPlayerController.getInstance().stop();
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					AudioPlayerController.getInstance().start(audioPath,
+							AudioCircleButton.this);
+				}
+			}, 200);
+
 		}
 	}
 
-	public void stop() {
+	private void stop() {
 		if (mPlayBtn != null) {
 			mPlayBtn.setBackgroundResource(R.drawable.btn_play);
 			mStatus = PlayStatus.STOP;
@@ -159,37 +211,10 @@ public class AudioCircleButton extends RelativeLayout implements
 		}
 	}
 
-	/**
-	 * 设置音频路径
-	 */
-	public void setAudioUrl(String url) {
+	// ------------------------------Public------------------------------
+	public void init(String url, int length) {
 		mAudioUrl = url;
-	}
-
-	/**
-	 * 开始播放
-	 */
-	private void startPlay(final String audioPath) {
-		AudioPlayer.getInstance(mContext).stop();
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				AudioPlayer.getInstance(mContext).start(audioPath);
-			}
-		}, 200);
-	}
-
-	@Override
-	public void onStart() {
-	}
-
-	@Override
-	public void onPlaying(int maxProgress, int progress) {
-	}
-
-	@Override
-	public void onStop() {
-		stop();
+		mAudioLen = length;
 	}
 
 }
