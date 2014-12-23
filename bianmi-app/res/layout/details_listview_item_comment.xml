@@ -87,4 +87,15 @@
         android:layout_marginTop="@dimen/dp_10"
         android:background="@color/divider_color" />
 
+    <!-- 暂无评论 -->
+
+    <TextView
+        android:id="@+id/nocomments_textview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_64"
+        android:background="@color/window_background"
+        android:gravity="center"
+        android:text="@string/no_comments"
+        android:textSize="@dimen/sp_16" />
+
 </RelativeLayout>

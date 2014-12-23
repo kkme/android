@@ -1,6 +1,5 @@
 package com.link.bianmi.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.tsz.afinal.FinalBitmap;
@@ -41,7 +40,6 @@ public class SecretDetailsAdapter extends BaseAdapter {
 	public SecretDetailsAdapter(Context context, Secret secret) {
 		mContext = context;
 		mSecret = secret;
-		mCommentsList = new ArrayList<Comment>();
 		mFBitmap = FinalBitmap.create(context);
 		mFBitmap.configLoadingImage(R.drawable.ic_launcher);
 	}
@@ -56,7 +54,8 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		if (position == 0) {
 			return mSecret;
 		} else {
-			return mCommentsList.get(position - 1);
+			return mCommentsList != null ? mCommentsList.get(position - 1)
+					: null;
 		}
 	}
 
@@ -108,17 +107,31 @@ public class SecretDetailsAdapter extends BaseAdapter {
 			final int position) {
 		if (comment == null)
 			return;
-		// 头像
 		ImageView avatarImage = ViewHolder.get(convertView,
 				R.id.avatar_imageview);
-		mFBitmap.display(avatarImage, comment.avatarUrl);
-		// 内容
 		TextView contentText = ViewHolder.get(convertView,
 				R.id.content_textview);
-		contentText.setText(comment.content);
 		// 楼层、时间
 		TextView floorTimeLikesText = ViewHolder.get(convertView,
 				R.id.floor_time_likes_textview);
+		AudioCircleButton audioBtn = ViewHolder.get(convertView,
+				R.id.avatar_audiocirclebutton);
+		final ImageView likedImage = ViewHolder.get(convertView,
+				R.id.liked_imageview);
+		TextView nocommentsText = ViewHolder.get(convertView,
+				R.id.nocomments_textview);
+		// 暂无评论
+		if (comment.createdTime == 0) {
+			nocommentsText.setVisibility(View.VISIBLE);
+			return;
+		} else {
+			nocommentsText.setVisibility(View.GONE);
+		}
+		// 头像
+		mFBitmap.display(avatarImage, comment.avatarUrl);
+		// 内容
+		contentText.setText(comment.content);
+
 		if (comment.likes <= 0) {
 			floorTimeLikesText.setText(String.format(
 					mContext.getString(R.string.floor_time),
@@ -135,12 +148,8 @@ public class SecretDetailsAdapter extends BaseAdapter {
 		}
 
 		// 语音
-		AudioCircleButton audioBtn = ViewHolder.get(convertView,
-				R.id.avatar_audiocirclebutton);
 		audioBtn.init(comment.audioUrl, comment.audioLength);
 		// 点赞
-		final ImageView likedImage = ViewHolder.get(convertView,
-				R.id.liked_imageview);
 		likeOrDislike(likedImage, comment.isLiked);
 
 		likedImage.setOnClickListener(new OnClickListener() {

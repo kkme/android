@@ -1,5 +1,6 @@
 package com.link.bianmi.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
@@ -181,23 +182,6 @@ public class DetailsActivity extends BaseFragmentActivity {
 		}
 	}
 
-	private void refreshRListView(List<Comment> comments, Secret secret,
-			boolean hasMore) {
-		if (comments != null && comments.size() > 0) {
-			if (mCommentsList == null) {
-				mCommentsList = comments;
-			} else {
-				mCommentsList.addAll(comments);
-			}
-			mAdapter.refresh(mCommentsList, secret);
-		}
-		mRListView.setFootVisiable(hasMore);
-		mRListView.setEnableFooter(hasMore);
-		mRListView.stopHeadLoading();
-		mShareItem.setVisible(true);
-		mLoadingItem.setVisible(false);
-	}
-
 	private InputSuit.Listener mInputListener = new InputSuit.Listener() {
 		@Override
 		public void onSubmit(String photoPath, String recordPath,
@@ -290,12 +274,33 @@ public class DetailsActivity extends BaseFragmentActivity {
 				new OnTaskOverListener<ListResult<Comment>>() {
 					@Override
 					public void onSuccess(ListResult<Comment> t) {
-						if (t == null)
+						if (t == null || t.list == null)
 							return;
+						// 每次刷新都要先清空列表
 						if (lastid.isEmpty() && mCommentsList != null) {
 							mCommentsList.clear();
 						}
-						refreshRListView(t.list, null, t.hasMore);
+						// 暂无评论
+						if (lastid.isEmpty() && t.list.size() <= 0) {
+							mCommentsList = new ArrayList<Comment>();
+							mCommentsList.add(new Comment());
+							mRListView.setFootVisiable(false);
+							mRListView.setEnableFooter(false);
+						} else {
+							if (mCommentsList == null) {
+								mCommentsList = t.list;
+							} else {
+								mCommentsList.addAll(t.list);
+							}
+
+							mRListView.setFootVisiable(t.hasMore);
+							mRListView.setEnableFooter(t.hasMore);
+						}
+
+						mAdapter.refresh(mCommentsList, null);
+						mRListView.stopHeadLoading();
+						mShareItem.setVisible(true);
+						mLoadingItem.setVisible(false);
 					}
 
 					@Override

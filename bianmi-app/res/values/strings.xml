@@ -64,6 +64,7 @@
     <string name="day">天</string>
     <string name="month">个月</string>
     <string name="year">年</string>
+    <string name="no_comments">暂无评论</string>
 
     <!-- 登录 -->
     <string name="signin">登录</string>
