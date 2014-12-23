@@ -1,10 +1,6 @@
 package com.link.bianmi.adapter;
 
-import java.io.File;
-
 import net.tsz.afinal.FinalBitmap;
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -16,17 +12,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.link.bianmi.R;
-import com.link.bianmi.SysConfig;
 import com.link.bianmi.activity.HomeActivity;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
 import com.link.bianmi.db.SecretDB;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.entity.manager.SecretManager.TaskType;
 import com.link.bianmi.utils.ViewHolder;
-import com.link.bianmi.widget.AudioButton;
+import com.link.bianmi.widget.AudioCircleButton;
 import com.link.bianmi.widget.SuperToast;
 
 public class SecretAdapter extends CursorAdapter {
@@ -61,6 +55,8 @@ public class SecretAdapter extends CursorAdapter {
 					.getColumnIndex(SecretDB.FIELD_RESOURCEID);
 			mIndexHolder.contentIndex = cursor
 					.getColumnIndex(SecretDB.FIELD_CONTENT);
+			mIndexHolder.fromIndex = cursor
+					.getColumnIndex(SecretDB.FIELD_WHEREFROM);
 			mIndexHolder.likesIndex = cursor
 					.getColumnIndex(SecretDB.FIELD_LIKES);
 			mIndexHolder.isLikedIndex = cursor
@@ -77,45 +73,23 @@ public class SecretAdapter extends CursorAdapter {
 
 		TextView contentText = ViewHolder.get(view, R.id.content_textview);
 		contentText.setText(cursor.getString(mIndexHolder.contentIndex));
+		TextView fromText = ViewHolder.get(view, R.id.from_textview);
+		fromText.setText(cursor.getString(mIndexHolder.fromIndex));
+		Log.d("bianmi", cursor.getString(mIndexHolder.fromIndex) + ",asdfsd");
 		final TextView likesText = ViewHolder.get(view, R.id.likes_textview);
 		likesText
 				.setText(String.valueOf(cursor.getInt(mIndexHolder.likesIndex)));
 		likeOrDislike(likesText, cursor.getInt(mIndexHolder.isLikedIndex) > 0);
 		TextView commentsText = ViewHolder.get(view, R.id.comments_textview);
+
 		commentsText.setText(String.valueOf(mIndexHolder.commentsIndex));
-		commentsText.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				FinalHttp fh = new FinalHttp();
-				fh.download(
-						"http://7kttv9.com1.z0.glb.clouddn.com/user/audio/41e021e98da4474a84879f54cbeb7721_1418278191016.amr", // 这里是下载的路径
-						SysConfig.getInstance().getRootPath()
-								+ "/temp/41e021e98da4474a84879f54cbeb7721_1418278191016.amr",// true:断点续传
-						// false:不断点续传（全新下载）
-						false, // 这是保存到本地的路径
-						new AjaxCallBack<File>() {
-							@Override
-							public void onLoading(long count, long current) {
-								Log.d("bianmi", "下载进度：" + current + "/" + count);
-								Toast.makeText(mContext, "current" + current,
-										Toast.LENGTH_SHORT).show();
-							}
-
-							public void onSuccess(File t) {
-								Log.d("bianmi", t == null ? "null" : t
-										.getAbsoluteFile().toString());
-							}
-
-						});
-			}
-		});
 		final ImageView pictureImage = ViewHolder.get(view,
 				R.id.picture_imageview);
 		mFBitmap.display(pictureImage,
 				cursor.getString(mIndexHolder.imageUrlIndex));
 
-		AudioButton audioBtn = ViewHolder.get(view, R.id.audio_button);
-		audioBtn.setAudioFile(cursor.getString(mIndexHolder.audioUrlIndex),
+		AudioCircleButton audioBtn = ViewHolder.get(view, R.id.audio_button);
+		audioBtn.init(cursor.getString(mIndexHolder.audioUrlIndex),
 				cursor.getInt(mIndexHolder.audioLengthIndex));
 		// 图片
 		pictureImage.setOnClickListener(new OnClickListener() {
@@ -161,6 +135,7 @@ public class SecretAdapter extends CursorAdapter {
 	private class IndexHolder {
 		int resourceIdIndex;
 		int contentIndex;
+		int fromIndex;
 		int likesIndex;
 		int isLikedIndex;
 		int commentsIndex;
@@ -171,10 +146,10 @@ public class SecretAdapter extends CursorAdapter {
 
 	private void likeOrDislike(TextView likesText, boolean isliked) {
 		Drawable leftDrawable = mContext.getResources().getDrawable(
-				R.drawable.ab_ic_like);
+				R.drawable.ic_card_like);
 		if (isliked) {
 			leftDrawable = mContext.getResources().getDrawable(
-					R.drawable.ab_ic_liked);
+					R.drawable.ic_card_liked);
 
 		}
 

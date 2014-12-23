@@ -111,8 +111,6 @@ public class AudioCircleButton extends FrameLayout {
 
 					break;
 				case PLAYING:
-					mStatus = PlayStatus.STOP;
-					mPlayBtn.setBackgroundResource(R.drawable.btn_play);
 					AudioPlayerController.getInstance().stop();
 					break;
 				}

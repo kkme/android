@@ -146,9 +146,9 @@ public class AudioPlayer {
 		if (mAudioTrack != null
 				&& mAudioTrack.getPlayState() != AudioTrack.PLAYSTATE_STOPPED) {
 			mAudioTrack.stop();
-		}
-		if (mListener != null) {
-			mListener.onStop();
+			if (mListener != null) {
+				mListener.onStop();
+			}
 		}
 	}
 

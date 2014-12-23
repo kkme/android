@@ -35,6 +35,7 @@ public class SecretBuilder implements BaseEntityBuilder<Secret>,
 				secret = new Secret();
 				secret.resourceId = secretJson.getString("id");
 				secret.content = secretJson.getString("content");
+				secret.from = secretJson.getString("from");
 				secret.imageUrl = secretJson.getString("image_url");
 				secret.audioUrl = secretJson.getString("audio_url");
 				secret.audioLength = secretJson.getInt("audio_length");
@@ -67,6 +68,7 @@ public class SecretBuilder implements BaseEntityBuilder<Secret>,
 						Secret secret = new Secret();
 						secret.resourceId = jsonArrObj.getString("id");
 						secret.content = jsonArrObj.getString("content");
+						secret.from = jsonArrObj.getString("from");
 						secret.imageUrl = jsonArrObj.getString("image_url");
 						secret.audioUrl = jsonArrObj.getString("audio_url");
 						secret.audioLength = jsonArrObj.getInt("audio_length");
