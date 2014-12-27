@@ -136,8 +136,7 @@ public abstract class SecretFragment extends BaseFragment {
 			}
 
 			@Override
-			public void onScroll(int delta, int scrollPosition,
-					boolean exact) {
+			public void onScroll(int delta, int scrollPosition, boolean exact) {
 
 				if (exact) {
 					float tran_y = tabview.getTranslationY() + delta;

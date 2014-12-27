@@ -21,7 +21,6 @@ import com.link.bianmi.entity.manager.CommentManager;
 import com.link.bianmi.utils.ContextUtil;
 import com.link.bianmi.utils.TimeUtil;
 import com.link.bianmi.utils.ViewHolder;
-import com.link.bianmi.widget.AudioButton;
 import com.link.bianmi.widget.AudioCircleButton;
 import com.link.bianmi.widget.SuperToast;
 
@@ -184,9 +183,9 @@ public class SecretDetailsAdapter extends BaseAdapter {
 				R.id.content_textview);
 		contentText.setText(secret.content);
 		// 语音
-		AudioButton audioButton = ViewHolder
-				.get(convertView, R.id.audio_button);
-		audioButton.setAudioFile(secret.audioUrl, secret.audioLength);
+		AudioCircleButton audioButton = ViewHolder.get(convertView,
+				R.id.audio_button);
+		audioButton.init(secret.audioUrl, secret.audioLength);
 		// 点赞数
 		TextView likedText = ViewHolder.get(convertView, R.id.liked_textview);
 		likedText.setText(String.valueOf(secret.likes));

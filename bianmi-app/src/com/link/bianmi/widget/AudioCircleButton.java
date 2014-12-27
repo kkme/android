@@ -77,6 +77,7 @@ public class AudioCircleButton extends FrameLayout {
 				case STOP:
 					mStatus = PlayStatus.PLAYING;
 					loadingView.setVisibility(View.VISIBLE);
+					mPlayBtn.setBackgroundResource(R.drawable.bg_record_b);
 
 					final String audioPath = SysConfig.getInstance()
 							.getRootPath()

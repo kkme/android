@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.AlphaAnimation;
@@ -70,6 +71,7 @@ public class HomeActivity extends BaseFragmentActivity {
 	private BlurView mScaleBlurView;
 	private ImageViewEx mScaleViewEx;
 	private TextView mScaleContentText;
+	private TextView mScaleDetalsText;
 	private ObjectAnimator mScalseFadeInAnim, mScaleFadeOutAnim;
 	private boolean mScaleIsClose;
 
@@ -310,7 +312,9 @@ public class HomeActivity extends BaseFragmentActivity {
 		mScaleRootView = mScaleViewStub.inflate();
 		mScaleRootView.setVisibility(View.GONE);
 		mScaleContentText = (TextView) mScaleRootView
-				.findViewById(R.id.fragment_image_title_textview);
+				.findViewById(R.id.content_textview);
+		mScaleDetalsText = (TextView) mScaleRootView
+				.findViewById(R.id.details_textview);
 		((View) mScaleContentText.getParent()).setAlpha(0);
 		mScaleViewEx = (ImageViewEx) mScaleRootView
 				.findViewById(R.id.fragment_image_imageViewex);
@@ -388,8 +392,17 @@ public class HomeActivity extends BaseFragmentActivity {
 		}
 	}
 
-	private void startScaleAnimation(ImageView smallImageView, Secret secret) {
+	private void startScaleAnimation(ImageView smallImageView,
+			final Secret secret) {
 		mScaleContentText.setText(secret.content);
+		mScaleDetalsText.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				if (secret != null) {
+					launchActivity(DetailsActivity.class, "secret", secret);
+				}
+			}
+		});
 		mScaleRootView.setVisibility(View.VISIBLE);
 		mScalseFadeInAnim.start();
 		mScaleBlurView.drawBlurOnce();
