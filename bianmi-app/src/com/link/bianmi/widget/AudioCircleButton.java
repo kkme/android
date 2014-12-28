@@ -102,10 +102,18 @@ public class AudioCircleButton extends FrameLayout {
 								public void onLoading(long count, long current) {
 								}
 
+								@Override
 								public void onSuccess(File t) {
 									loadingView.setVisibility(View.GONE);
 									mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
 									start(audioPath, mAudioLen);
+								}
+
+								@Override
+								public void onFailure(Throwable t, int errorNo,
+										String strMsg) {
+									loadingView.setVisibility(View.GONE);
+									stop();
 								}
 
 							});
@@ -140,10 +148,6 @@ public class AudioCircleButton extends FrameLayout {
 
 				}
 
-				@Override
-				public void onPlaying(int maxProgress, int progress) {
-
-				}
 			});
 		}
 

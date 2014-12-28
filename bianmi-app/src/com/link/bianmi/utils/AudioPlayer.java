@@ -165,17 +165,14 @@ public class AudioPlayer {
 		public void onStart();
 
 		/**
-		 * 正在播放
-		 * 
-		 * @param maxProgress
-		 * @param progress
-		 */
-		public void onPlaying(int maxProgress, int progress);
-
-		/**
 		 * 停止播放
 		 */
 		public void onStop();
 	}
 
+	public boolean isPlaying() {
+		return mAudioTrack != null
+				&& mAudioTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING;
+
+	}
 }
