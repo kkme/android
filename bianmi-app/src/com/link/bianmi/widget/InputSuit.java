@@ -688,7 +688,7 @@ public class InputSuit extends LinearLayout {
 
 		@Override
 		public void onStartPlay() {
-			mPlayerView.play(mRecordLen);
+			mPlayerView.play();
 		}
 
 		@Override

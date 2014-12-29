@@ -1,32 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:myattr="http://schemas.android.com/apk/res/com.link.bianmi"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <ImageButton
-        android:id="@+id/player_btn"
+        android:id="@+id/circle_imagebtn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/btn_play"
         android:contentDescription="@null" />
 
-    <com.link.bianmi.widget.RoundProgressBar
-        android:id="@+id/player_roundbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="1dp"
-        myattr:fill="false"
-        myattr:max="100"
-        myattr:paint_color="#ff2f7a0f"
-        myattr:paint_width="@dimen/dp_6"
-        myattr:show_bottom="false" />
-
     <ProgressBar
-        android:id="@+id/loading_pb"
+        android:id="@+id/loading_progressbar"
         style="@android:style/Widget.ProgressBar.Large.Inverse"
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_centerInParent="true" />
+
+    <ImageView
+        android:id="@+id/playing_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:contentDescription="@null"
+        android:src="@anim/volume_play_gif" />
 
 </RelativeLayout>

@@ -1,12 +1,11 @@
 package com.link.bianmi.widget;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.link.bianmi.R;
@@ -20,19 +19,8 @@ import com.link.bianmi.R;
 public class PlayerView extends RelativeLayout {
 
 	private ImageButton mPlayBtn;
-	private RoundProgressBar mRoundBar;
+	private ImageView mPlayingView;
 	private OnListener mListener = null;
-
-	private int mMax;
-	private Handler mHandler = new Handler();
-
-	private Runnable mRunnable = new Runnable() {
-		@Override
-		public void run() {
-			mRoundBar.setProgress(mMax--);
-			mHandler.postDelayed(mRunnable, 1000);
-		}
-	};
 
 	public PlayerView(Context context) {
 		this(context, null);
@@ -41,19 +29,9 @@ public class PlayerView extends RelativeLayout {
 	public PlayerView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		LayoutInflater.from(context).inflate(R.layout.player, this, true);
+		LayoutInflater.from(context).inflate(R.layout.player_view, this, true);
 		mPlayBtn = (ImageButton) findViewById(R.id.player_btn);
-		mRoundBar = (RoundProgressBar) findViewById(R.id.player_roundbar);
-
-		TypedArray array = context.obtainStyledAttributes(attrs,
-				R.styleable.RoundProgressBar);
-		float paintWidth = array.getDimension(
-				R.styleable.RoundProgressBar_paint_width, 5);
-		array.recycle();
-
-		array = context.obtainStyledAttributes(attrs, R.styleable.Play);
-		array.recycle();
-		mRoundBar.setPaintWidth(paintWidth);
+		mPlayingView = (ImageView) findViewById(R.id.playing_imageview);
 
 		reset();
 
@@ -64,7 +42,7 @@ public class PlayerView extends RelativeLayout {
 				case INIT:
 				case STOP:
 					mStatus = PlayStatus.PLAYING;
-					mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
+					mPlayBtn.setBackgroundResource(R.drawable.bg_record_b);
 					if (mListener != null) {
 						mListener.onPlay();
 					}
@@ -96,17 +74,15 @@ public class PlayerView extends RelativeLayout {
 	/** 重置 **/
 	public void reset() {
 		mStatus = PlayStatus.INIT;
-		mRoundBar.setProgress(0);
 		mPlayBtn.setBackgroundResource(R.drawable.btn_play);
+		mPlayingView.setVisibility(View.GONE);
 	}
 
-	public void play(int max) {
+	public void play() {
 		if (mPlayBtn != null) {
-			mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
+			mPlayBtn.setBackgroundResource(R.drawable.bg_record_b);
+			mPlayingView.setVisibility(View.VISIBLE);
 			mStatus = PlayStatus.PLAYING;
-			mMax = max;
-			mRoundBar.setMax(mMax);
-			mHandler.post(mRunnable);
 		}
 	}
 
@@ -114,8 +90,7 @@ public class PlayerView extends RelativeLayout {
 		if (mPlayBtn != null) {
 			mPlayBtn.setBackgroundResource(R.drawable.btn_play);
 			mStatus = PlayStatus.STOP;
-			mHandler.removeCallbacks(mRunnable);
-			mRoundBar.setProgress(0);
+			mPlayingView.setVisibility(View.GONE);
 		}
 	}
 

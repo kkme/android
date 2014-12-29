@@ -5,13 +5,13 @@ import java.io.File;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.link.bianmi.R;
 import com.link.bianmi.SysConfig;
@@ -27,20 +27,10 @@ import com.link.bianmi.utils.FileHelper;
 public class AudioCircleButton extends FrameLayout {
 
 	private ImageButton mPlayBtn;
-	private RoundProgressBar mRoundBar;
+	private ImageView mPlayingView;
 
 	private String mAudioUrl;
 	private int mAudioLen;
-	private int mMax;
-	private Handler mHandler = new Handler();
-
-	private Runnable mRunnable = new Runnable() {
-		@Override
-		public void run() {
-			mRoundBar.setProgress(mMax--);
-			mHandler.postDelayed(mRunnable, 1000);
-		}
-	};
 
 	// ------------------------------Constructor------------------------------
 
@@ -51,22 +41,12 @@ public class AudioCircleButton extends FrameLayout {
 	public AudioCircleButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		LayoutInflater.from(context).inflate(R.layout.player, this, true);
-		mPlayBtn = (ImageButton) findViewById(R.id.player_btn);
-		mRoundBar = (RoundProgressBar) findViewById(R.id.player_roundbar);
-		final View loadingView = findViewById(R.id.loading_pb);
+		LayoutInflater.from(context).inflate(R.layout.circle_audio_button,
+				this, true);
+		mPlayBtn = (ImageButton) findViewById(R.id.circle_imagebtn);
+		final View loadingView = findViewById(R.id.loading_progressbar);
 		loadingView.setVisibility(View.GONE);
-
-		TypedArray array = context.obtainStyledAttributes(attrs,
-				R.styleable.RoundProgressBar);
-		float paintWidth = array.getDimension(
-				R.styleable.RoundProgressBar_paint_width, 5);
-		array.recycle();
-
-		array = context.obtainStyledAttributes(attrs, R.styleable.Play);
-		array.recycle();
-		mRoundBar.setPaintWidth(paintWidth);
-
+		mPlayingView = (ImageView) findViewById(R.id.playing_imageview);
 		reset();
 
 		mPlayBtn.setOnClickListener(new OnClickListener() {
@@ -88,7 +68,7 @@ public class AudioCircleButton extends FrameLayout {
 					File file = new File(audioPath);
 					if (file.exists() && file.isFile()) {
 						loadingView.setVisibility(View.GONE);
-						mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
+						mPlayBtn.setBackgroundResource(R.drawable.bg_record_b);
 						start(audioPath, mAudioLen);
 						return;
 					}
@@ -105,7 +85,7 @@ public class AudioCircleButton extends FrameLayout {
 								@Override
 								public void onSuccess(File t) {
 									loadingView.setVisibility(View.GONE);
-									mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
+									mPlayBtn.setBackgroundResource(R.drawable.bg_record_b);
 									start(audioPath, mAudioLen);
 								}
 
@@ -181,17 +161,15 @@ public class AudioCircleButton extends FrameLayout {
 	/** 重置 **/
 	private void reset() {
 		mStatus = PlayStatus.INIT;
-		mRoundBar.setProgress(0);
 		mPlayBtn.setBackgroundResource(R.drawable.btn_play);
+		mPlayingView.setVisibility(View.GONE);
 	}
 
 	private void start(final String audioPath, int max) {
 		if (mPlayBtn != null) {
-			mPlayBtn.setBackgroundResource(R.drawable.btn_pause);
+			mPlayBtn.setBackgroundResource(R.drawable.bg_record_b);
+			mPlayingView.setVisibility(View.VISIBLE);
 			mStatus = PlayStatus.PLAYING;
-			mMax = max;
-			mRoundBar.setMax(mMax);
-			mHandler.post(mRunnable);
 
 			AudioPlayerController.getInstance().stop();
 			new Handler().postDelayed(new Runnable() {
@@ -208,9 +186,8 @@ public class AudioCircleButton extends FrameLayout {
 	private void stop() {
 		if (mPlayBtn != null) {
 			mPlayBtn.setBackgroundResource(R.drawable.btn_play);
+			mPlayingView.setVisibility(View.GONE);
 			mStatus = PlayStatus.STOP;
-			mHandler.removeCallbacks(mRunnable);
-			mRoundBar.setProgress(0);
 		}
 	}
 
