@@ -201,7 +201,8 @@ public class HomeActivity extends BaseFragmentActivity {
 						REQUEST_CODE_REMINDER);
 			}
 		} else if (item.getItemId() == R.id.action_more) {
-			showMoreOptionMenu(findViewById(R.id.action_more));
+			launchActivityForResult(SettingsActivity.class, 6666);
+			// showMoreOptionMenu(findViewById(R.id.action_more));
 		}
 		return true;
 	}

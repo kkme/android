@@ -3,6 +3,7 @@ package com.link.bianmi.activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebChromeClient;
@@ -55,6 +56,16 @@ public class WebActivity extends FragmentActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
+			mWebView.goBack();
+			return true;
+		}
+
+		return super.onKeyDown(keyCode, event);
 	}
 
 	// ----------------------------Private-----------------------------------
