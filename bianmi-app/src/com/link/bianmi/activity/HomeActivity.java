@@ -44,6 +44,7 @@ import com.link.bianmi.fragment.FriendFragment;
 import com.link.bianmi.fragment.HotFragment;
 import com.link.bianmi.fragment.NearbyFragment;
 import com.link.bianmi.utils.UmengSocialClient;
+import com.link.bianmi.widget.AudioCircleButton;
 import com.link.bianmi.widget.BlurView;
 import com.link.bianmi.widget.ScaleImageView;
 import com.link.bianmi.widget.ScaleImageView.ImageViewListener;
@@ -125,6 +126,12 @@ public class HomeActivity extends BaseFragmentActivity {
 		if (mMenuAdapter != null) {
 			mMenuAdapter.notifyDataSetChanged();
 		}
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		AudioCircleButton.stopPlay();
 	}
 
 	@Override

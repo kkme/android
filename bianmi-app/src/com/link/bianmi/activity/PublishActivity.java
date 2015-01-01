@@ -52,6 +52,12 @@ public class PublishActivity extends BaseFragmentActivity {
 		SoftInputUtils.popupSoftInput(mContentEdit);
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		mInputSuit.stop();
+	}
+
 	private MenuItem mLoadingItem;
 	private MenuItem mFAQItem;
 

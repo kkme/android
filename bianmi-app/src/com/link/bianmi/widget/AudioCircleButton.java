@@ -197,4 +197,9 @@ public class AudioCircleButton extends FrameLayout {
 		mAudioLen = length;
 	}
 
+	// ------------------------------Static------------------------------
+	public static void stopPlay() {
+		AudioPlayerController.getInstance().stop();
+	}
+
 }

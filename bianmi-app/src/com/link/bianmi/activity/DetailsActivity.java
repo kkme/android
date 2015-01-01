@@ -3,6 +3,8 @@ package com.link.bianmi.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +26,7 @@ import com.link.bianmi.entity.Status_;
 import com.link.bianmi.entity.manager.CommentManager;
 import com.link.bianmi.entity.manager.SecretManager;
 import com.link.bianmi.utils.UmengSocialClient;
+import com.link.bianmi.widget.AudioCircleButton;
 import com.link.bianmi.widget.InputSuit;
 import com.link.bianmi.widget.RListView;
 import com.link.bianmi.widget.RListView.OnListener;
@@ -102,6 +105,13 @@ public class DetailsActivity extends BaseFragmentActivity {
 
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		AudioCircleButton.stopPlay();
+		mInputSuit.stop();
+	}
+
 	private MenuItem mLikeItem;
 	private MenuItem mLoadingItem;
 	private MenuItem mShareItem;
@@ -125,6 +135,14 @@ public class DetailsActivity extends BaseFragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
+			// 如果内容不为空
+			if (!mInputSuit.isEmpty()) {
+				showConfirmAbandonInputDialog();
+				return false;
+			}
+
+			mInputSuit.cleanup();
+
 			finish();
 			return true;
 		} else if (item.getItemId() == R.id.action_like) {
@@ -154,7 +172,53 @@ public class DetailsActivity extends BaseFragmentActivity {
 		mInputSuit.onActivityResult(requestCode, resultCode, data);
 	}
 
+	@Override
+	public void onBackPressed() {
+		// 如果内容不为空
+		if (!mInputSuit.isEmpty()) {
+			showConfirmAbandonInputDialog();
+			return;
+		}
+
+		mInputSuit.cleanup();
+
+		super.onBackPressed();
+	}
+
 	// -------------------------------Private-------------------------------
+	/**
+	 * 确定放弃输入吗？
+	 */
+	private void showConfirmAbandonInputDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final AlertDialog dialog = builder
+				.setMessage(this.getString(R.string.confirm_abandon_input))
+				.setPositiveButton(this.getString(R.string.abandon_input),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								mInputSuit.cleanup();
+								dialog.dismiss();
+								new Handler().postDelayed(new Runnable() {
+									@Override
+									public void run() {
+										finish();
+									}
+								}, 300);
+							}
+						})
+				.setNegativeButton(this.getString(R.string.cancel),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						}).create();
+		dialog.show();
+	}
+
 	private void likeOrDislike(boolean isliked) {
 		if (isliked) {
 			mLikeItem.setIcon(getResources()

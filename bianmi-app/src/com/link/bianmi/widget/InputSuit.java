@@ -246,6 +246,7 @@ public class InputSuit extends LinearLayout {
 		mPlayerView.setOnListener(new PlayerView.OnListener() {
 			@Override
 			public void onStop() {
+				mSTRecorder.stopPlay();
 			}
 
 			@Override
@@ -342,11 +343,13 @@ public class InputSuit extends LinearLayout {
 	 * 重录
 	 */
 	private void rerecording() {
+		stop();
 		FileHelper.delete(mRecordPath);
 		setPhotoPath("");
 		setRecordPath("");
 		mRecordLen = 0;
 		mRecordDurationText.setText("0\"");
+		mRecordTipText.setVisibility(View.VISIBLE);
 		mRecordTipText.setText(mContext
 				.getString(R.string.inputsuit_click_start_record));
 		mRecorderView.reset();
@@ -644,8 +647,7 @@ public class InputSuit extends LinearLayout {
 		final AlertDialog dialog = builder
 				.setMessage(
 						mActivity.getString(R.string.inputsuit_rerecord_tip))
-				.setPositiveButton(
-						mActivity.getString(R.string.continue_to_rerecording),
+				.setPositiveButton(mActivity.getString(R.string.rerecording),
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog,
@@ -879,4 +881,13 @@ public class InputSuit extends LinearLayout {
 		}
 	}
 
+	/**
+	 * 停止播放、录音
+	 */
+	public void stop() {
+		if (mSTRecorder != null) {
+			mSTRecorder.stopPlay();
+			mSTRecorder.stopRecorder();
+		}
+	}
 }
