@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -75,7 +74,6 @@ public class SecretAdapter extends CursorAdapter {
 		contentText.setText(cursor.getString(mIndexHolder.contentIndex));
 		TextView fromText = ViewHolder.get(view, R.id.from_textview);
 		fromText.setText(cursor.getString(mIndexHolder.fromIndex));
-		Log.d("bianmi", cursor.getString(mIndexHolder.fromIndex) + ",asdfsd");
 		final TextView likesText = ViewHolder.get(view, R.id.likes_textview);
 		likesText
 				.setText(String.valueOf(cursor.getInt(mIndexHolder.likesIndex)));
@@ -91,6 +89,7 @@ public class SecretAdapter extends CursorAdapter {
 		AudioCircleButton audioBtn = ViewHolder.get(view, R.id.audio_button);
 		audioBtn.init(cursor.getString(mIndexHolder.audioUrlIndex),
 				cursor.getInt(mIndexHolder.audioLengthIndex));
+		audioBtn.restoreStatus();
 		// 图片
 		pictureImage.setOnClickListener(new OnClickListener() {
 

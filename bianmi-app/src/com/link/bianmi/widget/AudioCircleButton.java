@@ -1,11 +1,13 @@
 package com.link.bianmi.widget;
 
 import java.io.File;
+import java.util.UUID;
 
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import android.content.Context;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,8 @@ public class AudioCircleButton extends FrameLayout {
 
 	private String mAudioUrl;
 	private int mAudioLen;
+
+	private String mId = "";
 
 	// ------------------------------Constructor------------------------------
 
@@ -106,6 +110,8 @@ public class AudioCircleButton extends FrameLayout {
 			}
 		});
 
+		mId = UUID.randomUUID().toString();
+
 	}
 
 	private static class AudioPlayerController {
@@ -113,6 +119,8 @@ public class AudioCircleButton extends FrameLayout {
 		private static AudioPlayerController sInstance = null;
 		private AudioPlayer mPlayer;
 		private AudioCircleButton mAudioBtn;
+
+		private String mTagId = "";// 最后一次播放的id
 
 		private AudioPlayerController() {
 			mPlayer = new AudioPlayer();
@@ -139,6 +147,7 @@ public class AudioCircleButton extends FrameLayout {
 		}
 
 		public void start(String audioPath, AudioCircleButton audioBtn) {
+			mTagId = audioBtn.getTagId();// 当前播放第tag
 			mAudioBtn = audioBtn;
 			mPlayer.start(audioPath);
 		}
@@ -146,9 +155,28 @@ public class AudioCircleButton extends FrameLayout {
 		public void stop() {
 			mPlayer.stop();
 		}
+
+		public boolean isPlaying(AudioCircleButton audioButton) {
+			return mPlayer.isPlaying() && isMatch(audioButton);
+		}
+
+		/** 是否匹配 **/
+		private boolean isMatch(AudioCircleButton audioButton) {
+			boolean result = false;
+			if (audioButton != null && !TextUtils.isEmpty(mTagId)
+					&& mTagId.compareTo(audioButton.getTagId()) == 0) {
+				result = true;
+			}
+			return result;
+		}
 	}
 
 	// ------------------------------------------Private--------------------------------------
+	/** 获取标志 **/
+	private String getTagId() {
+		return mId + mAudioUrl;
+	}
+
 	private PlayStatus mStatus;
 
 	/** 播放状态 **/
@@ -183,6 +211,14 @@ public class AudioCircleButton extends FrameLayout {
 		}
 	}
 
+	private void start() {
+		if (mPlayBtn != null) {
+			mPlayBtn.setBackgroundResource(R.drawable.bg_record_b);
+			mPlayingView.setVisibility(View.VISIBLE);
+			mStatus = PlayStatus.PLAYING;
+		}
+	}
+
 	private void stop() {
 		if (mPlayBtn != null) {
 			mPlayBtn.setBackgroundResource(R.drawable.btn_play);
@@ -195,6 +231,17 @@ public class AudioCircleButton extends FrameLayout {
 	public void init(String url, int length) {
 		mAudioUrl = url;
 		mAudioLen = length;
+	}
+
+	/** 恢复播放状态 **/
+	public void restoreStatus() {
+		boolean isPlaying = AudioPlayerController.getInstance().isPlaying(
+				AudioCircleButton.this);
+		if (isPlaying) {
+			start();
+		} else {
+			stop();
+		}
 	}
 
 	// ------------------------------Static------------------------------
