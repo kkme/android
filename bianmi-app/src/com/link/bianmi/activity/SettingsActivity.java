@@ -20,7 +20,6 @@ import com.link.bianmi.SysConfig;
 import com.link.bianmi.UserConfig;
 import com.link.bianmi.asynctask.listener.OnSimpleTaskOverListener;
 import com.link.bianmi.asynctask.listener.OnTaskOverListener;
-import com.link.bianmi.entity.WebUrl;
 import com.link.bianmi.entity.manager.UserManager;
 import com.link.bianmi.unit.ninelock.NineLockActivity;
 import com.link.bianmi.unit.ninelock.NineLockSettingsActivity;
@@ -103,15 +102,16 @@ public class SettingsActivity extends BaseFragmentActivity {
 			adGroup.setVisibility(View.GONE);
 		}
 		// 常见问题
-		findViewById(R.id.faq_group).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				WebUrl webUrl = new WebUrl();
-				webUrl.title = getString(R.string.faq);
-				webUrl.url = "http://lightapp.baidu.com?appid=825829";
-				launchActivity(WebActivity.class, "weburl", webUrl);
-			}
-		});
+		// findViewById(R.id.faq_group).setOnClickListener(new OnClickListener()
+		// {
+		// @Override
+		// public void onClick(View v) {
+		// WebUrl webUrl = new WebUrl();
+		// webUrl.title = getString(R.string.faq);
+		// webUrl.url = "http://lightapp.baidu.com?appid=825829";
+		// launchActivity(WebActivity.class, "weburl", webUrl);
+		// }
+		// });
 		// 邀请好友
 		findViewById(R.id.invite_friends_group).setOnClickListener(
 				new OnClickListener() {
@@ -135,7 +135,7 @@ public class SettingsActivity extends BaseFragmentActivity {
 				Tools.getVersionName(SettingsActivity.this)));
 
 		// 清楚痕迹
-		View clearGroup = findViewById(R.id.settings_item_clear_group);
+		View clearGroup = findViewById(R.id.clear_group);
 		clearGroup.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

@@ -47,10 +47,10 @@
 
     <include layout="@layout/divider" />
 
-    <!-- 常见问题 -->
+    <!-- 清除痕迹 -->
 
     <RelativeLayout
-        android:id="@+id/faq_group"
+        android:id="@+id/clear_group"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:background="@drawable/selector_actionbar_menu" >
@@ -59,13 +59,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/faq"
+            android:text="@string/clear_privacy"
             android:textSize="@dimen/sp_16" />
     </RelativeLayout>
 
     <include layout="@layout/divider" />
 
-    <!-- 精品推荐 -->
+    <!-- 最美应用 -->
 
     <RelativeLayout
         android:id="@+id/ad_group"
@@ -113,23 +113,6 @@
         android:layout_height="4dp"
         android:background="@color/main_purple" />
 
-    <!-- 清除痕迹 -->
-
-    <RelativeLayout
-        android:id="@+id/settings_item_clear_group"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:background="@drawable/selector_actionbar_menu" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/clear_privacy"
-            android:textSize="@dimen/sp_16" />
-    </RelativeLayout>
-
-    <include layout="@layout/divider" />
     <!-- 退出登录 -->
 
     <RelativeLayout
