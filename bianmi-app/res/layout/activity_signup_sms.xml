@@ -116,7 +116,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_15"
         android:background="@drawable/selector_btn_red"
-        android:text="@string/signup" />
+        android:text="@string/signup"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/resend_sms_textview"

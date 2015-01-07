@@ -85,7 +85,7 @@ public class SideBar extends View {
 			break;
 
 		default:
-			setBackgroundResource(R.drawable.btn_red_pressed);
+			setBackgroundResource(R.drawable.selector_btn_red);
 			if (oldChoose != c) {
 				if (c >= 0 && c < b.length) {
 					if (mOnTouchListener != null) {

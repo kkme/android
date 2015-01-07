@@ -1,8 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
     <com.link.bianmi.unit.ninelock.NineLockView
         android:id="@+id/lock_pattern"
@@ -12,21 +11,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom" >
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/dp_5"
+        android:paddingLeft="@dimen/page_padding_left"
+        android:paddingRight="@dimen/page_padding_right" >
 
         <Button
             android:id="@+id/left_btn"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_48"
+            android:layout_marginRight="@dimen/dp_5"
             android:layout_weight="1"
-            android:onClick="onClick" />
+            android:background="@drawable/selector_btn_red"
+            android:onClick="onClick"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/right_btn"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_48"
+            android:layout_marginLeft="@dimen/dp_5"
             android:layout_weight="1"
-            android:onClick="onClick" />
+            android:background="@drawable/selector_btn_green"
+            android:onClick="onClick"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

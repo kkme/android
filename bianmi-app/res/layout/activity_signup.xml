@@ -55,6 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_20"
         android:background="@drawable/selector_btn_red"
-        android:text="@string/signup" />
+        android:text="@string/signup"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>
