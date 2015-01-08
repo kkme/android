@@ -15,6 +15,16 @@
         android:textSize="@dimen/sp_28"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/tip_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ninelockview"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_12"
+        android:textStyle="bold" />
+
     <!-- 九宫格密码 -->
 
     <com.link.bianmi.unit.ninelock.NineLockView

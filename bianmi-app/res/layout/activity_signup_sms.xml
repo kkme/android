@@ -10,7 +10,7 @@
         android:id="@+id/country_group"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_36"
-        android:background="@drawable/selector_list_item"
+        android:background="@drawable/selector_list_item_transparent"
         android:gravity="center_vertical" >
 
         <TextView

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import com.link.bianmi.R;
 import com.link.bianmi.UserConfig;
@@ -16,7 +17,6 @@ import com.link.bianmi.activity.HomeActivity;
 import com.link.bianmi.activity.WelcomeActivity;
 import com.link.bianmi.unit.ninelock.NineLockView.Cell;
 import com.link.bianmi.unit.ninelock.NineLockView.DisplayMode;
-import com.link.bianmi.widget.SuperToast;
 
 /**
  * 九宫格密码锁屏
@@ -28,6 +28,7 @@ public class NineLockActivity extends BaseFragmentActivity implements
 		NineLockView.OnPatternListener {
 	private List<Cell> lockPattern;
 	private NineLockView nineLockView;
+	private TextView mTipText;
 
 	private int mActionType = 0;
 
@@ -38,6 +39,8 @@ public class NineLockActivity extends BaseFragmentActivity implements
 		lockPattern = NineLockView.stringToPattern(UserConfig.getInstance()
 				.getLockPassKey());
 		setContentView(R.layout.activity_ninelock);
+
+		mTipText = (TextView) findViewById(R.id.tip_textview);
 		nineLockView = (NineLockView) findViewById(R.id.ninelockview);
 		nineLockView.setOnPatternListener(this);
 
@@ -106,6 +109,7 @@ public class NineLockActivity extends BaseFragmentActivity implements
 
 	@Override
 	public void onPatternStart() {
+		mTipText.setText("");
 	}
 
 	@Override
@@ -131,8 +135,7 @@ public class NineLockActivity extends BaseFragmentActivity implements
 			finishActivityWithResult(RESULT_OK);
 		} else {
 			nineLockView.setDisplayMode(DisplayMode.Wrong);
-			SuperToast.makeText(this, R.string.ninelock_pwd_error,
-					SuperToast.LENGTH_LONG).show();
+			mTipText.setText(getString(R.string.ninelock_pwd_error));
 		}
 	}
 }
