@@ -40,83 +40,84 @@ public class SysConfig {
 				"http://infinigag-us.aws.af.cm");
 		mProperties.setProperty("bianmi.dbname.debug", "bianmi_d");
 		mProperties.setProperty("bianmi.url.signup.debug",
-				"http://192.168.1.102/bianmi/index.php/Index/Login/reg");
+				"http://bianmi.oschina.mopaas.com/index.php/Index/Login/reg");
 		mProperties.setProperty("bianmi.url.signin.debug",
-				"http://192.168.1.102/bianmi/index.php/Index/Login/index");
-		mProperties.setProperty("bianmi.url.signout.debug",
-				"http://192.168.1.102/bianmi/index.php/Index/Login/signout");
+				"http://bianmi.oschina.mopaas.com/index.php/Index/Login/index");
+		mProperties
+				.setProperty("bianmi.url.signout.debug",
+						"http://bianmi.oschina.mopaas.com/index.php/Index/Login/signout");
 		mProperties.setProperty("bianmi.url.secret.publish.debug",
-				"http://192.168.1.102/bianmi/publish.php");
+				"http://bianmi.oschina.mopaas.com/publish.php");
 		mProperties.setProperty("bianmi.url.secret.list.hot.debug",
-				"http://192.168.1.102/bianmi/secrets_hot.php");
+				"http://bianmi.oschina.mopaas.com/secrets_hot.php");
 		mProperties.setProperty("bianmi.url.secret.list.friend.debug",
-				"http://192.168.1.102/bianmi/secrets_friend.php");
+				"http://bianmi.oschina.mopaas.com/secrets_friend.php");
 		mProperties.setProperty("bianmi.url.secret.list.nearby.debug",
-				"http://192.168.1.102/bianmi/secrets_nearby.php");
+				"http://bianmi.oschina.mopaas.com/secrets_nearby.php");
 		mProperties.setProperty("bianmi.url.secret.like.debug",
-				"http://192.168.1.102/bianmi/like.php");
+				"http://bianmi.oschina.mopaas.com/like.php");
 		mProperties.setProperty("bianmi.url.comment.like.debug",
-				"http://192.168.1.102/bianmi/comment_like.php");
+				"http://bianmi.oschina.mopaas.com/comment_like.php");
 		mProperties.setProperty("bianmi.url.config.debug",
-				"http://192.168.1.102/bianmi/config.php");
+				"http://bianmi.oschina.mopaas.com/config.php");
 		mProperties.setProperty("bianmi.url.comment.list.debug",
-				"http://192.168.1.102/bianmi/comments.php");
+				"http://bianmi.oschina.mopaas.com/comments.php");
 		mProperties.setProperty("bianmi.url.comment.publish.debug",
-				"http://192.168.1.102/bianmi/publish_comment.php");
+				"http://bianmi.oschina.mopaas.com/publish_comment.php");
 		mProperties.setProperty("bianmi.url.contacts.upload.debug",
-				"http://192.168.1.102/bianmi/upload_contacts.php");
+				"http://bianmi.oschina.mopaas.com/upload_contacts.php");
 		mProperties.setProperty("bianmi.url.reminder.debug",
-				"http://192.168.1.102/bianmi/reminder.php");
+				"http://bianmi.oschina.mopaas.com/reminder.php");
 		mProperties.setProperty("bianmi.url.reminder.system.debug",
-				"http://192.168.1.102/bianmi/reminders_system.php");
+				"http://bianmi.oschina.mopaas.com/reminders_system.php");
 		mProperties.setProperty("bianmi.url.reminder.person.debug",
-				"http://192.168.1.102/bianmi/reminders_person.php");
+				"http://bianmi.oschina.mopaas.com/reminders_person.php");
 		mProperties.setProperty("bianmi.url.user.clear.debug",
-				"http://192.168.1.102/bianmi/clear_privacy.php");
+				"http://bianmi.oschina.mopaas.com/clear_privacy.php");
 		mProperties.setProperty("bianmi.url.secret.details.debug",
-				"http://192.168.1.102/bianmi/secret_details.php");
+				"http://bianmi.oschina.mopaas.com/secret_details.php");
 		// ---------------release
 		mProperties.setProperty("bianmi.dbname.release", "bianmi_v1");
 		mProperties.setProperty("bianmi.url.base.release",
 				"http://infinigag-us.aws.af.cm"); // Base URL
 		mProperties.setProperty("bianmi.url.signup.release",
-				"http://192.168.1.102/bianmi/signup.php"); // 注册
+				"http://bianmi.oschina.mopaas.com/signup.php"); // 注册
 		mProperties.setProperty("bianmi.url.signin.release",
-				"http://192.168.1.102/bianmi/signin.php"); // 登录
+				"http://bianmi.oschina.mopaas.com/signin.php"); // 登录
 		mProperties.setProperty("bianmi.url.signout.release",
-				"http://192.168.1.102/bianmi/signout.php"); // 登出
+				"http://bianmi.oschina.mopaas.com/signout.php"); // 登出
 		mProperties.setProperty("bianmi.qiniu.uptoken",
-				"http://192.168.1.102/bianmi/token.php?type=uptoken");// 上传token
+				"http://bianmi.oschina.mopaas.com/token.php?type=uptoken");// 上传token
 		mProperties.setProperty("bianmi.url.secret.publish.release",
-				"http://192.168.1.102/bianmi/publish.php");
+				"http://bianmi.oschina.mopaas.com/publish.php");
 		mProperties.setProperty("bianmi.url.secret.list.hot.release",
-				"http://192.168.1.102/bianmi/secrets_hot.php");
+				"http://bianmi.oschina.mopaas.com/secrets_hot.php");
 		mProperties.setProperty("bianmi.url.secret.list.friend.release",
-				"http://192.168.1.102/bianmi/secrets_friend.php");
+				"http://bianmi.oschina.mopaas.com/secrets_friend.php");
 		mProperties.setProperty("bianmi.url.secret.list.nearby.release",
-				"http://192.168.1.102/bianmi/secrets_nearby.php");
+				"http://bianmi.oschina.mopaas.com/secrets_nearby.php");
 		mProperties.setProperty("bianmi.url.secret.like.release",
-				"http://192.168.1.102/bianmi/like.php");
+				"http://bianmi.oschina.mopaas.com/like.php");
 		mProperties.setProperty("bianmi.url.comment.like.release",
-				"http://192.168.1.102/bianmi/comment_like.php");
+				"http://bianmi.oschina.mopaas.com/comment_like.php");
 		mProperties.setProperty("bianmi.url.config.release",
-				"http://192.168.1.102/bianmi/config.php");
+				"http://bianmi.oschina.mopaas.com/config.php");
 		mProperties.setProperty("bianmi.url.comment.list.release",
-				"http://192.168.1.102/bianmi/comments.php");
+				"http://bianmi.oschina.mopaas.com/comments.php");
 		mProperties.setProperty("bianmi.url.comment.publish.release",
-				"http://192.168.1.102/bianmi/publish_comment.php");
+				"http://bianmi.oschina.mopaas.com/publish_comment.php");
 		mProperties.setProperty("bianmi.url.contacts.upload.release",
-				"http://192.168.1.102/bianmi/upload_contacts.php");
+				"http://bianmi.oschina.mopaas.com/upload_contacts.php");
 		mProperties.setProperty("bianmi.url.reminder.release",
-				"http://192.168.1.102/bianmi/reminder.php");
+				"http://bianmi.oschina.mopaas.com/reminder.php");
 		mProperties.setProperty("bianmi.url.reminder.system.release",
-				"http://192.168.1.102/bianmi/reminders_system.php");
+				"http://bianmi.oschina.mopaas.com/reminders_system.php");
 		mProperties.setProperty("bianmi.url.reminder.person.release",
-				"http://192.168.1.102/bianmi/reminders_person.php");
+				"http://bianmi.oschina.mopaas.com/reminders_person.php");
 		mProperties.setProperty("bianmi.url.user.clear.release",
-				"http://192.168.1.102/bianmi/clear_privacy.php");
+				"http://bianmi.oschina.mopaas.com/clear_privacy.php");
 		mProperties.setProperty("bianmi.url.secret.details.release",
-				"http://192.168.1.102/bianmi/secret_details.php");
+				"http://bianmi.oschina.mopaas.com/secret_details.php");
 		// 七牛
 		mProperties.setProperty("qiniu.bucketname.attach", "bianmi"); // 七牛
 																		// Bucket
