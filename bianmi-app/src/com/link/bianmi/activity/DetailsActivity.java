@@ -233,7 +233,6 @@ public class DetailsActivity extends BaseFragmentActivity {
 	 * 拉取最新
 	 */
 	private void fetchNew() {
-		executeGetCommentsTask("");
 		executeSecretDetailsTask();
 	}
 
@@ -310,6 +309,7 @@ public class DetailsActivity extends BaseFragmentActivity {
 					public void onSuccess(Secret t) {
 						if (t == null)
 							return;
+						executeGetCommentsTask("");
 						mSecret = t;
 						likeOrDislike(mSecret.isLiked);
 						mAdapter.refresh(null, t);
