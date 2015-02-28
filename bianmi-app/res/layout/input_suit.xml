@@ -59,7 +59,6 @@
             android:id="@+id/message_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/submit_btn"
             android:layout_marginLeft="@dimen/dp_8"
             android:layout_marginRight="@dimen/dp_8"
             android:layout_toLeftOf="@+id/submit_btn"
